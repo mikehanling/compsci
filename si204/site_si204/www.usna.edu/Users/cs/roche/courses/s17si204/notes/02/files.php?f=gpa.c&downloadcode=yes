@@ -1,0 +1,40 @@
+/***************************************************
+Grading
+
+A school tracks grades as A, B, C, D or E (not F).
+A students GPA is a number between 0 and 4, which
+you calculate by averaging the grades - an A is
+given 4 points, down to an E which is given 0 points.
+
+Write a program that reads in 4 letter grades (a 
+student's first semester) and prints out his GPA.
+***************************************************/
+#include "si204.h"
+
+int main() {
+  // Read in four grades
+  fputs("Enter four letter grades: ", stdout);
+  char g1, g2, g3, g4;
+  g1 = readchar(stdin);
+  g2 = readchar(stdin);
+  g3 = readchar(stdin);
+  g4 = readchar(stdin);
+  
+  // Compute weights for the four grades
+  int w1, w2, w3, w4;
+  w1 = 'E' - g1;
+  w2 = 'E' - g2;
+  w3 = 'E' - g3;
+  w4 = 'E' - g4;
+
+  // Compute GPA
+  double a;
+  a = (double)(w1 + w2 + w3 + w4) / 4.0;
+
+  // Print out GPA
+  fputs("GPA is ", stdout);
+  writenum(a, stdout);
+  fputs("\n", stdout);
+
+  return 0;
+}

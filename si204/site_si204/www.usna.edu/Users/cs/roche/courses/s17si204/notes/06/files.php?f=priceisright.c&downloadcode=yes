@@ -1,0 +1,37 @@
+#include <stdio.h>
+
+int main() {
+  int contestants = 4;
+  printf("Enter %i guesses: ", contestants);
+  fflush(stdout);
+
+  // read in guesses
+  double guess[contestants];
+  for (int i=0; i < contestants; ++i) {
+    scanf(" %lg", &guess[i]);
+  }
+
+  printf("True price: ");
+  fflush(stdout);
+  double actual;
+  scanf(" %lg", &actual);
+
+  // find the closest guess
+  double closest = -1;
+  int winner = -1;
+  for (int i=0; i < contestants; ++i) {
+    if (guess[i] <= actual && guess[i] > closest) {
+      closest = guess[i];
+      winner = i + 1; // add one because indexes start at 0
+    }
+  }
+
+  // print who won
+  if (winner < 0) {
+    printf("Everyone guessed over!\n");
+  } else {
+    printf("Contestant %i wins\n", winner);
+  }
+
+  return 0;
+}

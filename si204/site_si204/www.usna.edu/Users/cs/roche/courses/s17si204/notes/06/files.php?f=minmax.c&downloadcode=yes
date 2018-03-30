@@ -1,0 +1,48 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+void minmax(int* minptr, int* maxptr, int* array, int size);
+
+int main() {
+  // read size n
+  int n;
+  do {
+    printf("Enter size: ");
+    fflush(stdout);
+  } while(scanf(" %i", &n) != 1 || n <= 0);
+
+  // allocate array and read in contents
+  int* data = calloc(n, sizeof(int));
+  printf("Enter %i integers, space separated.\n", n);
+  for (int i=0; i<n; ++i) {
+    scanf(" %i", &data[i]);
+  }
+
+  // CALL YOUR FUNCTION(S) HERE
+  int min, max;
+  minmax(&min, &max, data, n);
+  // AND PRINT OUT THE RESULTS
+  printf("The min is %i and the max is %i.\n", min, max);
+
+  // clean-up time
+  free(data);
+  return 0;
+}
+
+// finds the smallest and largest values in the given array
+// and stores them in the integers pointed to by the first
+// two arguments
+void minmax(int* minptr, int* maxptr, int* array, int size) {
+  // start with both equaling the first array element
+  *minptr = array[0];
+  *maxptr = array[0];
+
+  // go through the rest of the array and update as necessary
+  for (int i=1; i < size; ++i) {
+    if (array[i] < *minptr) {
+      *minptr = array[i];
+    } else if (array[i] > *maxptr) {
+      *maxptr = array[i];
+    }
+  }
+}

@@ -1,0 +1,41 @@
+Mike Hanling
+IC211 Lab07
+
+For Part 1:
+
+My redesign uses encapsulation in that each class has a clear function.
+Dots are simply a coordinate, nothing more.  DirDots add a direction to
+a simple Dot.  A DirDot is able to move one step and turn. A RedDot adds
+onto DirDot only to attach the color of it to the toString(). A BlueDot
+adds to DirDot the functionality of only turning every 10 cycles, and a
+color for the dot to print correctly.
+My redesign uses data hiding in that all fields are private for each
+class.  No fields can be accessed from other classes.
+My redesign uses inheritance in that all classes (sans the driver,
+Lab07b) stem from Dot and then DirDot.  The functionality of the parent
+is utilized in the child throughout the design.  The row and col are
+used constantly from Dot and then the functionality of turning and
+timing come in from the independent children.
+My redesign uses polymorphism in that the to arraylist keeps all of the
+dots as DirDots and then prints then out every cycle.  Java does a real
+time check for each dot in order to use the correct toString() method
+that all of the classes have.
+
+For Part 2:
+
+Adding one (or as many more as I want) types of dots to move around (or
+not or do whatever) was very easy.  After making a working class for
+that dot (made with the same interface, but a new implementation),
+changing the driver simply added one line to create that dot with all of
+the others.
+
+The polymorphic function call site is in the drivers where I print the
+position and color of each dot.  I say to print the dot, and Java makes
+a run time check to determine the type of dot that a specific one is,
+and then call the correct toString() method.  Though the toString()
+methods play off of each other, they are different in there addition of
+the color label.  This is especially evident in ODot, as the color
+changes at every turn when it is moving diagonally. Without the
+polymorphism present, the Plotter script would not be able to plot any
+point (because it is incomplete) and my driver would not know how to
+interpret each DirDot in my arrayList.

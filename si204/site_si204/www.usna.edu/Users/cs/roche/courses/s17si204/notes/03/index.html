@@ -1,0 +1,1301 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Unit 3: Iteration</title><meta name="viewport" content="width=device-width, initial-scale=1.0"><link href="../../scripts/prism.css" rel="stylesheet" /><link rel="stylesheet" type="text/css" href="../../style.css"><script type="text/javascript" src="../../../../mathjax/MathJax.js%3Fconfig=TeX-AMS_HTML"></script><script type="text/javascript" src="../../scripts/jquery-3.1.1.min.js"></script><style>
+@media only screen and (min-width: 600px) {
+  #main>header {background-image: url("../../scripts/header.png");}
+}
+</style><link rel="stylesheet" type="text/css" href="../../notes.css">  <meta name="generator" content="pandoc">
+  <style type="text/css">code{white-space: pre;}</style>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head><body><div id="main"><header><nav class="topnav"><div>
+            <a href="../../index.php.html">SI 204</a>
+            </div><div>
+            <a href="../../calendar.php.html">Calendar</a>
+            </div><div id="navparent">
+            <a href="../index.html">Notes</a>
+            </div><div>
+            <a href="../../hw/index.html">HWs</a>
+            </div><div>
+            <a href="../../lab/index.html">Labs</a>
+            </div><div>
+            <a href="../../proj/index.html">Projects</a>
+            </div><div>
+            <a href="../../exams/index.html">Exams</a>
+            </div><div>
+            <a href="../../admin/index.html">Resources</a>
+            </div><div>
+            <a href="https://www.usna.edu/Users/cs/roche/">Roche</a>
+            </div><div>
+            <a href="https://www.usna.edu/Users/cs/albing/">Albing</a>
+            </div></nav></header><div id="mainbox"><div class="printonly"><h1 class="printtitle">SI 204 Spring 2017 / Notes</h1><hr></div><article id="mainart"><header><h1>Unit 3: Iteration</h1></header><div id="TOC"><ul><li><a class="linkin" href="index.html#the-idea-of-a-loop"><span class="toc-section-number">1</span> The idea of a loop</a>
+<ul><li><a class="linkin" href="index.html#motivating-example-checking-user-input"><span class="toc-section-number">1.1</span> Motivating example: checking user input</a></li><li><a class="linkin" href="index.html#syntax-of-a-while-loop"><span class="toc-section-number">1.2</span> Syntax of a while loop</a></li><li><a class="linkin" href="index.html#beware-the-infinite-loop-"><span class="toc-section-number">1.3</span> Beware the infinite Loop!</a></li></ul></li>
+<li><a class="linkin" href="index.html#while-loop-examples"><span class="toc-section-number">2</span> While loop examples</a>
+<ul><li><a class="linkin" href="index.html#the-euclidean-gcd-algorithm"><span class="toc-section-number">2.1</span> The Euclidean GCD Algorithm</a></li><li><a class="linkin" href="index.html#computing-compound-interest"><span class="toc-section-number">2.2</span> Computing compound interest</a></li><li><a class="linkin" href="index.html#a-simple-calculator"><span class="toc-section-number">2.3</span> A simple calculator</a></li></ul></li>
+<li><a class="linkin" href="index.html#loop-shortcuts"><span class="toc-section-number">3</span> Loop shortcuts</a>
+<ul><li><a class="linkin" href="index.html#shortcut-1-for-loops"><span class="toc-section-number">3.1</span> Shortcut #1: for loops</a></li><li><a class="linkin" href="index.html#shortcut-2-initializing-variables-in-the-declaration"><span class="toc-section-number">3.2</span> Shortcut #2: Initializing variables in the declaration</a></li><li><a class="linkin" href="index.html#shortcut-3-and-"><span class="toc-section-number">3.3</span> Shortcut #3: ++ and –</a></li></ul></li>
+<li><a class="linkin" href="index.html#odds-amp-ends-reading-files-and-exiting-early"><span class="toc-section-number">4</span> Odds &amp; Ends: Reading files and exiting early</a>
+<ul><li><a class="linkin" href="index.html#exiting-main-early"><span class="toc-section-number">4.1</span> Exiting main() early</a></li><li><a class="linkin" href="index.html#reading-from-files"><span class="toc-section-number">4.2</span> Reading from files</a></li></ul></li>
+<li><a class="linkin" href="index.html#nested-loops-amp-stepwise-refinement"><span class="toc-section-number">5</span> Nested Loops &amp; Stepwise Refinement</a>
+<ul><li><a class="linkin" href="index.html#nested-loops"><span class="toc-section-number">5.1</span> Nested Loops</a></li><li><a class="linkin" href="index.html#printing-out-a-hankel-matrix"><span class="toc-section-number">5.2</span> Printing out a Hankel matrix</a></li><li><a class="linkin" href="index.html#polynomial-evaluation"><span class="toc-section-number">5.3</span> Polynomial Evaluation</a></li><li><a class="linkin" href="index.html#stepwise-refinement-from-the-inside-out"><span class="toc-section-number">5.4</span> Stepwise refinement from the inside out</a></li></ul></li>
+<li><a class="linkin" href="index.html#do-while-loops-optional-"><span class="toc-section-number">6</span> Do-while loops (optional)</a></li>
+<li><a class="linkin" href="index.html#practice-problems-and-questions"><span class="toc-section-number">7</span> Practice Problems and Questions</a>
+<ul><li><a class="linkin" href="index.html#while-loops"><span class="toc-section-number">7.1</span> While Loops</a></li><li><a class="linkin" href="index.html#for-loops"><span class="toc-section-number">7.2</span> For Loops</a></li><li><a class="linkin" href="index.html#file-input-and-error-conditions"><span class="toc-section-number">7.3</span> File input and error conditions</a></li></li></ul></div><div class="panbody"><p>(Credit to <a href="https://www.usna.edu/Users/cs/wcbrown/">Chris Brown</a> for the original version of these notes.)</p>
+<p>In this unit we will learn about a new control structure in our programs. <em>Loops</em> allow our programs to re-use the same code over and over again, (hopefully) making progress each time through towards whatever the goal of our program is. This idea, more generally, is called <em>iteration</em>, and it’s an important way of getting the computer to do a lot of work so that we don’t have to!</p>
+<!-- from l08 -->
+<h1 id="the-idea-of-a-loop"><a class ="linkin" href="index.html#top"><span class="header-section-number">1</span> The idea of a loop</a></h1><h2 id="motivating-example-checking-user-input"><a class="linkin" href="index.html#top"><span class="header-section-number">1.1</span> Motivating example: checking user input</a></h1><p>Consider a program that asks a Midshipman for their alpha number. We’d probably do this with code like the following:</p>
+<pre><code class="language-C">int alpha;
+fputs(&quot;Enter your alpha number: &quot;, stdout);
+alpha = readnum(stdin);</code></pre>
+<p><strong>However</strong>, if the user is inattentive or malicious, they might enter an invalid alpha number - which (for now) would mean anything less than <code>170000</code> or greater than <code>209999</code>. We might want to ensure that doesn’t happen, by extending our code to something like:</p>
+<pre><code class="language-C">int alpha;
+fputs(&quot;Enter your alpha number: &quot;, stdout);
+alpha = readnum(stdin);
+
+if (alpha &lt; 170000 || alpha &gt;= 210000) {
+  fputs(&quot;Enter your alpha number: &quot;, stdout);
+  alpha = readnum(stdin);
+}</code></pre>
+<p>That’s better, but wait: Clearly a determined (or especially inattentive) user might still enter an invalid alpha the second time. So we might just add more and more and more of these checks, like:</p>
+<pre><code class="language-C">int alpha;
+fputs(&quot;Enter your alpha number: &quot;, stdout);
+alpha = readnum(stdin);
+
+if (alpha &lt; 170000 || alpha &gt;= 210000) {
+  fputs(&quot;Enter your alpha number: &quot;, stdout);
+  alpha = readnum(stdin);
+
+  if (alpha &lt; 170000 || alpha &gt;= 210000) {
+    fputs(&quot;Enter your alpha number: &quot;, stdout);
+    alpha = readnum(stdin);
+
+    if (alpha &lt; 170000 || alpha &gt;= 210000) {
+      fputs(&quot;Enter your alpha number: &quot;, stdout);
+      alpha = readnum(stdin);
+
+      if (alpha &lt; 170000 || alpha &gt;= 210000) {
+        fputs(&quot;Enter your alpha number: &quot;, stdout);
+        alpha = readnum(stdin);
+      }
+    }
+  }
+}</code></pre>
+<p>Well this is clearly getting ridiculous. Fortunately, since <em>every one of these if conditions and blocks are exactly the same</em>, C provides us a way to do this perfectly with a single block, like follows:</p>
+<pre><code class="language-C">int alpha;
+fputs(&quot;Enter your alpha number: &quot;, stdout);
+alpha = readnum(stdin);
+
+while (alpha &lt; 170000 || alpha &gt;= 210000) {
+  fputs(&quot;Enter your alpha number: &quot;, stdout);
+  alpha = readnum(stdin);
+}</code></pre>
+<p>Essentially, the <code>while</code> loop is just like an <code>if</code> statement with no <code>else</code> block, <em>except</em> after executing the body, instead of going on to the next part of the program, the control <em>loops back</em> to the condition and does the whole thing again. This keeps going until the condition returns 0 (meaning false).</p>
+<p>Loops allow us to tell the computer to do something over and over again. This way, a short program can do a <strong>lot</strong> of work — which is the real power behind a computer!</p>
+<h2 id="syntax-of-a-while-loop"><a class="linkin" href="index.html#top"><span class="header-section-number">1.2</span> Syntax of a while loop</a></h1><p>The syntax of a <code>while</code>-loop is much like the syntax of an <code>if</code>-statement without an else block: We have <code>while</code> followed by a test condition and a block of code. As long as the test condition is true (“while” the test condition is true), we keep executing the block of code (referred to as the <em>body</em> of the loop).</p>
+<p>A typical task that we’ll implement with a loop is finding the sum of bunch of integers input by the user. We’ll assume that the user will enter a negative number to indicate that he’s done inputting data. (The negative number is just an end marker - it should not be included in the sum.) The typical way of doing this is:</p>
+<pre><code class="language-C">int sum;
+int k;
+sum = 0;
+
+k = readnum(stdin);
+while (k &gt;= 0) {
+  sum = sum + k;
+  k = readnum(stdin);
+}
+
+writenum(sum, stdout);
+fputs(&quot;\n&quot;, stdout);</code></pre>
+<p>The section of code that sets <code>sum = 0</code> and reads the first value for <code>k</code> performs <em>initialization</em>, i.e. work before the loop that prepares you for the loop. The variable <code>sum</code> must have the value zero before the loop begins; otherwise the whole concept is blown. The first value for <code>k</code> needs to be read in from the user before we begin the loop, since that value will be checked in the loop’s test condition. <a href="files.php%3Ff=addnums.c.html">Here’s the whole program</a>.</p>
+<h2 id="beware-the-infinite-loop-"><a class="linkin" href="index.html#top"><span class="header-section-number">1.3</span> Beware the infinite Loop!</a></h1><p>At some point or another, we all do it. We write a program with an “infinite” loop. For example, you might accidentally write something like this:</p>
+<pre><code class="language-C">int x = 0;
+int y = 0;
+
+while(x = 0 || x*y &lt; 10) {
+  fputs(&quot;Enter x and y: &quot;, stdout);
+  x = readnum(stdin);
+  y = readnum(stdin);
+}</code></pre>
+<p>Can you spot the problem? It’s very tricky! I accidentally wrote <code>x = 0</code> rather than <code>x == 0</code>. The result is that because the ||-expression is evaluated left-to-right, x gets set to 0 in the first part of the OR, and that makes the second part true regardless of what the <code>y</code> value is.</p>
+<p>When you find yourself running a program in an infinite loop like this, the only remedy is to kill the program (for example, by hitting Ctrl-C).</p>
+<!-- from l10 -->
+<h1 id="while-loop-examples"><a class ="linkin" href="index.html#top"><span class="header-section-number">2</span> While loop examples</a></h1><p>Let’s look at a few more examples of using <code>while</code> loops to solve a variety of problems. There will also be a few “detail” issues that’ll come up.</p>
+<h2 id="the-euclidean-gcd-algorithm"><a class="linkin" href="index.html#top"><span class="header-section-number">2.1</span> The Euclidean GCD Algorithm</a></h1><p>The greatest common divisor (GCD) of two positive integers <code>a</code> and <code>b</code> is the largest integer that evenly divides both <code>a</code> and <code>b</code>. You may remember that some math teacher along the way told you that an answer like 3/6 is wrong, because it can be <em>reduced</em> to 1/2. How? By dividing out by the GCD of the numerator and the denominator - 3 in this case. So an algorithm that computes the GCD of two numbers is useful … at least for placating math teachers. It’s actually useful in an unimaginable number of other contexts, in things as diverse as encryption for online-banking to controlling the motions of robots.</p>
+<p>The most common way to solve this problem today was was invented thousands of years ago. It is called the “Euclidean Algorithm” because it appears in Euclid’s book “The Elements”, which contained most of the mathematics known in the ancient Greek world.</p>
+<p>The basic process (algorithm) for computing the GCD of <code>a</code> and <code>b</code> is this: Assuming <code>a</code> is the larger of the two, compute the remainder when <code>a</code> is divided by <code>b</code>, and replace <code>a</code> with <code>b</code> and <code>b</code> by the remainder. Keep doing this until you get a remainder of zero, at which point <code>b</code> is the GCD. For example, if <code>a</code> is 42 and <code>b</code> is 30, then</p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">a</th>
+<th style="text-align: left;">b</th>
+<th>remainder</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">42</td>
+<td style="text-align: left;">30</td>
+<td>12</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">30</td>
+<td style="text-align: left;">12</td>
+<td>6</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">12</td>
+<td style="text-align: left;">6</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<p>… and therefore 6 is the GCD. We can do this with a loop, which will look something like this:</p>
+<pre><code class="language-C">int a, b, r;
+a = readnum(stdin);
+b = readnum(stdin);
+
+while(/*no idea what goes here yet!*/) {
+  r = a % b; // remember &quot;%&quot; is remainder
+  a = b;
+  b = r;
+}</code></pre>
+<p>We have two questions now: When do we stop? And Where is the answer when we stop? We could try to be clever and figure it out abstractly, but that’s difficult. Let’s just see what happens with the code we do have in the example from above:</p>
+<pre><code class="language-.text">Before iteration 1: r =  ?, a = 42, b = 30
+Before iteration 2: r = 12, a = 30, b = 12
+Before iteration 3: r =  6, a = 12, b =  6
+Before iteration 4: r =  0, a =  6, b =  0  Stop! No 4th iteration!</code></pre>
+<p>As you can see, our clue to stop is that <code>r</code> is zero (or, you could say that <code>b</code> being zero is our clue), and you can see that the answer resides in the variable <code>a</code>. So, we could complete our loop like this:</p>
+<pre><code class="language-C">int a, b;
+fputs(&quot;Enter two numbers: &quot;, stdout);
+a = readnum(stdin);
+b = readnum(stdin);
+
+while (b != 0) {
+  int r;
+  r = a % b;
+  a = b;
+  b = r;
+}
+
+writenum(a);
+fputs(&quot; is the GCD.\n&quot;, stdout);</code></pre>
+<h2 id="computing-compound-interest"><a class="linkin" href="index.html#top"><span class="header-section-number">2.2</span> Computing compound interest</a></h1><p>Consider the problem of computing compound interest. The user enters an annual interest rate <code>r</code>, and we want to figure out how much they’d have after 10 years at that rate with an investment of $100.00 in the account at the beginning of each year. The bulk of the program might look like the following.</p>
+<pre><code class="language-C">  double T;
+  T = 0.0; // Before year 1
+  T = (T + 100.0) * (1.0 + r/100.0); // After year 1
+  T = (T + 100.0) * (1.0 + r/100.0); // After year 2
+  T = (T + 100.0) * (1.0 + r/100.0); // After year 3
+  T = (T + 100.0) * (1.0 + r/100.0); // After year 4
+  T = (T + 100.0) * (1.0 + r/100.0); // After year 5
+  T = (T + 100.0) * (1.0 + r/100.0); // After year 6
+  T = (T + 100.0) * (1.0 + r/100.0); // After year 7
+  T = (T + 100.0) * (1.0 + r/100.0); // After year 8
+  T = (T + 100.0) * (1.0 + r/100.0); // After year 9
+  T = (T + 100.0) * (1.0 + r/100.0); // After year 10</code></pre>
+<p>Now, to do this right, we’d like the user to enter the annual interest rate <code>r</code> and the number of years you’ll keep money in the account <code>y</code>, and we’d like our program to figure out how much you’d have after <code>y</code> years at that rate with an investment of $100.00 in the account at the beginning of each year.</p>
+<p>Notice that, before we have loops, we can’t do this calculation. Without loops, we would need one line in our program for each year. If the user entered 100 years, we’d need to type in a 100+ line line program. To make the program work for any value of <code>y</code>, you need a loop.</p>
+<p>First, let’s try to rewrite the above block of code, in which the number of years is fixed at 10, using a loop. Fortunately, the above code breaks into a loop pretty easily:</p>
+<pre><code class="language-C">  double T;
+  T = 0.0; // Initialization for the loop
+
+  while (/* I need to loop 10 times! */) {
+    T = (T + 100.0) * (1.0 + r/100.0); // After year ?
+  }</code></pre>
+<p>We need to keep track of how many times we’ve gone through the loop body, and once we’ve gone through the loop body 10 times, we stop. Let’s introduce an <code>int</code> variable <code>years</code> to keep track of how many years have gone by. This of course will match up exactly with the number of <em>iterations</em> we have gone through the loop.</p>
+<pre><code class="language-C">  double T;
+  T = 0.0; // We don&#39;t have any money yet
+
+  int years;
+  years = 0; // No years have gone by yet
+
+  while (years &lt; 10) // stop when 10 years have gone by
+  {
+    // update T and years for another year gone by
+    T = (T + 100.0) * (1.0 + r/100.0);
+    years = years + 1;
+  }</code></pre>
+<p>Now, what about making this work for any number of years? <a href="files.php%3Ff=compound.c.html">Here’s a complete solution</a>.</p>
+<h2 id="a-simple-calculator"><a class="linkin" href="index.html#top"><span class="header-section-number">2.3</span> A simple calculator</a></h1><p>Let’s consider writing a program that reads from the user a simple arithmetic expression using + and -, like <code>3 + 4 - 7 + 2 - 4 =</code>, and prints out the result of the expression. Clearly you’re going to want a loop to solve this, but <em>how</em>? We’ll go through the steps to one possible solution, slowly, to illustrate the problem-solving process.</p>
+<p>Our program needs to read in these numbers and +/- signs and add or subtract them to get a final answer. What <em>variables</em> will we need to do that? We should have variables for each number we read in and each operator too, which will have type <code>int</code> and <code>char</code> respectively; let’s call then <code>nextnum</code> and <code>nextop</code>. And then we also want to store the running <code>total</code> for the final answer, which has to start at zero. This gives us:</p>
+<pre><code class="language-C">int total;
+int nextnum;
+char nextop;
+total = 0;</code></pre>
+<p>Keep in mind, we can always add variables later or move these around, but this is a good start.</p>
+<p>The next question to think of is how the program should work — <em>what needs to be done inside our loop</em>? It makes sense to read and incorporate one more number in the loop each time through, which means we’ll also have to read one more operation each time through the loop.</p>
+<p>Putting this together, we start to see the beginnings of a program:</p>
+<pre><code class="language-C">int total;
+int nextnum;
+char nextop;
+total = 0;
+
+while (/* don&#39;t know what goes here yet! */) {
+  nextnum = readnum(stdin); // this goes SOMEWHERE in the loop
+
+  nextop = readchar(stdin); // this goes SOMEWHERE in the loop
+
+  // update total by adding or subtracting nextnum
+}</code></pre>
+<p>Now we start to fill it in. Keep in mind, <em>the order of the statements inside the loop might be wrong</em>. We have to figure that out as we go along too! First let’s see what the code for updating the total is. You’re going to want to either add or subtract, and which one is determined by whether the operator is <code>+</code> or <code>-</code>. So we can replace the <code>// upadate total</code> comment with:</p>
+<pre><code class="language-C">if (nextop == &#39;+&#39;) {
+  total = total + nextnum;
+} else {
+  total = total - nextnum;
+}</code></pre>
+<p>What about the <code>while</code> condition? What tells our program that the loop is over? Looking at a sample input like <code>4 + 2 - 3 + 7 =</code>, you see that the very last “operator” is actually an <code>=</code> sign, which indicates that the loop should terminate. Adding that to our program, here’s what we have so far:</p>
+<pre><code class="language-C">int total;
+int nextnum;
+char nextop;
+total = 0;
+
+while (nextop != &#39;=&#39;) {
+  nextnum = readnum(stdin); // this goes SOMEWHERE in the loop
+
+  nextop = readchar(stdin); // this goes SOMEWHERE in the loop
+
+  // this goes SOMWHERE in the loop
+  if (nextop == &#39;+&#39;) {
+    total = total + nextnum;
+  } else {
+    total = total - nextnum;
+  }
+}</code></pre>
+<p>Great! Now all the pieces are in place, but the program is not quite right. You could try running it on an example such as <code>3 - 2 + 8 =</code>, and you would see that the result is <code>-9</code>, not <code>9</code> like it should be. Try tracing through the program execution by hand. What do you notice?</p>
+<p>There are two problems, actually. The first issue is that <code>nextop</code> is not initialized before the <code>while</code> loop begins, so the first time it is checked whether it is a <code>=</code> sign, we can’t say for sure what will happen! So we should initialize <code>nextop</code> with some character to start with. When you think about it, the first number is <em>always</em> added, so it makes sense to initialize <code>nextop</code> with <code>+</code> at the beginning.</p>
+<p>The second issue is that each operation really applies to the <em>next</em> number to be added or subtracted, but from the way the loop is written, it’s applied to the <em>previous</em> number. The fix here is easy: just change the order so that reading the next operation happens <em>after</em> the <code>if</code> statement that does the adding or subtracting.</p>
+<p>Putting this together, here’s what we get:</p>
+<pre><code class="language-C">int total;
+int nextnum;
+char nextop;
+total = 0;
+nextop = &#39;+&#39;;
+
+while (nextop != &#39;=&#39;) {
+  nextnum = readnum(stdin);
+
+  if (nextop == &#39;+&#39;) {
+    total = total + nextnum;
+  } else {
+    total = total - nextnum;
+  }
+
+  nextop = readchar(stdin);
+}</code></pre>
+<p><a href="files.php%3Ff=calc.c.html">Here is a complete solution</a>.</p>
+<!-- from l12 -->
+<h1 id="loop-shortcuts"><a class ="linkin" href="index.html#top"><span class="header-section-number">3</span> Loop shortcuts</a></h1><p>Here we’ll look at two important shortcuts that make it easier to write certain kinds of loops. As with our other shortcuts, these aren’t technically needed, but they make our code much easier to write and understand, and that’s pretty important!</p>
+<h2 id="shortcut-1-for-loops"><a class="linkin" href="index.html#top"><span class="header-section-number">3.1</span> Shortcut #1: for loops</a></h1><p>One of the most common looping situations you’ll come across is this: You’ve got a number <code>n</code>, and you need to go through a loop <code>n</code> times. Consider, for example, the very simple problem of writing a program that reads in <code>double</code> <code>x</code> and <code>int</code> <code>n</code> from the user and prints out <code>x</code> to the <code>n</code>th power. (Forget, for the moment, that <code>cmath</code> contains a function to do this.) Here’s how we’d do it with while-loops:</p>
+<pre><code class="language-C">double power;
+int i;
+power = 1.0;
+i = 0;
+while (i &lt; n) {
+  power = power * x;
+  i = i + 1;
+}</code></pre>
+<p>If you think the test “<code>i &lt; n</code>” looks strange, remember this: the variable <code>i</code> counts the number of times we’ve gone through the loop body. We start having gone through 0 times, and we want to stop when we’ve gone through <code>n</code> times. In other words, while we’ve looped fewer than <code>n</code> times, keep looping!</p>
+<p>Any time we count our way through a loop like this, we’ll have three basic pieces of code:</p>
+<ol type="1">
+<li>the <em>initialization</em> of our loop counter before the loop begins</li>
+<li>the <em>test-condition</em> that determines whether we keep looping</li>
+<li>the <em>update</em> (i.e. increment) of our loop counter at the end of each loop iteration</li>
+</ol>
+<p>This set-up is so common that C has a special syntax allowing us to express it more succinctly, the <code>for</code> loop. The previous code would be written as follows with a for loop:</p>
+<div class="boxyline">
+<div>
+<pre><code class="language-C">double power;
+int i;
+power = 1.0;
+i = 0;
+while (i &lt; n) {
+  power = power * x;
+  i = i + 1;
+}</code></pre>
+</div>
+<div>
+BECOMES
+</div>
+<div>
+<pre><code class="language-C">double power;
+int i;
+power = 1.0;
+for (i = 0; i &lt; n; i = i + 1) {
+  power = power * x;
+  i = i + 1;
+}</code></pre>
+</div>
+</div>
+<p>The <code>for</code>-loop is just a compact way of writing a while loop which has the three steps outlined above: initialization, test-condition, and update. A <code>for</code>-loop can <strong>always</strong> be written as a while loop in the following way:</p>
+<div class="boxyline">
+<div>
+<pre><code class="language-C">for (A; B; C) {
+  statement1;
+  statement2;
+  ...
+  statenemtk;
+}</code></pre>
+</div>
+<div>
+is the same as
+</div>
+<div>
+<pre><code class="language-C">{
+  A;
+  while (B) {
+    statement1;
+    statement2;
+    ...
+    statementk;
+    C;
+  }
+}</code></pre>
+</div>
+</div>
+<p>As I said before, we usually use for-loops to loop <code>n</code> times, where <code>n</code> is some value we know from earlier on in the program. This <code>for</code>-statement will usually look like this:</p>
+<pre><code class="language-C">for (int i=0; i &lt; n; ++i) {
+  CODE
+}</code></pre>
+<p>Making sense of this brings up 2 more C shortcuts that we’ve ignored until now.</p>
+<h2 id="shortcut-2-initializing-variables-in-the-declaration"><a class="linkin" href="index.html#top"><span class="header-section-number">3.2</span> Shortcut #2: Initializing variables in the declaration</a></h1><p>So far, we’ve usually made <em>declaring</em> a variable and <em>initializing</em> that variable (i.e. giving the variable it’s initial value in the program) separate steps. However, as we learned in the last unit, there’s a shortcut you can use to declare and initialize on a single line of code, like so:</p>
+<pre><code class="language-C">double x = 1.0;</code></pre>
+<p>And you can even declare several variables in one statement, initializing some of them and not others, like:</p>
+<pre><code class="language-C">int a, b=3, c;</code></pre>
+<p>In the context of a <code>for</code> loop this is nice, because something like the counter <code>i</code> in</p>
+<pre><code class="language-C">for(int i=0; i &lt; n; i = i+1) {
+  CODE
+}</code></pre>
+<p>really only gets introduced for the <code>for</code>-loop. Thus, it’s nice to be able to declare it and initialize it all in one statement, so it fits in the first slot of the <code>for</code>-statement.</p>
+<p>This shortcut also brings up something important about <strong>scope</strong> and for loops. If you look back at the correspondence between for-loops and while-lops, you’ll see that the corresponding while loop is encased in a block of its own. The point is that any variable you declare in the first slot of the <code>for</code>-statement goes out of scope after you leave the for-loop. Thus, something like:</p>
+<pre><code class="language-C">for(int i=0; i &lt; 12; ++i) {
+  writenum(i, stdout);
+  fputs(&quot;\n&quot;, stdout);
+}
+writenum(i, stdout);
+fputs(&quot;\n&quot;, stdout);</code></pre>
+<p>shouldn’t compile - after all, the <code>i</code> doesn’t exist as far as that second <code>writenum</code> is concerned. This is usually a nice feature. After all, you only introduced the new variable <code>i</code> to iterate through the numbers 0 up to 11. After you’re done with that iteration, there’s no point to having <code>i</code> around.</p>
+<p>Here’s a program that illustrates how that can be nice.</p>
+<pre><code class="language-c">#include &quot;si204.h&quot;
+
+int main() {
+  for (int i=0; i&lt;25; ++i) {
+    fputc('*', stdout);
+  }
+  fputs(&quot; E L E P H A N T S   N E E D  S P A C E &quot;, stdout);
+  for (int i=0; i&lt;25; ++i) {
+    fputc('*', stdout);
+  }
+  fputs(&quot;\n&quot;, stdout);
+}</code></pre><p>See how we didn’t need to use a different variable for the two for-loops? That’s because their scope does not extend beyond the for-loop itself.</p>
+<h2 id="shortcut-3-and-"><a class="linkin" href="index.html#top"><span class="header-section-number">3.3</span> Shortcut #3: ++ and –</a></h1><p>Incrementing (adding 1) and decrementing (subtracting 1) variables is something that goes on all the time in programming. Therefore, C has a shortcut: <code>++x</code> sets <code>x</code> to <code>x+1</code>, and <code>--x</code> sets <code>x</code> to <code>x-1</code>.</p>
+<p><strong>Note 1</strong>: These are called “pre-increment” or “pre-decrement” operators because the <code>++</code> comes <em>before</em> the name of the variable you’re changing. You can also do something like <code>x++</code> (the <em>post-increment</em> operator), which also sets <code>x</code> to <code>x+1</code> but with a different return value. The pre-increment version returns the value <em>after</em> the increment, whereas the post-increment version returns the original value. This is best illustrated with an example:</p>
+<pre><code class="language-C">int x = 10;
+writenum(x, stdout);     // prints 10, original value
+writenum(++x, stdout);   // prints 11, updated value
+writenum(x, stdout);     // prints 11, the new value for x
+
+int y = 10;
+writenum(y, stdout);     // prints 10, original value
+writenum(++y, stdout);   // prints 10, still the original value!
+writenum(y, stdout);     // prints 11, the new value for y</code></pre>
+<p>See the difference on the second line? But usually we won’t rely on the return value anyway - if you’re just wanting to increase the value of <code>x</code> by one, <code>++x</code> and <code>x++</code> both do the job.</p>
+<p><strong>Note 2</strong>: If you want to change the value by more than +/-1, there are more general operators that do that for you:</p>
+<table>
+<tbody>
+<tr class="odd">
+<td><code>a += b</code></td>
+<td>is equivalent to</td>
+<td><code>a = a + b</code></td>
+</tr>
+<tr class="even">
+<td><code>a -= b</code></td>
+<td>is equivalent to</td>
+<td><code>a = a - b</code></td>
+</tr>
+</tbody>
+</table>
+<p>So <code>++a</code> is equivalent to <code>a += 1</code>, which is equivalent to <code>a = a + 1</code>. These all do exactly the same thing; which version you choose to use in your program should be based on what makes it most clear.</p>
+<p>For the moment, let’s just say this: Don’t use ++ and – in expressions, just use them as standalone statements that provide a shortcut to something like <code>x = x + 1</code>. This is because you have to be careful about which value you get in the expression - is it the value before or after the increment. It’s confusing to read such things, and let’s just avoid the confusion. <strong>Remember, it’s not a contest to see who can write a program with the fewest keystrokes</strong>! (Though admittedly, that’s kind of fun.)</p>
+<!-- from l14 -->
+<h1 id="odds-amp-ends-reading-files-and-exiting-early"><a class ="linkin" href="index.html#top"><span class="header-section-number">4</span> Odds &amp; Ends: Reading files and exiting early</a></h1><p>The topics in this section don’t really have anything to do with loops necessarily, but they’re important to understand so you can get to work on your first programming project. And more generally, these things are useful when you start to write bigger or more sophisticated programs — which is what loops allow you to do!</p>
+<h2 id="exiting-main-early"><a class="linkin" href="index.html#top"><span class="header-section-number">4.1</span> Exiting main() early</a></h1><p>The “<code>return 0;</code>” at the end of your program exits your program with an code of <code>0</code> to indicate to the operating system that “everything worked fine”. In fact, inside <code>main</code> you can stick a <em>return statement</em> like this wherever you want, and returning a value other than 0 (it should be a small positive number such as 1) is a good way to indicate that some error has occurred in your program.</p>
+<p>For example, maybe you want to write a program that reads an integer <code>k</code> from the user and writes out <code>1/k</code>. If the user enters zero, of course, there’s a problem. Now we’ll just castigate the user and exit the program if he does that!</p>
+<pre><code class="language-c">#include &quot;si204.h&quot;
+
+int main() {
+  // Get number from user
+  int k;
+  fputs(&quot;Enter a non-zero integer: &quot;, stdout);
+  k = readnum(stdin);
+
+  // Deal with bad input
+  if (k == 0) {
+    fputs(&quot;ERROR: can't divide by zero\n&quot;, stdout);
+    return 1;
+  }
+
+  // Write out decimal approximation of 1/k
+  fputs(&quot;1/&quot;, stdout);
+  writenum(k, stdout);
+  fputs(&quot; is approximately &quot;, stdout);
+  writenum(1.0 / k, stdout);
+  fputs(&quot;\n&quot;, stdout);
+
+  return 0;
+}</code></pre><p>An alternative to <code>return 1</code> is to call <code>exit(1)</code>, which does exactly the same thing, except that you can call <code>exit</code> from contexts other than inside the main block, as we will see in a few weeks. <a href="http://en.cppreference.com/w/c/program/exit">Here is the complete documentation on the <code>exit</code> function</a>.</p>
+<h2 id="reading-from-files"><a class="linkin" href="index.html#top"><span class="header-section-number">4.2</span> Reading from files</a></h1><p>Up to this point, we have to specify either <code>stdout</code> or <code>stdin</code> in every input or output command that we write. These are objects of type <code>stream</code> that refer to (respectively) the “standard output” to the terminal, or the “standard input” from the terminal.</p>
+<p>You may have guessed that there are more streams other than <code>stdin</code> and <code>stdout</code> — and you would be right! We’ll learn much more about this in the next unit, but for now let’s just say how you open a stream to read from a file.</p>
+<p>The command to create a stream based on a filename is <a href="http://en.cppreference.com/w/c/io/fopen"><code>fopen</code></a>. This function takes two arguments, both of which should be <code>cstring</code>s. The first argument is the name of the file to open, and the second argument is the “mode”, which for reading a file should be the string literal <code>&quot;r&quot;</code> for <em>read</em>.</p>
+<p>The <code>fopen</code> command returns a <code>stream</code> object, which you can then use anywhere you would otherwise use <code>stdin</code>. For example, to open a file called <code>nums.txt</code> and read the first two integers in that file, you could do:</p>
+<pre><code class="language-C">stream filein = fopen(&quot;nums.txt&quot;, &quot;r&quot;);
+
+int x, y;
+x = readnum(filein);
+y = readnum(filein);
+
+fclose(filein);
+
+fputs(&quot;The first two numbers in nums.txt are &quot;, stdout);
+writenum(x, stdout);
+fputs(&quot; and &quot;, stdout);
+writenum(y, stdout);
+fputs(&quot;.\n&quot;, stdout);</code></pre>
+<p>Notice that we should use the <a href="http://en.cppreference.com/w/c/io/fclose"><code>fclose</code> function</a> to close the file safely whenever you’re finished reading from it.</p>
+<p>The filename you give to <code>fopen</code> can really be any string, not just one that’s “hard-coded” into your program like in the example above. But if you read the string from what the user types in, there’s a chance that they will mistype the filename, and then you try to open a file that doesn’t really exist.</p>
+<p>If that happens, <code>fopen</code> does <em>not</em> print any error message or anything else. Instead, it returns a special <code>stream</code> value that (when cast as an <code>int</code>) is equal to <code>0</code>. Why equal to zero? Because that’s the value in C that indicates something is “false”. Putting this together with what you just read about exiting <code>main()</code> early, here’s how to write a program that reads the first string in a file, or prints an error message if that file doesn’t exist.</p>
+<pre><code class="language-c">#include &quot;si204.h&quot;
+
+int main() {
+  cstring filename;
+  fputs(&quot;Enter the name of the file: &quot;, stdout);
+  readstring(filename, stdin);
+
+  // try to open the file
+  stream filein = fopen(filename, &quot;r&quot;);
+
+  // check if there was an error in opening the file
+  if (filein == 0) {
+    fputs(&quot;ERROR: file could not be opened.\n&quot;, stdout);
+    return 1;
+  }
+
+  // if we get here, the file must have opened okay.
+  cstring firstword;
+  readstring(firstword, filein);
+
+  // close the file now
+  fclose(filein);
+
+  // report the first word
+  fputs(&quot;The first word in the file is &quot;, stdout);
+  fputs(firstword, stdout);
+  fputs(&quot;.\n&quot;, stdout);
+
+  return 0;
+}</code></pre><!-- from l13 -->
+<h1 id="nested-loops-amp-stepwise-refinement"><a class ="linkin" href="index.html#top"><span class="header-section-number">5</span> Nested Loops &amp; Stepwise Refinement</a></h1><h2 id="nested-loops"><a class="linkin" href="index.html#top"><span class="header-section-number">5.1</span> Nested Loops</a></h1><p>The body of a loop is a block of code like any other - like the body of “main”, or like a then-block or like an else-block. So, that means that it can contain any of the C constructs we’ve talked about so far … including more loops. Loops inside loops are referred to as “nested”, and you’ll see a lot of them. Perhaps the simplest program with a nested loop is one that prints out a square of *’s to the screen. Here’s an example:</p>
+<pre><code class="language-c">#include &quot;si204.h&quot;
+
+int main() {
+  // Get n from the user
+  int n;
+  fputs(&quot;Please enter n: &quot;, stdout);
+  n = readnum(stdin);
+
+  // print the square
+  // the outer loop does each row
+  for (int row=0; row &lt; n; ++row) {
+    // the inner loop goes along each column
+    for (int col=0; col &lt; n; ++col) {
+      fputs(&quot;* &quot;, stdout);
+    }
+    // newline moves to the next row
+    fputs(&quot;\n&quot;, stdout);
+  }
+
+  return 0;
+}</code></pre><p>See how it involves a loop nested within a loop? Notice too, though, that each loop has a well-defined meaning. The outer loop body prints a single row, the inner loop body prints a single * within that row.</p>
+<p>One of the best ways to deal with the complexities of writing programs using nested loops is to follow the design paradigm of <em>stepwise refinement</em>, which basically has you writing programs in rough steps which are then continually refined until they end up as actual C code. Let’s consider an example to see this in action.</p>
+<h2 id="printing-out-a-hankel-matrix"><a class="linkin" href="index.html#top"><span class="header-section-number">5.2</span> Printing out a Hankel matrix</a></h1><p>The Hankel matrix defined by the numbers 1, 2, …, 2n-1 is</p>
+<table>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">2</td>
+<td style="text-align: left;">3</td>
+<td style="text-align: left;">…</td>
+<td style="text-align: left;">n</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">2</td>
+<td style="text-align: left;">3</td>
+<td style="text-align: left;">4</td>
+<td style="text-align: left;">…</td>
+<td style="text-align: left;">n+1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">…</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">n</td>
+<td style="text-align: left;">n+1</td>
+<td style="text-align: left;">n+2</td>
+<td style="text-align: left;">…</td>
+<td style="text-align: left;">2n-1</td>
+</tr>
+</tbody>
+</table>
+<p>I want you to write a program that will read in a value n from the user, you may assume that n is less than 50, and print out the Hankel matrix defined by 1, 2, …, 2n-1 on the screen. When your program runs, it should look something like this:</p>
+<pre><code class="language-C">Enter value n, where n &lt; 50: 20
+ 1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20
+ 2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21
+ 3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22
+ 4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23
+ 5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24
+ 6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25
+ 7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26
+ 8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27
+ 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28
+10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29
+11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30
+12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31
+13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32
+14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33
+15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34
+16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35
+17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36
+18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37
+19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38
+20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39</code></pre>
+<p>Think about what you’re going to have to do in order to ensure that the columns line up correctly, given that you have single and double digit numbers!</p>
+<p>The key to solving this problem effortlessly is to gradually develop a solution. If you click the forward and backward arrows below, you’ll see one way of following stepwise refinement for the Hankel matrix problem.</p>
+<div class="slidediv"><button id="hankel-back" onClick="hankel_back()" disabled="true">&lt;&lt;</button><button id="hankel-fwd" onClick="hankel_fwd()">&gt;&gt;</button></div><script type="text/javascript">
+var hankel_cur = 1;
+function hankel_back() {
+  if (hankel_cur > 1) {
+    document.getElementById('hankel-' + (hankel_cur-1)).style.display = 'block';
+    document.getElementById('hankel-' + hankel_cur).style.display = 'none';
+    hankel_cur = hankel_cur - 1;
+    document.getElementById('hankel-fwd').disabled = false;
+    if (hankel_cur == 1)
+      document.getElementById('hankel-back').disabled = true;
+  }
+}
+function hankel_fwd() {
+  if (hankel_cur < 5) {
+    document.getElementById('hankel-' + (hankel_cur+1)).style.display = 'block';
+    document.getElementById('hankel-' + hankel_cur).style.display = 'none';
+    hankel_cur = hankel_cur + 1;
+    document.getElementById('hankel-back').disabled = false;
+    if (hankel_cur == 5)
+      document.getElementById('hankel-fwd').disabled = true;
+  }
+}
+document.addEventListener('DOMContentLoaded', function() {
+  for (var i=2; i <= 5; i = i+1) {
+    document.getElementById('hankel-' + i).style.display = 'none';
+  }
+}, false);
+</script><div id="hankel-1">
+<pre><code class="language-C">#include &quot;si204.h&quot;
+
+int main() {
+  // read in the parameter n
+
+  // write Hankel matrix 1,...,2*n
+
+  return 0;
+}</code></pre>
+</div>
+<div id="hankel-2">
+<pre><code class="language-C">#include &quot;si204.h&quot;
+
+int main() {
+  // read in the parameter n
+
+  // write Hankel matrix 1,...,2*n
+  for (int row=1; row &lt;= n; ++row) {
+    // write row entries row, ..., row + n
+  }
+
+  return 0;
+}</code></pre>
+</div>
+<div id="hankel-3">
+<pre><code class="language-C">#include &quot;si204.h&quot;
+
+int main() {
+  // read in the parameter n
+
+  // write Hankel matrix 1,...,2*n
+  for (int row=1; row &lt;= n; ++row) {
+    // write row entries row, ..., row + n
+    for (int col=1; col &lt;= n; ++col) {
+      // write entry (row,col) in two spaces
+    }
+  }
+
+  return 0;
+}</code></pre>
+</div>
+<div id="hankel-4">
+<pre><code class="language-C">#include &quot;si204.h&quot;
+
+int main() {
+  // read in the parameter n
+
+  // write Hankel matrix 1,...,2*n
+  for (int row=1; row &lt;= n; ++row) {
+    // write row entries row, ..., row + n
+    for (int col=1; col &lt;= n; ++col) {
+      // write entry (row,col) in two spaces
+      int val = row + (col - 1);
+      if (val &lt; 10) {
+        fputs(&quot; &quot;, stdout);
+      }
+      writenum(val, stdout);
+      fputs(&quot; &quot;, stdout);
+    }
+    fputs(&quot;\n&quot;, stdout);
+  }
+
+  return 0;
+}</code></pre>
+</div>
+<div id="hankel-5">
+<pre><code class="language-C">#include &quot;si204.h&quot;
+
+int main() {
+  // read in the parameter n
+  int n;
+  fputs(&quot;Enter value n, where n &lt; 50: &quot;, stdout);
+  n = readint(stdin);
+
+  // write Hankel matrix 1,...,2*n
+  for (int row=1; row &lt;= n; ++row) {
+    // write row entries row, ..., row + n
+    for (int col=1; col &lt;= n; ++col) {
+      // write entry (row,col) in two spaces
+      int val = row + (col - 1);
+      if (val &lt; 10) {
+        fputs(&quot; &quot;, stdout);
+      }
+      writenum(val, stdout);
+      fputs(&quot; &quot;, stdout);
+    }
+    fputs(&quot;\n&quot;, stdout);
+  }
+
+  return 0;
+}</code></pre>
+</div>
+<p>This is what step-wise refinement is about. We’ve been doing it all along, in a sense, but it’s much more interesting when you have nested structures like loops and if statements, as opposed to a simple sequence of flat steps.</p>
+<h2 id="polynomial-evaluation"><a class="linkin" href="index.html#top"><span class="header-section-number">5.3</span> Polynomial Evaluation</a></h1><p>Let’s consider another problem: I want to write a program that will do polynomial evaluation. That is, it will read in a value for <em>x</em> and a polynomial in <em>x</em> and print out the result of evaluating the polynomial at the given value. To make it a bit easier on ourselves, let’s assume that each term is given as a coefficient times x raised to some power. Thus, we would write <code>1.1*x^2 - 3.0*x^1 + 2.1*x^0</code> for the polynomial <span class="math inline">\(1.1x^2 - 3.0x + 2.1\)</span>. The user will indicate that she’s done entering the polynomial by typing an equals sign. A typical run of the program might look like this:</p>
+<pre><code class="language-text output">Enter value for x: </code><code class="language-text input">3.1</code>
+<code class="language-text output">Enter polynomial to be evaluated:</code>
+<code class="language-text output"></code><code class="language-text input">0.75*x^5 - 1.8*x^3 + 0.3*x^2 + 1.1*x^1 =</code>
+<code class="language-text output">Result is 167.388</code></pre><p>In essence this problem is not much different from the <a class="linkin" href="index.html#a-simple-calculator">simple calculator problem from before</a>. The main difference is that instead of sums and differences of simple numbers, we have sums and differences of terms in a polynomial. Once again, a nice way to attack this problem is by stepwise refinement, where we gradually develop a solution by specifying in deeper and deeper detail how we’ll solve the problem, until our detail is so great we actually have a complete C program. Clicking through the arrows below will show you one way of solving this one through stepwise refinement.</p>
+<div class="slidediv"><button id="poly-back" onClick="poly_back()" disabled="true">&lt;&lt;</button><button id="poly-fwd" onClick="poly_fwd()">&gt;&gt;</button></div><script type="text/javascript">
+var poly_cur = 1;
+function poly_back() {
+  if (poly_cur > 1) {
+    document.getElementById('poly-' + (poly_cur-1)).style.display = 'block';
+    document.getElementById('poly-' + poly_cur).style.display = 'none';
+    poly_cur = poly_cur - 1;
+    document.getElementById('poly-fwd').disabled = false;
+    if (poly_cur == 1)
+      document.getElementById('poly-back').disabled = true;
+  }
+}
+function poly_fwd() {
+  if (poly_cur < 6) {
+    document.getElementById('poly-' + (poly_cur+1)).style.display = 'block';
+    document.getElementById('poly-' + poly_cur).style.display = 'none';
+    poly_cur = poly_cur + 1;
+    document.getElementById('poly-back').disabled = false;
+    if (poly_cur == 6)
+      document.getElementById('poly-fwd').disabled = true;
+  }
+}
+document.addEventListener('DOMContentLoaded', function() {
+  for (var i=2; i <= 6; i = i+1) {
+    document.getElementById('poly-' + i).style.display = 'none';
+  }
+}, false);
+</script><div id="poly-1">
+<pre><code class="language-C">#include &quot;si204.h&quot;
+
+int main() {
+  // read in x value
+
+  // read and evaluate polynomial
+
+  // write result
+
+  return 0;
+}</code></pre>
+</div>
+<div id="poly-2">
+<pre><code class="language-C">#include &quot;si204.h&quot;
+
+int main() {
+  // read in x value
+
+  /********************************/
+  /* read and evaluate polynomial */
+  /********************************/
+  while (/* ??? */) {
+    // read next term c*x^n
+
+    // evaluate next term c*x^n
+
+    // update value of total
+  }
+
+  // write result
+
+  return 0;
+}</code></pre>
+</div>
+<div id="poly-3">
+<pre><code class="language-C">#include &quot;si204.h&quot;
+
+int main() {
+  // read in x value
+
+  /********************************/
+  /* read and evaluate polynomial */
+  /********************************/
+  while (/* ??? */) {
+    // read next term c*x^n
+
+    /****************************/
+    /* evaluate next term c*x^n */
+    /****************************/
+    // compute x^n
+    // multiply by c
+
+    // update value of total
+  }
+
+  // write result
+
+  return 0;
+}</code></pre>
+</div>
+<div id="poly-4">
+<pre><code class="language-C">#include &quot;si204.h&quot;
+
+int main() {
+  // read in x value
+  double x;
+  fputs(&quot;Enter value for x: &quot;, stdout);
+  x = readnum(stdin);
+
+  /********************************/
+  /* read and evaluate polynomial */
+  /********************************/
+  while (/* ??? */) {
+    // read next term c*x^n
+
+    /****************************/
+    /* evaluate next term c*x^n */
+    /****************************/
+    // compute x^n
+    double xn = 1.0;
+    for (int i=0; i &lt; n; ++i) {
+      xn = xn * x;
+    }
+
+    // multiply by c
+    double term = xn * c;
+
+    // update value of total
+    if (op == &#39;+&#39;) {
+      total = total + term;
+    } else {
+      total = total - term;
+    }
+  }
+
+  // write result
+  fputs(&quot;Result is &quot;, stdout);
+  writenum(total, stdout);
+  fputs(&quot;\n&quot;, stdout);
+
+  return 0;
+}</code></pre>
+</div>
+<div id="poly-5">
+<pre><code class="language-C">#include &quot;si204.h&quot;
+
+int main() {
+  // read in x value
+  double x;
+  fputs(&quot;Enter value for x: &quot;, stdout);
+  x = readnum(stdin);
+
+  /********************************/
+  /* read and evaluate polynomial */
+  /********************************/
+  fputs(&quot;Enter polynomial to be evaluated:\n&quot;, stdout);
+
+  while (op != &#39;=&#39;) {
+    // read next term c*x^n
+    double c;
+    int n;
+    c = readnum(stdin);
+    readchar(stdin); // &#39;*&#39;
+    readchar(stdin); // &#39;x&#39;
+    readchar(stdin); // &#39;^&#39;
+    n = readnum(stdin);
+
+    /****************************/
+    /* evaluate next term c*x^n */
+    /****************************/
+    // compute x^n
+    double xn = 1.0;
+    for (int i=0; i &lt; n; ++i) {
+      xn = xn * x;
+    }
+
+    // multiply by c
+    double term = xn * c;
+
+    // update value of total
+    if (op == &#39;+&#39;) {
+      total = total + term;
+    } else {
+      total = total - term;
+    }
+  }
+
+  // write result
+  fputs(&quot;Result is &quot;, stdout);
+  writenum(total, stdout);
+  fputs(&quot;\n&quot;, stdout);
+
+  return 0;
+}</code></pre>
+</div>
+<div id='poly-6'>
+
+<pre><code class="language-c">#include &quot;si204.h&quot;
+
+int main() {
+  // read in x value
+  double x;
+  fputs(&quot;Enter value for x: &quot;, stdout);
+  x = readnum(stdin);
+
+  /********************************/
+  /* read and evaluate polynomial */
+  /********************************/
+  fputs(&quot;Enter polynomial to be evaluated:\n&quot;, stdout);
+
+  // initialization of for loop
+  char op = '+';
+  double total = 0.0;
+
+  while (op != '=') {
+    // read next term c*x^n
+    double c;
+    int n;
+    c = readnum(stdin);
+    readchar(stdin); // '*'
+    readchar(stdin); // 'x'
+    readchar(stdin); // '^'
+    n = readnum(stdin);
+
+    /****************************/
+    /* evaluate next term c*x^n */
+    /****************************/
+    // compute x^n
+    double xn = 1.0;
+    for (int i=0; i &lt; n; ++i) {
+      xn = xn * x;
+    }
+
+    // multiply by c
+    double term = xn * c;
+
+    // update value of total
+    if (op == '+') {
+      total = total + term;
+    } else {
+      total = total - term;
+    }
+
+    // read next op
+    op = readchar(stdin);
+  }
+
+  // write result
+  fputs(&quot;Result is &quot;, stdout);
+  writenum(total, stdout);
+  fputs(&quot;\n&quot;, stdout);
+
+  return 0;
+}</code></pre></div>
+<!-- from l15 -->
+<h2 id="stepwise-refinement-from-the-inside-out"><a class="linkin" href="index.html#top"><span class="header-section-number">5.4</span> Stepwise refinement from the inside out</a></h1><p>When you’re writing a larger program, it’s nice to be able to compile and run something during the intermediate stages, just to make sure what you’re doing is all right. One way to do this is to continually refine your program so that it solves more and more of your initial problem. In other words, you start by <em>solving an easier problem</em>. Then you add a little more of the complexity of the original problem and you refine your program to a working program for this slightly less easy problem that’s closer to the one you really want to solve. This way, you gradually work towards a solution to the full problem.</p>
+<p>Consider the following problem: I want to figure out which state I should live in. The determining factor is the population density: some people like to live near other people in more urban settings perhaps, and others like to be spread further apart. So (ignoring the fact that every state has a mixture of urban and rural spaces) we want to determine the state with the closest population density to some target number.</p>
+<p>We’ll use the data on <a href="http://www.census.gov/2010census/data/apportionment-dens-text.php">this website</a> which shows the population data, for each of the 50 states plus Washington, D.C. and Puerto Rico, for the last hundred years. I copied and pasted the table on that page into a text document that you can <a href="files.php%3Ff=pop.txt.html">download here</a>.</p>
+<p>The program will work by reading in the desired population density, and then displaying the state with the closest density to that desired target. A final run should look something like this:</p>
+<pre><code class="language-text output">Desired population density (people per sq mile): </code><code class="language-text input">500</code>
+<code class="language-text output">You should live in Delaware with 460.8 people per square mile.</code></pre><p>This is a challenging problem for a number of reasons! We have to think about how the program will work on a logical level, but also get all the details right on how to read in, process, and store the data in the file format we have.</p>
+<p>So, the question is this: how do I go about designing a program that solves a non-trivial problem like this? Let’s start with the basic structure:</p>
+<pre><code class="language-C">int main() {
+  // Get target density from the user
+
+  // Open data file pop.txt
+
+  // Read in (and ignore!) the beginning with the header line
+  // and overall USA population data
+
+  // Loop over each state
+  {
+    // Process that state&#39;s info
+    // Determine if each state is closest
+  }
+
+  // Close the data file
+
+  // print out the name of the closest state
+
+  return 0;
+}</code></pre>
+<p>The goal now is to get to <em>some working program</em> as quickly as possible, even though our initial version definitely won’t solve the full problem. For starters, let’s just get the initial reading-in and writing-out parts. This also forces us to think about what variables we need at the outer scope, which is a good thing! Here’s the initial, very incomplete, program:</p>
+<pre><code class="language-c">#include &quot;si204.h&quot;
+
+int main() {
+  // Get target density from the user
+  double target;
+  fputs(&quot;Desired population density (people per sq mile): &quot;, stdout);
+  target = readnum(stdin);
+
+  // variables for the best state and its density.
+  cstring best_state;
+  double best_density;
+  strcpy(best_state, &quot;ERROR&quot;);
+  best_density = 0.0;
+
+  // Open data file pop.txt
+
+  // Read in (and ignore!) the beginning with the header line
+  // and overall USA population data
+
+  // Loop over each state
+  {
+    // Process that state's info
+    // Determine if each state is closest
+  }
+
+  // Close the data file
+
+  // print out the name of the closest state
+  fputs(&quot;You should live in &quot;, stdout);
+  fputs(best_state, stdout);
+  fputs(&quot; with &quot;, stdout);
+  writenum(best_density, stdout);
+  fputs(&quot; people per square mile.\n&quot;, stdout);
+
+  return 0;
+}</code></pre><p>Now we should start to read in the data. But that’s tough, so let’s make it easier! To start with, let’s pretend that there’s no header information, and the file only contains data for a single state. So we make a file <a href="files.php%3Ff=pop0.txt.html"><code>pop1.txt</code></a> that looks like this:</p>
+<pre><code class="language-text">Alaska
+Population	64,356	55,036	59,278	72,524	128,643	226,167	300,382	401,851	550,043	626,932	710,231
+People per sq. mile	0.1	0.1	0.1	0.1	0.2	0.4	0.5	0.7	1.0	1.1	1.2
+Density Rank	52	52	52	52	52	52	52	52	52	52	52</code></pre><p>There are a bunch of numbers here, but we really only care about two things: the name of the state on the first line, and the last number on the third line which gives the population density in 2010. We can use a <code>cstring</code> variable to read and discard all of the surrounding info.</p>
+<p>Here’s the working — but still very incomplete! — program that results:</p>
+<pre><code class="language-c">#include &quot;si204.h&quot;
+
+int main() {
+  // Get target density from the user
+  double target;
+  fputs(&quot;Desired population density (people per sq mile): &quot;, stdout);
+  target = readnum(stdin);
+
+  // variables for the best state and its density.
+  cstring best_state;
+  double best_density;
+  strcpy(best_state, &quot;ERROR&quot;);
+  best_density = 0.0;
+
+  // Open data file pop.txt
+  stream popin = fopen(&quot;pop1.txt&quot;, &quot;r&quot;);
+
+  // Read in (and ignore!) the beginning with the header line
+  // and overall USA population data
+
+  // Loop over each state
+  {
+    /*****************************/
+    /* Process that state's info */
+    /*****************************/
+    cstring state;
+    double density;
+    cstring garbage; // this will be used to read over unwanted data
+
+    readstring(state, popin);
+
+    // second line: 1 word and 11 values
+    for (int i=0; i&lt;12; ++i) {
+      readstring(garbage, popin);
+    }
+
+    // third line: 4 words, 10 unwanted values, then the density
+    for (int i=0; i&lt;14; ++i) {
+      readstring(garbage, popin);
+    }
+    density = readnum(popin);
+
+    // fourth line: 2 words, 11 values
+    for (int i=0; i&lt;13; ++i) {
+      readstring(garbage, popin);
+    }
+
+    // Determine if each state is closest
+    // (in this version, just copy this state's info as the &quot;best&quot;)
+    strcpy(best_state, state);
+    best_density = density;
+  }
+
+  // Close the data file
+  fclose(popin);
+
+  // print out the name of the closest state
+  fputs(&quot;You should live in &quot;, stdout);
+  fputs(best_state, stdout);
+  fputs(&quot; with &quot;, stdout);
+  writenum(best_density, stdout);
+  fputs(&quot; people per square mile.\n&quot;, stdout);
+
+  return 0;
+}</code></pre><p>This is progress! Of course, the program keeps saying we should live in Alaska… Do you see what problem is going to crop up when we try this with other states? The program is assuming that the state’s name is only a single word, so something like this:</p>
+<pre><code class="language-text">District of Columbia
+Population	331,069	437,571	486,869	663,091	802,178	763,956	756,510	638,333	606,900	572,059	601,723
+People per sq. mile	5423.1	7167.6	7975.1	10861.7	13140.0	12513.9	12392.0	10456.2	9941.3	9370.6	9856.5
+Density Rank	1	1	1	1	1	1	1	1	1	1	1</code></pre><p>won’t work. So we refine our program to make it handle multiple-word state names, by making use of the <code>strcat</code> function which concatenates one string onto the end of another, reading in more parts of the state’s name until we see the word “Population”. This is tricky to be sure, but the important thing is that we are able to focus on just this one aspect and get it fully working and tested before moving on. Imagine how much more difficult it would be to tackle this hurldle after writing the entire program!</p>
+<p>Here’s what that part of the loop looks like when we fix it to read in <em>any</em> single state:</p>
+<pre><code class="language-C">/*****************************/
+/* Process that state&#39;s info */
+/*****************************/
+cstring state;
+double density;
+cstring garbage; // this will be used to read over unwanted data
+
+readstring(state, popin);
+
+// add to state name until we see the word &quot;Population&quot;
+readstring(garbage, popin);
+while (strcmp(garbage, &quot;Population&quot;) != 0) {
+  strcat(state, &quot; &quot;);
+  strcat(state, garbage);
+  readstring(garbage, popin);
+}
+
+// second line: 11 values
+for (int i=0; i&lt;11; ++i) {
+  readstring(garbage, popin);
+}</code></pre>
+<p>Now we’re ready to read in the <a href="files.php%3Ff=pop.txt.html">actual complete data file</a>. But let’s not try to tackle too many things at once! For the next version, we’ll read in the entire file, but ignore all of the proper logic of which state is selected. (So the program will always return the last entry in the file, which is Puerto Rico.) Again, this isn’t the program we want, but it’s making progress towards the goal, and we have another <a href="files.php%3Ff=density3.c.html">complete, working program</a>. All that really changes is the part to ignore the header lines, plus the for loop itself:</p>
+<pre><code class="language-C">// Open data file pop.txt
+stream popin = fopen(&quot;pop.txt&quot;, &quot;r&quot;);
+
+// Read in (and ignore!) the beginning with the header line
+// and overall USA population data
+{ // start a block so we can declare variables locally!
+  cstring garbage; // this will be used to read over unwanted data
+  // count how many words need to be ignored in the header
+  int initial_ignore = (3+11) + 2 + (1+11) + (4+11);
+  for (int i=0; i &lt; initial_ignore; ++i) {
+    readstring(garbage, popin);
+  }
+}
+
+// Loop over each state
+// there are 50 states + DC and PR
+for (int statenum=0; statenum &lt; 52; ++statenum) {
+  /*****************************/
+  /* Process that state&#39;s info */
+  /*****************************/</code></pre>
+<p>Now we’re almost done! All that’s left is to get the logic right so that the state with the closest population density to our <code>target</code> is returned at the end. To do this, we just need to compare how close each state is to the target, to how close the <code>best_state</code> is to the target. That means changing these lines at the end of the for loop:</p>
+<pre><code class="language-C">/**************************************/
+/* Determine if this state is closest */
+/**************************************/
+double distance;
+if (density &lt; target) {
+  distance = target - density;
+} else {
+  distance = density - target;
+}
+
+if (distance &lt; best_distance) {
+  // update the best state to this state
+  strcpy(best_state, state);
+  best_density = density;
+  best_distance = distance;
+}</code></pre>
+<p><a href="files.php%3Ff=density4.c.html">You can see the complete final program here</a>. This still wasn’t easy! Even the most careful stepwise refinement technique will still run into challenging coding problems. The main benefit here is that we can <em>test and debug as we go along</em>, so that we’re never solving two problems at once. If you tried to write this program all at once, you might never actually finish it!</p>
+<h1 id="do-while-loops-optional-"><a class ="linkin" href="index.html#top"><span class="header-section-number">6</span> Do-while loops (optional)</a></h1><blockquote>
+<p>This section is <em>optional reading</em> if you want to learn more about C programming. You won’t be required to understand do/while loops or to use them in your code. But if you read a lot of C code, you will probably come across <code>do</code> sooner or later, so you might want to know about it. (You are also free to use do/while yourself if you think there’s a good reason to do so.)</p>
+</blockquote>
+<p>We’ve spent a lot of time with while-loops and for-loops. Both of these loops test whether to continue, and then go through the loop body, i.e. the test is done at the beginning of the loop. A “do-while” loop allows you to put the test at the end of the loop. This is convenient for certain tasks. For example, we looked at a program that reads expressions like</p>
+<pre><code class="language-.text">1 + 5 + 3 + 48 + 32 =</code></pre>
+<p>and prints out the resulting sum. This can be done nicely with a do-while</p>
+<div class="boxyline">
+<div>
+<pre><code class="language-C">#include &quot;si204.h&quot;
+
+int main() {
+  int sum;
+  int next;
+  char op;
+
+  sum = 0;
+
+  do {
+    next = readnum(stdin);
+    sum = sum + next;
+    op = readchar(stdin);
+  } while (op != &#39;=&#39;);
+
+  writenum(sum, stdout);
+  fputs(&quot;\n&quot;, stdout);
+
+  return 0;
+}</code></pre>
+</div>
+<div>
+<pre><code class="language-C">#include &quot;si204.h&quot;
+
+int main() {
+  int sum;
+  int next;
+  char op;
+
+  sum = 0;
+  // op has to be initialized!
+  // otherwise the loop might
+  // not be entered the 1st time
+  op = &#39;+&#39;;
+
+  while (op != &#39;=&#39;) {
+    next = readnum(stdin);
+    sum = sum + next;
+    op = readchar(stdin);
+  }
+
+  writenum(sum, stdout);
+  fputs(&quot;\n&quot;, stdout);
+
+  return 0;
+}</code></pre>
+</div>
+</div>
+<p>In case you don’t find that compelling, here’s another example. Suppose we want to keep reading in <code>int</code>s until we read a negative number.</p>
+<div class="boxyline">
+<div>
+<pre><code class="language-C">int n;
+
+do {
+  n = readnum(stdin);
+} while (n &gt;= 0);</code></pre>
+</div>
+<div>
+<pre><code class="language-C">int n;
+
+// read the first time here
+n = readnum(stdin);
+
+while (n &gt;= 0) {
+  // read the rest of the time
+  n = readnum(stdin);
+}</code></pre>
+</div>
+</div>
+<h1 id="practice-problems-and-questions"><a class ="linkin" href="index.html#top"><span class="header-section-number">7</span> Practice Problems and Questions</a></h1><h2 id="while-loops"><a class="linkin" href="index.html#top"><span class="header-section-number">7.1</span> While Loops</a></h1><ul>
+<li><a href="files.php%3Ff=average.c.html">Computing Averages</a>: this just builds on the sum example from above.</li>
+<li><a href="files.php%3Ff=caesar.c.html">Real Ceasar-Shift Encryption</a>: take a look at <a href="../02/files.php%3Ff=caesar.c.html">this problem from Unit 2</a> for a description of Cesar Shift Encryption. Now we’ll do it for messages of any length!</li>
+<li><a href="files.php%3Ff=max.c.html">Keeping track of the maximum</a></li>
+<li>Write a program that allows the user to enter a sequence of “moves” and prints out their position after the moves. There are many ways you could do this, but <a href="files.php%3Ff=moves.c.html">here is one solution</a>.</li>
+<li><a href="maxfile.c">Finding the largest file in a directory listing</a>.<br> <a href="dirlist.txt">Here is a sample listing of one of my directories</a>. The number right before the date on each line is the number of bytes in that file. Your challenge is to read in a directory listing like that one and print the name and size of the largest file.</li>
+<li><strong>Volleyball scoring</strong>. You read in the names of two team names and who wins each rally, and report when one team wins the game. There are three versions, with increasing complexity of the programs:
+<ul>
+<li><a href="files.php%3Ff=vball1.c.html">Version 1</a> uses simple “backyard” rules</li>
+<li><a href="files.php%3Ff=vball2.c.html">Version 2</a> uses current Olympic rally rules.</li>
+<li><a href="files.php%3Ff=vball3.c.html">Version 3</a> uses the older rules where each team only scores a point if they served that rally.</li>
+</ul></li>
+<li><a href="https://www.usna.edu/Users/cs/roche/courses/s17si204/notes/03/files.php=f=saving.c">Financial savings calculator</a>: Figures out how many years and months it would take you to save up to a specific amount of money, given your starting balance, monthly contribution, and interest rate. This is a good example of proper output formatting as well as the use of a while loop.</li>
+</ul>
+<h2 id="for-loops"><a class="linkin" href="index.html#top"><span class="header-section-number">7.2</span> For Loops</a></h1><ul>
+<li><a href="files.php%3Ff=stars.c.html">Write n stars</a>: This is about as simple as it gets!</li>
+<li><a href="files.php%3Ff=integral.c.html">Integration by end-point approximation</a>: Simple end-point integration approximates the area under a curve between <code>x = a</code> and <code>x = b</code> by the sum of <code>n</code> evenly spaced rectangles whose hieghts are the function values at <code>x</code>-values given by the left endpoints of the bases. To remind yourself of how this works check out <a href="integration.gif">this picture</a>.</li>
+<li><p>Read in a number n and print out the value of <span class="math display">\[\sum_{k=0}^n {n \choose k}\]</span> i.e. the sum as k goes from 0 to n of n choose k.</p>
+<p>The formula for n choose k is <span class="math display">\[\frac{n\cdot(n-1)\cdot(n-2)\cdots(n-k+1)}{k\cdot(k-1)\cdot(k-2)\cdots 1}\]</span></p>
+<p>So, for example 7 choose 3 is (7*6*5)/(3*2*1) = 35.</p>
+<p>Notice that this number will always be an integer! So do all of your computations using type <code>int</code>, and don’t do any division unless you’re sure you’ll get exact results, i.e. no remainder. Take a look at <a href="files.php%3Ff=choosesum.c.html">this solution</a> to the problem.</p></li>
+</ul>
+<h2 id="file-input-and-error-conditions"><a class="linkin" href="index.html#top"><span class="header-section-number">7.3</span> File input and error conditions</a></h1><ul>
+<li><a href="files.php%3Ff=fileaddsub.c.html">Adding and subtracting numbers in a file</a>. You’ll want to test using the file <a href="in4.txt" class="uri">in4.txt</a>.</li>
+<li><p>Suppose a file called <code>grades.txt</code> contains an integer for the number of students, and then one line for each student. Each line has their name (with multiple parts), their alpha code, and then a list of grades ended by a semicolon. For example:</p>
+<pre><code class="language-.text">3
+John Jeffery Jones m040101 85, 95, 22, 54;
+Sandra Smith m040201 99, 98;
+Xavier Xenon Junior m050400 78, 80, 82, 84, 86, 88, 90;</code></pre>
+<p>Your program should read this information in, and print out the name of the student with the highest average for the given grades. For the input above, your program would print out</p>
+<pre><code class="language-C">Sandra Smith had the highest average.</code></pre>
+<p>A good way to approach this problem would be to write three successive programs:</p>
+<ol type="1">
+<li><p>A program that reads in students whose name is just one word, and whose list of grades always consists of a single score. For example, input for this might look like:</p>
+<pre><code class="language-.text">3
+Jones m040101 85
+Smith m040201 99
+Xenon m050400 78</code></pre></li>
+<li><p>A program that reads in students whose names may consist of multiple words, but whose list of grades always consists of a single score. For example, input for this might look like:</p>
+<pre><code class="language-.text">3
+John Jeffery Jones m040101 85
+Sandra Smith m040201 99
+Xavier Xenon m050400 78</code></pre>
+<p><strong>Hint</strong>: Use the <code>strcat</code> function as seen on the <a href="../../admin/cref.php.html">C functions reference</a> page.</p></li>
+<li><p>A program to solve the full problem.</p></li>
+</ol></li>
+</ul>
+  </div></article></div></div><nav class="stickynav"><div><div class="dropdown"><a href="../../index.php.html" class="ddown-btn">SI 204</a><div class="ddown-content"><a href="../../calendar.php.html">Calendar</a><a href="../index.html">Notes</a><a href="../../hw/index.html">HWs</a><a href="../../lab/index.html">Labs</a><a href="../../proj/index.html">Projects</a><a href="../../exams/index.html">Exams</a><a href="../../admin/index.html">Resources</a><a href="https://www.usna.edu/Users/cs/roche/">Roche</a><a href="https://www.usna.edu/Users/cs/albing/">Albing</a></div></div><div class="dropdown"><a href="index.html#top" class="linkin pagetop">Unit 3: Iteration</a><div class="ddown-content ddtoc"><ul><li><a class="linkin" href="index.html#the-idea-of-a-loop"><span class="toc-section-number">1</span> The idea of a loop</a>
+<ul><li><a class="linkin" href="index.html#motivating-example-checking-user-input"><span class="toc-section-number">1.1</span> Motivating example: checking user input</a></li><li><a class="linkin" href="index.html#syntax-of-a-while-loop"><span class="toc-section-number">1.2</span> Syntax of a while loop</a></li><li><a class="linkin" href="index.html#beware-the-infinite-loop-"><span class="toc-section-number">1.3</span> Beware the infinite Loop!</a></li></ul></li>
+<li><a class="linkin" href="index.html#while-loop-examples"><span class="toc-section-number">2</span> While loop examples</a>
+<ul><li><a class="linkin" href="index.html#the-euclidean-gcd-algorithm"><span class="toc-section-number">2.1</span> The Euclidean GCD Algorithm</a></li><li><a class="linkin" href="index.html#computing-compound-interest"><span class="toc-section-number">2.2</span> Computing compound interest</a></li><li><a class="linkin" href="index.html#a-simple-calculator"><span class="toc-section-number">2.3</span> A simple calculator</a></li></ul></li>
+<li><a class="linkin" href="index.html#loop-shortcuts"><span class="toc-section-number">3</span> Loop shortcuts</a>
+<ul><li><a class="linkin" href="index.html#shortcut-1-for-loops"><span class="toc-section-number">3.1</span> Shortcut #1: for loops</a></li><li><a class="linkin" href="index.html#shortcut-2-initializing-variables-in-the-declaration"><span class="toc-section-number">3.2</span> Shortcut #2: Initializing variables in the declaration</a></li><li><a class="linkin" href="index.html#shortcut-3-and-"><span class="toc-section-number">3.3</span> Shortcut #3: ++ and –</a></li></ul></li>
+<li><a class="linkin" href="index.html#odds-amp-ends-reading-files-and-exiting-early"><span class="toc-section-number">4</span> Odds &amp; Ends: Reading files and exiting early</a>
+<ul><li><a class="linkin" href="index.html#exiting-main-early"><span class="toc-section-number">4.1</span> Exiting main() early</a></li><li><a class="linkin" href="index.html#reading-from-files"><span class="toc-section-number">4.2</span> Reading from files</a></li></ul></li>
+<li><a class="linkin" href="index.html#nested-loops-amp-stepwise-refinement"><span class="toc-section-number">5</span> Nested Loops &amp; Stepwise Refinement</a>
+<ul><li><a class="linkin" href="index.html#nested-loops"><span class="toc-section-number">5.1</span> Nested Loops</a></li><li><a class="linkin" href="index.html#printing-out-a-hankel-matrix"><span class="toc-section-number">5.2</span> Printing out a Hankel matrix</a></li><li><a class="linkin" href="index.html#polynomial-evaluation"><span class="toc-section-number">5.3</span> Polynomial Evaluation</a></li><li><a class="linkin" href="index.html#stepwise-refinement-from-the-inside-out"><span class="toc-section-number">5.4</span> Stepwise refinement from the inside out</a></li></ul></li>
+<li><a class="linkin" href="index.html#do-while-loops-optional-"><span class="toc-section-number">6</span> Do-while loops (optional)</a></li>
+<li><a class="linkin" href="index.html#practice-problems-and-questions"><span class="toc-section-number">7</span> Practice Problems and Questions</a>
+<ul><li><a class="linkin" href="index.html#while-loops"><span class="toc-section-number">7.1</span> While Loops</a></li><li><a class="linkin" href="index.html#for-loops"><span class="toc-section-number">7.2</span> For Loops</a></li><li><a class="linkin" href="index.html#file-input-and-error-conditions"><span class="toc-section-number">7.3</span> File input and error conditions</a></li></ul></ul></div></div></nav><footer><div id="foottext">    <p class="disclaimer">Material contained above is made available
+    for the purpose of peer review and discussion and does not
+    necessarily reflect the views of the Department of the Navy or the
+    Department of Defense.
+    Some links above are to sites that are not
+    located at the United States Naval Academy. The USNA is not
+    responsible for the content found on these sites. In addition, the
+    content of these sites does not reflect the opinions, standards,
+    policy or endorsement of the Naval Academy or the United States
+    Government.</p>
+  Page maintained by Daniel S. Roche (<a href="mailto:roche [AT] usna [DOT] edu" id="emaillink1">roche [AT] usna [DOT] edu</a><script type='text/javascript'><!--
+        var b="he@usna.edu";
+        var a="roc";
+        document.getElementById("emaillink1").href='mailto:'+a+b;
+        document.getElementById("emaillink1").innerHTML=a+b;
+        // --></script>). Last updated 22 January 2017 2:30.</div></footer><script src="../../scripts/prism.js"></script><script type="text/javascript">var the_body = $('html, body');
+var sticky_height = $('.stickynav').height();
+$('.linkin').click(function(){
+  var href = $(this).attr('href');
+  var offset;
+  if (href == '#top') offset = 0;
+  else offset = $(href).offset().top - sticky_height;
+  the_body.animate({ scrollTop: offset }, 500);
+  return false;
+});</script></body></html>

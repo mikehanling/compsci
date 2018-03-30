@@ -1,0 +1,76 @@
+/***************************************************
+Ceasar-Shift Encryption on 4-Letter Messages
+
+The "Ceasar-Shift" method of encryption scrambles
+a message a letter at a time.  First we view each
+letter as being represented by its distance from
+the letter 'a' when we write the alphabet in a line.
+So, a->0, b->1, c->2, ..., z->25.  Given a key k,
+which is just an integer between 0 and 25, we map 
+each letter to a new one as follows:
+
+   if the letter is i away from 'a', then it maps
+   to the letter i + k away from 'a'.  If i + k is 
+   greater than 25, we simply wraparound.  The mod
+   operator (%) does this wraparound for us.
+
+So, the rule becomes:  
+
+   If letter L1 is i away from letter 'a', then it 
+   maps to the letter that is (i + k) % 26 away from 
+   the letter 'a'.  
+
+The thing to notice is that (L1 - 'a') tells you 
+precisely how far away letter L1 is from letter 'a',
+and for distance d, char('a' + d) is the letter that
+is d away from the letter 'a'.
+
+Ex: key = 1, message = busy, encrypted message = cvtz
+***************************************************/
+#include "si204.h"
+
+int main() {
+  // Read in key value
+  int k;
+  fputs("Enter key value: ", stdout);
+  k = readnum(stdin);
+  
+  // Read in 4-letter message
+  fputs("Enter 4-letter message (lower-case): ", stdout);
+  char c1, c2, c3, c4;
+  c1 = readchar(stdin);
+  c2 = readchar(stdin);
+  c3 = readchar(stdin);
+  c4 = readchar(stdin);
+
+  // Compute distances for original letters
+  int d1,d2,d3,d4;
+  d1 = c1 - 'a';
+  d2 = c2 - 'a';
+  d3 = c3 - 'a';
+  d4 = c4 - 'a';
+  
+  // Compute distances for encrypted letters
+  int ed1,ed2,ed3,ed4;
+  ed1 = (d1 + k) % 26;
+  ed2 = (d2 + k) % 26;
+  ed3 = (d3 + k) % 26;
+  ed4 = (d4 + k) % 26;
+
+  // Compute encrypted letters
+  char e1,e2,e3,e4;
+  e1 = 'a' + ed1;
+  e2 = 'a' + ed2;
+  e3 = 'a' + ed3;
+  e4 = 'a' + ed4;
+
+  // Write out encrypted message
+  fputs("Encrypted message is: ", stdout);
+  fputc(e1, stdout);
+  fputc(e2, stdout);
+  fputc(e3, stdout);
+  fputc(e4, stdout);
+  fputs("\n", stdout);
+
+  return 0;
+}

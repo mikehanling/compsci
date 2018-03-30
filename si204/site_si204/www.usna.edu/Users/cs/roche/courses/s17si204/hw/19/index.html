@@ -1,0 +1,209 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Homework 19: Practice with recursion</title><meta name="viewport" content="width=device-width, initial-scale=1.0"><link href="../../scripts/prism.css" rel="stylesheet" /><link rel="stylesheet" type="text/css" href="../../style.css"><script type="text/javascript" src="../../../../mathjax/MathJax.js%3Fconfig=TeX-AMS_HTML"></script><style>
+@media only screen and (min-width: 600px) {
+  #main>header {background-image: url("../../scripts/header.png");}
+}
+</style></head><body><div id="main"><header><nav class="topnav"><div>
+            <a href="../../index.php.html">SI 204</a>
+            </div><div>
+            <a href="../../calendar.php.html">Calendar</a>
+            </div><div>
+            <a href="../../notes/index.html">Notes</a>
+            </div><div id="navparent">
+            <a href="../index.html">HWs</a>
+            </div><div>
+            <a href="../../lab/index.html">Labs</a>
+            </div><div>
+            <a href="../../proj/index.html">Projects</a>
+            </div><div>
+            <a href="../../exams/index.html">Exams</a>
+            </div><div>
+            <a href="../../admin/index.html">Resources</a>
+            </div><div>
+            <a href="https://www.usna.edu/Users/cs/roche/">Roche</a>
+            </div><div>
+            <a href="https://www.usna.edu/Users/cs/albing/">Albing</a>
+            </div></nav></header><div id="mainbox"><div class="printonly"><h1 class="printtitle">SI 204 Spring 2017 / HWs</h1><hr></div><article id="mainart"><header><h1>Homework 19: Practice with recursion</h1></header><div class="printonly">
+  <div class="blanks">
+  <p>
+  Name: _____________________________________________   Alpha: ___________________
+  </p>
+  <p>
+  Describe help received: ________________________________________________________
+  </p>
+  </div>
+</div>
+  <div class="noprint">
+  <a href="javascript:window.print();">Print this page</a>
+</div>
+  <ul>
+    <li><strong>Due before class on Friday, March 3</strong>
+    </li><li>This homework contains code to be submitted electronically.
+      Put your code in a folder called <code>hw19</code> and submit
+      using the <code>204sub</code> command.</li><li>This is a <em>written homework</em> - be sure to turn in a hard-copy
+      of your completed assignment before the deadline. Use the <code>codeprint</code> command to print out your code
+        and turn that in as well.</li></ul><h1>Assignment</h1><ol class="ass"><li>
+  Circle one to indicate how you did for the reading assignment from
+  <a href="../17/index.html">Homework 17</a> <em>before class on Monday</em>:
+  <p>How carefully did you complete the reading? (Circle one)</p>
+<div class="blanks">
+<div class="option">Not at all</div>
+<div class="option">Skimmed it</div>
+<div class="option">Read some</div>
+<div class="option">Read all</div>
+</div>
+  </li>
+<li>
+  Circle one to indicate how you did for the reading assignment from
+  <a href="../18/index.html">Homework 18</a> <em>before class on Wednesday</em>:
+  <p>How carefully did you complete the reading? (Circle one)</p>
+<div class="blanks">
+<div class="option">Not at all</div>
+<div class="option">Skimmed it</div>
+<div class="option">Read some</div>
+<div class="option">Read all</div>
+</div>
+  </li>
+
+<li>Given the following function prototypes:
+  <pre><code class="language-c">int foo(int a, double* b);
+void bar(int* c);</code></pre>  and the following variable definitions:
+  <pre><code class="language-c">int x = 10;
+double y = 20;
+char z = 'z';</code></pre>  Now for each of the function calls below, circle either "FINE" or "ERROR",
+  and in case of an error, say exactly why there is an error.
+  <ol class="blanks">
+    <li> <code class="language-c">foo(x, &amp;x)</code>      <span class="option">FINE</span>
+      <span class="option">ERROR</span>
+      <br>
+      <div>
+      <div style="float:left;">Reason for error:</div>
+      <div style="border:1px solid black; width:auto; overflow:hidden; min-height:1cm;"></div>
+      </div>
+    </li>
+    <li> <code class="language-c">foo(y, &amp;y)</code>      <span class="option">FINE</span>
+      <span class="option">ERROR</span>
+      <br>
+      <div>
+      <div style="float:left;">Reason for error:</div>
+      <div style="border:1px solid black; width:auto; overflow:hidden; min-height:1cm;"></div>
+      </div>
+    </li>
+    <li> <code class="language-c">bar(&amp;x)</code>      <span class="option">FINE</span>
+      <span class="option">ERROR</span>
+      <br>
+      <div>
+      <div style="float:left;">Reason for error:</div>
+      <div style="border:1px solid black; width:auto; overflow:hidden; min-height:1cm;"></div>
+      </div>
+    </li>
+    <li> <code class="language-c">bar(&amp;z)</code>      <span class="option">FINE</span>
+      <span class="option">ERROR</span>
+      <br>
+      <div>
+      <div style="float:left;">Reason for error:</div>
+      <div style="border:1px solid black; width:auto; overflow:hidden; min-height:1cm;"></div>
+      </div>
+    </li>
+    <li> <code class="language-c">bar(foo(x, &amp;y))</code>      <span class="option">FINE</span>
+      <span class="option">ERROR</span>
+      <br>
+      <div>
+      <div style="float:left;">Reason for error:</div>
+      <div style="border:1px solid black; width:auto; overflow:hidden; min-height:1cm;"></div>
+      </div>
+    </li>
+    <li> <code class="language-c">foo(bar(&amp;x), &amp;y)</code>      <span class="option">FINE</span>
+      <span class="option">ERROR</span>
+      <br>
+      <div>
+      <div style="float:left;">Reason for error:</div>
+      <div style="border:1px solid black; width:auto; overflow:hidden; min-height:1cm;"></div>
+      </div>
+    </li>
+    <li> <code class="language-c">foo(foo(y, &amp;y), &amp;y)</code>      <span class="option">FINE</span>
+      <span class="option">ERROR</span>
+      <br>
+      <div>
+      <div style="float:left;">Reason for error:</div>
+      <div style="border:1px solid black; width:auto; overflow:hidden; min-height:1cm;"></div>
+      </div>
+    </li>
+  </ol>
+</li>
+<li>
+  Write a program called <code>countprimes.c</code> that reads two integers
+  from the user and determines how many prime numbers are in the
+  given range.
+  <p>You may copy and use this function to determine whether a
+  number is prime:</p>
+<pre><code class="language-c">// Determines whether n is a prime number.
+// If it is, 1 is returned, and if not, 0 is returned.
+int isprime(int n) {
+  if (n &lt; 2) {
+    // 2 is the smallest prime.
+    return 0;
+  }
+
+  // try all possible divisors of n
+  for (int fact=2; fact*fact &lt;= n; ++fact) {
+    if (n % fact == 0) {
+      // n is divisible by fact, so not a prime
+      return 0;
+    }
+  }
+
+  // n doesn't have ANY factors, so it's a prime.
+  return 1;
+}</code></pre>  <p>And you should write two <b>recursive</b> functions yourself
+  to help with the task. (Which means, these functions should not
+  have any loops and they they should make recursive calls to themselves):
+  </p>
+<pre><code class="language-c">// Reads a single number from the terminal that is at least
+// as large as the given integer.
+// If the user enters a number too small, they will repeatedly
+// be prompted again and again until they enter a number that
+// is large enough.
+int getnum(int atleast);
+
+// Returns the number of primes between a and b.
+// The count is inclusive meaning that if a or be is a prime,
+// they should be included in the count.
+int countprimes(int a, int b);</code></pre>  <p>Here are a few example runs to demonstrate how your
+  program should work. If you use the functions that you created
+  above, your <code>main</code> method should be pretty simple!
+  </p>
+<pre><code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./countprimes</code>
+<code class="language-text output">Enter a number at least 1: </code><code class="language-text input">10</code>
+<code class="language-text output">Enter a number at least 10: </code><code class="language-text input">20</code>
+<code class="language-text output">There are 4 primes between 10 and 20.</code></pre><pre><code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./countprimes</code>
+<code class="language-text output">Enter a number at least 1: </code><code class="language-text input">11</code>
+<code class="language-text output">Enter a number at least 11: </code><code class="language-text input">19</code>
+<code class="language-text output">There are 4 primes between 11 and 19.</code></pre><pre><code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./countprimes</code>
+<code class="language-text output">Enter a number at least 1: </code><code class="language-text input">20</code>
+<code class="language-text output">Enter a number at least 20: </code><code class="language-text input">10</code>
+<code class="language-text output">Too small!</code>
+<code class="language-text output">Enter a number at least 20: </code><code class="language-text input">10</code>
+<code class="language-text output">Too small!</code>
+<code class="language-text output">Enter a number at least 20: </code><code class="language-text input">21</code>
+<code class="language-text output">There are 0 primes between 20 and 21.</code></pre><pre><code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./countprimes</code>
+<code class="language-text output">Enter a number at least 1: </code><code class="language-text input">-1</code>
+<code class="language-text output">Too small!</code>
+<code class="language-text output">Enter a number at least 1: </code><code class="language-text input">1</code>
+<code class="language-text output">Enter a number at least 1: </code><code class="language-text input">1000</code>
+<code class="language-text output">There are 168 primes between 1 and 1000.</code></pre></li>
+</ol></article></div></div><nav class="stickynav"><div><div class="dropdown"><a href="../../index.php.html" class="ddown-btn">SI 204</a><div class="ddown-content"><a href="../../calendar.php.html">Calendar</a><a href="../../notes/index.html">Notes</a><a href="../index.html">HWs</a><a href="../../lab/index.html">Labs</a><a href="../../proj/index.html">Projects</a><a href="../../exams/index.html">Exams</a><a href="../../admin/index.html">Resources</a><a href="https://www.usna.edu/Users/cs/roche/">Roche</a><a href="https://www.usna.edu/Users/cs/albing/">Albing</a></div></div><a href="index.html#top" class="linkin pagetop">Homework 19: Practice with recursion</a></nav><footer><div id="foottext">    <p class="disclaimer">Material contained above is made available
+    for the purpose of peer review and discussion and does not
+    necessarily reflect the views of the Department of the Navy or the
+    Department of Defense.
+    Some links above are to sites that are not
+    located at the United States Naval Academy. The USNA is not
+    responsible for the content found on these sites. In addition, the
+    content of these sites does not reflect the opinions, standards,
+    policy or endorsement of the Naval Academy or the United States
+    Government.</p>
+  Page maintained by Daniel S. Roche (<a href="mailto:roche [AT] usna [DOT] edu" id="emaillink1">roche [AT] usna [DOT] edu</a><script type='text/javascript'><!--
+        var b="he@usna.edu";
+        var a="roc";
+        document.getElementById("emaillink1").href='mailto:'+a+b;
+        document.getElementById("emaillink1").innerHTML=a+b;
+        // --></script>). Last updated 01 March 2017 10:00.</div></footer><script src="../../scripts/prism.js"></script><script type="text/javascript"></script></body></html>

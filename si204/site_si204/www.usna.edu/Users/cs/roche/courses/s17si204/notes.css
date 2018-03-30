@@ -1,0 +1,49 @@
+.caption {
+  text-align: center;
+  font-size="80%";
+  margin: 0 0 5px 0;
+  display: none;
+}
+
+.cbegin {
+  margin: 10px 100px 10px 100px;
+  padding: 3px;
+  text-align: center;
+  border: 2px solid black;
+}
+
+table {
+  border-collapse: collapse;
+  margin:2em auto;
+}
+thead tr,th {
+  border-bottom: 1px solid;
+}
+td, th {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+td {
+  padding-top: 5px;
+}
+
+td+td, th+th {
+  border-left: 1px solid;
+}
+
+.linedcode td+td,.linedcode th+th {
+  border:none;
+}
+
+img {
+  max-width: 800px;
+}
+
+/* It's "bad" to use tables for layout. */
+.badtable , .badtable td{
+  border:0;
+}
+
+.badtable td{
+  vertical-align: top;
+}

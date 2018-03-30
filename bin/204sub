@@ -1,0 +1,48 @@
+#!/usr/bin/env bash
+
+function usage {
+  echo "Usage: $0 [-p=ASSIGNMENT] [FILE1 FILE2 ...]"
+  echo "
+Submits files in the current directory to the
+online submission system.
+
+With no arguments, assumes the current directory
+name matches the assignment name, and submits
+all .c, .cpp, .h, and .txt files in the
+current directory.
+"
+  exit 1
+}
+
+subprog="$HOME/bin/submit"
+if [[ ! -e $subprog ]]; then
+  echo "ERROR: No submit program found at $subprog"
+  echo
+  echo "Please go to http://submit.cs.usna.edu/upload/build_submit.php"
+  echo "Sign in using your USNA username and password and follow the"
+  echo "instructions there to download the submit script to your"
+  echo "~/bin directory."
+fi
+chmod +x "$subprog"
+
+[[ $# -ge 1 && $1 = "-h" ]] && usage
+
+coursearg="-c=si204"
+if [[ $1 =~ ^-p ]]; then
+  assarg=$1
+  shift
+else
+  assarg="-p=$(basename "$(pwd)")"
+fi
+
+if [[ $# -eq 0 ]]; then
+  # grab files from current directory
+  shopt -s nullglob
+  echo "running \"submit $coursearg $assarg" *.c *.cpp *.h *.txt \"
+  echo
+  "$subprog" "$coursearg" "$assarg" *.c *.cpp *.h *.txt
+else
+  echo "running \"submit $coursearg $assarg $@"
+  echo
+  "$subprog" "$coursearg" "$assarg" "$@"
+fi

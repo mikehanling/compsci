@@ -1,0 +1,250 @@
+\documentclass{article}[9pt]
+
+\usepackage{listings}
+\usepackage{fullpage}
+\usepackage{textcomp}
+\usepackage{mdframed}
+
+\lstset{ %
+  basicstyle=\ttfamily\scriptsize,
+  commentstyle=\ttfamily\scriptsize\emph,
+  upquote=true,
+  framerule=1.25pt,
+  breaklines=true,
+  showstringspaces=false,
+  escapeinside={(*@}{@*)},
+  belowskip=2em,
+  aboveskip=1em,
+}
+
+
+\newenvironment{answerfont}{\fontfamily{qhv}\selectfont}{\par}
+\newenvironment{myanswer}{\begin{mdframed}\begin{answerfont}}{\end{answerfont}\end{mdframed}}
+
+
+\title{HW 6}
+
+\author{Mike Hanling}
+
+\date{27 FEB 2017}
+
+\begin{document}
+
+\maketitle
+
+\section*{Questions}
+\label{sec:orgd8f1586}
+
+\begin{enumerate}
+\item (5 points) Why does the operating system perform system calls as
+oppose to having each user perform the same operations
+themselves?
+
+\begin{myanswer}
+System calls can be used to allocate memory.  If users were doing this
+themselves, then there is a high chance that important information will
+be overwritten due to negligence.
+\end{myanswer}
+
+
+\item (10 points) Look up the following C functions in the man page, label them as
+either a system call or not a system call.
+
+\begin{enumerate}
+\item fread()
+
+\begin{myanswer}
+NOT
+\end{myanswer}
+
+\item write()
+
+\begin{myanswer}
+SYSTEM CALL
+\end{myanswer}
+
+\item stat()
+
+\begin{myanswer}
+SYSTEM CALL
+\end{myanswer}
+
+
+\item mmap()
+
+\begin{myanswer}
+SYSTEM CALL
+\end{myanswer}
+
+
+\item execv()
+
+\begin{myanswer}
+NOT
+\end{myanswer}
+
+\end{enumerate}
+
+\item (10 points) Run \texttt{ic221-up}. In the \texttt{hw/06/prob3} directory you'll find a compiled
+program. Use \texttt{ltrace} to enumerate the library function calls
+occurring under \texttt{main()}.
+
+\begin{myanswer}
+3
+strlen()
+puts()
+fflush()
+\end{myanswer}
+
+\item (10 points) Run \texttt{ic221-up}. In the \texttt{hw/06/prob4} directory you'll find a compiled
+program. Use \texttt{strace} to enumerate the system function calls
+occurring under \texttt{main()}.
+
+\begin{myanswer}
+Could not get executable to run correctly. Supposed to run
+\texttt{strace ./trace-me-2 [arguments] > /dev/null} and then count all
+of the system calls that will be listed with exit codes/return values.
+\end{myanswer}
+
+\item (20 points) Consider a file, \texttt{accts.dat}, which stores 1000 accounts
+formatted based on the defined structure. Using \texttt{open()} and
+\texttt{read()}, complete the program below to print them out:
+
+
+\begin{lstlisting}[language=c]
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <fcntl.h>
+
+typedef struct{
+  long acctnum;
+  double bal;
+  char acctname[1024];
+} acct_t;
+
+void read_accts(accts){
+  //COMPLETE ME
+}
+
+int main(int argc, char *argv[]){
+  acct_t accts[1000];
+
+  read_accts(accts);
+
+  int i;
+  for(i=0;i<1000;i++){
+    printf("%ld (%f) -- %s\n",
+           accts[i].acctnum,
+           accts[i].bal,
+           accts[i].acctname);
+  }
+
+  close(fd);
+
+}
+\end{lstlisting}
+
+\begin{myanswer}
+\begin{lstlisting}[language=c]
+void read_accts(accts){
+  char filename[128];
+  printf("File of accounts: ");
+  scanf("%s", filename);
+
+  fd = open(filename, O_RDONLY);
+
+  for (int i = 0; i < 1000; i++) {
+    read(fd, &(acct[i].acctnum), sizeof(long));
+    read(fd, &(acct[i].bal), sizeof(double));
+    read(fd, &(acct[i].acctname), 1024);
+  }
+
+  //not needed in main
+  close(fd);
+}
+\end{lstlisting}
+\end{myanswer}
+
+\item (10 points) Complete the following ORing options that matching the \texttt{fopen()} permissions:
+\begin{enumerate}
+\item \texttt{r}
+
+\begin{myanswer}
+O\_RDONLY
+\end{myanswer}
+
+\item \texttt{w}
+
+\begin{myanswer}
+O\_WRONLY \textbar O\_TRUNC \textbar O\_CREAT
+\end{myanswer}
+
+\item \texttt{a}
+
+\begin{myanswer}
+O\_WRONLY \textbar O\_APPEND \textbar O\_CREAT
+\end{myanswer}
+
+\item \texttt{w+}
+
+\begin{myanswer}
+O\_RDWR \textbar O\_CREAT \textbar O\_TRUNC
+\end{myanswer}
+
+\item \texttt{r+}
+
+\begin{myanswer}
+O\_RDWR
+\end{myanswer}
+
+\end{enumerate}
+
+\item (10 points) Consider a \texttt{umask} of 0750 (the leading 0 is to indicate a number
+written in octal). For the following \texttt{open()} permissions, what
+actual permission will the file get? You can write your answers in
+octal.
+
+\begin{enumerate}
+\item 0777
+
+\begin{myanswer}
+0000
+\end{myanswer}
+
+\item 0640
+
+\begin{myanswer}
+0137
+\end{myanswer}
+
+\item 0740
+
+\begin{myanswer}
+0037
+\end{myanswer}
+
+\item 0501
+
+\begin{myanswer}
+0276
+\end{myanswer}
+
+\item 0651
+
+\begin{myanswer}
+0126
+\end{myanswer}
+\end{enumerate}
+
+\item (5 points) Explain why the umask is considered a security feature.
+
+\begin{myanswer}
+It ensures that even when a system call to \texttt{open()} requests
+higher permissions than already set with \texttt{umask}, the OS will not
+allow for those high permissions to be set.  It will default back the
+highest available from the \texttt{umask}.
+\end{myanswer}
+
+\end{enumerate}
+\end{document}

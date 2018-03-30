@@ -1,0 +1,117 @@
+/*********************************************
+This program reads trial data from a roach
+experiment, reads a time from the user, and
+tells the user where the roach was going at
+that point in time.
+**********************************************/
+#include <stdio.h>
+#include <stdlib.h>
+
+/*********************************************
+ ** PROTOTYPES & STRUCT DEFINITIONS
+ *********************************************/
+//--- POINT ---------------------------------//
+struct point {
+  double x;
+  double y;
+};
+void read_point(struct point* pt, FILE* fin);
+void write_point(struct point pt, FILE* fout);
+
+//--- TIME IN HH:MM:SS ----------------------//
+struct hhmmss {
+  int hrs;
+  int mins;
+  int secs;
+};
+void read_hhmmss(struct hhmmss* time, FILE* fin);
+int before(struct hhmmss time1, struct hhmmss time2);
+
+//--- A DATA READING FROM THE EXPERIMENT ----//
+struct datum {
+  struct point position;
+  struct hhmmss time;
+};
+void read_datum(struct datum* dat, FILE* fin);
+
+/*********************************************
+ ** MAIN FUNCTION
+ *********************************************/
+int main() {
+  // Open file and read heading info
+  int num;
+  FILE* fin = fopen("trial.txt", "r");
+  fscanf(fin, " %i data listings", &num);
+
+  // Read and store data readings
+  struct datum* path = calloc(num, sizeof(struct datum));
+  for(int i=0; i < num; ++i) {
+    read_datum(&path[i], fin);
+  }
+
+  // Get the query time from the user
+  struct hhmmss time;
+  printf("Enter a time: ");
+  fflush(stdout);
+  read_hhmmss(&time, stdin);
+
+  // Find the first sighting at or after given time
+  int k = 0;
+  while (k < num && before(path[k].time, time)) {
+    ++k;
+  }
+
+  // Write result
+  if (k == 0) {
+    printf("This was before the first sighting at ");
+    write_point(path[0].position, stdout);
+  } else if (k == num) {
+    printf("This was after the last sighting at ");
+    write_point(path[num-1].position, stdout);
+  } else {
+    printf("The roach was somewhere between ");
+    write_point(path[k-1].position, stdout);
+    printf(" and ");
+    write_point(path[k].position, stdout);
+  }
+  printf("\n");
+
+  // clean up
+  free(path);
+  fclose(fin);
+
+  return 0;
+}
+
+/*********************************************
+ ** FUNCTION DEFINITIONS
+ *********************************************/
+void read_point(struct point* pt, FILE* fin) {
+  fscanf(fin, " ( %lg , %lg )", &pt->x, &pt->y);
+}
+
+void write_point(struct point pt, FILE* fout) {
+  fprintf(fout, "(%g,%g)", pt.x, pt.y);
+}
+
+void read_hhmmss(struct hhmmss* time, FILE* fin) {
+  fscanf(fin, "%d:%d:%d", &time->hrs, &time->mins, &time->secs);
+}
+
+int before(struct hhmmss time1, struct hhmmss time2) {
+  if (time1.hrs != time2.hrs) {
+    return time1.hrs < time2.hrs;
+  } else if (time1.mins != time2.mins) {
+    return time1.mins < time2.mins;
+  } else {
+    return time1.secs < time2.secs;
+  }
+}
+
+void read_datum(struct datum* dat, FILE* fin) {
+  fscanf(fin, " { [");
+  read_hhmmss(&dat->time, fin);
+  fscanf(fin, " ] ,");
+  read_point(&dat->position, fin);
+  fscanf(fin, " }");
+}

@@ -1,0 +1,98 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+         "http://www.w3.org/TR/html4/strict.dtd"><html><head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"><title>priceisright.c</title><link href="../../scripts/prism.css" rel="stylesheet" />    <style type="text/css">
+    body {
+      margin: 0;
+      padding:55px 0 0 0;
+    }
+    div#header {
+      position:absolute;
+      top: 0;
+      left: 0;
+      width:100%;
+      height:50px;
+      border-bottom: 5px solid red;
+      text-align: center;
+      background-color: #d0d0d0;
+      z-index: 1000;
+    }
+    @media screen{
+      body>div#header{
+        position:fixed;
+      }
+    }
+    * html body{
+      overflow:hidden;
+    }
+    * html div#content {
+      height: 100%;
+      overflow: auto;
+    }
+    .warning {
+      margin: 3px auto;
+      background-color: black;
+      color: yellow;
+      font-weight: bold;
+      max-width: 600px;
+      font-family: sans-serif;
+      text-align: center;
+    }
+    /*
+    .codeblock {
+      margin:10px auto 10px;
+      min-width:500px;
+      max-width:800px;
+    }
+    .codeblock td.de1 {
+      border:1px solid black;
+    }
+    .codeblock td.ln {
+      border:1px solid white;
+    }
+    pre {
+      margin:10px auto 10px;
+      max-width:800px;
+    }
+    .plainpre {
+      border: 1px solid black;
+      padding:2px;
+    }
+    */
+    </style>
+  </head><body><div id="header"><p><a href="files.php%3Ff=priceisright.c&amp;downloadcode=yes">Click here</a> to download <code>priceisright.c</code>.</p></div><div id="content"><pre class="line-numbers"><code class="language-C">#include &lt;stdio.h&gt;
+
+int main() {
+  int contestants = 4;
+  printf(&quot;Enter %i guesses: &quot;, contestants);
+  fflush(stdout);
+
+  // read in guesses
+  double guess[contestants];
+  for (int i=0; i &lt; contestants; ++i) {
+    scanf(&quot; %lg&quot;, &amp;guess[i]);
+  }
+
+  printf(&quot;True price: &quot;);
+  fflush(stdout);
+  double actual;
+  scanf(&quot; %lg&quot;, &amp;actual);
+
+  // find the closest guess
+  double closest = -1;
+  int winner = -1;
+  for (int i=0; i &lt; contestants; ++i) {
+    if (guess[i] &lt;= actual &amp;&amp; guess[i] &gt; closest) {
+      closest = guess[i];
+      winner = i + 1; // add one because indexes start at 0
+    }
+  }
+
+  // print who won
+  if (winner &lt; 0) {
+    printf(&quot;Everyone guessed over!\n&quot;);
+  } else {
+    printf(&quot;Contestant %i wins\n&quot;, winner);
+  }
+
+  return 0;
+}</code></pre></div><script src="../../scripts/prism.js"></script></body></html>

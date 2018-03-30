@@ -1,0 +1,52 @@
+Mike Hanling
+R01: 1.1-1.5 , 1.7-1.8
+
+
+Key Points:
+  Three Classes of Computers:
+    PCs
+    Servers
+    Embedded Computers
+  PCs are tending towards PMDs now, with Cloud Computing
+  Main problem for modern programmers: Energy Efficiency
+  Moore's Law: Integrated circuit resources double every 18-24 months
+  Make the Common Case Fast (do not worry as much about the edge cases)
+  Use some redundancy in order to increase dependability
+  Abstraction is for more understandable code, but further from hardware
+  Application software --> Systems software --> Hardware
+  OS connects user programs to hardware to make things execute
+  Compilers take abstracted programs and make machine code
+  Assembly language --> Machine Language (bits for both instr. and data)
+  +'s of Programming Languages:
+    think in more natural language
+    conciseness
+    code can be run on another computer from the one it was created
+  5 Classic Component of a Computer:
+    Input
+    Output
+    Memory
+    Datapath  \___Processor
+    Control   /
+  Control dictates what needs to happen from instr.
+  Datapath follows control's orders or arithmetic
+  DRAM - Dynamic Random Access Memory
+  Cache - memory buffer for DRAM / a safe place for hiding things
+  SRAM - Static Random Access Memory
+    Cache is made of SRAM - faster but less dense
+  Instruction Set ARCHITECTURE:
+    Abstraction from hardware to lowest-level software
+  +'s of Networking:
+    Communication
+    Resource Sharing
+    Nonlocal Access
+  Silicon is used as basis for integrated circuits
+  Modern integrated circuits have millions of transistors (switches)
+  Energy of 1 Switch = Some Const * Capacitive Load * Voltage^2
+  Power = Energy of 1 Switch * Frequency Switched
+  Pipelining: Overlapping execution of instruction to speed things up
+  Mind the overhead due to communication and synchronization
+
+
+What Confuses Me:
+  LCD Screen description (active matrix)
+  Process of making silicon wafers

@@ -1,0 +1,75 @@
+Mike Hanling
+R29: 5.1, 5.3, 5.4
+
+Key Points:
+  temporal locality: the principle stating that if a data location is
+  referenced then it will tend to be referenced again soon.
+
+  spatial locality: the locality principle stating that if a data
+  location is referenced, data locations with nearby addresses will tend
+  to be referenced soon.
+
+  memory hierarchy: a structure that uses multiple levels of memories;
+  as the distance from the processor increases, the size of the memories
+  and the access time both increase.
+
+  Block (or line): the minimum unit of information that can be either
+  present or not present in a cache.
+
+  hit rate: the fraction of memory accesses found in a  level of the
+  memory hierarchy
+
+  miss rate: the fraction of memory accesses not found in a  level of
+  the memory hierarchy
+
+  hit time: the time required to access a level of the memory hierarchy,
+  including the time needed to determine whether the access is a hit or
+  a miss.
+
+  miss penalty: the time required to fetch a block into a level of the
+  memory hierarchy from the lower level, including the time to access
+  the block, transmit it fro one level to the other, insert it in the
+  level that experienced the miss, and then pass the block to the
+  requestor.
+
+  direct-mapped cache: a cache structure in which each memory location
+  is mapped to exactly one location in the cache.
+
+  tag: a field in a table used for a memory hierarchy that contains the
+  address information required to identify whether the associated block
+  in the hierarchy corresponds to a requested word.
+
+  valid bit: a filed in the tables of a memory hierarchy that indicates
+  tat the associated block in the hierarchy contains valid data.
+
+  cache miss: a request for the data from the cache that cannot be
+  filled because the data is not present in the cache.
+
+  write-through: a scheme in which writes always update both the cache
+  and the next lower level of the memory hierarchy, ensuring that data
+  is always consistent between the two.
+
+  write buffer: a queue that holds data while the data is waiting to be
+  written to memory
+
+  write-back: a scheme that handles writes by updating values only to
+  the block in the cache, then writing the modified black to the lower
+  level of the hierarchy when the block is replaced.
+
+  split cache: a scheme in which a level of the memory hierarchy is
+  composed of two independent caches that operate in parallel with each
+  other, with one handling instructions and one handling data.
+
+  fully associative cache: a cache structure in which a block can be
+  placed in any location in the cache.
+
+  set associative cache: a cache that has a fixed number of locations
+  (at least two) where each block can be placed.
+
+  Least recently used (LRU): a replacement scheme in which the block
+  replaced is the one that has been unused for the longest time.
+
+  multilevel cache: a memory hierarchy with multiple levels of caches,
+  rather than just a cache and main memory
+
+What Confuses Me:

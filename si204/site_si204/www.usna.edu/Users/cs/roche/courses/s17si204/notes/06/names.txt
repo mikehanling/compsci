@@ -1,0 +1,25 @@
+N = 24
+Don
+Adina
+Chris
+Susan
+Betty
+Karen
+Gavin
+Paul
+Steve
+Cathy
+Marianne
+Phong
+Mike
+Dan
+Seung-Geol
+Jeff
+Shirley
+Nate
+Carl
+Eric
+Christy
+Tim
+Joni
+Madeline

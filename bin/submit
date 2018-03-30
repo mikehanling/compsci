@@ -1,0 +1,39 @@
+#!/bin/bash
+
+##################################
+# Submission Script Version 2.0  #
+##################################
+
+for i in "$@"
+do
+case $i in
+    -c=*|--course=*)
+    COURSE="${i#*=}"
+    shift # past argument=value
+    ;;
+    -p=*|--project=*)
+    PROJECT="${i#*=}"
+    shift # past argument=value
+    ;;
+    *)
+    # unknown option
+    ;;
+esac
+done
+
+if [ $# -eq 0 ] || [ -z ${COURSE+x} ] || [ -x ${PROJECT+x} ]
+then
+  echo "usage: submit -c=<course> -p=<proj_hw_name> <file1> ... <filek>"
+  echo "Submits source, documentation, and other files."
+  echo " Example: submit -c=IC210 -p=lab01 lab01.cpp README.txt"
+else
+  apikey="9b4100d2-239e-4aaa-8ea2-89a11694d17e"
+  uname=`whoami`
+  ufile=/tmp/$uname-upload.tgz
+  SAVEIFS=$IFS
+  IFS=$(echo -en "\n\b")
+  tar --warning=none -czpf $ufile $@
+  IFS=$SAVEIFS
+  curl "http://submit.cs.usna.edu/upload/upload.php" -F "apikey=$apikey" -F "course=$COURSE" -F "project=$PROJECT" -F "file=@$ufile"
+  rm -f $ufile
+fi

@@ -1,0 +1,410 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Lab 07: Serious Arrays</title><meta name="viewport" content="width=device-width, initial-scale=1.0"><link href="../../scripts/prism.css" rel="stylesheet" /><link rel="stylesheet" type="text/css" href="../../style.css"><script type="text/javascript" src="../../../../mathjax/MathJax.js%3Fconfig=TeX-AMS_HTML"></script><script type="text/javascript" src="../../scripts/jquery-3.1.1.min.js"></script><style>
+@media only screen and (min-width: 600px) {
+  #main>header {background-image: url("../../scripts/header.png");}
+}
+</style>  <meta name="generator" content="pandoc">
+  <style type="text/css">code{white-space: pre;}</style>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head><body><div id="main"><header><nav class="topnav"><div>
+            <a href="../../index.php.html">SI 204</a>
+            </div><div>
+            <a href="../../calendar.php.html">Calendar</a>
+            </div><div>
+            <a href="../../notes/index.html">Notes</a>
+            </div><div>
+            <a href="../../hw/index.html">HWs</a>
+            </div><div id="navparent">
+            <a href="../index.html">Labs</a>
+            </div><div>
+            <a href="../../proj/index.html">Projects</a>
+            </div><div>
+            <a href="../../exams/index.html">Exams</a>
+            </div><div>
+            <a href="../../admin/index.html">Resources</a>
+            </div><div>
+            <a href="https://www.usna.edu/Users/cs/roche/">Roche</a>
+            </div><div>
+            <a href="https://www.usna.edu/Users/cs/albing/">Albing</a>
+            </div></nav></header><div id="mainbox"><div class="printonly"><h1 class="printtitle">SI 204 Spring 2017 / Labs</h1><hr></div><article id="mainart"><header><h1>Lab 07: Serious Arrays</h1></header><div id="TOC"><ul><li><a class="linkin" href="index.html#some-warmup-array-functions"><span class="toc-section-number">1</span> Some warmup array functions</a></li>
+<li><a class="linkin" href="index.html#welcome-to-putinorder-"><span class="toc-section-number">2</span> Welcome to PutInOrder!</a></li>
+<li><a class="linkin" href="index.html#reverse-your-fortunes"><span class="toc-section-number">3</span> Reverse your fortunes</a></li>
+<li><a class="linkin" href="index.html#let-s-get-graphical-going-further-"><span class="toc-section-number">4</span> Let’s get graphical (going further)</a></li>
+<li><a class="linkin" href="index.html#cycle-and-recycle-going-further-"><span class="toc-section-number">5</span> Cycle and Recycle (going further)</a></li>
+<li><a class="linkin" href="index.html#read-from-file-as-well-as-standard-in-going-further-"><span class="toc-section-number">6</span> Read from file as well as standard in (going further)</a></li>
+<li><a class="linkin" href="index.html#reading-from-a-graphical-representation-going-further-"><span class="toc-section-number">7</span> Reading from a graphical representation (going further)</a></li></ul></div><div class="panbody"><p>This lab will give you practice writing functions dealing with arrays — in this case arrays of ints. The end result, if you finish it all, will be a simple game that works like this:</p>
+<pre><code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./gena 6 8 112</code>
+<code class="language-text output">N = 6 : 8 1 6 6 2 4</code>
+<code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./graphic</code>
+<code class="language-text output">Welcome to PutInOrder!</code>
+<code class="language-text output">board: </code><code class="language-text input">z.6.8.112</code>
+<code class="language-text output"> #</code>
+<code class="language-text output"> #</code>
+<code class="language-text output"> #   # #</code>
+<code class="language-text output"> #   # #</code>
+<code class="language-text output"> #   # #   #</code>
+<code class="language-text output"> #   # #   #</code>
+<code class="language-text output"> #   # # # #</code>
+<code class="language-text output"> # # # # # #</code>
+<code class="language-text output">-------------</code>
+<code class="language-text output"> A B C D E F</code>
+<code class="language-text output">command: </code><code class="language-text input">swap C E</code>
+<code class="language-text output"> #</code>
+<code class="language-text output"> #</code>
+<code class="language-text output"> #     # #</code>
+<code class="language-text output"> #     # #</code>
+<code class="language-text output"> #     # # #</code>
+<code class="language-text output"> #     # # #</code>
+<code class="language-text output"> #   # # # #</code>
+<code class="language-text output"> # # # # # #</code>
+<code class="language-text output">-------------</code>
+<code class="language-text output"> A B C D E F</code>
+<code class="language-text output">command: </code><code class="language-text input">cycleleft 1</code>
+<code class="language-text output">           #</code>
+<code class="language-text output">           #</code>
+<code class="language-text output">     # #   #</code>
+<code class="language-text output">     # #   #</code>
+<code class="language-text output">     # # # #</code>
+<code class="language-text output">     # # # #</code>
+<code class="language-text output">   # # # # #</code>
+<code class="language-text output"> # # # # # #</code>
+<code class="language-text output">-------------</code>
+<code class="language-text output"> A B C D E F</code>
+<code class="language-text output">command: </code><code class="language-text input">reverse C E</code>
+<code class="language-text output">           #</code>
+<code class="language-text output">           #</code>
+<code class="language-text output">       # # #</code>
+<code class="language-text output">       # # #</code>
+<code class="language-text output">     # # # #</code>
+<code class="language-text output">     # # # #</code>
+<code class="language-text output">   # # # # #</code>
+<code class="language-text output"> # # # # # #</code>
+<code class="language-text output">-------------</code>
+<code class="language-text output"> A B C D E F</code>
+<code class="language-text output">6 points! (3 moves)</code></pre><h1 id="some-warmup-array-functions"><a class ="linkin" href="index.html#top"><span class="header-section-number">1</span> Some warmup array functions</a></h1><p>Write a program <code>warmup.c</code> with a <code>main()</code> exactly as shown below. This will, of course, require you to fill in the definitions of the functions <code>read</code>, <code>print</code>, and <code>is_ordered</code> that you see being used in the code. The output needs to match the examples shown below.</p>
+<p><strong>Note:</strong> For now at least, you may assume that input elements (i.e. everything other than “N”) are at most 9. That way there’s no problem lining up the numbers and the letters.</p>
+<pre><code class="language-C">#include &lt;stdio.h&gt;
+
+// fills in the array with integers read from stdin
+void read(int* array, int size);
+
+// prints the array to stdout, lined up with dashes and
+// corresponding capital letters underneath
+void print(int* array, int size);
+
+// returns 1 if the array elements are in ascending (non-decreasing)
+// order, and otherwise returns 0.
+int is_ordered(int* array, int size);
+
+int main() {
+  int size;
+  scanf(&quot; N = %i :&quot;, &amp;size);
+
+  int arr[size];
+  read(arr, size);
+
+  print(arr, size);
+
+  if (is_ordered(arr, size)) {
+    printf(&quot;Is in order!\n&quot;);
+  } else {
+    printf(&quot;Is not in order!\n&quot;);
+  }
+
+  return 0;
+}</code></pre>
+<p>Examples:</p>
+<pre><code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./warmup</code>
+<code class="language-text output"></code><code class="language-text input">N = 4 : 1 4 5 9</code>
+<code class="language-text output"> 1 4 5 9</code>
+<code class="language-text output">---------</code>
+<code class="language-text output"> A B C D</code>
+<code class="language-text output">Is in order!</code></pre><pre><code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./warmup</code>
+<code class="language-text output"></code><code class="language-text input">N = 4 : 1 5 3 2</code>
+<code class="language-text output"> 1 5 3 2</code>
+<code class="language-text output">---------</code>
+<code class="language-text output"> A B C D</code>
+<code class="language-text output">Is not in order!</code></pre><pre><code class="language-text output">./warmup</code>
+<code class="language-text output"></code><code class="language-text input">N = 7 : 1 3 4 4 6 8 9</code>
+<code class="language-text output"> 1 3 4 4 6 8 9</code>
+<code class="language-text output">---------------</code>
+<code class="language-text output"> A B C D E F G</code>
+<code class="language-text output">Is in order!</code></pre><h1 id="welcome-to-putinorder-"><a class ="linkin" href="index.html#top"><span class="header-section-number">2</span> Welcome to PutInOrder!</a></h1><p><strong>Do this first:</strong> copy the <code>gena</code> program to your lab directory: <code class="language-bash">cp /courses/roche/204/bin/gena .</code></p>
+<p><strong>Or from your VM:</strong> <code class="language-bash">scp mope.academy.usna.edu:/courses/roche/204/bin/gena .</code></p>
+<p>You will implement a simple game as described below, in a program called <code>basic.c</code>. Game instances are generated using the program <code>./gena</code>, as shown in the following example:</p>
+<pre><code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./gena 6 8 1</code>
+<code class="language-text output">N = 6 : 8 7 2 4 2 8</code></pre><p>Note: <code>gena</code> also writes the same output to a file named <code>z.6.8.1</code> so you can access it later. The first command-line argument (<code>6</code> here) indicates how big the array is, the second argument (<code>8</code> here) indicates the largest each number should be, and the third argument (<code>1</code> here) is the seed used for the random number generator.</p>
+<p>The game described by this is a list of 6 (that’s “N”) numbers, and your goal is to put them in order from smallest to largest by swapping elements, and to do it with the lowest score (each “swap” costs 3 points). N is never greater than 26. The examples below ought to show you the basics of how the game functions, including the <code>swap</code> command (which is the only user command available within your game for now).</p>
+<pre><code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./basic</code>
+<code class="language-text output">Welcome to PutInOrder!</code>
+<code class="language-text output">board: </code><code class="language-text input">N = 6 : 8 7 2 4 2 8</code>
+<code class="language-text output"> 8 7 2 4 2 8</code>
+<code class="language-text output">-------------</code>
+<code class="language-text output"> A B C D E F</code>
+<code class="language-text output">command: </code><code class="language-text input">swap A E</code>
+<code class="language-text output"> 2 7 2 4 8 8</code>
+<code class="language-text output">-------------</code>
+<code class="language-text output"> A B C D E F</code>
+<code class="language-text output">command: </code><code class="language-text input">swap B C</code>
+<code class="language-text output"> 2 2 7 4 8 8</code>
+<code class="language-text output">-------------</code>
+<code class="language-text output"> A B C D E F</code>
+<code class="language-text output">command: </code><code class="language-text input">swap C D</code>
+<code class="language-text output"> 2 2 4 7 8 8</code>
+<code class="language-text output">-------------</code>
+<code class="language-text output"> A B C D E F</code>
+<code class="language-text output">9 points! (3 moves)</code></pre><pre><code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./basic</code>
+<code class="language-text output">Welcome to PutInOrder!</code>
+<code class="language-text output">board: </code><code class="language-text input">N = 5 : 2 5 3 5 2</code>
+<code class="language-text output"> 2 5 3 5 2</code>
+<code class="language-text output">-----------</code>
+<code class="language-text output"> A B C D E</code>
+<code class="language-text output">command: </code><code class="language-text input">swip</code>
+<code class="language-text output">Unkown move "swip"</code>
+<code class="language-text output"> 2 5 3 5 2</code>
+<code class="language-text output">-----------</code>
+<code class="language-text output"> A B C D E</code>
+<code class="language-text output">command: </code><code class="language-text input">swap B E</code>
+<code class="language-text output"> 2 2 3 5 5</code>
+<code class="language-text output">-----------</code>
+<code class="language-text output"> A B C D E</code>
+<code class="language-text output">3 points! (1 moves)</code></pre><pre><code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./basic</code>
+<code class="language-text output">Welcome to PutInOrder!</code>
+<code class="language-text output">board: </code><code class="language-text input">N = 6 : 1 3 3 1 4 4</code>
+<code class="language-text output"> 1 3 3 1 4 4</code>
+<code class="language-text output">-------------</code>
+<code class="language-text output"> A B C D E F</code>
+<code class="language-text output">command: </code><code class="language-text input">swap B D</code>
+<code class="language-text output"> 1 1 3 3 4 4</code>
+<code class="language-text output">-------------</code>
+<code class="language-text output"> A B C D E F</code>
+<code class="language-text output">3 points! (1 moves)</code></pre><p><strong>Note 1:</strong> Your solution should make nice use of functions! At least you should have functions for printing a board and determining whether a board is in order.</p>
+<p><strong>Note 2:</strong> For now you may assume that all array elements are less than 10.</p>
+<div class="section">
+
+<h1 id="reverse-your-fortunes"><a class ="linkin" href="index.html#top"><span class="header-section-number">3</span> Reverse your fortunes</a></h1><p>Build on your Part 1 solution in <code>basic.c</code> by providing the player with a new move, <code>reverse x y</code> , where x and y are column positions. Column x should come before column y, and the command should reverse the values in columns x through y. Like this:</p>
+<pre><code class="language-.text"> 9 1 2 5 9 8 7 6 4    reverse E H    9 1 2 5 6 7 8 9 4
+-------------------  ------------&gt;  -------------------
+ A B C D E F G H I                   A B C D E F G H I</code></pre>
+<p>Otherwise the elements should be completely unchanged. A “reverse” move costs two points. Now the player has two moves to make, and should be able to creatively find shorter/lower-point solutions. For example:</p>
+<pre><code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./basic</code>
+<code class="language-text output">Welcome to PutInOrder!</code>
+<code class="language-text output">board: </code><code class="language-text input">N = 8 : 9 2 8 8 6 5 8 1</code>
+<code class="language-text output"> 9 2 8 8 6 5 8 1</code>
+<code class="language-text output">----------------</code>
+<code class="language-text output"> A B C D E F G H</code>
+<code class="language-text output">command: </code><code class="language-text input">reverse C F</code>
+<code class="language-text output"> 9 2 5 6 8 8 8 1</code>
+<code class="language-text output">----------------</code>
+<code class="language-text output"> A B C D E F G H</code>
+<code class="language-text output">command: </code><code class="language-text input">swap A H</code>
+<code class="language-text output"> 1 2 5 6 8 8 8 9</code>
+<code class="language-text output">----------------</code>
+<code class="language-text output"> A B C D E F G H</code>
+<code class="language-text output">5 points! (2 moves)</code></pre><h1 id="let-s-get-graphical-going-further-"><a class ="linkin" href="index.html#top"><span class="header-section-number">4</span> Let’s get graphical (going further)</a></h1><p>The game is more compelling if the board is printed out “graphically”, which for us will mean a sort of “ASCII Art” thing. Specifically, write a new program <code>graphic.c</code> that prints game boards in the style shown in the following examples.</p>
+<pre><code class="language-text output">~/$ ./graphic</code>
+<code class="language-text output">Welcome to PutInOrder!</code>
+<code class="language-text output">board: </code><code class="language-text input">N = 5 : 4 3 2 4 3</code>
+<code class="language-text output"> #     #</code>
+<code class="language-text output"> # #   # #</code>
+<code class="language-text output"> # # # # #</code>
+<code class="language-text output"> # # # # #</code>
+<code class="language-text output">-----------</code>
+<code class="language-text output"> A B C D E</code>
+<code class="language-text output">command: </code><code class="language-text input">swap A E</code>
+<code class="language-text output">       # #</code>
+<code class="language-text output"> # #   # #</code>
+<code class="language-text output"> # # # # #</code>
+<code class="language-text output"> # # # # #</code>
+<code class="language-text output">-----------</code>
+<code class="language-text output"> A B C D E</code>
+<code class="language-text output">command: </code><code class="language-text input">reverse A C</code>
+<code class="language-text output">       # #</code>
+<code class="language-text output">   # # # #</code>
+<code class="language-text output"> # # # # #</code>
+<code class="language-text output"> # # # # #</code>
+<code class="language-text output">-----------</code>
+<code class="language-text output"> A B C D E</code>
+<code class="language-text output">5 points! (2 moves)</code></pre><p><strong>Hint:</strong> This is made vastly easier by defining a function to find the max element in an array.</p>
+<h1 id="cycle-and-recycle-going-further-"><a class ="linkin" href="index.html#top"><span class="header-section-number">5</span> Cycle and Recycle (going further)</a></h1><p>Let’s make one last “move” for the game: <code>cycleleft k</code>. A “cycleleft by one” move shifts every column one position to the left, with the leftmost column wrapping around to become the rightmost column. A “cycleleft by k” is just applying the cycleleft-by-one k-times over. I strongly recommend you implement it this way, i.e. get cycleleft by one working and then call it multiple times to get cycleleft by k working. Note, a <code>cycleleft k</code> move costs only 1 point.</p>
+<p>Examples:</p>
+<pre><code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./graphic</code>
+<code class="language-text output">Welcome to PutInOrder!</code>
+<code class="language-text output">board: </code><code class="language-text input">N = 6 : 8 1 4 8 5 4</code>
+<code class="language-text output"> #     #</code>
+<code class="language-text output"> #     #</code>
+<code class="language-text output"> #     #</code>
+<code class="language-text output"> #     # #</code>
+<code class="language-text output"> #   # # # #</code>
+<code class="language-text output"> #   # # # #</code>
+<code class="language-text output"> #   # # # #</code>
+<code class="language-text output"> # # # # # #</code>
+<code class="language-text output">-------------</code>
+<code class="language-text output"> A B C D E F</code>
+<code class="language-text output">command: </code><code class="language-text input">cycleleft 1</code>
+<code class="language-text output">     #     #</code>
+<code class="language-text output">     #     #</code>
+<code class="language-text output">     #     #</code>
+<code class="language-text output">     # #   #</code>
+<code class="language-text output">   # # # # #</code>
+<code class="language-text output">   # # # # #</code>
+<code class="language-text output">   # # # # #</code>
+<code class="language-text output"> # # # # # #</code>
+<code class="language-text output">-------------</code>
+<code class="language-text output"> A B C D E F</code>
+<code class="language-text output">command: </code><code class="language-text input">swap C E</code>
+<code class="language-text output">         # #</code>
+<code class="language-text output">         # #</code>
+<code class="language-text output">         # #</code>
+<code class="language-text output">       # # #</code>
+<code class="language-text output">   # # # # #</code>
+<code class="language-text output">   # # # # #</code>
+<code class="language-text output">   # # # # #</code>
+<code class="language-text output"> # # # # # #</code>
+<code class="language-text output">-------------</code>
+<code class="language-text output"> A B C D E F</code>
+<code class="language-text output">4 points! (2 moves)</code></pre><pre><code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./graphic</code>
+<code class="language-text output">Welcome to PutInOrder!</code>
+<code class="language-text output">board: </code><code class="language-text input">N = 6 : 6 2 8 1 7 3</code>
+<code class="language-text output">     #</code>
+<code class="language-text output">     #   #</code>
+<code class="language-text output"> #   #   #</code>
+<code class="language-text output"> #   #   #</code>
+<code class="language-text output"> #   #   #</code>
+<code class="language-text output"> #   #   # #</code>
+<code class="language-text output"> # # #   # #</code>
+<code class="language-text output"> # # # # # #</code>
+<code class="language-text output">-------------</code>
+<code class="language-text output"> A B C D E F</code>
+<code class="language-text output">command: </code><code class="language-text input">cycleleft 3</code>
+<code class="language-text output">           #</code>
+<code class="language-text output">   #       #</code>
+<code class="language-text output">   #   #   #</code>
+<code class="language-text output">   #   #   #</code>
+<code class="language-text output">   #   #   #</code>
+<code class="language-text output">   # # #   #</code>
+<code class="language-text output">   # # # # #</code>
+<code class="language-text output"> # # # # # #</code>
+<code class="language-text output">-------------</code>
+<code class="language-text output"> A B C D E F</code>
+<code class="language-text output">command: </code><code class="language-text input">swap B E</code>
+<code class="language-text output">           #</code>
+<code class="language-text output">         # #</code>
+<code class="language-text output">       # # #</code>
+<code class="language-text output">       # # #</code>
+<code class="language-text output">       # # #</code>
+<code class="language-text output">     # # # #</code>
+<code class="language-text output">   # # # # #</code>
+<code class="language-text output"> # # # # # #</code>
+<code class="language-text output">-------------</code>
+<code class="language-text output"> A B C D E F</code>
+<code class="language-text output">4 points! (2 moves)</code></pre><pre><code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./graphic</code>
+<code class="language-text output">Welcome to PutInOrder!</code>
+<code class="language-text output">board: </code><code class="language-text input">N = 8 : 3 4 5 6 7 8 1 2</code>
+<code class="language-text output">           #</code>
+<code class="language-text output">         # #</code>
+<code class="language-text output">       # # #</code>
+<code class="language-text output">     # # # #</code>
+<code class="language-text output">   # # # # #</code>
+<code class="language-text output"> # # # # # #</code>
+<code class="language-text output"> # # # # # #   #</code>
+<code class="language-text output"> # # # # # # # #</code>
+<code class="language-text output">-----------------</code>
+<code class="language-text output"> A B C D E F G H</code>
+<code class="language-text output">command: </code><code class="language-text input">cycleleft 6</code>
+<code class="language-text output">               #</code>
+<code class="language-text output">             # #</code>
+<code class="language-text output">           # # #</code>
+<code class="language-text output">         # # # #</code>
+<code class="language-text output">       # # # # #</code>
+<code class="language-text output">     # # # # # #</code>
+<code class="language-text output">   # # # # # # #</code>
+<code class="language-text output"> # # # # # # # #</code>
+<code class="language-text output">-----------------</code>
+<code class="language-text output"> A B C D E F G H</code>
+<code class="language-text output">1 points! (1 moves)</code></pre><h1 id="read-from-file-as-well-as-standard-in-going-further-"><a class ="linkin" href="index.html#top"><span class="header-section-number">6</span> Read from file as well as standard in (going further)</a></h1><p>Modify your <code>graphic.c</code> program so that the user can can enter a filename rather than <code>N = ...</code> and the game will read the input (in the same format) from the file rather than <code>stdin</code>.</p>
+<pre><code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./gena 4 7 99</code>
+<code class="language-text output">N = 4 : 3 2 7 1</code>
+<code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./graphic</code>
+<code class="language-text output">Welcome to PutInOrder!</code>
+<code class="language-text output">board: </code><code class="language-text input">z.4.7.99</code>
+<code class="language-text output">     #</code>
+<code class="language-text output">     #</code>
+<code class="language-text output">     #</code>
+<code class="language-text output">     #</code>
+<code class="language-text output"> #   #</code>
+<code class="language-text output"> # # #</code>
+<code class="language-text output"> # # # #</code>
+<code class="language-text output">---------</code>
+<code class="language-text output"> A B C D</code>
+<code class="language-text output">command: cycleleft 3</code>
+<code class="language-text output"></code>
+<code class="language-text output">       #</code>
+<code class="language-text output">       #</code>
+<code class="language-text output">       #</code>
+<code class="language-text output">       #</code>
+<code class="language-text output">   #   #</code>
+<code class="language-text output">   # # #</code>
+<code class="language-text output"> # # # #</code>
+<code class="language-text output">---------</code>
+<code class="language-text output"> A B C D</code>
+<code class="language-text output">command: reverse B C</code>
+<code class="language-text output"></code>
+<code class="language-text output">       #</code>
+<code class="language-text output">       #</code>
+<code class="language-text output">       #</code>
+<code class="language-text output">       #</code>
+<code class="language-text output">     # #</code>
+<code class="language-text output">   # # #</code>
+<code class="language-text output"> # # # #</code>
+<code class="language-text output">---------</code>
+<code class="language-text output"> A B C D</code>
+<code class="language-text output">3 points! (2 moves)</code></pre><h1 id="reading-from-a-graphical-representation-going-further-"><a class ="linkin" href="index.html#top"><span class="header-section-number">7</span> Reading from a graphical representation (going further)</a></h1><p>As a real challenge, create a new program <code>readgraphic.c</code> that reads its input (whether from stdin or from a file) not in the nice format we’ve used so far, but in the same graphical format as it prints to the screen. Running <code>gena</code> with the <code>-g</code> option produces inputs in this format, e.g.</p>
+<pre><code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./gena -g 8 12 122</code>
+<code class="language-text output">N = 8</code>
+<code class="language-text output">     #</code>
+<code class="language-text output">   # #</code>
+<code class="language-text output">   # #</code>
+<code class="language-text output">   # #</code>
+<code class="language-text output">   # #   #</code>
+<code class="language-text output">   # #   #</code>
+<code class="language-text output">   # #   #</code>
+<code class="language-text output">   # #   #</code>
+<code class="language-text output">   # #   # # #</code>
+<code class="language-text output"> # # #   # # #</code>
+<code class="language-text output"> # # #   # # # #</code>
+<code class="language-text output"> # # # # # # # #</code>
+<code class="language-text output">-----------------</code>
+<code class="language-text output"> A B C D E F G H</code></pre></div>
+  </div></article></div></div><nav class="stickynav"><div><div class="dropdown"><a href="../../index.php.html" class="ddown-btn">SI 204</a><div class="ddown-content"><a href="../../calendar.php.html">Calendar</a><a href="../../notes/index.html">Notes</a><a href="../../hw/index.html">HWs</a><a href="../index.html">Labs</a><a href="../../proj/index.html">Projects</a><a href="../../exams/index.html">Exams</a><a href="../../admin/index.html">Resources</a><a href="https://www.usna.edu/Users/cs/roche/">Roche</a><a href="https://www.usna.edu/Users/cs/albing/">Albing</a></div></div><div class="dropdown"><a href="index.html#top" class="linkin pagetop">Lab 07: Serious Arrays</a><div class="ddown-content ddtoc"><ul><li><a class="linkin" href="index.html#some-warmup-array-functions"><span class="toc-section-number">1</span> Some warmup array functions</a></li>
+<li><a class="linkin" href="index.html#welcome-to-putinorder-"><span class="toc-section-number">2</span> Welcome to PutInOrder!</a></li>
+<li><a class="linkin" href="index.html#reverse-your-fortunes"><span class="toc-section-number">3</span> Reverse your fortunes</a></li>
+<li><a class="linkin" href="index.html#let-s-get-graphical-going-further-"><span class="toc-section-number">4</span> Let’s get graphical (going further)</a></li>
+<li><a class="linkin" href="index.html#cycle-and-recycle-going-further-"><span class="toc-section-number">5</span> Cycle and Recycle (going further)</a></li>
+<li><a class="linkin" href="index.html#read-from-file-as-well-as-standard-in-going-further-"><span class="toc-section-number">6</span> Read from file as well as standard in (going further)</a></li>
+<li><a class="linkin" href="index.html#reading-from-a-graphical-representation-going-further-"><span class="toc-section-number">7</span> Reading from a graphical representation (going further)</a></ul></div></div></nav><footer><div id="foottext">    <p class="disclaimer">Material contained above is made available
+    for the purpose of peer review and discussion and does not
+    necessarily reflect the views of the Department of the Navy or the
+    Department of Defense.
+    Some links above are to sites that are not
+    located at the United States Naval Academy. The USNA is not
+    responsible for the content found on these sites. In addition, the
+    content of these sites does not reflect the opinions, standards,
+    policy or endorsement of the Naval Academy or the United States
+    Government.</p>
+  Page maintained by Daniel S. Roche (<a href="mailto:roche [AT] usna [DOT] edu" id="emaillink1">roche [AT] usna [DOT] edu</a><script type='text/javascript'><!--
+        var b="he@usna.edu";
+        var a="roc";
+        document.getElementById("emaillink1").href='mailto:'+a+b;
+        document.getElementById("emaillink1").innerHTML=a+b;
+        // --></script>). Last updated 06 March 2017 15:35.</div></footer><script src="../../scripts/prism.js"></script><script type="text/javascript">var the_body = $('html, body');
+var sticky_height = $('.stickynav').height();
+$('.linkin').click(function(){
+  var href = $(this).attr('href');
+  var offset;
+  if (href == '#top') offset = 0;
+  else offset = $(href).offset().top - sticky_height;
+  the_body.animate({ scrollTop: offset }, 500);
+  return false;
+});</script></body></html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+         "http://www.w3.org/TR/html4/strict.dtd"><html><head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"><title>12to24.c</title><link href="../../scripts/prism.css" rel="stylesheet" />    <style type="text/css">
+    body {
+      margin: 0;
+      padding:55px 0 0 0;
+    }
+    div#header {
+      position:absolute;
+      top: 0;
+      left: 0;
+      width:100%;
+      height:50px;
+      border-bottom: 5px solid red;
+      text-align: center;
+      background-color: #d0d0d0;
+      z-index: 1000;
+    }
+    @media screen{
+      body>div#header{
+        position:fixed;
+      }
+    }
+    * html body{
+      overflow:hidden;
+    }
+    * html div#content {
+      height: 100%;
+      overflow: auto;
+    }
+    .warning {
+      margin: 3px auto;
+      background-color: black;
+      color: yellow;
+      font-weight: bold;
+      max-width: 600px;
+      font-family: sans-serif;
+      text-align: center;
+    }
+    /*
+    .codeblock {
+      margin:10px auto 10px;
+      min-width:500px;
+      max-width:800px;
+    }
+    .codeblock td.de1 {
+      border:1px solid black;
+    }
+    .codeblock td.ln {
+      border:1px solid white;
+    }
+    pre {
+      margin:10px auto 10px;
+      max-width:800px;
+    }
+    .plainpre {
+      border: 1px solid black;
+      padding:2px;
+    }
+    */
+    </style>
+  </head><body><div id="header"><p><a href="files.php%3Ff=12to24.c&amp;downloadcode=yes">Click here</a> to download <code>12to24.c</code>.</p></div><div id="content"><pre class="line-numbers"><code class="language-C">/***************************************************
+Conversion from 12-hour clock to 24 hour clock
+
+Write a program that reads in time in 12-hour
+format (e.g. 10:25PM), and writes it out in 24-hour
+format (e.g. 22:25).
+***************************************************/
+#include &quot;si204.h&quot;
+
+int main() {
+  // Read time in 12-hour format
+  fputs(&quot;Enter the time as h:m AM/PM (e.g. 10:25PM) &quot;, stdout);
+  int h = readnum(stdin);
+  readchar(stdin); // ignore the colon
+  int m = readnum(stdin);
+  cstring ampm;
+  readstring(ampm, stdin);
+
+  // Get the hour in 24-hour format
+  if (strcmp(ampm, &quot;PM&quot;) == 0) {
+    h = h + 12;
+  }
+
+  // Write the hour with 2 digits
+  if (h &lt; 10) {
+    fputc('0', stdout);
+  }
+  writenum(h, stdout);
+
+  fputc(':', stdout);
+
+  // Write the minute with 2 digits
+  if (m &lt; 10) {
+    fputc('0', stdout);
+  }
+  writenum(m, stdout);
+
+  fputc('\n', stdout);
+
+  return 0;
+}</code></pre></div><script src="../../scripts/prism.js"></script></body></html>

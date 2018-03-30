@@ -1,0 +1,131 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+         "http://www.w3.org/TR/html4/strict.dtd"><html><head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"><title>gtkexample.c</title><link href="../../scripts/prism.css" rel="stylesheet" />    <style type="text/css">
+    body {
+      margin: 0;
+      padding:55px 0 0 0;
+    }
+    div#header {
+      position:absolute;
+      top: 0;
+      left: 0;
+      width:100%;
+      height:50px;
+      border-bottom: 5px solid red;
+      text-align: center;
+      background-color: #d0d0d0;
+      z-index: 1000;
+    }
+    @media screen{
+      body>div#header{
+        position:fixed;
+      }
+    }
+    * html body{
+      overflow:hidden;
+    }
+    * html div#content {
+      height: 100%;
+      overflow: auto;
+    }
+    .warning {
+      margin: 3px auto;
+      background-color: black;
+      color: yellow;
+      font-weight: bold;
+      max-width: 600px;
+      font-family: sans-serif;
+      text-align: center;
+    }
+    /*
+    .codeblock {
+      margin:10px auto 10px;
+      min-width:500px;
+      max-width:800px;
+    }
+    .codeblock td.de1 {
+      border:1px solid black;
+    }
+    .codeblock td.ln {
+      border:1px solid white;
+    }
+    pre {
+      margin:10px auto 10px;
+      max-width:800px;
+    }
+    .plainpre {
+      border: 1px solid black;
+      padding:2px;
+    }
+    */
+    </style>
+  </head><body><div id="header"><p><a href="files.php%3Ff=gtkexample.c&amp;downloadcode=yes">Click here</a> to download <code>gtkexample.c</code>.</p></div><div id="content"><pre class="line-numbers"><code class="language-C">/* SI204 Spring 2017
+ * Example program to draw a line on an 800x800 window using GTK+
+ */
+
+#include &lt;stdio.h&gt;
+#include &lt;gtk/gtk.h&gt;
+
+/* This is the function that opens the window once GTK starts up. */
+void activate (GtkApplication* app, gpointer user_data);
+
+/* This is the function that actually draws the lines (or anything else).
+ * It gets called when the window is displayed to the user.  */
+void on_draw_event(GtkWidget *widget, cairo_t *cr, gpointer user_data);
+
+int main () {
+  // you have to make an &quot;application&quot; that has some arbitrary name
+  GtkApplication *app = gtk_application_new (&quot;my.awesome.app&quot;, G_APPLICATION_FLAGS_NONE);
+  // tell GTK what function to call when the application starts
+  g_signal_connect(app, &quot;activate&quot;, G_CALLBACK(activate), NULL);
+
+  // this line is printed just BEFORE the window pops up.
+  printf(&quot;start\n&quot;);
+
+  // show the actual window and wait until the user closes it...
+  g_application_run (G_APPLICATION (app), 0, NULL);
+
+  // this line is printed just AFTER the window pops up.
+  printf(&quot;done\n&quot;);
+
+  // cleanup time
+  g_object_unref(app);
+
+  return 0;
+}
+
+/* This is the function that actually draws the lines (or anything else).
+ * It gets called when the window is displayed to the user.  */
+void on_draw_event(GtkWidget *widget, cairo_t *cr, gpointer user_data) {
+  // set the line color to blue and line width to 2 points
+  cairo_set_source_rgb(cr, 0,0,255);
+  cairo_set_line_width(cr, 2.0);
+
+  // to draw, you move the &quot;cursor&quot; somewhere first...
+  cairo_move_to(cr, 200, 400);
+
+  // and then call cairo_line_to to draw a line to wherever you want
+  cairo_line_to(cr, 300, 300);
+
+  // the path you made isn't actually drawn until you call cairo_stroke.
+  cairo_stroke(cr);
+}
+
+/* This is the function that opens the window once GTK starts up. */
+void activate (GtkApplication* app, gpointer user_data) {
+  // create the window and give it a title
+  GtkWidget *window = gtk_application_window_new(app);
+  gtk_window_set_title (GTK_WINDOW (window), &quot;Map&quot;);
+
+  // make a drawing canvas inside the window
+  GtkWidget *drawing_area = gtk_drawing_area_new ();
+  gtk_widget_set_size_request (drawing_area, 800, 800);
+  gtk_container_add(GTK_CONTAINER(window), drawing_area);
+
+  // tell GTK what function to call to draw the window
+  g_signal_connect(G_OBJECT(drawing_area), &quot;draw&quot;,
+            G_CALLBACK(on_draw_event), NULL);
+
+  // well you don't want your beautiful window to be hidden do you?
+  gtk_widget_show_all(window);
+}</code></pre></div><script src="../../scripts/prism.js"></script></body></html>

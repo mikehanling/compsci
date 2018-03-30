@@ -1,0 +1,138 @@
+
+\documentclass{article}[9pt]
+
+\usepackage{listings}
+\usepackage{fullpage}
+\usepackage{textcomp}
+
+\lstset{ %
+  basicstyle=\ttfamily\small,
+  commentstyle=\ttfamily\small\emph,
+  upquote=true,
+  framerule=1.25pt,
+  breaklines=true,
+  showstringspaces=false,
+  escapeinside={(*@}{@*)},
+  belowskip=2em,
+  aboveskip=1em,
+}
+
+
+\newcommand{\myanswer}[1]{\framebox[.9\linewidth]{\parbox{.9\linewidth}{\fontfamily{qhv}\selectfont{#1}}}}
+
+\title{HW 1}
+
+\date{17 JAN 2018}
+
+\author{Fill in your name}
+
+\begin{document}
+
+\maketitle
+
+\begin{enumerate}
+
+\item (10 points) What are the three components of a Unix system?
+  Provide an example of the interaction from a user perspective down
+  to the hardware and back up.
+
+      \myanswer{WRITE YOUR ANSWER HERE}
+
+\item (15 points) Consider the {\tt ls -l} output below, label the
+  output appropriately:
+
+\begin{lstlisting}
+drwxr-xr-x 2 aviv scs 4096 2013-12-22 10:57 demo/
+-rw-r--r-- 1 aviv scs 13454 2013-12-22 10:56 text.dat
+\end{lstlisting}
+
+      \myanswer{WRITE YOUR ANSWER HERE}
+
+\item (15 points) For the following commands, determine in which bin directory they live by using which command on a lab machine
+
+  \begin{enumerate}
+    \item {\tt ls} 
+
+      \myanswer{WRITE YOUR ANSWER HERE}
+
+    \item {\tt which} 
+
+      \myanswer{WRITE YOUR ANSWER HERE}
+
+    \item {\tt tac} 
+
+      \myanswer{WRITE YOUR ANSWER HERE}
+
+    \item {\tt grep} 
+
+      \myanswer{WRITE YOUR ANSWER HERE}
+
+    \item {\tt cut} 
+
+      \myanswer{WRITE YOUR ANSWER HERE}
+
+    \item {\tt chmod} 
+
+      \myanswer{WRITE YOUR ANSWER HERE}
+
+    \item {\tt head} 
+
+      \myanswer{WRITE YOUR ANSWER HERE}
+
+    \item {\tt mv} 
+
+      \myanswer{WRITE YOUR ANSWER HERE}
+
+  \end{enumerate}
+
+
+\item (10 points) Look up the {\tt tac} command in the man
+  pages. Describe its operations, and give an example usage.
+
+      \myanswer{WRITE YOUR ANSWER HERE}
+
+\item (15 points) What are the three guiding principles of the Unix
+  design philosophy?
+
+      \myanswer{WRITE YOUR ANSWER HERE}
+
+\item (10 points) What are the primary purpose of standard input, output, and error for different programs?
+
+      \myanswer{WRITE YOUR ANSWER HERE}
+
+\item (15 points) Consider the following command line with redirects:
+
+\begin{lstlisting}
+grep PA < sample-db.csv 2> oops > sample-db.PA.csv
+\end{lstlisting}
+
+\begin{enumerate}
+
+\item What is the output file?
+
+      \myanswer{WRITE YOUR ANSWER HERE}
+
+\item What is the input file?
+
+      \myanswer{WRITE YOUR ANSWER HERE}
+
+\item What is the error file?
+
+      \myanswer{WRITE YOUR ANSWER HERE}
+
+
+\end{enumerate}
+
+\item (10 points) Using a pipeline as an example, why is it necessary to have standard error and standard output?
+
+
+      \myanswer{WRITE YOUR ANSWER HERE}
+
+\end{enumerate}
+
+\end{document}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:

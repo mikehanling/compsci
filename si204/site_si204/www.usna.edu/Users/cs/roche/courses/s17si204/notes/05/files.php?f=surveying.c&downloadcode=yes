@@ -1,0 +1,83 @@
+/*************************************************
+
+On a distant wall, you sight a mark of known
+height at angle theta1 from the ground.  You sight
+the top of the building sights at angle theta2
+from the ground.  Write a program that takes in
+these two angles in degrees and the height of the
+mark in feet & inches (e.g. 6'4") and returns the
+height of the building in feet and inches (no
+fractions or decimals).  If H is the height of the
+known mark, then the building height is given by:
+
+                          tan(theta2)
+    Building height = H * -----------
+                          tan(theta1)
+
+*************************************************/
+#include <stdio.h>
+#include <math.h>
+
+int getinches();
+double deg2rad(double angle);
+void writeinches(int total_inches);
+
+int main() {
+  // Get height in inches
+  printf("Height of mark? ");
+  fflush(stdout);
+  int height = getinches();
+
+  // Get angles theta1 & theta2 in degrees
+  double theta1;
+  printf("Angle 1? ");
+  fflush(stdout);
+  scanf(" %lg", &theta1);
+
+  double theta2;
+  printf("Angle 2? ");
+  fflush(stdout);
+  scanf(" %lg", &theta2);
+
+  // Calculate Building Height in inches
+  double T1 = deg2rad(theta1);
+  double T2 = deg2rad(theta2);
+  int BH = height*tan(T2)/tan(T1);
+
+  // Write out building height
+  printf("Building height is ");
+  writeinches(BH);
+  printf("\n");
+
+  return 0;
+}
+
+/********************************
+ ** Read distance in x'y" format
+ ** and return the dstance in
+ ** inches.
+ ********************************/
+int getinches() {
+  int feet;
+  int inches;
+  scanf(" %d' %d\"", &feet, &inches);
+  return 12*feet + inches;
+}
+
+/********************************
+ ** convert angle in degrees to
+ ** angle in radians
+ ********************************/
+double deg2rad(double angle) {
+  return angle/180*M_PI;
+}
+
+/********************************
+ ** Write inches to screen in
+ ** y'x" format
+ ********************************/
+void writeinches(int total_inches) {
+  int feet = total_inches/12;
+  int inches = total_inches % 12;
+  printf("%i' %i\"", feet, inches);
+}

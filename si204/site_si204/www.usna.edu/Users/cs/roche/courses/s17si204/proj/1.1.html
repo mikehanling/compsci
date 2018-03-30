@@ -1,0 +1,377 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Project 1: Bank Account</title><meta name="viewport" content="width=device-width, initial-scale=1.0"><link href="../scripts/prism.css" rel="stylesheet" /><link rel="stylesheet" type="text/css" href="../style.css"><script type="text/javascript" src="../../../mathjax/MathJax.js%3Fconfig=TeX-AMS_HTML"></script><script type="text/javascript" src="../scripts/jquery-3.1.1.min.js"></script><style>
+@media only screen and (min-width: 600px) {
+  #main>header {background-image: url("../scripts/header.png");}
+}
+</style>  <meta name="generator" content="pandoc">
+  <style type="text/css">code{white-space: pre;}</style>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head><body><div id="main"><header><nav class="topnav"><div>
+            <a href="../index.php.html">SI 204</a>
+            </div><div>
+            <a href="../calendar.php.html">Calendar</a>
+            </div><div>
+            <a href="../notes/index.html">Notes</a>
+            </div><div>
+            <a href="../hw/index.html">HWs</a>
+            </div><div>
+            <a href="../lab/index.html">Labs</a>
+            </div><div id="navparent">
+            <a href="index.html">Projects</a>
+            </div><div>
+            <a href="../exams/index.html">Exams</a>
+            </div><div>
+            <a href="../admin/index.html">Resources</a>
+            </div><div>
+            <a href="https://www.usna.edu/Users/cs/roche/">Roche</a>
+            </div><div>
+            <a href="https://www.usna.edu/Users/cs/albing/">Albing</a>
+            </div></nav></header><div id="mainbox"><div class="printonly"><h1 class="printtitle">SI 204 Spring 2017 / Projects</h1><hr></div><article id="mainart"><header><h1>Project 1: Bank Account</h1></header><div id="TOC"><ul><li><a class="linkin" href="1.1.html#overview">Overview</a>
+<ul><li><a class="linkin" href="1.1.html#tips-for-success"> Tips for success</a></li><li><a class="linkin" href="1.1.html#grading"> Grading</a></li><li><a class="linkin" href="1.1.html#honor-policy-reminder"> Honor Policy Reminder</a></li><li><a class="linkin" href="1.1.html#files"> Files</a></li></ul></li>
+<li><a class="linkin" href="1.1.html#part-1-one-deposit-per-day-up-to-30-points-">Part 1: One deposit per day (up to 30 points)</a></li>
+<li><a class="linkin" href="1.1.html#part-2-multiple-transactions-per-day-up-to-60-points-">Part 2: Multiple transactions per day (up to 60 points)</a></li>
+<li><a class="linkin" href="1.1.html#part-3-initial-balance-and-paychecks-up-to-85-points-">Part 3: Initial balance and paychecks (up to 85 points)</a></li>
+<li><a class="linkin" href="1.1.html#part-4-interest-up-to-100-points-">Part 4: Interest (up to 100 points)</a></li></ul></div><div class="panbody"><h1 id="overview"><a class ="linkin" href="1.1.html#top">Overview</a></h1><p>In this programming project you will implement a simulation of a bank account ledger, accounting for deposits, withdrawals, paychecks, and interest. This will exercise and build on the skills you have learned so far about variables, if statements, loops, and file input, as well as program design, style, and documentation.</p>
+<p>The project is broken down in to parts which progressively add more and more functionality, with more possible points. Each part has its own test cases online.</p>
+<h2 id="tips-for-success"><a class="linkin" href="1.1.html#top">Tips for success</a></h1><p>Here are a few tips that have been helpful for previous students in this class:</p>
+<ul>
+<li>Start early! Because programming is such a creative progress, it’s notoriously difficult to predict how long ANY programming project will take you to complete. If you start early, the worst that can happen is you finish early and get to relax.</li>
+<li>Work <em>deliberately</em>, stopping frequently to recompile and test what you have so far. This is the best way to catch problems early and easily.</li>
+<li><em>Start small</em>. Don’t go for the big example right away. Instead, use a smaller debugging example that you can follow completely, so that you can check your work.</li>
+<li>Re-submit frequently, and definitely when you finish each part.</li>
+<li>Writing good documentation, variable names, etc., as you go along is always easier than trying to add it in at the end.</li>
+</ul>
+<h2 id="grading"><a class="linkin" href="1.1.html#top">Grading</a></h1><p>70% of your grade will be based on <em>functionality</em> (does your program work as specified), mostly based on the test cases that you see when you submit, but perhaps also extra test cases according to the specifications of the project. <strong>The code you submit must work</strong> if you expect to earn a passing grade.</p>
+<p>30% of your grade will be based on <em>coding style</em>, which includes:</p>
+<ul>
+<li>Readability: You should use good spacing and proper indentation, and avoid long lines longer than 80 characters.</li>
+<li>Documentation: Use meaningful variable names and write helpful comments to make it obvious what your code is doing.</li>
+<li>Organization: Use your tools wisely! Don’t have unnecessary conditions or loops. This is about the “art” of programming, beyond just “getting it to work”.</li>
+</ul>
+<p>All of this is factored into your maximum score based on which part you have completed. So for example, if you complete up to part 3 perfectly working and also get 25/30 on style, then your final grade would be <span class="math inline">\((70 + 25) * .85 = 80.75\)</span>, a B-.</p>
+<h2 id="honor-policy-reminder"><a class="linkin" href="1.1.html#top">Honor Policy Reminder</a></h1><p>Be sure to review the <a href="../admin/policy.php.html">course policy</a> on collaboration for <em>programming projects</em>, which are more about the work you can do on your own and have different rules compared to homeworks and labs. In particular:</p>
+<ul>
+<li>The only help you may receive on a project is from your instructor MGSP leaders for this class, and that help must be clearly cited. In turn, you cannot provide help to any other students on this project.</li>
+<li>In no circumstance - project, homework or lab - may you copy code and submit it as your own work. That is the definition of plagiarism.</li>
+<li>For projects, you may not look at other people’s project code nor may you show your own code to others.</li>
+<li>You can look at online resources for general purpose C programming, but not for help writing financial simulations or anything else that is specific to the functionality required of your project.</li>
+</ul>
+<p>If you have questions about any of these rules, <strong>email your instructor and ask about it</strong>. We know you want to do what’s right and we are here to help you!</p>
+<h2 id="files"><a class="linkin" href="1.1.html#top">Files</a></h1><p>For all parts, the program you submit should be in a file called <code>ledger.c</code>. It is strongly advised that you save a backup of your <code>ledger.c</code> program as you complete each part and get it working.</p>
+<p>There are a number of example files that you can <a href="1/ex.tgz">download in this tarball</a>. To extract the tarball, copy it to your project folder and run the command <code>tar xzvf ex.tgz</code>, which will create a subdirectory <code>ex/</code> in your project folder which has all of the example transaction files referred to on this page.</p>
+<h1 id="part-1-one-deposit-per-day-up-to-30-points-"><a class ="linkin" href="1.1.html#top">Part 1: One deposit per day (up to 30 points)</a></h1><p>For this part, your program will simulate a series of days, adding a deposit to the bank account each day, and reporting the final balance as well as the average end-of-day balance at the end.</p>
+<p>Your program will start by reading a line “<code>run &lt;FILENAME&gt;</code>” from the terminal, where FILENAME is the name of the file that has the daily transactions.</p>
+<p>The transactions file starts with a line like “<code>&lt;N&gt; days</code>”, followed by <span class="math inline">\(N\)</span> lists of transactions. Each transaction, in this part, will be a deposit, formatted as “<code>D &lt;amount&gt;</code>”. Each day’s transactions end with a line that just has <code>ENDOFDAY</code>. <em>For this part, you may assume that there is only one transaction per day.</em></p>
+<p>For example, here is the file <code>p1a.txt</code> that is included in the <a href="1/ex.tgz">tarball</a> you downloaded and extracted into your <code>ex/</code> directory:</p>
+<pre><code class="language-.text">4 days
+D 50
+ENDOFDAY
+D 1.50
+ENDOFDAY
+D 48.50
+ENDOFDAY
+D 25
+ENDOFDAY</code></pre>
+<p>You can see that each day has a single deposit with a different amount. Starting with a balance of zero, the balance after day 1 is 50, after day 2 it’s 51.50, after day 3 it’s 100, and after day 4 it’s 125. Therefore the final balance is <code>125</code> and the average daily balance is</p>
+<p><span class="math display">\[\frac{50 + 51.50 + 100 + 125}{4},\]</span></p>
+<p>which equals <code>81.625</code>. You can see these values correctly reported in the first sample run below:</p>
+<pre><code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./ledger</code>
+<code class="language-text output"></code><code class="language-text input">run ex/p1a.txt</code>
+<code class="language-text output">Simulated 4 days.</code>
+<code class="language-text output">Final balance: 125</code>
+<code class="language-text output">Average end-of-day balance: 81.625</code>
+<code class="language-text output"></code>
+<code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./ledger</code>
+<code class="language-text output"></code><code class="language-text input">run ex/p1b.txt</code>
+<code class="language-text output">Simulated 100 days.</code>
+<code class="language-text output">Final balance: 5183.85</code>
+<code class="language-text output">Average end-of-day balance: 2566.28</code></pre><p>While you can always assume that the transactions file is properly formatted, you should handle two kinds of errors in the input line from the terminal:</p>
+<ul>
+<li><p>If the user enters an initial command that is not the word <code>run</code>, print an error message like <code>Invalid command: &lt;command&gt;</code> and exit with status 1. For example:</p>
+<pre><code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./ledger</code>
+<code class="language-text output"></code><code class="language-text input">go ex/p1a.txt</code>
+<code class="language-text output">Invalid command: go</code>
+<code class="language-text output">[Exit 1 ]</code></pre><p>(Note: the last like <code>[Exit 1 ]</code> isn’t actually output from your program, but shows up from the prompt if you <code>return 1</code> from your <code>main</code> in C.)</p></li>
+<li><p>If the user enters “run” as the command, but the filename they give can’t be opened, print an error message like <code>File &quot;&lt;filename&gt;&quot; not found</code> and exit with status 2. For example:</p>
+<pre><code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./ledger</code>
+<code class="language-text output"></code><code class="language-text input">run notafile.txt</code>
+<code class="language-text output">File "notafile.txt" not found!</code>
+<code class="language-text output">[Exit 2 ]</code></pre></li>
+</ul>
+<h1 id="part-2-multiple-transactions-per-day-up-to-60-points-"><a class ="linkin" href="1.1.html#top">Part 2: Multiple transactions per day (up to 60 points)</a></h1><p>(Don’t start this part until your part 1 works perfectly! And once it does, it’s probably a good idea to make a copy of the file before you start on the next part.)</p>
+<p>Now you will extend your <code>ledger</code> program to so that the transactions file can have multiple deposits or withdrawals per day. The format of the file is the same as before, with withdrawals indicated by a line <code>W &lt;amount&gt;</code>. Here is the <code>small.txt</code> file that’s part of the <a href="1/ex.tgz">tarball</a> you extracted and downloaded into your project directory:</p>
+<pre><code class="language-.text">5 days
+D 50
+W 10
+ENDOFDAY
+W 400
+D 200
+ENDOFDAY
+ENDOFDAY
+W 1
+W 1
+W 1
+ENDOFDAY
+D 1.50
+ENDOFDAY</code></pre>
+<p>Notice that every day might have a different number of deposits or withdrawals, even none at all (as in day 3 in the example file above). Also because there can be withdrawals, you can have a negative account balance.</p>
+<p>The output from your program should be the same as before, reporting the final balance and the average end-of-day balance. For the example above, the ending balances on each day are 40, -160, -160, -163, and -161.50. So the average ending balance is what you see in the first example run below:</p>
+<pre><code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./ledger</code>
+<code class="language-text output"></code><code class="language-text input">run ex/small.txt</code>
+<code class="language-text output">Simulated 5 days.</code>
+<code class="language-text output">Final balance: -161.5</code>
+<code class="language-text output">Average end-of-day balance: -120.9</code>
+<code class="language-text output"></code>
+<code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./ledger</code>
+<code class="language-text output"></code><code class="language-text input">run ex/med.txt</code>
+<code class="language-text output">Simulated 20 days.</code>
+<code class="language-text output">Final balance: 290.53</code>
+<code class="language-text output">Average end-of-day balance: 82.1745</code>
+<code class="language-text output"></code>
+<code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./ledger</code>
+<code class="language-text output"></code><code class="language-text input">run ex/big.txt</code>
+<code class="language-text output">Simulated 89 days.</code>
+<code class="language-text output">Final balance: -893.98</code>
+<code class="language-text output">Average end-of-day balance: -193.959</code></pre><!-- ` -->
+<p>Note that all of the examples from part 1 <em>should still work</em>, including the error conditions.</p>
+<h1 id="part-3-initial-balance-and-paychecks-up-to-85-points-"><a class ="linkin" href="1.1.html#top">Part 3: Initial balance and paychecks (up to 85 points)</a></h1><p>(Again, be sure to submit and get the previous parts working completely before you start on this part.)</p>
+<p>You will now add two new functionalities to your program. The user can specify an <em>initial balance</em> (which is zero by default) for the account, and a <em>paycheck amount</em> (which is also zero by default).</p>
+<p>The rules with the paycheck are as follows:</p>
+<ul>
+<li>The simulation starts on a Monday.</li>
+<li>The paycheck amount is deposited <em>every other Friday</em>, starting with the first Friday.</li>
+</ul>
+<p>The user may specify an initial balance and/or paycheck amount by giving the commands “<code>initbal = &lt;amount&gt;</code>” or “<code>paycheck = &lt;amount&gt;</code>” <em>before</em> the <code>run</code> command. Here are a few example runs:</p>
+<pre><code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./ledger</code>
+<code class="language-text output"></code><code class="language-text input">paycheck = 1000</code>
+<code class="language-text output"></code><code class="language-text input">run ex/small.txt</code>
+<code class="language-text output">Simulated 5 days.</code>
+<code class="language-text output">Final balance: 838.5</code>
+<code class="language-text output">Average end-of-day balance: 79.1</code>
+<code class="language-text output"></code>
+<code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./ledger</code>
+<code class="language-text output"></code><code class="language-text input">initbal = 500</code>
+<code class="language-text output"></code><code class="language-text input">paycheck = 250</code>
+<code class="language-text output"></code><code class="language-text input">run ex/med.txt</code>
+<code class="language-text output">Simulated 20 days.</code>
+<code class="language-text output">Final balance: 1290.53</code>
+<code class="language-text output">Average end-of-day balance: 807.174</code>
+<code class="language-text output"></code>
+<code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./ledger</code>
+<code class="language-text output"></code><code class="language-text input">paycheck = 405.31</code>
+<code class="language-text output"></code><code class="language-text input">initbal = 150</code>
+<code class="language-text output"></code><code class="language-text input">run ex/big.txt</code>
+<code class="language-text output">Simulated 89 days.</code>
+<code class="language-text output">Final balance: 2093.19</code>
+<code class="language-text output">Average end-of-day balance: 1326.81</code></pre><p>Here is a detailed breakdown of how the second example above works, with an initial balance of 500, paycheck of 250, and the <a href="1/files.php%3Ff=med.txt.html">med.txt example from the tarball</a>.</p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: center;">Day</th>
+<th style="text-align: center;">Transactions</th>
+<th style="text-align: center;">Paycheck</th>
+<th style="text-align: center;">Ending balance</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">(initial)</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">500</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Monday</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">500</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Tuesday</td>
+<td style="text-align: center;">-61.68</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">438.32</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Wednesday</td>
+<td style="text-align: center;">+32.71 +28.44</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">499.47</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Thursday</td>
+<td style="text-align: center;">+96.77 -27.6</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">568.64</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Friday</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">250</td>
+<td style="text-align: center;">818.64</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Saturday</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">818.64</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Sunday</td>
+<td style="text-align: center;">-46.45 -4.04</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">768.15</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Monday</td>
+<td style="text-align: center;">+42.64 +23.9</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">834.69</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Tuesday</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">834.69</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Wednesday</td>
+<td style="text-align: center;">-42.85 -80.76</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">711.08</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Thursday</td>
+<td style="text-align: center;">+13.04</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">724.12</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Friday</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">724.12</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Saturday</td>
+<td style="text-align: center;">+83.16</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">807.28</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Sunday</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">807.28</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Monday</td>
+<td style="text-align: center;">+78.78 -23.42</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">862.64</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Tuesday</td>
+<td style="text-align: center;">+90.39</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">953.03</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Wednesday</td>
+<td style="text-align: center;">+24.36</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">977.39</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Thursday</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">977.39</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Friday</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">250</td>
+<td style="text-align: center;">1227.39</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Saturday</td>
+<td style="text-align: center;">+63.14</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">1290.53</td>
+</tr>
+</tbody>
+</table>
+<p>Again, remember that <em>everything from the previous parts should still work</em>. This includes the error conditions. Be careful about the error condition for an “Invalid command”, as this now has to account for the possibilities of setting <code>initbal</code> and/or <code>paycheck</code> before issuing the <code>run</code> command.</p>
+<h1 id="part-4-interest-up-to-100-points-"><a class ="linkin" href="1.1.html#top">Part 4: Interest (up to 100 points)</a></h1><p>Any good bank wouldn’t just let money sit around and do nothing. Instead, they give you extra money in the form of <em>interest</em> when you have a positive balance. If you have a negative balance, that’s considered a loan and they charge you extra money at a much higher rate.</p>
+<p>For this part, your program will allow these two rates <code>saverate</code> and <code>loanrate</code> to be set by the user in a similar manner to <code>initbal</code> and <code>paycheck</code> as in the previous part.</p>
+<p>The rules for computing the interest are as follows. Read carefully!</p>
+<ul>
+<li><p>The interest is calculated at the <em>beginning</em> of each day, before the day’s transactions and any paychecks are added.</p></li>
+<li><p>Whenever the current balance is positive, then the interest added is calculated as</p>
+<pre><code class="language-C">current_balance * (saverate / 100)</code></pre>
+<p>If the current balance is negative, then the interest charged is calculated as</p>
+<pre><code class="language-C">current_balance * (loanrate / 100)</code></pre>
+<p>(which will be a negative number also, so it gets charged and not added to the account.)</p>
+<p>Note: Dividing by 100 is to turn the percentage into a decimal.</p>
+<p>Nore also: If you wanted to be more accurate to real-life, we would enter the rates as <em>annual</em> interest rates and then divide by 365 to get the daily <em>compounding</em> interest rate. But we won’t do that here.</p></li>
+<li><p>Interest payments or charges are not added to the balance immediately. Instead, they <em>accrue</em> in a separate “side account” that is added <em>every 30 days</em> to the account.</p></li>
+<li><p>If you consider the first day to be “day 1”, then the interest for day 1 up to and including day 30 is all added (or charged) to the account balance on day 30. Then a new amount starts to accrue on day 31, and so on forever.</p></li>
+<li><p>Unless your simulation ends exactly on day 30, 60, 90, etc., there will be some interest left over in the “side account” at the end. That’s fine; don’t add it to the final balance or anything else.</p></li>
+</ul>
+<p>Of course, if a saverate or loanrate is not specified, it defaults to zero.</p>
+<p>Here are a few example runs. You probably want to work out some additional test cases on your own!</p>
+<pre><code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./ledger</code>
+<code class="language-text output"></code><code class="language-text input">saverate = 1.5</code>
+<code class="language-text output"></code><code class="language-text input">loanrate = 5.5</code>
+<code class="language-text output"></code><code class="language-text input">run ex/big.txt</code>
+<code class="language-text output">Simulated 89 days.</code>
+<code class="language-text output">Final balance: -1142.24</code>
+<code class="language-text output">Average end-of-day balance: -264.382</code>
+<code class="language-text output"></code>
+<code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./ledger</code>
+<code class="language-text output"></code><code class="language-text input">saverate = 9.0</code>
+<code class="language-text output"></code><code class="language-text input">run ex/big.txt</code>
+<code class="language-text output">Simulated 89 days.</code>
+<code class="language-text output">Final balance: 260.957</code>
+<code class="language-text output">Average end-of-day balance: 352.589</code>
+<code class="language-text output"></code>
+<code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./ledger</code>
+<code class="language-text output"></code><code class="language-text input">initbal = 100</code>
+<code class="language-text output"></code><code class="language-text input">paycheck = 800</code>
+<code class="language-text output"></code><code class="language-text input">saverate = 6.0</code>
+<code class="language-text output"></code><code class="language-text input">run ex/big.txt</code>
+<code class="language-text output">Simulated 89 days.</code>
+<code class="language-text output">Final balance: 15501.2</code>
+<code class="language-text output">Average end-of-day balance: 6950.61</code></pre><!-- ` -->
+  </div></article></div></div><nav class="stickynav"><div><div class="dropdown"><a href="../index.php.html" class="ddown-btn">SI 204</a><div class="ddown-content"><a href="../calendar.php.html">Calendar</a><a href="../notes/index.html">Notes</a><a href="../hw/index.html">HWs</a><a href="../lab/index.html">Labs</a><a href="index.html">Projects</a><a href="../exams/index.html">Exams</a><a href="../admin/index.html">Resources</a><a href="https://www.usna.edu/Users/cs/roche/">Roche</a><a href="https://www.usna.edu/Users/cs/albing/">Albing</a></div></div><div class="dropdown"><a href="1.1.html#top" class="linkin pagetop">Project 1: Bank Account</a><div class="ddown-content ddtoc"><ul><li><a class="linkin" href="1.1.html#overview">Overview</a>
+<ul><li><a class="linkin" href="1.1.html#tips-for-success"> Tips for success</a></li><li><a class="linkin" href="1.1.html#grading"> Grading</a></li><li><a class="linkin" href="1.1.html#honor-policy-reminder"> Honor Policy Reminder</a></li><li><a class="linkin" href="1.1.html#files"> Files</a></li></ul></li>
+<li><a class="linkin" href="1.1.html#part-1-one-deposit-per-day-up-to-30-points-">Part 1: One deposit per day (up to 30 points)</a></li>
+<li><a class="linkin" href="1.1.html#part-2-multiple-transactions-per-day-up-to-60-points-">Part 2: Multiple transactions per day (up to 60 points)</a></li>
+<li><a class="linkin" href="1.1.html#part-3-initial-balance-and-paychecks-up-to-85-points-">Part 3: Initial balance and paychecks (up to 85 points)</a></li>
+<li><a class="linkin" href="1.1.html#part-4-interest-up-to-100-points-">Part 4: Interest (up to 100 points)</a></ul></div></div></nav><footer><div id="foottext">    <p class="disclaimer">Material contained above is made available
+    for the purpose of peer review and discussion and does not
+    necessarily reflect the views of the Department of the Navy or the
+    Department of Defense.
+    Some links above are to sites that are not
+    located at the United States Naval Academy. The USNA is not
+    responsible for the content found on these sites. In addition, the
+    content of these sites does not reflect the opinions, standards,
+    policy or endorsement of the Naval Academy or the United States
+    Government.</p>
+  Page maintained by Daniel S. Roche (<a href="mailto:roche [AT] usna [DOT] edu" id="emaillink1">roche [AT] usna [DOT] edu</a><script type='text/javascript'><!--
+        var b="he@usna.edu";
+        var a="roc";
+        document.getElementById("emaillink1").href='mailto:'+a+b;
+        document.getElementById("emaillink1").innerHTML=a+b;
+        // --></script>). Last updated 06 March 2017 12:34.</div></footer><script src="../scripts/prism.js"></script><script type="text/javascript">var the_body = $('html, body');
+var sticky_height = $('.stickynav').height();
+$('.linkin').click(function(){
+  var href = $(this).attr('href');
+  var offset;
+  if (href == '#top') offset = 0;
+  else offset = $(href).offset().top - sticky_height;
+  the_body.animate({ scrollTop: offset }, 500);
+  return false;
+});</script></body></html>

@@ -1,0 +1,158 @@
+
+\documentclass{article}[9pt]
+
+\usepackage{listings}
+\usepackage{fullpage}
+\usepackage{textcomp}
+
+\lstset{ %
+  basicstyle=\ttfamily\small,
+  commentstyle=\ttfamily\small\emph,
+  upquote=true,
+  framerule=1.25pt,
+  breaklines=true,
+  showstringspaces=false,
+  escapeinside={(*@}{@*)},
+  belowskip=2em,
+  aboveskip=1em,
+}
+
+
+\newcommand{\myanswer}[1]{\framebox[.9\linewidth]{\parbox{.85\linewidth}{\fontfamily{qhv}\selectfont{#1}}}}
+
+\title{HW 2}
+
+\author{Mike Hanling}
+
+\date{23 JAN 2016}
+
+\begin{document}
+
+\maketitle
+
+\begin{enumerate}
+
+\item (10 points) Consider the \texttt{ls -l} output below, label the output
+appropriately:
+
+\begin{verbatim}
+drwxr-xr-x 2 aviv scs 4096 2013-12-22 10:57 demo/
+-rw-r--r-- 1 aviv scs 13454 2013-12-22 10:56 text.dat
+\end{verbatim}
+
+\item (10 points) Describe the permission strings below in plain English? What
+permission does the owner have, group have, and other have?
+
+\begin{enumerate}
+
+\item \texttt{rwxrw-rw-}
+
+      \myanswer{Owner has read, write, and execute permissions.\\
+                Group has read and write permissions.\\
+                Global has read and write permissions.}
+
+\item \texttt{r-x-{}-x-{}-x}
+
+      \myanswer{Owner has read and execute permissions.\\
+                Group has execute permissions.\\
+                Global has execute permissions.}
+
+\item \texttt{rw-rw-r-{}}
+
+      \myanswer{Owner has read and write permissions.\\
+                Group has read and write permissions.\\
+                Global has read permissions.}
+
+\end{enumerate}
+
+\item (20 points) Using the man page (or \textbf{trying it yourself in the terminal})
+describe the resulting action of the following \texttt{chmod} commands.
+
+\begin{enumerate}
+
+\item \texttt{chmod a+x file}
+
+      \myanswer{Global gains execute permissions.}
+
+\item \texttt{chmod u+x file}
+
+      \myanswer{Owner/user gains execute permissions.}
+
+\item \texttt{chmod a-w file}
+
+      \myanswer{Global loses write permissions.}
+
+\item  \texttt{chmod g+rw file}
+
+      \myanswer{Group gains read and write permissions.}
+
+\end{enumerate}
+
+\item (10 points) On a lab computer, type \texttt{groups} into the shell. What groups are
+you in?
+
+      \myanswer{mids 5001 domain users mi203goldstudent4 midn.all lel
+      vbrick\_midn papercut.all co08.all vbrick\_midn student.apps
+      midn\_2020.all m202430 cfy\_cslinuxuser compsci\_zone\_users lel}
+
+\item (10 points) In what configuration is the following information found?
+
+  \begin{enumerate}
+
+\item The list of all users on the systems?
+
+      \myanswer{/etc/passwd}
+
+\item The default group of a user?
+
+      \myanswer{/etc/passwd and then /etc/groups to look up the ascii
+      name.}
+
+\item The list of all groups and members (perhaps not the default group?)
+
+      \myanswer{/etc/group}
+
+\end{enumerate}
+
+\item (20 points) On a lab computer, run \texttt{\textasciitilde{}aviv/bin/ic221-up} and change into the
+\texttt{hw/02} directory. There is a program called \texttt{runme}. Change the
+permission of this program such that is executable and run it.
+
+\begin{enumerate}
+
+\item What command did you use to run it?
+
+      \myanswer{{\tt chmod 744 runme} and then {\tt ./runme}}
+\item What is the output of running the command?
+
+      \myanswer{4 big ascii-art cats}
+
+\end{enumerate}
+\item (20 points) Use \texttt{ls} to list the directory \texttt{\textasciitilde{}aviv/ic221-hw/hw02/} where
+you'll find a secret file called \texttt{secret} that you \textbf{do not} have
+permission to execute. 
+
+\begin{enumerate}
+
+\item Explain how you could still execute this program despite not
+having group or global execute permissions?
+
+      \myanswer{I had read permissions, so I did the following:\\
+      {\tt cat ~aviv/ic221-hw/hw02/secret > secret \\
+      chmod 700 secret \\
+      ./secret}}
+      
+\item Do so, and what is the output?
+
+      \myanswer{Ascii-art of a submarine in the waves.}
+\end{enumerate}
+
+\end{enumerate}
+
+\end{document}
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:

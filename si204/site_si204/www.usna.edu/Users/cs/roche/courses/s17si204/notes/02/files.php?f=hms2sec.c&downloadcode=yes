@@ -1,0 +1,38 @@
+/***************************************************
+Converting time from hh:mm:ss to seconds.
+
+Write a program that reads in a value for ellapsed 
+time in the format hh:mm:ss and prints out the 
+ellapsed time in seconds. So, if the user enters:
+
+	02:33:01
+
+your program should print out 
+ 
+        9181 seconds
+
+***************************************************/
+#include "si204.h"
+
+int main() {
+  // Read time
+  fputs("Enter elapsed time in hh:mm:ss format: ", stdout);
+  int h;
+  int m;
+  int s;
+  h = readnum(stdin);
+  readchar(stdin); // skip the colon
+  m = readnum(stdin);
+  readchar(stdin); // skip the colon
+  s = readnum(stdin);
+
+  // Convert to seconds
+  int totals = h*60*60 + m*60 + s;
+
+  // Print result
+  fputs("Elapsed time is ", stdout);
+  writenum(totals, stdout);
+  fputs(" seconds\n", stdout);
+
+  return 0;
+}

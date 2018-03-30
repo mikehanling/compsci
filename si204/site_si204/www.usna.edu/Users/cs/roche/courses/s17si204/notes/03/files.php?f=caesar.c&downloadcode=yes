@@ -1,0 +1,53 @@
+/***************************************************
+Ceasar-Shift Encryption
+
+Write a program that reads a key value from the
+user (i.e. a number between 0 and 26) and a message
+consisting solely of lowercase letters terminated
+by a '.', and prints the Ceasar Shift encryption
+of the message using the key.
+
+Ceasar Shift Encryption is decribed in a problem
+from Unit 2, so check out the lecture notes there.
+***************************************************/
+#include "si204.h"
+
+int main() {
+  // Read in key value
+  fputs("Enter key value: ", stdout);
+  int key = readnum(stdin);
+
+  // Read in message
+  fputs("Enter message (terminated by a .): ", stdout);
+  char nextlet;
+
+  // read the first letter
+  nextlet = readchar(stdin);
+
+  // Keep encrypting until you see a .
+  while (nextlet != '.') {
+    // turn letter to upper-case if it's lower-case
+    if (nextlet >= 'a') {
+      nextlet -= 'a' - 'A';
+    }
+
+    // Compute distance for original letter
+    int dist = nextlet - 'A';
+
+    // Compute distance for encrypted letter
+    int ed = (dist + key) % 26;
+
+    // Compute encrypted letter
+    char e = 'A' + ed;
+
+    // Write out encrypted letter
+    fputc(e, stdout);
+
+    // read next letter
+    nextlet = readchar(stdin);
+  }
+
+  fputs(".\n", stdout);
+
+  return 0;
+}

@@ -1,0 +1,34 @@
+/**********************************************
+The function printbin(int n) prints out the
+binary representation of n, assuming n >= 0.
+Notice that the base case is not explicit
+here!
+ **********************************************/
+#include <stdio.h>
+
+void printbin(int n);
+
+int main() {
+  // Get integer n, n >= 0
+  int n;
+  printf("Enter non-negative integer: ");
+  fflush(stdout);
+  scanf(" %i", &n);
+
+  // Print the binary representation of n
+  printf("In binary that's ");
+  printbin(n);
+  printf("\n");
+
+  return 0;
+}
+
+void printbin(int n) {
+  // Print everything but the last bit!
+  if (n > 1) {
+    printbin(n/2);
+  }
+
+  // Print out the last bit
+  printf("%i", n%2);
+}

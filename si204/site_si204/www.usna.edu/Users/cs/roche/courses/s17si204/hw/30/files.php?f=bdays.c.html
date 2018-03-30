@@ -1,0 +1,139 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+         "http://www.w3.org/TR/html4/strict.dtd"><html><head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"><title>bdays.c</title><link href="../../scripts/prism.css" rel="stylesheet" />    <style type="text/css">
+    body {
+      margin: 0;
+      padding:55px 0 0 0;
+    }
+    div#header {
+      position:absolute;
+      top: 0;
+      left: 0;
+      width:100%;
+      height:50px;
+      border-bottom: 5px solid red;
+      text-align: center;
+      background-color: #d0d0d0;
+      z-index: 1000;
+    }
+    @media screen{
+      body>div#header{
+        position:fixed;
+      }
+    }
+    * html body{
+      overflow:hidden;
+    }
+    * html div#content {
+      height: 100%;
+      overflow: auto;
+    }
+    .warning {
+      margin: 3px auto;
+      background-color: black;
+      color: yellow;
+      font-weight: bold;
+      max-width: 600px;
+      font-family: sans-serif;
+      text-align: center;
+    }
+    /*
+    .codeblock {
+      margin:10px auto 10px;
+      min-width:500px;
+      max-width:800px;
+    }
+    .codeblock td.de1 {
+      border:1px solid black;
+    }
+    .codeblock td.ln {
+      border:1px solid white;
+    }
+    pre {
+      margin:10px auto 10px;
+      max-width:800px;
+    }
+    .plainpre {
+      border: 1px solid black;
+      padding:2px;
+    }
+    */
+    </style>
+  </head><body><div id="header"><p><a href="files.php%3Ff=bdays.c&amp;downloadcode=yes">Click here</a> to download <code>bdays.c</code>.</p></div><div id="content"><pre class="line-numbers"><code class="language-C">#include &lt;stdio.h&gt;
+
+struct date {
+  int month;
+  int day;
+  int year;
+};
+
+struct person {
+  char name[128];
+  struct date birthday;
+};
+
+void read_person(struct person* pptr);
+void write_person(struct person p);
+void sort(struct person* data, int size);
+int before(struct person a, struct person b);
+
+int main() {
+  printf(&quot;How many people? &quot;);
+  fflush(stdout);
+  int nppl;
+  scanf(&quot; %i&quot;, &amp;nppl);
+
+  // create array and read in each person
+  struct person people[nppl];
+  for (int i=0; i &lt; nppl; ++i) {
+    read_person(&amp;people[i]);
+  }
+
+  // sort by birthday
+  sort(people, nppl);
+
+  // print out youngest first
+  printf(&quot;\nFrom youngest to oldest:\n&quot;);
+  for (int i=0; i &lt; nppl; ++i) {
+    write_person(people[i]);
+  }
+
+  return 0;
+}
+
+int before(struct person a, struct person b) {
+  // FIXME: YOU FILL THIS IN!!!
+}
+
+
+void write_person(struct person p) {
+  // FIXME: YOU FILL THIS IN!!!
+}
+
+void read_person(struct person* pptr) {
+  int check = scanf(&quot; %s %i/%i/%i&quot;,
+                    pptr-&gt;name,
+                    &amp;pptr-&gt;birthday.month,
+                    &amp;pptr-&gt;birthday.day,
+                    &amp;pptr-&gt;birthday.year);
+  if (check != 4) {
+    printf(&quot;ERROR: invalid person format\n&quot;);
+  }
+}
+
+
+void sort(struct person* data, int size) {
+  for(int length = size; length &gt; 1; --length) {
+    // Find imax, the index of the largest
+    int imax = 0;
+    for(int i = 1; i &lt; length; ++i) {
+      if (before(data[imax], data[i])) {
+        imax = i;
+      }
+    }
+    // Swap data[imax] &amp; the last element
+    struct person temp = data[imax];
+    data[imax] = data[length - 1];
+    data[length - 1] = temp;
+  }
+}</code></pre></div><script src="../../scripts/prism.js"></script></body></html>

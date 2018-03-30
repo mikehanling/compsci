@@ -1,0 +1,68 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+
+//Prototypes
+char** read_letter(FILE* readfrom, int height, int length);
+void print_letter(char** letterArray, int height, int length);
+
+
+//Main
+int main() {
+  FILE* fin = fopen("letters.txt", "r");
+
+  int numletters = 4;
+  int height = 4;
+  int length = 7;
+  char*** word = calloc(numletters, sizeof(char**));
+  
+  //read letters
+  for (int i = 0; i < numletters; i++) {
+    word[i] = read_letter(fin, height, length);
+  }
+    
+  //swap first and second
+  char** temp = word[0];
+  word[0] = word[1];
+  word[1] = temp;
+  
+  //print letters and free the head-based arrays
+  for (int i = 0; i < numletters; i++) {
+    print_letter(word[i], height, length);
+    for (int j = 0; j < height; j++) {
+      free(word[i][j]);
+    }
+    free(word[i]);
+  }
+  free(word);
+
+  return 0;
+}
+
+
+//Definitions
+char** read_letter(FILE* readfrom, int height, int length) {
+  char** letter = calloc(height, sizeof(char*));
+  for(int i = 0; i < height; i++) {
+    letter[i] = calloc(length, sizeof(char));
+  }
+  for(int i = 0; i < height;i++) {
+    for(int j = 0; j < length; j++) {
+      letter[i][j] = fgetc(readfrom);
+    }
+    while(fgetc(readfrom) != '\n') { }
+  }
+
+  return letter;
+}
+
+
+void print_letter(char** letterArray, int height, int length) {
+  for(int i = 0; i < height; i++) {
+    for(int j = 0; j < length; j++) {
+      printf("%c", letterArray[i][j]);
+    }
+    printf("\n");
+  }
+  printf("\n");
+}

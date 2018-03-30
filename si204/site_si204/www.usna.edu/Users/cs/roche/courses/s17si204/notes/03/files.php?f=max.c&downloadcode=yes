@@ -1,0 +1,42 @@
+/***************************************************
+Maximum Number
+
+Write a program that reads in positive integers from
+the user, each separated by a space, and the whole
+terminated by a negative number (e.g. 3 22 10 -2),
+and returns the largest of the numbers entered (not
+including the terminated negative number!).
+***************************************************/
+#include "si204.h"
+
+int main() {
+  fputs("Enter numbers separated by spaces"
+        " and ending with a negative.\n", stdout);
+
+  // initialization
+  int nextnum;
+  int max;
+
+  // read first number
+  nextnum = readnum(stdin);
+  // the first number is the max so far!
+  max = nextnum;
+
+  // Loop while the user enters more data
+  while (nextnum >= 0) {
+    // check whether nextnum is the biggest so far
+    if (nextnum > max) {
+      max = nextnum;
+    }
+
+    // read the next value
+    nextnum = readnum(stdin);
+  }
+
+  // write out result
+  fputs("The max is ", stdout);
+  writenum(max, stdout);
+  fputs("\n", stdout);
+
+  return 0;
+}

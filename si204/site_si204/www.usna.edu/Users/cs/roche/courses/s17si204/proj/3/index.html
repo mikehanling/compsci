@@ -1,0 +1,288 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Project 3: GPS Tracks</title><meta name="viewport" content="width=device-width, initial-scale=1.0"><link href="../../scripts/prism.css" rel="stylesheet" /><link rel="stylesheet" type="text/css" href="../../style.css"><script type="text/javascript" src="../../../../mathjax/MathJax.js%3Fconfig=TeX-AMS_HTML"></script><script type="text/javascript" src="../../scripts/jquery-3.1.1.min.js"></script><style>
+@media only screen and (min-width: 600px) {
+  #main>header {background-image: url("../../scripts/header.png");}
+}
+</style>  <meta name="generator" content="pandoc">
+  <style type="text/css">code{white-space: pre;}</style>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head><body><div id="main"><header><nav class="topnav"><div>
+            <a href="../../index.php.html">SI 204</a>
+            </div><div>
+            <a href="../../calendar.php.html">Calendar</a>
+            </div><div>
+            <a href="../../notes/index.html">Notes</a>
+            </div><div>
+            <a href="../../hw/index.html">HWs</a>
+            </div><div>
+            <a href="../../lab/index.html">Labs</a>
+            </div><div id="navparent">
+            <a href="../index.html">Projects</a>
+            </div><div>
+            <a href="../../exams/index.html">Exams</a>
+            </div><div>
+            <a href="../../admin/index.html">Resources</a>
+            </div><div>
+            <a href="https://www.usna.edu/Users/cs/roche/">Roche</a>
+            </div><div>
+            <a href="https://www.usna.edu/Users/cs/albing/">Albing</a>
+            </div></nav></header><div id="mainbox"><div class="printonly"><h1 class="printtitle">SI 204 Spring 2017 / Projects</h1><hr></div><article id="mainart"><header><h1>Project 3: GPS Tracks</h1></header><div id="TOC"><ul><li><a class="linkin" href="index.html#overview">Overview</a>
+<ul><li><a class="linkin" href="index.html#grading"> Grading</a></li><li><a class="linkin" href="index.html#honor-policy-reminder"> Honor Policy Reminder</a></li></ul></li>
+<li><a class="linkin" href="index.html#your-program">Your program</a>
+<ul><li><a class="linkin" href="index.html#package-installation"> Package installation</a></li><li><a class="linkin" href="index.html#starter-files"> Starter files</a></li><li><a class="linkin" href="index.html#track-file-format"> Track file format</a></li><li><a class="linkin" href="index.html#dealing-with-gps-coordinates"> Dealing with GPS coordinates</a></li><li><a class="linkin" href="index.html#dealing-with-times"> Dealing with times</a></li><li><a class="linkin" href="index.html#program-structure"> Program structure</a></li></ul></li>
+<li><a class="linkin" href="index.html#features">Features</a>
+<ul><li><a class="linkin" href="index.html#feature-1-statistics"> Feature 1: Statistics</a></li><li><a class="linkin" href="index.html#feature-2-landmarks"> Feature 2: Landmarks</a></li><li><a class="linkin" href="index.html#feature-3-fastest-mile"> Feature 3: Fastest mile</a></li><li><a class="linkin" href="index.html#feature-4-linked-list-storage"> Feature 4: Linked list storage</a></li><li><a class="linkin" href="index.html#feature-5-visual-picture"> Feature 5: Visual picture</a></li><li><a class="linkin" href="index.html#feature-6-gpx-file-input"> Feature 6: GPX file input</a></li></li></ul></div><div class="panbody"><h1 id="overview"><a class ="linkin" href="index.html#top">Overview</a></h1><p>In this project, you will write a program that reads in fitness tracker data consisting of a series of GPS locations and times, and then does some interesting processing with that data.</p>
+<p>This project will definitely require a good understanding of everything we have learned this semester, especially structs, arrays, functions, sorting, header files, and linked lists. You can find each of those topics in the <a href="../../notes/index.html">notes</a> if you need some review.</p>
+<h2 id="grading"><a class="linkin" href="index.html#top">Grading</a></h1><p>After the initial part on reading in a text file with the track data, which everyone has to do, the project is set up as a number of <em>features</em>, given below. Each “feature” can be implemented independently of the other ones and in any order, although some will definitely be more challenging than others.</p>
+<p>Your <em>maximum possble</em> grade will be based on the number of features you correctly implement in your program, according to the following formula:</p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: center;">Features implemented</th>
+<th style="text-align: center;">Maximum possible grade</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">1 feature</td>
+<td style="text-align: center;">30 (F)</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">2 features</td>
+<td style="text-align: center;">55 (F)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">3 features</td>
+<td style="text-align: center;">70 (C-)</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">4 features</td>
+<td style="text-align: center;">85 (B)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">5 features</td>
+<td style="text-align: center;">95 (A)</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">6 features</td>
+<td style="text-align: center;">105 (A+)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="honor-policy-reminder"><a class="linkin" href="index.html#top">Honor Policy Reminder</a></h1><p>Be sure to review the <a href="../../admin/policy.php.html">course policy</a> on collaboration for <em>programming projects</em>, which are more about the work you can do on your own and have different rules compared to homeworks and labs. In particular:</p>
+<ul>
+<li>The only help you may receive on a project is from your instructor MGSP leaders for this class, and that help must be clearly cited. In turn, you cannot provide help to any other students on this project.</li>
+<li>In no circumstance - project, homework or lab - may you copy code and submit it as your own work. That is the definition of plagiarism.</li>
+<li>For projects, you may not look at other people’s project code nor may you show your own code to others.</li>
+<li>You can look at online resources for general purpose C programming, but not for help writing financial simulations or anything else that is specific to the functionality required of your project.</li>
+</ul>
+<p>If you have questions about any of these rules, <strong>email your instructor and ask about it</strong>. We know you want to do what’s right and we are here to help you!</p>
+<h1 id="your-program"><a class ="linkin" href="index.html#top">Your program</a></h1><h2 id="package-installation"><a class="linkin" href="index.html#top">Package installation</a></h1><p>The last few features require a few external libraries in order to read XML files and display images on the screen. These libraries will be installed for you on the lab machines. In order to install them in your VM, run the command:</p>
+<pre><code class="language-txt">sudo apt-get install libxml2-dev libgtk-3-dev libcairo2-dev</code></pre>
+<p>and enter your password when prompted.</p>
+<p><strong>Update</strong>: If that command doesn’t work, your package lists may be out of date. In that case, you should first update your with the following pair of commands. (This might take a few minutes, but it’s a good idea to update anyway.)</p>
+<pre><code class="language-txt">sudo apt-get update
+sudo apt-get dist-upgrade</code></pre>
+<h2 id="starter-files"><a class="linkin" href="index.html#top">Starter files</a></h1><p>You should start by downloading the file <a href="proj3.tar.gz"><code>proj3.tar.gz</code></a> and running <code>tar xzvf proj3.tar.gz</code>. That command will create a folder called <code>proj3</code> with these files in it:</p>
+<ul>
+<li><a href="proj3/gps.c"><code>gps.c</code></a></li>
+<li><a href="proj3/gps.h"><code>gps.h</code></a></li>
+<li><a href="proj3/ride1.txt"><code>ride1.txt</code></a></li>
+<li><a href="proj3/ride2.txt"><code>ride2.txt</code></a></li>
+<li><a href="proj3/ride3.txt"><code>ride3.txt</code></a></li>
+<li><a href="proj3/run1.txt"><code>run1.txt</code></a></li>
+<li><a href="proj3/run2.txt"><code>run2.txt</code></a></li>
+<li><a href="proj3/land1.txt"><code>land1.txt</code></a></li>
+<li><a href="proj3/land2.txt"><code>land2.txt</code></a></li>
+<li><a href="proj3/gpx2txt"><code>gpx2txt</code></a></li>
+<li><a href="proj3/ride1.gpx"><code>ride1.gpx</code></a></li>
+<li><a href="proj3/ride2.gpx"><code>ride2.gpx</code></a></li>
+<li><a href="proj3/ride3.gpx"><code>ride3.gpx</code></a></li>
+<li><a href="proj3/run1.gpx"><code>run1.gpx</code></a></li>
+<li><a href="proj3/run2.gpx"><code>run2.gpx</code></a></li>
+</ul>
+<p><code>gps.h</code> and <code>gps.c</code> are a header and implementation file that define a struct and some useful functions for GPS locations, including crucially the <a href="https://en.wikipedia.org/wiki/Haversine_formula">complicated formula to calculate the distance on the Earth’s surface between two points</a>. <strong>You must use this library in your program, and must not change either file.</strong></p>
+<p>The <code>rideX.txt</code> and <code>runX.txt</code> files are plain-text “track files”, whose format is described in the next part. Your needs to read this type of file to get its input.</p>
+<p>The <code>landX.txt</code> files contain GPS coordinates and names of landmarks that will be used for one of the features you are asked to implement.</p>
+<p>The program <code>gpx2txt</code> is there for your convenience, so you can test your own files! It will convert any gpx file, which is a standard for most fitness watches and GPS units, to the plaintext track format we’re using for this assignment.</p>
+<p>The <code>.gpx</code> files contain the same data as the plaintext track files above, but in a more complicated XML format that is commonly used <em>in actual fitness devices</em> to store tracks. One of the features asks you to read this kind of file in addition to the plain-text format.</p>
+<h2 id="track-file-format"><a class="linkin" href="index.html#top">Track file format</a></h1><p>Tracks are represented as a series of <em>waypoints</em>, each of which contains a GPS location (longitude and latitude) and a timestamp (date and time, down to the second).</p>
+<p>The plaintext track files such as <code>run1.txt</code> that your program must be able to read and process start with an integer that represents the number of waypoints in the file, followed by a single line for each waypoint.</p>
+<p>Each waypoint starts with the latitude and longitude in degrees, as decimal numbers to fairly high precision. This is followed by a date and time in the format <code>YYYY-MM-DD HH:MM:SS</code>.</p>
+<p><strong>Important</strong>: Many parts of the date and time start with a leading <code>0</code>, like <code>2017-04-09</code> for April 9. You have to use the <code>%d</code> format string to read in this kind of integer. (If you use <code>%i</code> instead, it takes the 0 to indicate that the number is “octal”, or base 8 — definitely not what you want!)</p>
+<h2 id="dealing-with-gps-coordinates"><a class="linkin" href="index.html#top">Dealing with GPS coordinates</a></h1><p>The <code>gps.h</code> header file and <code>gps.c</code> function definitions file contain a struct <code>gpsco</code> and useful functions for storing and finding the distance between GPS coordinates.</p>
+<p><a href="https://en.wikipedia.org/wiki/Haversine_formula">The formula for determining the distance between two GPS coordinates</a> is a little complicated since our planet is round. You should be happy to use the <code>gps_dist</code> function which deals with this so you don’t have to!</p>
+<p>Note that the <code>gpsco</code> struct stores coordinates in radians, even though you will read them in in degrees. There are helper functions to do the conversion for you. <strong>You may not change the files gps.h and gps.c</strong>; you must use them as-is.</p>
+<h2 id="dealing-with-times"><a class="linkin" href="index.html#top">Dealing with times</a></h1><p>The timestamps for each waypoint are fully specified in the format <code>YYYY-MM-DD HH:MM:SS</code>. In order to easily deal with these, you might want to make use of some things in the standard header library <a href="http://en.cppreference.com/w/c/chrono">time.h</a>.</p>
+<p>The easiest thing will probably be to convert all date/time entries to a single number, the number of seconds since the Unix “epoch” of January 1, 1970. That number by itself isn’t so meaningful, but taking the <em>differnce</em> between two of those will give you the number of seconds between them, which is definitely something that will be useful for you!</p>
+<p>You will most likely want to check out the <a href="http://en.cppreference.com/w/c/chrono/tm"><code>tm</code> struct</a> and the functions <a href="http://en.cppreference.com/w/c/chrono/mktime"><code>mktime</code></a> and <a href="http://en.cppreference.com/w/c/chrono/difftime"><code>difftime</code></a>.</p>
+<p>(And don’t be intimidated by the <code>time_t</code> type; you can safely cast this to an <code>int</code> as long as it’s not too large.)</p>
+<h2 id="program-structure"><a class="linkin" href="index.html#top">Program structure</a></h1><p>No matter which features you implement, your program will start by reading a track file. Your program should immediately open this file and read in the waypoints in that file, saving them into an array or linked list of structs.</p>
+<p>Next your program will follow a series of <em>commands</em>. (Most of the features ask you to add the functionality for some command.) The <code>quit</code> command is used to exit your program.</p>
+<p>(This is similar to how <a href="../../lab/09.1.html">lab 9</a> works, at a high level.)</p>
+<p>For example:</p>
+<pre><code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./track</code>
+<code class="language-text output">File: </code><code class="language-text input">ride1.txt</code>
+<code class="language-text output">Opened ride1.txt with 1814 waypoints</code>
+<code class="language-text output">command: </code><code class="language-text input">quit</code></pre><h1 id="features"><a class ="linkin" href="index.html#top">Features</a></h1><h2 id="feature-1-statistics"><a class="linkin" href="index.html#top">Feature 1: Statistics</a></h1><p>Implement the command <code>stats</code>, which reports the total distance, total time, average speed in miles per hour, and average pace in minutes per mile.</p>
+<p>Examples:</p>
+<pre><code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./track</code>
+<code class="language-text output">File: </code><code class="language-text input">run2.txt</code>
+<code class="language-text output">Opened run2.txt with 327 waypoints</code>
+<code class="language-text output">command: </code><code class="language-text input">stats</code>
+<code class="language-text output">Total time: 33 minutes, 51 seconds</code>
+<code class="language-text output">Total distance: 4.02977 miles</code>
+<code class="language-text output">Average speed: 7.14286 mph</code>
+<code class="language-text output">Average pace: 8 minutes, 23.9995 seconds per mile</code>
+<code class="language-text output">command: </code><code class="language-text input">quit</code></pre><pre><code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./track</code>
+<code class="language-text output">File: </code><code class="language-text input">ride1.txt</code>
+<code class="language-text output">Opened ride1.txt with 1814 waypoints</code>
+<code class="language-text output">command: </code><code class="language-text input">stats</code>
+<code class="language-text output">Total time: 1 hours, 14 minutes, 9 seconds</code>
+<code class="language-text output">Total distance: 25.5691 miles</code>
+<code class="language-text output">Average speed: 20.6897 mph</code>
+<code class="language-text output">Average pace: 2 minutes, 53.9994 seconds per mile</code>
+<code class="language-text output">command: </code><code class="language-text input">quit</code></pre><p>Notes:</p>
+<ul>
+<li>The total distance is the sum of the distances between each pair of consecutive waypoints.</li>
+<li>The average speed is the total distance divided by the total time (converted to hours so you get miles per hour).</li>
+<li>The average pace is the total time divided by the total distance.</li>
+<li>Print the times for total time and average pace as “X hours, Y minutes, Z seconds”. Except if the time is less than 1 hour, then just pring “Y minutes, Z seconds”.</li>
+</ul>
+<h2 id="feature-2-landmarks"><a class="linkin" href="index.html#top">Feature 2: Landmarks</a></h1><p>Implement a <code>landmarks</code> function that reads in a file of landmarks and reports the minimum distance on the track to each landmark, starting with the closest landmark.</p>
+<p>The landmarks file will start with a line containing the number of landmarks, followed by lines that contain the latitude, longitude, and name of each landmark.</p>
+<p>The distance to each landmark is defined as the shortest distance from <em>any</em> waypoint in the track to that landmark. In particular, the closest waypoint might be different for each landmark, and your program should account for that.</p>
+<p>Examples:</p>
+<pre><code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./track</code>
+<code class="language-text output">File: </code><code class="language-text input">run1.txt</code>
+<code class="language-text output">Opened run1.txt with 760 waypoints</code>
+<code class="language-text output">command: </code><code class="language-text input">landmarks land2.txt</code>
+<code class="language-text output">London_Town 1.61996 miles</code>
+<code class="language-text output">Thomas_Point 5.2619 miles</code>
+<code class="language-text output">USNA 5.78583 miles</code>
+<code class="language-text output">Mount_Misery 9.33067 miles</code>
+<code class="language-text output">NSA 16.673 miles</code>
+<code class="language-text output">Smith_Island 68.6522 miles</code>
+<code class="language-text output">command: </code><code class="language-text input">quit</code></pre><pre><code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./track</code>
+<code class="language-text output">File: </code><code class="language-text input">run2.txt</code>
+<code class="language-text output">Opened run2.txt with 327 waypoints</code>
+<code class="language-text output">command: </code><code class="language-text input">landmarks land2.txt</code>
+<code class="language-text output">USNA 0.144812 miles</code>
+<code class="language-text output">London_Town 3.94861 miles</code>
+<code class="language-text output">Thomas_Point 4.96613 miles</code>
+<code class="language-text output">Mount_Misery 5.35822 miles</code>
+<code class="language-text output">NSA 16.9579 miles</code>
+<code class="language-text output">Smith_Island 72.8357 miles</code>
+<code class="language-text output">command: </code><code class="language-text input">quit</code></pre><h2 id="feature-3-fastest-mile"><a class="linkin" href="index.html#top">Feature 3: Fastest mile</a></h1><p>Implement a <code>fastest</code> function that prompts for a distance (in miles) and then reports the fastest time within the track for that distance.</p>
+<p>The <em>fastest time for that distance</em> comes from the least time between two waypoints, such that the cumulative distance between those waypoints is at least the distance that was entered. And by “cumulative distance” I mean the sum of the distances between all intermediate waypoints.</p>
+<p>So for example, if the total distance of the track is 4 miles, then the fastest time for 4 miles would just be the total time for that entire track. But there would be many, many possibilities for the fastest 1 mile within that 4 mile track.</p>
+<p>Examples:</p>
+<pre><code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./track</code>
+<code class="language-text output">File: </code><code class="language-text input">ride3.txt</code>
+<code class="language-text output">Opened ride3.txt with 13188 waypoints</code>
+<code class="language-text output">command: </code><code class="language-text input">fastest 0.5</code>
+<code class="language-text output">50 seconds</code>
+<code class="language-text output">command: fastest 10</code>
+<code class="language-text output">29 minutes, 56 seconds</code>
+<code class="language-text output">command: fastest 40</code>
+<code class="language-text output">3 hours, 5 minutes, 10 seconds</code>
+<code class="language-text output">command: </code><code class="language-text input">quit</code></pre><pre><code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./track</code>
+<code class="language-text output">File: </code><code class="language-text input">run1.txt</code>
+<code class="language-text output">Opened run1.txt with 760 waypoints</code>
+<code class="language-text output">command: </code><code class="language-text input">fastest 1</code>
+<code class="language-text output">7 minutes, 9 seconds</code>
+<code class="language-text output">command: </code><code class="language-text input">fastest 10</code>
+<code class="language-text output">1 hours, 22 minutes, 16 seconds</code>
+<code class="language-text output">command: </code><code class="language-text input">quit</code></pre><!-- ` -->
+<h2 id="feature-4-linked-list-storage"><a class="linkin" href="index.html#top">Feature 4: Linked list storage</a></h1><p>You should first try reading in the track as an array of waypoint structs. (You have to make up the waypoint struct yourself!) This should be pretty straightforward to do since the plaintext track files start with the number of waypoints in the file.</p>
+<p>To implement this feature, you have to store tracks as a linked list of waypoints instead. This will also mean changing any other functions you have to work with the linked lists also.</p>
+<p>There are explicit tests for this feature, but to <em>document</em> that you have done it (and make sure your instructor looks for it to give you credit), add a function <code>linked</code> to your <code>track</code> program that just prints out the word “yes”, as in:</p>
+<pre><code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./track</code>
+<code class="language-text output">File: </code><code class="language-text input">run1.txt</code>
+<code class="language-text output">Opened run1.txt with 760 waypoints</code>
+<code class="language-text output">command: </code><code class="language-text input">linked</code>
+<code class="language-text output">yes</code>
+<code class="language-text output">command: </code><code class="language-text input">quit</code></pre><!-- ` -->
+<h2 id="feature-5-visual-picture"><a class="linkin" href="index.html#top">Feature 5: Visual picture</a></h1><p>Implement a <code>visual</code> function that displays a visual depiction of the current track in a new window. You don’t need to overlay it over any actual maps, just make a line drawing with a line between each pair of consecutive points in the track.</p>
+<p>You can check any of the <code>gpx</code> files in the sample files (which match with the corresponding <code>txt</code> file) by uploading to websites such as <a href="http://www.gpsvisualizer.com/" class="uri">http://www.gpsvisualizer.com/</a>. Your image will be simpler because it’s not overlaid on Google Maps, but this should give you an idea of what the shape should look like.</p>
+<p>In order to pop up a window in your program, you will use the <a href="https://developer.gnome.org/gtk3/stable/">GTK+ library</a> along with a drawing library called <a href="https://cairographics.org/manual/">Cairo</a>.</p>
+<p>These are really big libraries that are used to create many Linux applications, and using them and reading the documentation can be difficult. That’s part of what this assignment is testing!</p>
+<p>To help get you started, <a href="files.php%3Ff=gtkexample.c.html">check out this example C program that opens a window in GTK and draws a line in the window</a>.</p>
+<p>To compile your program with GTK+, you will have to tell gcc where to find the library files! Fortunately there is a tool called <code>pkg-config</code> that can help with this. Here’s how to compile with the program above:</p>
+<pre><code class="language-.bash">gcc $(pkg-config --cflags gtk+-3.0) gtkexample.c $(pkg-config --libs gtk+-3.0) -o gtkexample</code></pre>
+<p>Notes:</p>
+<ul>
+<li>Your drawing area should be 800x800 pixels.</li>
+<li>In GTK+, the pixel (0,0) is at the top-left of the area. Play around with the example to get a sense of the pixel orientation.</li>
+<li>Use whatever colors or thicknesses you like.</li>
+<li>You will have to first find the “bounding box” of what is the minimum and maximum longitude and latitude in your track.</li>
+<li>Then you’ll have to convert each longitude and latitude so that they correspond to pixels in the 800x800 grid, and draw them! So the leftmost waypoint on the track should have pixel x value 0, the rightmost waypoint should have pixel x value 799, and similarly for the topmost and bottommost waypoints.</li>
+<li>Your program should go back to asking for the <code>command:</code> after the user closes the GTK+ window.</li>
+<li>Orient the map with north pointing up. You can assume the path doesn’t cross over the north or south pole, or the anti-meridian. (And you don’t have to account for the curvature of the globe here either!)</li>
+</ul>
+<p>Here is an example run from the command line:</p>
+<pre><code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./track</code>
+<code class="language-text output">File: </code><code class="language-text input">run2.txt</code>
+<code class="language-text output">Opened run2.txt with 327 waypoints</code>
+<code class="language-text output">command: </code><code class="language-text input">visual</code>
+<code class="language-text output">command: </code><code class="language-text input">quit</code></pre><!-- ` -->
+<p>Which should result in the following window being shown:</p>
+<p><img src="mapscreen.png" /> <!-- space needed --></p>
+<h2 id="feature-6-gpx-file-input"><a class="linkin" href="index.html#top">Feature 6: GPX file input</a></h1><p>Modify your program so that if the user enters a filename that ends with <code>.gpx</code>, then an alternate format is accepted.</p>
+<p>GPX is a real file format used by many fitness tracking apps and devices. If you have a Garmin or similar device, you can download any of your tracks as <code>.gpx</code> files. The <a href="http://www.topografix.com/gpx.asp">full specs are here</a>, but since we just want the location and time for each waypoint, it will be a bit easier.</p>
+<p>The file format for GPX files is called XML, and it’s similar to HTML if you remember that from your SY110 class. You will use a standard C library called <code>libxml2</code> to help you read the GPX files. The documentation on libxml2 is <a href="http://xmlsoft.org/html/index.html">here</a> and in particular you will be most interested in the <a href="http://xmlsoft.org/html/libxml-tree.html">tree section</a>.</p>
+<p>The <code>libxml2</code> library parses files as a “tree” of XML elements, which are naturally nested inside each other. Each part of the XML has some “attributes” and some “children”. For example, in the following XML:</p>
+<pre><code class="language-.xml">&lt;outer&gt;
+  &lt;inner something=&quot;cool&quot;&gt;
+    &lt;item1&gt;Item 1 contents&lt;/item1&gt;
+    &lt;item2&gt;Item 2 contents&lt;/item2&gt;
+  &lt;/inner&gt;
+&lt;/outer&gt;</code></pre>
+<p>There is one “root” element with name <code>outer</code>, which contains one child. That child has name <code>inner</code> and it also has one attribute with name <code>something</code>. The <code>inner</code> element has two children with names <code>item1</code> and <code>item2</code>, and they each have some contents.</p>
+<p><a href="files.php%3Ff=xmlexample.c.html">This example program</a> will read in an XML file like the small example above and report on the various elements and attributes. To compile it, you have to type <code>-I/usr/include/libxml2</code> at the beginning of the compilation command and <code>-lxml2</code> at the end, like</p>
+<pre><code class="language-.bash">gcc -I/usr/include/libxml2 xmlexample.c -lxml2 -o xmlexample</code></pre>
+<p>You can look at any of the sample <code>gpx</code> files provided to you above, to see how that file format works. Basically the root element is <code>gpx</code>, which has a child called <code>trk</code>, and the <code>trk</code> element has a child called <code>trkseg</code>, which contains the actual waypoints you care about. Each element in <code>trkseg</code> is a <code>trkpt</code> with some attributes and children that specify the latitude, longitude, and time for that waypoint, in order.</p>
+<p>All of those elements also might contain some extra information. Your program should ignore any extra information and just try to get the waypoint information for the track, and save that in the same way you have saved the plaintext track information from before.</p>
+<p>I am not telling you exactly how to do everything here. We have not used anything like <code>libxml</code> in class. Part of your assignment is to figure this out! But please don’t hesitate to ask your instructor for help whenever you aren’t making good progress.</p>
+<p>Of course I hope this goes without saying, but <strong>you may not assume that the same file with a .txt extension exists</strong>. You really have to read and process the gpx file!</p>
+<p>Examples:</p>
+<pre><code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./track</code>
+<code class="language-text output">File: </code><code class="language-text input">ride1.gpx</code>
+<code class="language-text output">Opened ride1.gpx with 1814 waypoints</code>
+<code class="language-text output">command:</code><code class="language-text input"> quit</code></pre><pre><code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./track</code>
+<code class="language-text output">File: </code><code class="language-text input">ride2.gpx</code>
+<code class="language-text output">Opened ride2.gpx with 4584 waypoints</code>
+<code class="language-text output">command: </code><code class="language-text input">quit</code></pre><pre><code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./track</code>
+<code class="language-text output">File: </code><code class="language-text input">ride3.gpx</code>
+<code class="language-text output">Opened ride3.gpx with 13188 waypoints</code>
+<code class="language-text output">command: </code><code class="language-text input">quit</code></pre>  </div></article></div></div><nav class="stickynav"><div><div class="dropdown"><a href="../../index.php.html" class="ddown-btn">SI 204</a><div class="ddown-content"><a href="../../calendar.php.html">Calendar</a><a href="../../notes/index.html">Notes</a><a href="../../hw/index.html">HWs</a><a href="../../lab/index.html">Labs</a><a href="../index.html">Projects</a><a href="../../exams/index.html">Exams</a><a href="../../admin/index.html">Resources</a><a href="https://www.usna.edu/Users/cs/roche/">Roche</a><a href="https://www.usna.edu/Users/cs/albing/">Albing</a></div></div><div class="dropdown"><a href="index.html#top" class="linkin pagetop">Project 3: GPS Tracks</a><div class="ddown-content ddtoc"><ul><li><a class="linkin" href="index.html#overview">Overview</a>
+<ul><li><a class="linkin" href="index.html#grading"> Grading</a></li><li><a class="linkin" href="index.html#honor-policy-reminder"> Honor Policy Reminder</a></li></ul></li>
+<li><a class="linkin" href="index.html#your-program">Your program</a>
+<ul><li><a class="linkin" href="index.html#package-installation"> Package installation</a></li><li><a class="linkin" href="index.html#starter-files"> Starter files</a></li><li><a class="linkin" href="index.html#track-file-format"> Track file format</a></li><li><a class="linkin" href="index.html#dealing-with-gps-coordinates"> Dealing with GPS coordinates</a></li><li><a class="linkin" href="index.html#dealing-with-times"> Dealing with times</a></li><li><a class="linkin" href="index.html#program-structure"> Program structure</a></li></ul></li>
+<li><a class="linkin" href="index.html#features">Features</a>
+<ul><li><a class="linkin" href="index.html#feature-1-statistics"> Feature 1: Statistics</a></li><li><a class="linkin" href="index.html#feature-2-landmarks"> Feature 2: Landmarks</a></li><li><a class="linkin" href="index.html#feature-3-fastest-mile"> Feature 3: Fastest mile</a></li><li><a class="linkin" href="index.html#feature-4-linked-list-storage"> Feature 4: Linked list storage</a></li><li><a class="linkin" href="index.html#feature-5-visual-picture"> Feature 5: Visual picture</a></li><li><a class="linkin" href="index.html#feature-6-gpx-file-input"> Feature 6: GPX file input</a></li></ul></ul></div></div></nav><footer><div id="foottext">    <p class="disclaimer">Material contained above is made available
+    for the purpose of peer review and discussion and does not
+    necessarily reflect the views of the Department of the Navy or the
+    Department of Defense.
+    Some links above are to sites that are not
+    located at the United States Naval Academy. The USNA is not
+    responsible for the content found on these sites. In addition, the
+    content of these sites does not reflect the opinions, standards,
+    policy or endorsement of the Naval Academy or the United States
+    Government.</p>
+  Page maintained by Daniel S. Roche (<a href="mailto:roche [AT] usna [DOT] edu" id="emaillink1">roche [AT] usna [DOT] edu</a><script type='text/javascript'><!--
+        var b="he@usna.edu";
+        var a="roc";
+        document.getElementById("emaillink1").href='mailto:'+a+b;
+        document.getElementById("emaillink1").innerHTML=a+b;
+        // --></script>). Last updated 17 April 2017 12:15.</div></footer><script src="../../scripts/prism.js"></script><script type="text/javascript">var the_body = $('html, body');
+var sticky_height = $('.stickynav').height();
+$('.linkin').click(function(){
+  var href = $(this).attr('href');
+  var offset;
+  if (href == '#top') offset = 0;
+  else offset = $(href).offset().top - sticky_height;
+  the_body.animate({ scrollTop: offset }, 500);
+  return false;
+});</script></body></html>

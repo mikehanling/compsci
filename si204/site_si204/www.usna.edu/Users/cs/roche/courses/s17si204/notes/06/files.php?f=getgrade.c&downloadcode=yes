@@ -1,0 +1,62 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int main() {
+  // open file
+  FILE* gfile = fopen("grades.txt", "r");
+
+  // read in number of students and number of homeworks
+  int students;
+  int hws;
+  fscanf(gfile, " %i students %i hws", &students, &hws);
+
+  // create 2D array
+  int** grades = calloc(students, sizeof(int*));
+  for (int i=0; i < students; ++i) {
+    grades[i] = calloc(hws, sizeof(int));
+  }
+
+  // read in grades from file
+  for (int i=0; i < students; ++i) {
+    for (int j=0; j < hws; ++j) {
+      fscanf(gfile, " %i", &grades[i][j]);
+    }
+  }
+
+  // lookup grades
+  int stlookup;
+  printf("Which student (-1 to quit)? ");
+  fflush(stdout);
+  scanf(" %i", &stlookup);
+
+  while (stlookup >= 0) {
+    int hwlookup;
+    printf("Which homework? ");
+    fflush(stdout);
+    scanf(" %i", &hwlookup);
+
+    if (stlookup >= 1 && stlookup <= students
+        && hwlookup >= 1 && hwlookup <= hws)
+    {
+      // note: subtract 1 to do 0-based indexing
+      int stgrade = grades[stlookup-1][hwlookup-1];
+      printf("Student %i's grade on homework %i is %i\n",
+             stlookup, hwlookup, stgrade);
+    } else {
+      printf("ERROR: Invalid student or HW index.\n");
+    }
+
+    printf("Which student (-1 to quit)? ");
+    fflush(stdout);
+    scanf(" %i", &stlookup);
+  }
+
+  // clean-up
+  for (int i=0; i < students; ++i) {
+    free(grades[i]);
+  }
+  free(grades);
+  fclose(gfile);
+
+  return 0;
+}

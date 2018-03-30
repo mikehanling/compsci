@@ -1,0 +1,187 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Lab 05: Vegas Baby!</title><meta name="viewport" content="width=device-width, initial-scale=1.0"><link href="../../scripts/prism.css" rel="stylesheet" /><link rel="stylesheet" type="text/css" href="../../style.css"><script type="text/javascript" src="../../../../mathjax/MathJax.js%3Fconfig=TeX-AMS_HTML"></script><script type="text/javascript" src="../../scripts/jquery-3.1.1.min.js"></script><style>
+@media only screen and (min-width: 600px) {
+  #main>header {background-image: url("../../scripts/header.png");}
+}
+</style>  <meta name="generator" content="pandoc">
+  <style type="text/css">code{white-space: pre;}</style>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head><body><div id="main"><header><nav class="topnav"><div>
+            <a href="../../index.php.html">SI 204</a>
+            </div><div>
+            <a href="../../calendar.php.html">Calendar</a>
+            </div><div>
+            <a href="../../notes/index.html">Notes</a>
+            </div><div>
+            <a href="../../hw/index.html">HWs</a>
+            </div><div id="navparent">
+            <a href="../index.html">Labs</a>
+            </div><div>
+            <a href="../../proj/index.html">Projects</a>
+            </div><div>
+            <a href="../../exams/index.html">Exams</a>
+            </div><div>
+            <a href="../../admin/index.html">Resources</a>
+            </div><div>
+            <a href="https://www.usna.edu/Users/cs/roche/">Roche</a>
+            </div><div>
+            <a href="https://www.usna.edu/Users/cs/albing/">Albing</a>
+            </div></nav></header><div id="mainbox"><div class="printonly"><h1 class="printtitle">SI 204 Spring 2017 / Labs</h1><hr></div><article id="mainart"><header><h1>Lab 05: Vegas Baby!</h1></header><div id="TOC"><ul><li><a class="linkin" href="index.html#let-s-roll"><span class="toc-section-number">1</span> Let’s Roll</a>
+<ul><li><a class="linkin" href="index.html#a-new-header-file"><span class="toc-section-number">1.1</span> A new header file</a></li><li><a class="linkin" href="index.html#a-function-to-roll-a-die"><span class="toc-section-number">1.2</span> A function to roll a die</a></li><li><a class="linkin" href="index.html#rolling-two-dice"><span class="toc-section-number">1.3</span> Rolling two dice</a></li></ul></li>
+<li><a class="linkin" href="index.html#oh-craps"><span class="toc-section-number">2</span> Oh craps</a></li>
+<li><a class="linkin" href="index.html#you-re-fired-going-further-"><span class="toc-section-number">3</span> You’re Fired! (going further)</a></li>
+<li><a class="linkin" href="index.html#rigging-the-game-bonus-"><span class="toc-section-number">4</span> Rigging the game (Bonus!)</a></li></ul></div><div class="panbody"><p>For this lab, you will build a version of the dice game “craps”. This will require you to write some useful functions and make use of C’s built-in random number generator function <code>rand()</code>.</p>
+<h1 id="let-s-roll"><a class ="linkin" href="index.html#top"><span class="header-section-number">1</span> Let’s Roll</a></h1><p>In this part, you will write a program called <code>roll.c</code> that simulates the roll of two six-sided die.</p>
+<h2 id="a-new-header-file"><a class="linkin" href="index.html#top"><span class="header-section-number">1.1</span> A new header file</a></h1><p>Your program will use a new header file <code>&lt;stdlib.h&gt;</code> that has (among other useful things) the following functions:</p>
+<ul>
+<li><p><code>void exit(int status)</code></p>
+<p>This exists your program at the given spot with the given <em>return code</em>. So doing <code>exit(2)</code> for example is the same as calling <code>return 2</code> from your <code>main</code>. The difference is, you can call <code>exit</code> from anywhere! So it’s useful when you need to exit the program from the middle of a function call.</p>
+<p>You don’t necessarily need <code>exit</code> for this lab but it’s good to know about.</p></li>
+<li><p><code>int rand()</code></p>
+<p>This function returns a random-looking number between 0 and <code>RAND_MAX</code>. (<code>RAND_MAX</code> is a constant defined in the header file that is <span class="math inline">\(2^{31}-1\)</span> on your computer but might be bigger or larger in some other C implementation.)</p>
+<p>Note that <code>rand()</code> returns a different number every time you call it in your program - that’s the whole point!</p></li>
+<li><p><code>void srand(int seed)</code></p>
+<p>Well it turns out <code>rand()</code> isn’t so random after all. Every time you call <code>rand()</code> within your program it gives a different number, but that <em>sequence</em> of random numbers is the same every time you run the program! To get a different random (looking) sequence, you have to set a different starting point, or “seed”, using <code>srand</code>. So for example to set the seed to 7, you would do the following near the beginning of your program:</p>
+<pre><code class="language-C">srand(7);</code></pre>
+<p><strong>Important</strong>: Remember that this is just starting <code>rand()</code> out on an appropriate sequence of random looking numbers. You should (in general) only call <code>srand</code> once in a given run of the program — otherwise you might go back in the sequence and start seeing repeats!</p></li>
+</ul>
+<h2 id="a-function-to-roll-a-die"><a class="linkin" href="index.html#top"><span class="header-section-number">1.2</span> A function to roll a die</a></h1><p>Start your <code>roll.c</code> program with the usual stuff and be sure to <code>#include &lt;stdlib.h&gt;</code> as well.</p>
+<p>Now we want to write a function that uses <code>rand()</code> to simulate the roll of a single 6-sided die. This function doesn’t need any arguments, and it should return an <code>int</code> between 1 and 6. So the prototype that goes above your <code>main()</code> will be:</p>
+<pre><code class="language-C">int rolldie();</code></pre>
+<p>and the definition that goes below your main block will look like</p>
+<pre><code class="language-C">int rolldie() {
+  // The code for rolldie goes in here.
+  // It should end with a return statement!
+}</code></pre>
+<p>Now how do we get a random number between 1 and 6? Remember that <code>rand()</code> returns a number between 0 and <code>RAND_MAX</code>. How to do you transform a random number between 0 and RAND_MAX into a random number from 1 through 6?</p>
+<p>You might be tempted to do something like <code>1 + rand()%6</code>. This would certainly give you a number in the range 1,2,3,4,5,6. However, since (on your computer at least) <code>RAND_MAX % 6</code> equals 1, that means there’s an ever so slightly larger chance that <code>rand() % 6</code> will equal 0 or 1, and hence your die would be “weighted” in favor of rolling a 1 or a 2. That’s no good!</p>
+<p>If instead you do <code>1 + rand()%8</code> there’s no bias; this returns a number in the range 1,2,3,4,5,6,7,8 with equal probability (since 8 is a power of 2). But now you don’t have a 6-sided die! So you keep doing this until <code>1 + rand()%8</code> is actually in the desired range of 1 up to 6.</p>
+<p>Roughly speaking, your <code>rolldie()</code> function will follow this approach:</p>
+<pre><code class="language-.text">compute 1 + rand()%8
+if that number is &lt;= 6, then return it.
+otherwise, compute a new 1 + rand()%8 and start over until it is &lt;= 6</code></pre>
+<p><strong>Ask your instructor if you get stuck here!</strong></p>
+<h2 id="rolling-two-dice"><a class="linkin" href="index.html#top"><span class="header-section-number">1.3</span> Rolling two dice</a></h1><p>Now that you have your <code>int rolldie()</code> function all set, it’s time to actually write a <code>main</code> that uses it.</p>
+<p>Your program should first ask the user for what seed value they want to use, and call <code>srand</code> to “seed” the random number generator with that value.</p>
+<p>Then use your <code>rolldie()</code> function to repeatedly simulate rolling two die and show them added up. For your <code>roll.c</code> program, roll two dice 5 times and then quit. For example:</p>
+<pre><code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./roll</code>
+<code class="language-text output">Enter seed value: </code><code class="language-text input">7</code>
+<code class="language-text output">Player rolled 6 + 4 = 10</code>
+<code class="language-text output">Player rolled 4 + 6 = 10</code>
+<code class="language-text output">Player rolled 4 + 3 = 7</code>
+<code class="language-text output">Player rolled 2 + 1 = 3</code>
+<code class="language-text output">Player rolled 2 + 4 = 6</code></pre><pre><code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./roll</code>
+<code class="language-text output">Enter seed value: </code><code class="language-text input">20</code>
+<code class="language-text output">Player rolled 3 + 2 = 5</code>
+<code class="language-text output">Player rolled 1 + 6 = 7</code>
+<code class="language-text output">Player rolled 2 + 1 = 3</code>
+<code class="language-text output">Player rolled 2 + 5 = 7</code>
+<code class="language-text output">Player rolled 2 + 1 = 3</code></pre><p><strong>Note</strong>: The numbers you see with those seed values should be exactly what is shown above. If not, there may be a problem with your <code>rolldie()</code> function — ask your instructor for help if necessary.</p>
+<h1 id="oh-craps"><a class ="linkin" href="index.html#top"><span class="header-section-number">2</span> Oh craps</a></h1><p>Now it’s time to write a simplified version of the craps game. Start by copying your perfectly-working <code>rolldie.c</code> to a new file <code>craps.c</code>. Your <code>main()</code> will change quite a bit for this part, but the <code>rolldie()</code> function you wrote should stay exactly the same!</p>
+<p>The rules for your game of craps are as follows:</p>
+<ul>
+<li>If the player rolls a 7 or 11 then the player wins.</li>
+<li>If the player rolls a 2, 3, or 12 the house wins.</li>
+<li>The player will continue to roll until either the player or the house wins.</li>
+</ul>
+<p>Your main program must use a function named “throwdice” (which you’ll create) that simulates a single throw of two die and the processing of that roll within the game. It must have the following prototype:</p>
+<pre><code class="language-C">// throwdice() returns -1, 0 or a positive number.
+// -1 means house wins, 0 means player wins, a positive number
+// means neither won, and the number is the sum of the two dice rolls
+int throwdice();</code></pre>
+<p>Using the function throwdice(), your program will simulate craps up until either the player or the house wins.</p>
+<p><strong>Note:</strong> You’re going to have to give some thought to what gets printed inside <code>main</code> and what gets printed inside <code>throwdice</code>.</p>
+<p>Examples:</p>
+<pre><code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./craps</code>
+<code class="language-text output">Enter seed value: </code><code class="language-text input">10</code>
+<code class="language-text output">Player rolled 1 + 6 = 7 Player wins!</code></pre><pre><code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./craps</code>
+<code class="language-text output">Enter seed value: </code><code class="language-text input">13</code>
+<code class="language-text output">Player rolled 3 + 6 = 9 roll again</code>
+<code class="language-text output">Player rolled 5 + 1 = 6 roll again</code>
+<code class="language-text output">Player rolled 1 + 4 = 5 roll again</code>
+<code class="language-text output">Player rolled 2 + 4 = 6 roll again</code>
+<code class="language-text output">Player rolled 4 + 4 = 8 roll again</code>
+<code class="language-text output">Player rolled 4 + 6 = 10 roll again</code>
+<code class="language-text output">Player rolled 1 + 1 = 2 House wins!</code></pre><pre><code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./craps</code>
+<code class="language-text output">Enter seed value: </code><code class="language-text input">1984</code>
+<code class="language-text output">Player rolled 6 + 2 = 8 roll again</code>
+<code class="language-text output">Player rolled 6 + 5 = 11 Player wins!</code></pre><h1 id="you-re-fired-going-further-"><a class ="linkin" href="index.html#top"><span class="header-section-number">3</span> You’re Fired! (going further)</a></h1><p>Copy your <code>craps.c</code> program to a new file <code>realcraps.c</code>.</p>
+<p>The owner of the casino runs an analysis on your craps program and sees the odds are stacked in favor of the player. He orders you to implement a version that favors the house. After showing your game to a math professor, the following rules are added to your game:</p>
+<ul>
+<li>On the first roll, you win on 7 or 11, and you lose with 2, 3, or 12. (This is the same as before.)</li>
+<li>If the first roll is 4, 5, 6, 8, 9,or 10 then the number rolled becomes your <em>setpoint</em>. You then repeatedly roll the die until you either roll your <em>setpoint</em> for a win or you roll a 7 for a loss (7 is a loser for the player unless rolled on the first try).</li>
+</ul>
+<p>Besides these rule changes, you should also let the player keep playing as long as they want. After each game ends, ask the player to enter <code>y</code> or <code>n</code> if they want to play another game or not.</p>
+<p>Below are some sample outputs.</p>
+<pre><code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./realcraps</code>
+<code class="language-text output">Enter seed value: </code><code class="language-text input">107</code>
+<code class="language-text output">Player rolled 6 + 6 = 12 House wins!</code>
+<code class="language-text output">Play again? </code><code class="language-text input">y</code>
+<code class="language-text output">Player rolled 5 + 5 = 10 roll again</code>
+<code class="language-text output">Player rolled 6 + 4 = 10 Player wins!</code>
+<code class="language-text output">Play again? </code><code class="language-text input">y</code>
+<code class="language-text output">Player rolled 1 + 1 = 2 House wins!</code>
+<code class="language-text output">Play again? </code><code class="language-text input">y</code>
+<code class="language-text output">Player rolled 3 + 2 = 5 roll again</code>
+<code class="language-text output">Player rolled 6 + 5 = 11 roll again</code>
+<code class="language-text output">Player rolled 4 + 2 = 6 roll again</code>
+<code class="language-text output">Player rolled 3 + 3 = 6 roll again</code>
+<code class="language-text output">Player rolled 3 + 4 = 7 House wins!</code>
+<code class="language-text output">Play again? </code><code class="language-text input">n</code></pre><pre><code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./realcraps</code>
+<code class="language-text output">Enter seed value: </code><code class="language-text input">100</code>
+<code class="language-text output">Player rolled 1 + 6 = 7 Player wins!</code>
+<code class="language-text output">Play again? </code><code class="language-text input">y</code>
+<code class="language-text output">Player rolled 5 + 1 = 6 roll again</code>
+<code class="language-text output">Player rolled 2 + 6 = 8 roll again</code>
+<code class="language-text output">Player rolled 4 + 5 = 9 roll again</code>
+<code class="language-text output">Player rolled 5 + 6 = 11 roll again</code>
+<code class="language-text output">Player rolled 4 + 3 = 7 House wins!</code>
+<code class="language-text output">Play again? </code><code class="language-text input">y</code>
+<code class="language-text output">Player rolled 6 + 5 = 11 Player wins!</code>
+<code class="language-text output">Play again? </code><code class="language-text input">y</code>
+<code class="language-text output">Player rolled 3 + 6 = 9 roll again</code>
+<code class="language-text output">Player rolled 5 + 3 = 8 roll again</code>
+<code class="language-text output">Player rolled 6 + 4 = 10 roll again</code>
+<code class="language-text output">Player rolled 2 + 4 = 6 roll again</code>
+<code class="language-text output">Player rolled 5 + 5 = 10 roll again</code>
+<code class="language-text output">Player rolled 2 + 6 = 8 roll again</code>
+<code class="language-text output">Player rolled 1 + 2 = 3 roll again</code>
+<code class="language-text output">Player rolled 5 + 3 = 8 roll again</code>
+<code class="language-text output">Player rolled 1 + 2 = 3 roll again</code>
+<code class="language-text output">Player rolled 6 + 5 = 11 roll again</code>
+<code class="language-text output">Player rolled 6 + 3 = 9 Player wins!</code>
+<code class="language-text output">Play again? </code><code class="language-text input">n</code></pre><p><strong>Hint:</strong> Think about adding a parameter <code>setpoint</code> to your <code>throwdice()</code> function. This would allow you to deal with throws after the first. Of course you still have to deal with the first throw. You might make different functions to distinguish the first from the following throws. Or you might use arguments to throwdice() to determine which case you’re in. Or you might do something altogether different.</p>
+<h1 id="rigging-the-game-bonus-"><a class ="linkin" href="index.html#top"><span class="header-section-number">4</span> Rigging the game (Bonus!)</a></h1><p>Come up with a seed value that wins as many games in a row as you can, in the program <code>realcraps</code> from the last part. For example, a seed value of 9 wins 3 games in a row.</p>
+<p>In a CLEAR COMMENT at the beginning of your <code>realcraps.c</code> file, indicate the seed value to use, and tell me how many games in a row you would win with that seed value.</p>
+<p>The winningest seed in your section will win a small prize!</p>
+<p><strong>Hint</strong>: If I were you, I would make a new program to help with this part. But I’m not going to tell you how that program should work! If you do that, you should call your program <code>brute.c</code> and submit it along with the rest of your code. There are no auto-tests for <code>brute</code> because it’s up to you how it works - just be sure to include the magic seed value in comments at the beginning of <code>realcraps.c</code>.</p>
+  </div></article></div></div><nav class="stickynav"><div><div class="dropdown"><a href="../../index.php.html" class="ddown-btn">SI 204</a><div class="ddown-content"><a href="../../calendar.php.html">Calendar</a><a href="../../notes/index.html">Notes</a><a href="../../hw/index.html">HWs</a><a href="../index.html">Labs</a><a href="../../proj/index.html">Projects</a><a href="../../exams/index.html">Exams</a><a href="../../admin/index.html">Resources</a><a href="https://www.usna.edu/Users/cs/roche/">Roche</a><a href="https://www.usna.edu/Users/cs/albing/">Albing</a></div></div><div class="dropdown"><a href="index.html#top" class="linkin pagetop">Lab 05: Vegas Baby!</a><div class="ddown-content ddtoc"><ul><li><a class="linkin" href="index.html#let-s-roll"><span class="toc-section-number">1</span> Let’s Roll</a>
+<ul><li><a class="linkin" href="index.html#a-new-header-file"><span class="toc-section-number">1.1</span> A new header file</a></li><li><a class="linkin" href="index.html#a-function-to-roll-a-die"><span class="toc-section-number">1.2</span> A function to roll a die</a></li><li><a class="linkin" href="index.html#rolling-two-dice"><span class="toc-section-number">1.3</span> Rolling two dice</a></li></ul></li>
+<li><a class="linkin" href="index.html#oh-craps"><span class="toc-section-number">2</span> Oh craps</a></li>
+<li><a class="linkin" href="index.html#you-re-fired-going-further-"><span class="toc-section-number">3</span> You’re Fired! (going further)</a></li>
+<li><a class="linkin" href="index.html#rigging-the-game-bonus-"><span class="toc-section-number">4</span> Rigging the game (Bonus!)</a></ul></div></div></nav><footer><div id="foottext">    <p class="disclaimer">Material contained above is made available
+    for the purpose of peer review and discussion and does not
+    necessarily reflect the views of the Department of the Navy or the
+    Department of Defense.
+    Some links above are to sites that are not
+    located at the United States Naval Academy. The USNA is not
+    responsible for the content found on these sites. In addition, the
+    content of these sites does not reflect the opinions, standards,
+    policy or endorsement of the Naval Academy or the United States
+    Government.</p>
+  Page maintained by Daniel S. Roche (<a href="mailto:roche [AT] usna [DOT] edu" id="emaillink1">roche [AT] usna [DOT] edu</a><script type='text/javascript'><!--
+        var b="he@usna.edu";
+        var a="roc";
+        document.getElementById("emaillink1").href='mailto:'+a+b;
+        document.getElementById("emaillink1").innerHTML=a+b;
+        // --></script>). Last updated 21 February 2017 9:53.</div></footer><script src="../../scripts/prism.js"></script><script type="text/javascript">var the_body = $('html, body');
+var sticky_height = $('.stickynav').height();
+$('.linkin').click(function(){
+  var href = $(this).attr('href');
+  var offset;
+  if (href == '#top') offset = 0;
+  else offset = $(href).offset().top - sticky_height;
+  the_body.animate({ scrollTop: offset }, 500);
+  return false;
+});</script></body></html>

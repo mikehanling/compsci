@@ -1,0 +1,112 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Virtual Machines</title><meta name="viewport" content="width=device-width, initial-scale=1.0"><link href="../scripts/prism.css" rel="stylesheet" /><link rel="stylesheet" type="text/css" href="../style.css"><style>
+@media only screen and (min-width: 600px) {
+  #main>header {background-image: url("../scripts/header.png");}
+}
+</style></head><body><div id="main"><header><nav class="topnav"><div>
+            <a href="../index.php.html">SI 204</a>
+            </div><div>
+            <a href="../calendar.php.html">Calendar</a>
+            </div><div>
+            <a href="../notes/index.html">Notes</a>
+            </div><div>
+            <a href="../hw/index.html">HWs</a>
+            </div><div>
+            <a href="../lab/index.html">Labs</a>
+            </div><div>
+            <a href="../proj/index.html">Projects</a>
+            </div><div>
+            <a href="../exams/index.html">Exams</a>
+            </div><div id="navparent">
+            <a href="../admin/index.html">Resources</a>
+            </div><div>
+            <a href="https://www.usna.edu/Users/cs/roche/">Roche</a>
+            </div><div>
+            <a href="https://www.usna.edu/Users/cs/albing/">Albing</a>
+            </div></nav></header><div id="mainbox"><div class="printonly"><h1 class="printtitle">SI 204 Spring 2017 / Resources</h1><hr></div><article id="mainart"><header><h1>Virtual Machines</h1></header>
+<p>
+You will do much of your work for this class in a Linux virtual machine installed
+on your laptop.
+It's important that you get this working and become comfortable with the tools there.
+</p>
+
+<h1>Instructions</h1>
+<ol>
+<li><b>Download the livecd ISO</b>.
+  The LiveCD image we will use is the same as IC210 from last semester, as
+  prepared by LCDR Kenney.
+  <a href="http://yog.cs.usna.edu/~kenney/sw/IC210-LiveCD.iso">Here is a link to the ISO file</a>.
+  Download that file (<code>IC210-LiveCD.iso</code>) and save it somewhere on your Windows
+  laptop.<br>
+  Here is the hash of that ISO file, in case you want to check the download integrity
+  (no problem if you ignore this step):
+  <pre><code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">sha256sum IC210-LiveCD.iso </code>
+<code class="language-text output">0541ace4ec524db85e1cd6a9e584d70d8d214a4545cf2db0e8d82627bd8cd4f7  IC210-LiveCD.iso</code></pre>  <br>
+  It's a big file, so the download might take a little while. In the meantime, you can...
+</li>
+<li><b>Download and install VMWare player</b>.
+  This is the software that will run on your laptop to "host" the Linux virtual machine.
+  VMWare Player is freely available for educational use from
+  <a href="http://www.vmware.com/products/player/playerpro-evaluation.html">this website</a>.
+  <br>
+  Download the version for your laptop (most likely 64-bit Windows), and then follow through
+  with the install like any other Windows software.
+  (If you're asked to enter a license key, leave it blank.)
+  <br>
+  LCDR Kenney has some <a href="http://yog.cs.usna.edu/~kenney/sw/vmplayer_install2.htm">instructions
+  from an earlier version</a> that might be helpful if you get stuck here.
+</li>
+<li><b>Create your VM inside VMWare player</b>.
+  Once the ISO is downloaded and VMWare player is installed, follow
+  <a href="http://yog.cs.usna.edu/~kenney/sw/vmplayer_guide/guide.html">these instructions
+  from LCDR Kenney's page</a> on how to do that.
+
+  <p><strong>NOTE</strong>:
+  <ul>
+  <li>
+    You must use the <em>same username</em> as your regular USNA username
+    when installing Linix inside the VM, like <code>m190000</code>.
+  </li>
+  <li>
+    You can use <em>any password</em> you like. It doesn't have to match your
+    USNA password, and in fact it's totally independent from it.
+  </li>
+  </ul>
+  </p>
+  
+</li>
+<li><b>Run the SI204 setup script inside your VM</b>
+  <p>Once Linux has been installed inside your VM, log in and open a terminal
+  window from the Applications menu or by typing Ctrl-Alt-T.
+  Then enter the following command and hit enter:</p>
+  <pre><code class="language-text output">cmd=$(curl -sf yog/~roche/204/vm/bs) && eval $cmd</code></pre>  <p>This should run you through a bunch of things, updating files and
+  installing software. Read what it says and enter
+  your password when required to install software. If something goes wrong,
+  you can run the same command and it will try again. Don't be afraid to
+  ask for help if something goes wrong and you can't get it to work.
+  </p>
+  <p><b>NOTE</b>: Part of the process that may be a little confusing is when you create an RSA
+  public/private key pair. This will make your connections to the CS unix server
+  much easier <em>and</em> more secure. The main thing to know is that,
+  <em>your private key passphrase can be whatever you want</em> - in fact,
+  you can even leave it blank!</p>
+</li>
+
+</article></div></div><nav class="stickynav"><div><div class="dropdown"><a href="../index.php.html" class="ddown-btn">SI 204</a><div class="ddown-content"><a href="../calendar.php.html">Calendar</a><a href="../notes/index.html">Notes</a><a href="../hw/index.html">HWs</a><a href="../lab/index.html">Labs</a><a href="../proj/index.html">Projects</a><a href="../exams/index.html">Exams</a><a href="../admin/index.html">Resources</a><a href="https://www.usna.edu/Users/cs/roche/">Roche</a><a href="https://www.usna.edu/Users/cs/albing/">Albing</a></div></div><a href="index.html#top" class="linkin pagetop">Virtual Machines</a></nav><footer><div id="foottext">    <p class="disclaimer">Material contained above is made available
+    for the purpose of peer review and discussion and does not
+    necessarily reflect the views of the Department of the Navy or the
+    Department of Defense.
+    Some links above are to sites that are not
+    located at the United States Naval Academy. The USNA is not
+    responsible for the content found on these sites. In addition, the
+    content of these sites does not reflect the opinions, standards,
+    policy or endorsement of the Naval Academy or the United States
+    Government.</p>
+  
+      This is the USNA-internal version of this page.
+      You can see the external version of this page by clicking
+      <a href="index.html%3Fintranet=no.html">here</a>.<br>Page maintained by Daniel S. Roche (<a href="mailto:roche [AT] usna [DOT] edu" id="emaillink1">roche [AT] usna [DOT] edu</a><script type='text/javascript'><!--
+        var b="he@usna.edu";
+        var a="roc";
+        document.getElementById("emaillink1").href='mailto:'+a+b;
+        document.getElementById("emaillink1").innerHTML=a+b;
+        // --></script>). Last updated 09 January 2017 19:42.</div></footer><script src="../scripts/prism.js"></script><script type="text/javascript"></script></body></html>

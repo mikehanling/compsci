@@ -1,0 +1,123 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+         "http://www.w3.org/TR/html4/strict.dtd"><html><head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"><title>getgrade.c</title><link href="../../scripts/prism.css" rel="stylesheet" />    <style type="text/css">
+    body {
+      margin: 0;
+      padding:55px 0 0 0;
+    }
+    div#header {
+      position:absolute;
+      top: 0;
+      left: 0;
+      width:100%;
+      height:50px;
+      border-bottom: 5px solid red;
+      text-align: center;
+      background-color: #d0d0d0;
+      z-index: 1000;
+    }
+    @media screen{
+      body>div#header{
+        position:fixed;
+      }
+    }
+    * html body{
+      overflow:hidden;
+    }
+    * html div#content {
+      height: 100%;
+      overflow: auto;
+    }
+    .warning {
+      margin: 3px auto;
+      background-color: black;
+      color: yellow;
+      font-weight: bold;
+      max-width: 600px;
+      font-family: sans-serif;
+      text-align: center;
+    }
+    /*
+    .codeblock {
+      margin:10px auto 10px;
+      min-width:500px;
+      max-width:800px;
+    }
+    .codeblock td.de1 {
+      border:1px solid black;
+    }
+    .codeblock td.ln {
+      border:1px solid white;
+    }
+    pre {
+      margin:10px auto 10px;
+      max-width:800px;
+    }
+    .plainpre {
+      border: 1px solid black;
+      padding:2px;
+    }
+    */
+    </style>
+  </head><body><div id="header"><p><a href="files.php%3Ff=getgrade.c&amp;downloadcode=yes">Click here</a> to download <code>getgrade.c</code>.</p></div><div id="content"><pre class="line-numbers"><code class="language-C">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+int main() {
+  // open file
+  FILE* gfile = fopen(&quot;grades.txt&quot;, &quot;r&quot;);
+
+  // read in number of students and number of homeworks
+  int students;
+  int hws;
+  fscanf(gfile, &quot; %i students %i hws&quot;, &amp;students, &amp;hws);
+
+  // create 2D array
+  int** grades = calloc(students, sizeof(int*));
+  for (int i=0; i &lt; students; ++i) {
+    grades[i] = calloc(hws, sizeof(int));
+  }
+
+  // read in grades from file
+  for (int i=0; i &lt; students; ++i) {
+    for (int j=0; j &lt; hws; ++j) {
+      fscanf(gfile, &quot; %i&quot;, &amp;grades[i][j]);
+    }
+  }
+
+  // lookup grades
+  int stlookup;
+  printf(&quot;Which student (-1 to quit)? &quot;);
+  fflush(stdout);
+  scanf(&quot; %i&quot;, &amp;stlookup);
+
+  while (stlookup &gt;= 0) {
+    int hwlookup;
+    printf(&quot;Which homework? &quot;);
+    fflush(stdout);
+    scanf(&quot; %i&quot;, &amp;hwlookup);
+
+    if (stlookup &gt;= 1 &amp;&amp; stlookup &lt;= students
+        &amp;&amp; hwlookup &gt;= 1 &amp;&amp; hwlookup &lt;= hws)
+    {
+      // note: subtract 1 to do 0-based indexing
+      int stgrade = grades[stlookup-1][hwlookup-1];
+      printf(&quot;Student %i's grade on homework %i is %i\n&quot;,
+             stlookup, hwlookup, stgrade);
+    } else {
+      printf(&quot;ERROR: Invalid student or HW index.\n&quot;);
+    }
+
+    printf(&quot;Which student (-1 to quit)? &quot;);
+    fflush(stdout);
+    scanf(&quot; %i&quot;, &amp;stlookup);
+  }
+
+  // clean-up
+  for (int i=0; i &lt; students; ++i) {
+    free(grades[i]);
+  }
+  free(grades);
+  fclose(gfile);
+
+  return 0;
+}</code></pre></div><script src="../../scripts/prism.js"></script></body></html>

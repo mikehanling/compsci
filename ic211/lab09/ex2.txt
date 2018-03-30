@@ -1,0 +1,6 @@
+add foo
+add bar
+dump
+clearto cat
+dump
+add

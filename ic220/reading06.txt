@@ -1,0 +1,23 @@
+Mike Hanling
+R06: 2.8-2.10
+
+
+Key Points:
+  Procedures implement abstraction
+  $ra is return address register
+  jal (jump and link) jumps to address and saves the result to $ra
+  temp registers do not store the values if needed to be used
+  save registers store the values if needed to be used
+  add neg ints to $sp (stack pointer) to make room for more
+  add pos ints to $sp to delete space
+  $v0-1 (value) registers hold values to return
+  $a0-3 (argment) registers hold the arguments to procedures
+  $gp (global pointer) tracks all global variables
+  lb / sb to load and store bytes (used for ASCII)
+  lh / sh to load and store half-words (or two bytes) (used for Unicode)
+  lu to store upper 16bits of large number
+    then use or / ori to store the lower 16
+
+What Confuses Me:
+  modes of addressing
+  inequlaities

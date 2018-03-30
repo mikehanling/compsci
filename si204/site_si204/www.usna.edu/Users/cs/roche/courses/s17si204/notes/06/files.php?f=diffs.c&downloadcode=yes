@@ -1,0 +1,41 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+void diffs(int* array, int size);
+
+int main() {
+  // read size n
+  int n;
+  do {
+    printf("Enter size: ");
+    fflush(stdout);
+  } while(scanf(" %i", &n) != 1 || n <= 0);
+
+  // allocate array and read in contents
+  int* data = calloc(n, sizeof(int));
+  printf("Enter %i integers, space separated.\n", n);
+  for (int i=0; i<n; ++i) {
+    scanf(" %i", &data[i]);
+  }
+
+  // CALL YOUR FUNCTION(S) HERE
+  // AND PRINT OUT THE RESULTS
+  diffs(data, n);
+
+  // clean-up time
+  free(data);
+  return 0;
+}
+
+void diffs(int* array, int size) {
+  // start with index 1, and compare to the previous index
+  // at each step
+  for (int i=1; i < size; ++i) {
+    printf("%i", array[i] - array[i-1]);
+    if (i == size - 1) {
+      printf("\n");
+    } else {
+      printf(" ");
+    }
+  }
+}

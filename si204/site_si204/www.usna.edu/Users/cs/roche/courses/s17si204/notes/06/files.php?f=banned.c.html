@@ -1,0 +1,137 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+         "http://www.w3.org/TR/html4/strict.dtd"><html><head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"><title>banned.c</title><link href="../../scripts/prism.css" rel="stylesheet" />    <style type="text/css">
+    body {
+      margin: 0;
+      padding:55px 0 0 0;
+    }
+    div#header {
+      position:absolute;
+      top: 0;
+      left: 0;
+      width:100%;
+      height:50px;
+      border-bottom: 5px solid red;
+      text-align: center;
+      background-color: #d0d0d0;
+      z-index: 1000;
+    }
+    @media screen{
+      body>div#header{
+        position:fixed;
+      }
+    }
+    * html body{
+      overflow:hidden;
+    }
+    * html div#content {
+      height: 100%;
+      overflow: auto;
+    }
+    .warning {
+      margin: 3px auto;
+      background-color: black;
+      color: yellow;
+      font-weight: bold;
+      max-width: 600px;
+      font-family: sans-serif;
+      text-align: center;
+    }
+    /*
+    .codeblock {
+      margin:10px auto 10px;
+      min-width:500px;
+      max-width:800px;
+    }
+    .codeblock td.de1 {
+      border:1px solid black;
+    }
+    .codeblock td.ln {
+      border:1px solid white;
+    }
+    pre {
+      margin:10px auto 10px;
+      max-width:800px;
+    }
+    .plainpre {
+      border: 1px solid black;
+      padding:2px;
+    }
+    */
+    </style>
+  </head><body><div id="header"><p><a href="files.php%3Ff=banned.c&amp;downloadcode=yes">Click here</a> to download <code>banned.c</code>.</p></div><div id="content"><pre class="line-numbers"><code class="language-C">/**************************************************
+Write a program that reads a list of banned words
+from a file, stores them in an array,  and then
+simply reads words from the user and returns
+&quot;banned&quot; or &quot;not banned&quot; until the word &quot;end&quot; is
+encountered.  The file starts with a number, which
+is the number of banned words, and then the words
+themselves are listed.
+**************************************************/
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;string.h&gt;
+
+int main() {
+  // Get name of banned-words file
+  char fname[128];
+  printf(&quot;Banned words file: &quot;);
+  fflush(stdout);
+  scanf(&quot; %s&quot;, fname);
+
+  // Create input file stream
+  FILE* fin = fopen(fname, &quot;r&quot;);
+  if (!fin) {
+    printf(&quot;ERROR: file not found\n&quot;);
+    return 1;
+  }
+
+  // Read number of words &amp; allocate array
+  int numwords;
+  fscanf(fin, &quot; %i&quot;, &amp;numwords);
+  char** bwords = calloc(numwords, sizeof(char*));
+  for (int i=0; i &lt; numwords; ++i) {
+    bwords[i] = calloc(128, sizeof(char));
+  }
+
+  // Read words from file into array
+  for(int i=0; i &lt; numwords; ++i) {
+    fscanf(fin, &quot; %s&quot;, bwords[i]);
+  }
+
+  // we can close the file now
+  fclose(fin);
+
+  // Get words from user
+  char search[128];
+  printf(&quot;Enter list of words terminated by \&quot;end\&quot;.\n&quot;);
+
+  scanf(&quot; %s&quot;, search);
+  while (strcmp(search, &quot;end&quot;) != 0) {
+    // Look for search in banned list
+    int found = 0;
+    for (int j=0; j &lt; numwords; ++j) {
+      if (strcmp(search, bwords[j]) == 0) {
+        found = 1;
+        break;
+      }
+    }
+
+    // Print results
+    if (found) {
+      printf(&quot;%s is banned!\n&quot;, search);
+    } else {
+      printf(&quot;%s is not banned.\n&quot;, search);
+    }
+
+    scanf(&quot; %s&quot;, search);
+  }
+
+  // clean-up
+  for (int i=0; i &lt; numwords; ++i) {
+    free(bwords[i]);
+  }
+  free(bwords);
+
+  return 0;
+}</code></pre></div><script src="../../scripts/prism.js"></script></body></html>

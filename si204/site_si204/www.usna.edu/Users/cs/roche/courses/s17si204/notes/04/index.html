@@ -1,0 +1,526 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Unit 4: I/O</title><meta name="viewport" content="width=device-width, initial-scale=1.0"><link href="../../scripts/prism.css" rel="stylesheet" /><link rel="stylesheet" type="text/css" href="../../style.css"><script type="text/javascript" src="../../../../mathjax/MathJax.js%3Fconfig=TeX-AMS_HTML"></script><script type="text/javascript" src="../../scripts/jquery-3.1.1.min.js"></script><style>
+@media only screen and (min-width: 600px) {
+  #main>header {background-image: url("../../scripts/header.png");}
+}
+</style><link rel="stylesheet" type="text/css" href="../../notes.css">  <meta name="generator" content="pandoc">
+  <style type="text/css">code{white-space: pre;}</style>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head><body><div id="main"><header><nav class="topnav"><div>
+            <a href="../../index.php.html">SI 204</a>
+            </div><div>
+            <a href="../../calendar.php.html">Calendar</a>
+            </div><div id="navparent">
+            <a href="../index.html">Notes</a>
+            </div><div>
+            <a href="../../hw/index.html">HWs</a>
+            </div><div>
+            <a href="../../lab/index.html">Labs</a>
+            </div><div>
+            <a href="../../proj/index.html">Projects</a>
+            </div><div>
+            <a href="../../exams/index.html">Exams</a>
+            </div><div>
+            <a href="../../admin/index.html">Resources</a>
+            </div><div>
+            <a href="https://www.usna.edu/Users/cs/roche/">Roche</a>
+            </div><div>
+            <a href="https://www.usna.edu/Users/cs/albing/">Albing</a>
+            </div></nav></header><div id="mainbox"><div class="printonly"><h1 class="printtitle">SI 204 Spring 2017 / Notes</h1><hr></div><article id="mainart"><header><h1>Unit 4: I/O</h1></header><div id="TOC"><ul><li><a class="linkin" href="index.html#streams"><span class="toc-section-number">1</span> Streams</a>
+<ul><li><a class="linkin" href="index.html#standard-input-and-output-streams"><span class="toc-section-number">1.1</span> Standard input and output streams</a></li><li><a class="linkin" href="index.html#creating-streams-from-files"><span class="toc-section-number">1.2</span> Creating streams from files</a></li><li><a class="linkin" href="index.html#stream-buffering"><span class="toc-section-number">1.3</span> Stream buffering</a></li><li><a class="linkin" href="index.html#buffer-flushing"><span class="toc-section-number">1.4</span> Buffer flushing</a></li></ul></li>
+<li><a class="linkin" href="index.html#format-strings-and-fprintf"><span class="toc-section-number">2</span> Format strings and fprintf</a>
+<ul><li><a class="linkin" href="index.html#the-problem-too-many-calls-to-output-functions"><span class="toc-section-number">2.1</span> The problem: too many calls to output functions</a></li><li><a class="linkin" href="index.html#fprintf-to-the-rescue"><span class="toc-section-number">2.2</span> fprintf to the rescue</a></li><li><a class="linkin" href="index.html#controlling-the-output-format"><span class="toc-section-number">2.3</span> Controlling the output format</a></li></ul></li>
+<li><a class="linkin" href="index.html#a-quick-look-at-pointers"><span class="toc-section-number">3</span> A quick look at pointers</a>
+<ul><li><a class="linkin" href="index.html#getting-and-printing-memory-addresses"><span class="toc-section-number">3.1</span> Getting and printing memory addresses</a></li><li><a class="linkin" href="index.html#pointer-types-and-dereferencing"><span class="toc-section-number">3.2</span> Pointer types and dereferencing</a></li><li><a class="linkin" href="index.html#pointers-and-modifying-data"><span class="toc-section-number">3.3</span> Pointers and modifying data</a></li><li><a class="linkin" href="index.html#you-are-using-pointers-already"><span class="toc-section-number">3.4</span> You are using pointers already</a></li></ul></li>
+<li><a class="linkin" href="index.html#fscanf"><span class="toc-section-number">4</span> fscanf</a>
+<ul><li><a class="linkin" href="index.html#using-fscanf"><span class="toc-section-number">4.1</span> Using fscanf</a></li><li><a class="linkin" href="index.html#return-value-and-error-checking"><span class="toc-section-number">4.2</span> Return value and error checking</a></li></ul></li>
+<li><a class="linkin" href="index.html#do-we-still-need-si204-h-"><span class="toc-section-number">5</span> Do we still need si204.h?</a></li>
+<li><a class="linkin" href="index.html#other-odds-and-ends"><span class="toc-section-number">6</span> Other odds and ends</a>
+<ul><li><a class="linkin" href="index.html#dropping-stdout-and-stdin"><span class="toc-section-number">6.1</span> Dropping stdout and stdin</a></li><li><a class="linkin" href="index.html#eof"><span class="toc-section-number">6.2</span> EOF</a></li><li><a class="linkin" href="index.html#reading-whitespace"><span class="toc-section-number">6.3</span> Reading whitespace</a></li><li><a class="linkin" href="index.html#writing-to-and-reading-from-strings"><span class="toc-section-number">6.4</span> Writing to and reading from strings</a></li></ul></li>
+<li><a class="linkin" href="index.html#problems"><span class="toc-section-number">7</span> Problems</a></li></ul></div><div class="panbody"><h1 id="streams"><a class ="linkin" href="index.html#top"><span class="header-section-number">1</span> Streams</a></h1><p>All input and output in standard C goes to a <em>stream</em>. Think of a stream as a potentially unending list of individual characters, where each read operation “consumes” some characters and moves past them, whereas a writing operation adds some characters to the end of the stream.</p>
+<p>You’ve already been using streams in every <code>fputs</code>, <code>writenum</code>, and similar function calls. Now we’ll see what other kinds of streams exist, and how to use them in more interesting ways.</p>
+<h2 id="standard-input-and-output-streams"><a class="linkin" href="index.html#top"><span class="header-section-number">1.1</span> Standard input and output streams</a></h1><p>You are by now quite familiar with the standard input and output streams, known as <code>stdin</code> and <code>stdout</code> respectively. They are normally used to get user input typed in at the terminal, and to print out to that terminal.</p>
+<p>There is actually a third stream that is also defined by default, which is an output stream called <code>stderr</code>, or the “standard error” stream. By default, <code>stderr</code> also displays its output on the terminal like <code>stdout</code>. But unlike standard out, standard error is not buffered, so its output shows up immediately from your program (more on that below). Also, it can be convenient in testing sometimes to separate debugging messages (typically written to <code>stderr</code>) from normal program output written to <code>stdout</code>.</p>
+<p>The best practice is to use <code>stdout</code> for all of your normal program print functions, and only when you are adding extra debugging messages to use <code>stderr</code>. This can be convenient for a number of reasons, but one of them is that it makes it very easy to search your program for the word <code>stderr</code> and remove those debugging messages before you submit your final product!</p>
+<h2 id="creating-streams-from-files"><a class="linkin" href="index.html#top"><span class="header-section-number">1.2</span> Creating streams from files</a></h1><p>In the last unit, you saw how the command <code>fopen</code> can be used to create an input stream that reads from a file, like so:</p>
+<pre><code class="language-C">cstring fname; // name of the file, like data.txt
+stream fin;    // STREAM for the file, working like stdin
+
+fputs(&quot;Enter a filename: &quot;);
+readstring(fname, stdin);
+
+fin = fopen(fname, &quot;r&quot;); // &lt;--- the magic is here!
+
+int x = readnum(fin);
+fputs(&quot;The first number in your file is: &quot;, stdout);
+writenum(x, stdout);
+fputs(&quot;\n&quot;, stdout);
+
+fclose(fin); // close the file that we opened</code></pre>
+<p>The first argument to the <code>fopen</code> command can be any file on your computer. If you don’t specify a directory explicitly, the current directory where you ran the program from will be searched for a file with that name.</p>
+<p>The second argument to <code>fopen</code> specifies the <em>mode</em> of the open file. A mode of <code>&quot;r&quot;</code> means “reading” and indicates that the stream will be an input stream. This is what you have seen already.</p>
+<p>Of course, you can also create an output stream from a filename. A mode of <code>&quot;w&quot;</code> means “writing” and causes three things to happen:</p>
+<ol type="1">
+<li>If the file doesn’t exist, it is created.</li>
+<li>The file is “truncated” so that any current contents are removed and the file size goes down to zero.</li>
+<li>The returned stream will begin writing to the beginning of the file.</li>
+</ol>
+<p>Notice the second step! This means that opening a file with <code>&quot;w&quot;</code> mode can be dangerous, because it will delete all the contents of the file if it already exists, without any warning.</p>
+<p>In case you just want to add on to the end of the file and not overwrite the current contents, you can use mode <code>&quot;a&quot;</code> (for “append”).</p>
+<p>There are also other modes that you can read about in the <a href="http://en.cppreference.com/w/c/io/fopen">documentation</a>, but for this class we will mostly just need to use reading <code>&quot;r&quot;</code> and sometimes writing <code>&quot;w&quot;</code>.</p>
+<p>As we learned in the last unit, if an error occurs during the file opening, then <code>0</code> is returned (which, as you know, will be interpreted as “false” in C). For <code>&quot;r&quot;</code> mode files, this means the file doesn’t exist or isn’t readable by the user running the program. For <code>&quot;w&quot;</code> and <code>&quot;a&quot;</code> mode files, it means the file can’t be created or can’t be changed by the current user.</p>
+<p>And don’t forget to clean up after yourself! In the case of streams opened with <code>fopen</code>, this means calling <code>fclose</code> when you’re done in order to close the file properly, as in the example above.</p>
+<h2 id="stream-buffering"><a class="linkin" href="index.html#top"><span class="header-section-number">1.3</span> Stream buffering</a></h1><p>Doing input/output operations is typically a very <em>slow</em> operation for your program. Compare what has to happen in the computer when you, say, multiply two numbers, compared to writing a single <code>char</code> to the screen. To multiply numbers, your CPU (which is already running your program) executes a single instruction — super fast! But to write that <code>char</code> to your screen, it needs to send the written data to the host operating system, which in turn sends it to <em>another program</em> that’s running your terminal, and which ultimately causes your screen to update some pixels.</p>
+<p>The easiest way to avoid some of that slowness is to <em>delay</em> sending all the characters for some time. Specifically, the characters are stored temporarily in a <strong>buffer</strong> (think of it as a holding area) until there are enough of them to all be sent at once.</p>
+<p>In C, <code>stdout</code> and <code>stdin</code> are <em>line-buffered</em>, meaning that the buffer contents are sent along whenever a newline character <code>'\n'</code> is seen.</p>
+<p>You can see the effects on <code>stdin</code> with the following program:</p>
+<pre><code class="language-c">#include &quot;si204.h&quot;
+
+int main() {
+  cstring word;
+  readstring(word, stdin);
+
+  fputs(&quot;Read one word: &quot;, stdout);
+  fputs(word, stdout);
+  fputs(&quot;\n&quot;, stdout);
+
+  return 0;
+}</code></pre><p>If you run that program and type <code>cheese</code> on a line and hit enter, the program immediately finishes and prints out <code>cheese</code>. But if you type <code>cheese</code> and hit a space, the program hangs. You can keep typing more words with spaces, and the program sits and does nothing. Then when you finally hit enter, only the first word <code>cheese</code> is printed; the other words were never read.</p>
+<p>In the second case, the program was <em>waiting on the first word</em> the whole time! Because <code>stdin</code> is line-buffered, the word <code>cheese</code> isn’t even sent to the program until the entire first line is ready to be sent.</p>
+<p>Similarly, you can see the effects of buffering on <code>stdout</code> with the following example, which makes use of the <code>usleep</code> function to make the program pause and do nothing for one second:</p>
+<pre><code class="language-c">#include &quot;si204.h&quot;
+#include &quot;unistd.h&quot; // for usleep()
+
+int main() {
+  fputs(&quot;Begin test...&quot;, stdout);
+  usleep(1000000); // pauses for 1 second
+  fputs(&quot; end test\n&quot;, stdout);
+
+  return 0;
+}</code></pre><p>You can see in the code that this program prints the first part of the message, pauses for one second, then prints the second part. But when you run it, you see nothing for a whole second, and then the entire message is printed out.</p>
+<p>As you probably guessed, this is because <code>stdout</code> is line-buffered too. The first <code>fputs</code> command really does execute before the program pauses for 1 second, but those characters are not printed to the screen until the newline in the second part of the message.</p>
+<p>Other streams that you open with <code>fopen</code> are also buffered, but based on a fixed number of characters rather than newlines. When you close the stream with <code>fclose</code>, the first thing that happens is any buffered data that’s “on hold” is sent through.</p>
+<p>Importantly though, <code>stderr</code> is not buffered at all. So if you ran the program above but replaced <code>stdout</code> with <code>stderr</code>, you would actually see the first part of the message, then a pause, then the second part! Because <code>stderr</code> is meant for debugging, the tradeoff in speed from buffering the output is “worth it” to be able to see your program’s output immediately.</p>
+<h2 id="buffer-flushing"><a class="linkin" href="index.html#top"><span class="header-section-number">1.4</span> Buffer flushing</a></h1><p>Usually stream buffering is a good thing and you don’t want to mess with it. As long as you remember to properly close your files, everything should be fine.</p>
+<p>But sometimes it’s necessary to manually specify that an output stream’s buffer should be emptied <em>right now</em> no matter what. To do that, you use the command <code>fflush</code>. In the example above, adding a line</p>
+<pre><code class="language-C">fflush(stdout);</code></pre>
+<p>before the <code>usleep</code> command would cause the behaviour we probably expect — the first part of the message is output before the program pauses for a second.</p>
+<h1 id="format-strings-and-fprintf"><a class ="linkin" href="index.html#top"><span class="header-section-number">2</span> Format strings and fprintf</a></h1><h2 id="the-problem-too-many-calls-to-output-functions"><a class="linkin" href="index.html#top"><span class="header-section-number">2.1</span> The problem: too many calls to output functions</a></h1><p>So far, you have to have a separate function call for every part of what you are writing to the screen. This can be a bit annoying when you have a mix between different types, and a single line of output can result in many lines in your code. For example:</p>
+<pre><code class="language-c">#include &quot;si204.h&quot;
+
+int main() {
+  // The info we want to print
+  cstring name = &quot;Billy&quot;;
+  int whichletter = 12;
+
+  // print out the message
+  fputs(&quot;Hello, &quot;, stdout);
+  fputs(name, stdout);
+  fputs(&quot;. The &quot;, stdout);
+  writenum(whichletter, stdout);
+  fputs(&quot;th letter of the alphabet is &quot;, stdout);
+  fputc('A' + (whichletter - 1), stdout);
+  fputs(&quot;.\n&quot;, stdout);
+
+  return 0;
+}</code></pre><p>Running that program prints just a single line of output:</p>
+<pre><code class="language-.text">Hello, Billy. The 12th letter of the alphabet is L.</code></pre>
+<p>But it took 7 lines of various print statements to get it! This is really what the computer has to do — the way numbers, strings, and characters are treated for printing is all different — but when you write larger programs it can be annoying to have to type in separate lines for all of this. If only there were a way to specify that entire thing on a single line…</p>
+<h2 id="fprintf-to-the-rescue"><a class="linkin" href="index.html#top"><span class="header-section-number">2.2</span> fprintf to the rescue</a></h1><p>The <a href="http://en.cppreference.com/w/c/io/fprintf"><code>fprintf</code> function</a> does exactly that. It allows you to print a bunch of information, with a mixture of different types, all with a single command.</p>
+<p>The most basic usage of <code>fprintf</code> is as follows:</p>
+<pre><code class="language-C">fprintf(stdout, &quot;Hello, world!\n&quot;);</code></pre>
+<p>That causes — you guessed it — <code>Hello, world!</code> to be printed in a single line to the screen.</p>
+<p>The first argument, as you can see, is a <code>stream</code>, and the second argument is known as a <strong>format string</strong> that specifies what is to be printed. In the example above, the format string is just a normal string, so that’s what will be printed. In this simplest usage, <code>fprintf</code> is <em>just like fputs</em>, except that the stream comes first instead of second.</p>
+<p>But <code>fprintf</code> can do much much more than <code>fputs</code>! The key is that we can insert special instructions, called <em>conversion specifiers</em>, into the format string in order to paste in other output between the regular characters. Every conversion specifier starts with a <code>%</code>, and then is followed by some other characters to describe what is being inserted and how. In the most basic usage, you will have <code>%i</code> for an integer, <code>%g</code> for a double, <code>%c</code> for a single char, or <code>%s</code> for a string.</p>
+<p>For example, let’s say we have an <code>int alpha</code> that stores someone’s 6-digit alpha number. Then we could write their email address with three statements:</p>
+<pre><code class="language-C">fputs(&quot;m&quot;, stdout);
+writenum(alpha, stdout);
+fputs(&quot;@usna.edu\n&quot;, stdout);</code></pre>
+<p>Or we can replace those three statements with a single <code>fprintf</code> as follows:</p>
+<pre><code class="language-C">fprintf(stdout, &quot;m%i@usna.edu\n&quot;, alpha);</code></pre>
+<p>Notice the <code>%i</code> in the middle of the format string — that’s where the alpha number will be inserted. Also notice that the <em>arguments</em> to <code>fprintf</code> that come after the format string, are the values that will be inserted according to the conversion specifiers.</p>
+<p>You can also insert more than one value in the middle of the format string, by using multiple conversion specifiers, and adding more arguments to the end of the command. For example, the seven print lines in the “letters of the alphabet” program above can be written with a single <code>fprintf</code> statement as:</p>
+<pre><code class="language-c">fprintf(stdout, &quot;Hello, %s. The %ith letter of the alphabet is %c.\n&quot;,
+        name, whichletter, 'A' + (whichletter - 1));</code></pre><p>In that example, the format string contains three conversion specifiers: <code>%s</code>, then <code>%i</code>, then <code>%c</code>. So there are three corresponding arguments after the format string, first a <code>cstring</code>, then an <code>int</code>, and then a <code>char</code>.</p>
+<p>There are of course more conversion specifiers than these that you can read about in the <a href="http://en.cppreference.com/w/c/io/fprintf">documentation</a>, but mostly in this class you just need to remember <code>%i</code> for integers, <code>%g</code> for doubles, <code>%c</code> for chars, and <code>%s</code> for strings. Oh, and when you want to put an actual percent sign <code>%</code> in your output, you just double it up in the format string as <code>%%</code>.</p>
+<h2 id="controlling-the-output-format"><a class="linkin" href="index.html#top"><span class="header-section-number">2.3</span> Controlling the output format</a></h1><p>Sometimes the way <code>fprintf</code> decides to format things might not agree with the way we’d like to see them formatted. For example, if <code>x</code> is a <code>double</code> with value 4.0, <code>fprintf</code> with <code>%g</code> will write “4”. Or sometimes you want to “line up” some numbers or strings in your output, by inserting extra blank spaces in front so they have the same width. Both of those tweaks can be accomplished by adding more information to the appropriate conversion specifier.</p>
+<p>To line things up horizontally, you use the <em>width specifier</em>, which is just a number in the format string between the leading <code>%</code> sign and the conversion type such as <code>i</code> or <code>s</code>. For example, the following program to display a basketball score specifies the team name width is 10 and the score width is 3, so that the colons <code>:</code> and ends of the numbers will always line up:</p>
+<pre><code class="language-C">cstring name1 = &quot;Hornets&quot;;
+cstring name2 = &quot;76ers&quot;;
+
+int score1 = 93;
+int score2 = 102;
+
+fprintf(stdout, &quot;%10s: %3i\n&quot;, name1, score1);
+fprintf(stdout, &quot;%10s: %3i\n&quot;, name2, score2);</code></pre>
+<p>The result of running the code above would look good:</p>
+<pre><code class="language-.text">   Hornets:  93
+     76ers: 102</code></pre>
+<p>The other thing you frequently want to adjust is the number of decimal places, also known as the <em>precision</em> of a double. You do that with a decimal point <code>.</code> and then a number for the number of digits, all after the leading <code>%</code> and before the type specifier such as <code>g</code>. Specifying a precision such as <code>%.8g</code> says to use <em>up to 8</em> digits, counting before and after the decimal point.</p>
+<p>That can be useful, but usually we want to specify a fixed precision after the decimal point, no matter what. In this case, you use the <code>%f</code> conversion instead of <code>%g</code>, which forces the output to <em>never</em> use scientific notation. For example, <code>%.2f</code> specifies to have exactly two digits after the decimal point (useful for printing monetary amounts!).</p>
+<p>The width and precision can both be specified; in this case the width comes before the precision. For example, here is a small program to print out names and account balances, all nicely lined up and with the familiar two decimal points for cents:</p>
+<pre><code class="language-C">cstring name1 = &quot;Jared&quot;;
+cstring name2 = &quot;Elizabeth&quot;;
+
+double amt1 = 128.5;
+double amt2 = 15;
+
+fprintf(stdout, &quot;ACCOUNT BALANCES\n&quot;);
+fprintf(stdout, &quot;%12s: %6.2f\n&quot;, name1, amt1);
+fprintf(stdout, &quot;%12s: %6.2f\n&quot;, name2, amt2);</code></pre>
+<p>Running that code produces this output:</p>
+<pre><code class="language-.text">ACCOUNT BALANCES
+       Jared: 128.50
+   Elizabeth:  15.00</code></pre>
+<h1 id="a-quick-look-at-pointers"><a class ="linkin" href="index.html#top"><span class="header-section-number">3</span> A quick look at pointers</a></h1><p>Now it’s time to introduce one of the most powerful concepts in C programming, the mighty <em>pointer</em>. Simply put, a pointer is the memory address of some other object (such as an int, char or double). We know that everything in C is stored in memory, and pointers are the way that our program can access where in memory those things get stored.</p>
+<p>As with any powerful tool, pointers can also be quite <em>dangerous</em>. When we deal with memory addresses, it’s very easy to do all sorts of horrible things like write an <code>int</code> where a <code>double</code> should be, or read from memory that doesn’t belong to our program. So, more than anything else in C so far, you are advised to <em>only use pointers when you really NEED them</em>, and otherwise stick to regular variables. You’ve been warned!</p>
+<h2 id="getting-and-printing-memory-addresses"><a class="linkin" href="index.html#top"><span class="header-section-number">3.1</span> Getting and printing memory addresses</a></h1><p>The ampersand operator <code>&amp;</code>, when used before an expression, returns the <em>memory address</em> (or <em>pointer</em>) for that expression’s value. Usually we use this to get the address of a certain variable, so that if <code>x</code> is a variable, then <code>&amp;x</code> is the address of <code>x</code>.</p>
+<p>The format flag <code>%p</code> can be used in a <code>fprintf</code> statement to display a pointer. For example:</p>
+<pre><code class="language-C">int x = 10;
+fprintf(stdout, &quot;The address of x is %p\n&quot;, &amp;x);</code></pre>
+<p>Notice that we used <code>%p</code> inside the format string to tell <code>fprintf</code> to expect a pointer, and then we used <code>&amp;x</code> to actually get the pointer to <code>x</code>. If you run that program the output will look something like</p>
+<pre><code class="language-text output">The address of x is 0x7ffcd3d11b20</code></pre><p>What that’s showing you is the actual memory location in your computer where the compiler and operating system decided to store the 4 bytes for <code>int x</code>. The memory address is in <em>hexadecimal notation</em>, or <em>base 16</em> — that’s what the <code>0x</code> means.</p>
+<p>Now when I said your output will look <em>something like</em> that, I really meant it. If you run this program on your computer, you will get a different memory address. And even if you run the same program on the same computer at different times, you are likely to get different addresses! That’s because every time you run a program, the operating system decides what part of memory that program gets to use. Since you are probably running other programs on your computer at the same time, the region of memory allocated to your program can change every time you run it.</p>
+<p>We could play with this and probably learn quite a bit about the operating system, but that’s a topic for a different class. For our purposes, the thing to remember is that <em>you can’t count on the specific value of a pointer in the program</em>, since it can change every time the program is run. That is, we know for certain that <code>&amp;x</code> is the address of the variable <code>x</code>, but we have no idea what that address will be!</p>
+<h2 id="pointer-types-and-dereferencing"><a class="linkin" href="index.html#top"><span class="header-section-number">3.2</span> Pointer types and dereferencing</a></h1><p>Since a pointer such as <code>&amp;x</code> is itself an expression in C, it must have a type. The pointer type is based on the type of the thing it’s pointing to, with an asterisk <code>*</code> afterwards. So if we have <code>int x</code>, then the type of <code>&amp;x</code> is <code>int*</code>. Or if <code>x</code> were a <code>double</code>, then the type of <code>&amp;x</code> would be <code>double*</code>, and so on.</p>
+<p>Now that we have a type, we can declare <em>variables that are pointers</em>, using the pointer type as the variable’s type! Here’s a small example:</p>
+<pre><code class="language-C">char letter = &#39;H&#39;;
+char* ptr = &amp;letter;
+fprintf(stdout, &quot;The address of %c is %p\n&quot;, letter, ptr);</code></pre>
+<p>Now what can we do with these pointer variables? Well, the obvious thing to do is <em>dereferencing</em>: getting the actual value that the pointer points to. To do that, you use the <code>*</code> operator right before the pointer value, and it turns it from a pointer back into the value that it’s pointing to. For example:</p>
+<pre><code class="language-C">double length = 5.5;
+double* lptr = &amp;length;
+fprintf(&quot;These two numbers are the same: %g = %g\n&quot;, length, *lptr);</code></pre>
+<p>Think of the <code>*</code> dereferencing operator as the opposite of the <code>&amp;</code> operator. The <code>&amp;</code> operator makes a pointer out of an object, and <code>*</code> makes an object out of a pointer.</p>
+<p><strong>Caution 1</strong>: We have now seen 3 different uses for the asterisk <code>*</code> in C, so let’s list them out and make sure we don’t get confused between them.</p>
+<ol type="a">
+<li><em>Between two expressions</em>, an asterisk <code>*</code> does multiplication, like <code class="language-c">(x + 3) * y</code></li>
+<li><em>After a type</em>, an asterisk <code>*</code> refers to a pointer type, like <code class="language-c">int* x;</code></li>
+<li><em>Before an expression</em>, an asterisk <code>*</code> does dereferencing, like <code class="language-c">*x</code></li>
+</ol>
+<p><strong>Caution 2</strong>: Things don’t work the way you expect when you try to declare multiple pointers on the same line! For example:</p>
+<pre><code class="language-C">int x, y; // x and y are both int&#39;s
+int* xptr, yptr; // WHOOPS! xptr is a pointer but yptr is an int
+xptr = &amp;x; // OK, the type of xptr is int*
+yptr = &amp;y; // ERROR, the type of yptr is int, not int*</code></pre>
+<p>This is just the way the C syntax works: when you declare multiple variables on the same line, only the type specifier (<code>int</code> in this case) applies to all the variables, whereas the <code>*</code> only applies to the variable name it’s next to (in this case, <code>xptr</code>). For this reason, many C programmers prefer to always put the <code>*</code> next to the variable name, like so:</p>
+<pre><code class="language-C">int x, y; // x and y both have type int
+int *xptr, *yptr; // xptr and yptr both have type int*</code></pre>
+<p>Another option is to just avoid declaring multiple variables (especially pointer variables) on the same line, like so:</p>
+<pre><code class="language-C">int x;
+int y;
+int* xptr;
+int* yptr;</code></pre>
+<p>Which way you go is a matter of personal preference; pick one option or the other and try to be consistent about it so you don’t get tripped up.</p>
+<h2 id="pointers-and-modifying-data"><a class="linkin" href="index.html#top"><span class="header-section-number">3.3</span> Pointers and modifying data</a></h1><p>So what are pointers used for anyway? One of the main uses we’ll see for pointers is to refer to the same piece of data in multiple ways. Check out this example program:</p>
+<pre><code class="language-c">#include &quot;si204.h&quot;
+
+int main() {
+  fprintf(stdout, &quot;Enter x: &quot;);
+  int x = readnum(stdin);
+  int y = x;
+  int* xp = &amp;x;
+
+  fprintf(stdout, &quot;The value of x is %i and the address of x is %p\n&quot;,
+          x, &amp;x);
+  fprintf(stdout, &quot;The value of y is %i and the address of y is %p\n&quot;,
+          y, &amp;y);
+  fprintf(stdout, &quot;The pointer xp is %p and the dereferenced value is %i\n&quot;,
+          xp, *xp);
+
+  fprintf(stdout, &quot;\nEnter a new value for x: &quot;);
+  x = readnum(stdin);
+
+  fprintf(stdout, &quot;The value of x is %i and the address of x is %p\n&quot;,
+          x, &amp;x);
+  fprintf(stdout, &quot;The value of y is %i and the address of y is %p\n&quot;,
+          y, &amp;y);
+  fprintf(stdout, &quot;The pointer xp is %p and the dereferenced value is %i\n&quot;,
+          xp, *xp);
+
+  return 0;
+}</code></pre><p>And here’s a sample run of that code:</p>
+<pre><code class="language-text output">Enter x: </code><code class="language-text input">10</code>
+<code class="language-text output">The value of x is 10 and the address of x is 0x7ffc475e0404</code>
+<code class="language-text output">The value of y is 10 and the address of y is 0x7ffc475e0400</code>
+<code class="language-text output">The pointer xp is 0x7ffc475e0404 and the dereferenced value is 10</code>
+<code class="language-text output"></code>
+<code class="language-text output">Enter a new value for x: </code><code class="language-text input">15</code>
+<code class="language-text output">The value of x is 15 and the address of x is 0x7ffc475e0404</code>
+<code class="language-text output">The value of y is 10 and the address of y is 0x7ffc475e0400</code>
+<code class="language-text output">The pointer xp is 0x7ffc475e0404 and the dereferenced value is 15</code></pre><p>As you can see, changing the value of <code>x</code> from 10 to 15 does not (directly) change either of the other variables; <code>y</code> is still <code>10</code> and <code>xp</code> is still <code>0x7ffc475e0404</code>. But since <code>xp</code> points to <code>x</code>, the value of <code>*xp</code>, the dereferenced value, goes from <code>10</code> to <code>15</code> when <code>x</code> is changed. In other words, <code>x</code> and <code>*xp</code> will always be the same value as long as <code>xp</code> points to <code>x</code>.</p>
+<h2 id="you-are-using-pointers-already"><a class="linkin" href="index.html#top"><span class="header-section-number">3.4</span> You are using pointers already</a></h1><p>In your use of the <a href="files.php%3Ff=si204.h.html">si204.h file</a> header file, you have already been using two kinds of pointers even though you didn’t know it!</p>
+<p>The first is <code>stream</code>. While this looks like any other type in C, it is actually a synonym for the type <code>FILE*</code> — that is, a pointer to a type called <code>FILE</code>. Yes, even <code>stdin</code> and <code>stdout</code> are considered <code>FILE</code>s in C! This <code>FILE</code> type is part of the C standard library from the header file <code>&lt;stdio.h&gt;</code> (more on that later).</p>
+<p>The second type of pointer you have been using is <code>cstring</code>, which is actually an <em>array</em> of <code>char</code>s, which in most contexts is the same as <code>char*</code>, a pointer to the first character in the string. We’ll learn more about arrays in a few weeks, but for now just remember that <code>cstring</code> should be treated like a pointer type <code>char*</code>.</p>
+<p>Now for a deeper question: <em>Why</em> are <code>stream</code> and <code>cstring</code> pointer types? The reason is how they are used. Both <code>stream</code> and <code>cstring</code> variables are passed into functions that need to modify the underlying data. Consider the following code, which by now should be quite familiar to you:</p>
+<pre><code class="language-C">stream fin = fopen(&quot;somefile.txt&quot;, &quot;r&quot;);
+cstring word;
+readstring(word, fin);</code></pre>
+<p>What’s actually happening in that <code>readstring</code> function call? It’s copying some characters from the file into the <code>word</code> variable’s storage, and moving the file position forward so that the next read operation won’t try to read the same thing again.</p>
+<p>This means that both the underlying string <code>word</code> and file stream <code>fin</code> have to be modified in order to make things work. This is why it makes sense that the <code>readstring</code> function needs the <em>address</em> of these pieces of data, so that it can make changes to what’s stored there.</p>
+<p>The details of passing an address to a function, rather than the object itself, will be more clear in the next unit when we learn about functions, but hopefully the general idea is starting to make sense already. The most important thing to remember for now is to <strong>treat streams and cstrings like pointers</strong> when you use them.</p>
+<h1 id="fscanf"><a class ="linkin" href="index.html#top"><span class="header-section-number">4</span> fscanf</a></h1><p>The <code>fscanf</code> function does for reading what <code>fprintf</code> does for writing: it gives us a convenient way to read multiple variables in a single line of code, using a <em>format string</em>. We’ll look at the most important features of <code>fscanf</code> below, and as always you can also browse the <a href="http://en.cppreference.com/w/c/io/fscanf">complete documentation online</a> or by typing <code>man fscanf</code> in the terminal.</p>
+<h2 id="using-fscanf"><a class="linkin" href="index.html#top"><span class="header-section-number">4.1</span> Using fscanf</a></h1><p>As with <code>fprintf</code>, the format string consists of regular characters mixed in with <em>conversion specifiers</em>. These conversion specifiers again start with a percent sign <code>%</code> followed by some type indicator. These are <em>mostly</em> the same as in <code>fprintf</code> — <code>%i</code> for an <code>int</code>, <code>%c</code> for <code>char</code>, <code>and %s</code> for strings. But <strong>double is different</strong> — you have to use <code>%lg</code> (notice that’s a lowercase ell <code>l</code>) instead of a plain <code>%g</code>, to indicate that you want an 8-byte <code>double</code> and not a 4-byte <code>float</code>.</p>
+<p>For example, to read in an integer into a variable <code>n</code> using <code>fscanf</code> you would do:</p>
+<pre><code class="language-C">int n;
+fprintf(stdout, &quot;Enter n: &quot;);
+fflush(stdout);
+fscanf(stdin, &quot; %i&quot;, &amp;n); // &lt;-- look carefully here!
+fprintf(stdout, &quot;The number you entered is %i\n&quot;, n);</code></pre>
+<p>What do you notice in the code snippet above?</p>
+<ul>
+<li><p>The <code>fflush(stdout)</code> is necessary to ensure that the prompt <code>&quot;Enter n: &quot;</code> is printed out <em>before</em> the program waits for the user to type in an integer. Remember, <code>stdout</code> is line-buffered by default, which means there’s no guarantee that text will show up on the screen until a newline is printed or we manually call <code>fflush</code>.</p></li>
+<li><p>There’s a space before the <code>%i</code> in the <code>fscanf</code> format string. Any space in a fscanf format string causes the program to read and skip any whitespace characters before reading the next part.</p>
+<p>(Actually <code>&quot;%i&quot;</code> will also skip whitespace characters before reading the number, but <code>&quot;%c&quot;</code> doesn’t skip whitespace automatically. So I (Dr. Roche) think it’s a good habit to always put the space in front of your scanf if you want it to skip whitespace.)</p></li>
+<li><p>The argument to <code>fscanf</code> is given as a <em>pointer</em> <code>&amp;n</code> rather than the plain variable <code>n</code>. This is so the <code>fscanf</code> function gets the address in memory where it will store the result.</p></li>
+</ul>
+<p>Just as with <code>fprintf</code>, we can also read multiple variables in a single call to <code>fscanf</code>. This involves passing more arguments to the <code>fscanf</code> function, in the same order as the corresponding format specifiers. Just remember that <em>every argument to scanf must be a pointer</em>, because the function needs to know the addresses where it will save the data that it reads.</p>
+<p>Here’s another example. To read the name and price of some item formatted like</p>
+<pre><code class="language-.text">Chocolate costs $1.50</code></pre>
+<p>we could use the following program:</p>
+<pre><code class="language-C">cstring food;
+cstring costsword;
+char dollarsign;
+double price;
+
+fscanf(stdin, &quot; %s %s %c%g&quot;, food, costsword, &amp;dollarsign, &amp;price);</code></pre>
+<p>Take careful note of the <code>fscanf</code> call there. As before, we put a space in front of the <code>%s</code> and <code>%c</code> specifiers to indicate that <code>fscanf</code> should skip any whitespace before reading the food name and before reading the dollar sign. (Technically we only really need this space in front of the <code>%c</code>, but Dr. Roche likes the habit of putting spaces in the format string whenever a space might be expected in the input.)</p>
+<p>There’s something else interesting in the <code>fscanf</code> call above — <em>you pass the cstring arguments directly without calling the address operator <code>&amp;</code></em>. Remember from the last section that the type <code>cstring</code> can (in most situations) be thought of like <code>char*</code>, i.e., it’s already a pointer type. We don’t have to take the address of it for <code>fscanf</code> because it’s already an address!</p>
+<p>One more thing about <code>fscanf</code> format strings: any non-whitespace characters that are not conversion specifiers with a <code>%</code> indicate characters that <code>fscanf</code> should “expect” to see and then ignore. So actually in the previous example, we could forget about the useless <code>costsword</code> and <code>dollarsign</code> variables and just do:</p>
+<pre><code class="language-C">cstring food;
+double price;
+fscanf(stdin, &quot; %s costs $%lg&quot;, food, &amp;price);</code></pre>
+<p>Be careful with this feature of <code>fscanf</code> however, because the literal non-whitespace characters in the format string have to match <em>exactly</em> with the input given, or else the reading stops at that point. More on that below.</p>
+<p>In summary, the biggest “gotchas” about <code>fscanf</code> are:</p>
+<ol type="1">
+<li>Use <code>%lg</code> for doubles, unlike <code>%g</code> that you would use in <code>fprintf</code>.</li>
+<li>Usually put a space in front of <code>%c</code> to that it skips whitespace and then reads the next non-whitespace character.</li>
+<li>Pass all the arguments as addresses with the <code>&amp;</code> operator, except for strings which are already pointers.</li>
+<li>Any non-whitespace literal characters in your format string are passed over by <code>fscanf</code>, but only if they match exactly what’s in the input.</li>
+</ol>
+<h2 id="return-value-and-error-checking"><a class="linkin" href="index.html#top"><span class="header-section-number">4.2</span> Return value and error checking</a></h1><p>Any time you’re reading input, things can go wrong. Someone might type a word when you’re trying to read a number, or they use the wrong format, or the file ends when you’re trying to read more data, etc. So far, using the reading functions provided in <code>si204.h</code>, any of these issues causes an error message like</p>
+<pre><code class="language-.text">ERROR in readnum: Maybe ill-formatted number?</code></pre>
+<p>and then your program aborts unceremoniously.</p>
+<p>But with <code>fscanf</code>, we can detect and adapt to things going wrong, and <em>we get to decide</em> as programmers how to handle it.</p>
+<p>The key is that <code>fscanf</code> returns an <code>int</code> indicating the <em>number of arguments it successfully assigned</em>. So if you tried to read in 3 things, and your <code>fscanf</code> call returns 3, everything worked. If it returns something less than 3, something went wrong.</p>
+<p>Here’s a more complete program along the lines of the previous example, but with some actual error checking.</p>
+<pre><code class="language-c">#include &quot;si204.h&quot;
+
+int main() {
+  cstring food;
+  double price;
+
+  fprintf(stdout, &quot;Enter data in the form \&quot;&lt;food&gt; costs $&lt;price&gt;\&quot;.\n&quot;);
+  int check = fscanf(stdin, &quot; %s costs $%lg&quot;, food, &amp;price);
+
+  if (check != 2) {
+    fprintf(stdout, &quot;ERROR: invalid input.\n&quot;);
+    return 1;
+  }
+
+  int quantity = 6;
+  fprintf(stdout, &quot;Yum, I'll take %i %ss for $%.2f please.\n&quot;,
+          quantity, food, quantity*price);
+
+  return 0;
+}</code></pre><p>How would you modify the program above so it keeps asking for valid input in a loop until the <code>fscanf</code> call succeeds?</p>
+<h1 id="do-we-still-need-si204-h-"><a class ="linkin" href="index.html#top"><span class="header-section-number">5</span> Do we still need si204.h?</a></h1><p>We’ve been using the <a href="files.php%3Ff=si204.h.html">si204.h library</a> for everything in the class so far. Here’s what it really gives us:</p>
+<ol type="1">
+<li>The definition of type <code>cstring</code></li>
+<li>The definition of type <code>stream</code></li>
+<li>Access to everything in the standard header <code>&lt;string.h&gt;</code> including <code>strlen</code>, <code>strcpy</code>, and <code>strcmp</code>.</li>
+<li>Access to everything in the standard header <code>&lt;stdio.h&gt;</code> including <code>fputs</code>, <code>fputc</code>, <code>fopen</code>, <code>fprintf</code>, and <code>fscanf</code>.</li>
+<li>A few extra functions for reading and writing, namely <code>readchar</code>, <code>readstring</code>, <code>readnum</code>, and <code>writenum</code>.</li>
+</ol>
+<p>Let’s work backwards up this list. We don’t need those four special read/write functions anymore, because <code>fscanf</code> and <code>fprintf</code> can do all of that reading and writing for us now. In fact, if you look in <code>si204.h</code>, you’ll see that those functions really just call <code>fscanf</code> or <code>fprintf</code> with some extra error checking.</p>
+<p>As for (3) and (4) in the list above, we can just include those standard headers in our code directly, by putting</p>
+<pre><code class="language-C">#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;</code></pre>
+<p>at the top of your <code>.c</code> file. Notice that you have to use angle brackets instead of quotation marks for these <code>#include</code> statements, because these header files are in standard system directories, as opposed to <code>si204.h</code> which always had to be in the same directory as your code.</p>
+<p>As for (2) in the list above, we learned already that <code>stream</code> is the same as <code>FILE*</code>, and the type <code>FILE</code> is a standard type defined in <code>stdio.h</code>. So you can replace any use of the type <code>stream</code> with type <code>FILE*</code> and you’re good.</p>
+<p>Finally we come to (1), the type of <code>cstring</code>. This is the only part that we really “need” <code>si204.h</code> for still, because we haven’t learned about arrays yet. But I’ll tell you that the type <code>cstring</code> is actually an array of characters, which you can get just by adding this “magic” line of code to the top of your program before <code>main</code>:</p>
+<pre><code class="language-C">typedef char cstring[128];</code></pre>
+<p>Right now you don’t know what that means, but I bet you can make a pretty good guess! The other thing to remember about <code>cstring</code> is that whenever you use one in a function, it gets automatically converted to type <code>char*</code>, a pointer to the first character in the string.</p>
+<p>Here’s a complete program that doesn’t use <code>si204.h</code>. You might call it our first “real” C program.</p>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+
+typedef char cstring[128];
+
+int main() {
+  cstring secret = &quot;opensesame&quot;;
+  cstring entered;
+  int check;
+
+  fprintf(stdout, &quot;What's the secret password? &quot;);
+  fflush(stdout);
+  check = fscanf(stdin, &quot; %s&quot;, entered);
+
+  if (check == 1 &amp;&amp; strcmp(secret, entered) == 0) {
+    fprintf(stdout, &quot;Welcome, trusted friend.\n&quot;);
+  }
+
+  return 0;
+}</code></pre><h1 id="other-odds-and-ends"><a class ="linkin" href="index.html#top"><span class="header-section-number">6</span> Other odds and ends</a></h1><h2 id="dropping-stdout-and-stdin"><a class="linkin" href="index.html#top"><span class="header-section-number">6.1</span> Dropping stdout and stdin</a></h1><p>You have probably noticed that most of your calls to printing functions go to the stream <code>stdout</code>, and most of your calls to reading functions come from the stream <code>stdin</code>. Since this is so common, the <a href="http://en.cppreference.com/w/c/io">C standard I/O library stdio.h</a> includes some “convenience” functions that automatically use stdin/stdout:</p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: center;">Long function</th>
+<th style="text-align: center;">Shorter version</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><code>fprintf(stdout, &quot;format&quot;, arg1, ...)</code></td>
+<td style="text-align: center;"><code>printf(&quot;format&quot;, arg1, ...)</code></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><code>fscanf(stdin, &quot;format&quot;, arg1, ...)</code></td>
+<td style="text-align: center;"><code>scanf(&quot;format&quot;, arg1, ...)</code></td>
+</tr>
+</tbody>
+</table>
+<p>There are other convenience methods too if you look at the full documentation, but <code>scanf</code> and <code>printf</code> are the two most useful ones.</p>
+<p><strong>Caution</strong>: Some of these are not <em>exactly</em> equivalent, even though they look like they are! In particular, there is a <code>puts</code> function (similar to <code>fputs</code>, but goes to <code>stdout</code>), with an important difference that <code>puts</code> automatically inserts a newline <code>&quot;\n&quot;</code> at the end of the string you tell it to print, while <code>fputs</code> doesn’t.</p>
+<p>That can all be rather confusing, so it’s probably best to stick with (f)printf and (f)scanf now that we now how to use them.</p>
+<h2 id="eof"><a class="linkin" href="index.html#top"><span class="header-section-number">6.2</span> EOF</a></h1><p>We discussed above how the <code>int</code> returned from a call to <code>fscanf</code> indicates how many arguments were successfully read in.</p>
+<p>There is also a special return value of <code>EOF</code> that indicates the end of the file has been reached. This is a negative number, usually defined to be <code>-1</code> but technically it could be any negative number.</p>
+<p>This gives us a nice way to read in all the contents of a file up to the end of the file. For example, let’s say we have a file with a bunch of lines, each formatted like <code>&lt;name&gt; &lt;score&gt;</code>, for example:</p>
+<pre><code class="language-.text">Sagan 470
+Kittel 228
+Matthews 199
+Greipel 178</code></pre>
+<p>Then we could write a loop like this to read in all the lines in the file, no matter the length of the file itself:</p>
+<pre><code class="language-C">FILE* fin = fopen(&quot;points.txt&quot;, &quot;r&quot;);
+
+cstring name;
+int points;
+
+while (fscanf(fin, &quot; %s %i&quot;, name, &amp;points) != EOF) {
+  printf(&quot;%s has %i points.\n&quot;, name, points);
+}</code></pre>
+<p>That’s pretty good, but it has one flaw: if one of the lines is misformated (say, there’s an extra name without a score), then <code>fscanf</code> will return some number less than 2, but not <code>EOF</code>. It could go into an infinite loop of trying (and failing) to read the misformated data!</p>
+<p>So a better solution would be more like this:</p>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+
+typedef char cstring[128];
+
+int main() {
+  FILE* fin = fopen(&quot;points.txt&quot;, &quot;r&quot;);
+
+  cstring name;
+  int points;
+
+  int check = fscanf(fin, &quot; %s %i&quot;, name, &amp;points);
+  while (check == 2) {
+    printf(&quot;%s has %i points.\n&quot;, name, points);
+    check = fscanf(fin, &quot; %s %i&quot;, name, &amp;points);
+  }
+
+  if (check != EOF) {
+    printf(&quot;ERROR in points.txt file\n&quot;);
+    fclose(fin);
+    return 1;
+  }
+
+  fclose(fin);
+
+  return 0;
+}</code></pre><p>(Note, there is also a standard function <a href="http://en.cppreference.com/w/c/io/feof"><code>feof</code></a> that can be used to check if the given stream is at the end.)</p>
+<h2 id="reading-whitespace"><a class="linkin" href="index.html#top"><span class="header-section-number">6.3</span> Reading whitespace</a></h1><p>So far we’ve made sure that all of the reading operations, for strings, characters, and numbers, skip any whitespace (spaces, tabs, or newlines) before reading the next thing. However, sometimes you really want to read in those spaces!</p>
+<p>The easiest and simplest way to do this is one character at a time, using the format <code>%c</code> in <code>fscanf</code> without any space before it. For example, the following code will read in two strings, separated by normal spaces, and report how many spaces were between the strings:</p>
+<pre><code class="language-C">cstring firstword;
+char middle;
+
+// read the first word
+scanf(&quot; %s&quot;, firstword);
+
+int count = 0;
+
+// read char&#39;s until you hit something that&#39;s not a space
+scanf(&quot;%c&quot;, &amp;middle);
+while (middle == &#39; &#39;) {
+  scanf(&quot;%c&quot;, &amp;middle);
+}
+
+printf(&quot;You typed %i spaces.\n&quot;&lt; count);</code></pre>
+<p>(There is also a built-in function <code>getc</code> that has a similar effect.)</p>
+<h2 id="writing-to-and-reading-from-strings"><a class="linkin" href="index.html#top"><span class="header-section-number">6.4</span> Writing to and reading from strings</a></h1><p>We won’t have much use for this in our class, but you might be interested to know that you can also do <code>printf</code> and <code>scanf</code> stuff where the “stream” is not actually a terminal or a file, but rather a string!</p>
+<p>The functions to do that are <a href="http://en.cppreference.com/w/c/io/fscanf"><code>sscanf</code></a> and <a href="http://en.cppreference.com/w/c/io/fprintf"><code>sprintf</code></a>, and they take a string argument in place of the <code>FILE*</code> argument to <code>fscanf</code> or <code>fprintf</code>.</p>
+<p>For example, here is a program that reads in an email address as a single string, and then uses <code>sscanf</code> to check whether it’s a Midshipmen email address:</p>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+
+typedef char cstring[128];
+
+int main() {
+  printf(&quot;Enter your email address: &quot;);
+  fflush(stdout);
+
+  cstring email;
+  scanf(&quot; %s&quot;, email);
+
+  int alpha;
+  if (sscanf(email, &quot;m%i@usna.edu&quot;, &amp;alpha) == 1) {
+    printf(&quot;Your alpha is %i.\n&quot;, alpha);
+  } else {
+    printf(&quot;You must not be a Mid.\n&quot;);
+  }
+
+  return 0;
+}</code></pre><div style="display:none;">
+<h1 id="problems"><a class ="linkin" href="index.html#top"><span class="header-section-number">7</span> Problems</a></h1><ol type="1">
+<li>A simple data-conversion problem. You’d be amazed how often you need to write programs that do nothing more than convert data from one format to another. Write a program that reads in a file (name given by user) that contains points in ordered pair notation, and writes the same points to a file (name also given by user) in gnuplot notation, i.e. one point per line, each point given by x-coordinate tab (‘\t’) y-coordinate. For a nice small file to test with, we have <a href="https://www.usna.edu/Users/cs/roche/courses/s17si204/notes/04/testin.txt" class="uri">testin.txt</a>. For a nice big challenge file, we have <a href="https://www.usna.edu/Users/cs/roche/courses/s17si204/notes/04/in.txt" class="uri">in.txt</a>.<br />
+<a href="https://www.usna.edu/Users/cs/roche/courses/s17si204/notes/04/ex0.cpp.html">a solution</a>.</li>
+<li>Census Statistics - The census keeps <a href="http://www.census.gov/population/www/censusdata/places.html">tables of populations and population densities</a> for all of our states. Each state has its own file giving the names of all cities, towns, and CDP’s (“census designated place” - this appears to be census-eese for “other”) in that state. For example, take a look at <a href="http://www.census.gov/population/censusdata/places/24md.txt">Maryland’s geographic census data</a>.
+<ul>
+<li><a href="https://www.usna.edu/Users/cs/roche/courses/s17si204/notes/04/TE1.html">The number of towns in Maryland</a></li>
+<li><a href="https://www.usna.edu/Users/cs/roche/courses/s17si204/notes/04/TE2.html">The number of towns, cities and CDP’s in Maryland</a></li>
+<li><a href="https://www.usna.edu/Users/cs/roche/courses/s17si204/notes/04/TE3.html">The number of towns, cities and CDP’s in a user input state</a></li>
+</ul></li>
+</ol>
+<hr />
+<ol type="1">
+<li><p>Here’s a good problem to work on, as it takes into account a number of the things we’ve talked about: The file <a href="https://www.usna.edu/Users/cs/roche/courses/s17si204/notes/04/scores.txt" class="uri">scores.txt</a> contains the scores of students on various problems on an exam. Each row corresponds to a student, and the scores along that row are that student’s scores on problems 1, 2, 3 etc.<br />
+<strong>Your job:</strong> figure out which problem was the hardest! You may assume that for every problem, at least one student got full credit for that problem. If the average score for problem X as a percentage of the full credit score for X is less than the average score for problem Y as a percentage of the full credit score for Y, then problem X is “harder” than problem Y.</p>
+<pre><code class="language-C">~/$ ./prob1
+Problem p4 is hardest (ave = 48.5294%)</code></pre>
+<p>Check out <a href="https://www.usna.edu/Users/cs/roche/courses/s17si204/notes/04/TE1.cpp.html">this solution</a>.</p></li>
+</ol>
+</div>
+  </div></article></div></div><nav class="stickynav"><div><div class="dropdown"><a href="../../index.php.html" class="ddown-btn">SI 204</a><div class="ddown-content"><a href="../../calendar.php.html">Calendar</a><a href="../index.html">Notes</a><a href="../../hw/index.html">HWs</a><a href="../../lab/index.html">Labs</a><a href="../../proj/index.html">Projects</a><a href="../../exams/index.html">Exams</a><a href="../../admin/index.html">Resources</a><a href="https://www.usna.edu/Users/cs/roche/">Roche</a><a href="https://www.usna.edu/Users/cs/albing/">Albing</a></div></div><div class="dropdown"><a href="index.html#top" class="linkin pagetop">Unit 4: I/O</a><div class="ddown-content ddtoc"><ul><li><a class="linkin" href="index.html#streams"><span class="toc-section-number">1</span> Streams</a>
+<ul><li><a class="linkin" href="index.html#standard-input-and-output-streams"><span class="toc-section-number">1.1</span> Standard input and output streams</a></li><li><a class="linkin" href="index.html#creating-streams-from-files"><span class="toc-section-number">1.2</span> Creating streams from files</a></li><li><a class="linkin" href="index.html#stream-buffering"><span class="toc-section-number">1.3</span> Stream buffering</a></li><li><a class="linkin" href="index.html#buffer-flushing"><span class="toc-section-number">1.4</span> Buffer flushing</a></li></ul></li>
+<li><a class="linkin" href="index.html#format-strings-and-fprintf"><span class="toc-section-number">2</span> Format strings and fprintf</a>
+<ul><li><a class="linkin" href="index.html#the-problem-too-many-calls-to-output-functions"><span class="toc-section-number">2.1</span> The problem: too many calls to output functions</a></li><li><a class="linkin" href="index.html#fprintf-to-the-rescue"><span class="toc-section-number">2.2</span> fprintf to the rescue</a></li><li><a class="linkin" href="index.html#controlling-the-output-format"><span class="toc-section-number">2.3</span> Controlling the output format</a></li></ul></li>
+<li><a class="linkin" href="index.html#a-quick-look-at-pointers"><span class="toc-section-number">3</span> A quick look at pointers</a>
+<ul><li><a class="linkin" href="index.html#getting-and-printing-memory-addresses"><span class="toc-section-number">3.1</span> Getting and printing memory addresses</a></li><li><a class="linkin" href="index.html#pointer-types-and-dereferencing"><span class="toc-section-number">3.2</span> Pointer types and dereferencing</a></li><li><a class="linkin" href="index.html#pointers-and-modifying-data"><span class="toc-section-number">3.3</span> Pointers and modifying data</a></li><li><a class="linkin" href="index.html#you-are-using-pointers-already"><span class="toc-section-number">3.4</span> You are using pointers already</a></li></ul></li>
+<li><a class="linkin" href="index.html#fscanf"><span class="toc-section-number">4</span> fscanf</a>
+<ul><li><a class="linkin" href="index.html#using-fscanf"><span class="toc-section-number">4.1</span> Using fscanf</a></li><li><a class="linkin" href="index.html#return-value-and-error-checking"><span class="toc-section-number">4.2</span> Return value and error checking</a></li></ul></li>
+<li><a class="linkin" href="index.html#do-we-still-need-si204-h-"><span class="toc-section-number">5</span> Do we still need si204.h?</a></li>
+<li><a class="linkin" href="index.html#other-odds-and-ends"><span class="toc-section-number">6</span> Other odds and ends</a>
+<ul><li><a class="linkin" href="index.html#dropping-stdout-and-stdin"><span class="toc-section-number">6.1</span> Dropping stdout and stdin</a></li><li><a class="linkin" href="index.html#eof"><span class="toc-section-number">6.2</span> EOF</a></li><li><a class="linkin" href="index.html#reading-whitespace"><span class="toc-section-number">6.3</span> Reading whitespace</a></li><li><a class="linkin" href="index.html#writing-to-and-reading-from-strings"><span class="toc-section-number">6.4</span> Writing to and reading from strings</a></li></ul></li>
+<li><a class="linkin" href="index.html#problems"><span class="toc-section-number">7</span> Problems</a></ul></div></div></nav><footer><div id="foottext">    <p class="disclaimer">Material contained above is made available
+    for the purpose of peer review and discussion and does not
+    necessarily reflect the views of the Department of the Navy or the
+    Department of Defense.
+    Some links above are to sites that are not
+    located at the United States Naval Academy. The USNA is not
+    responsible for the content found on these sites. In addition, the
+    content of these sites does not reflect the opinions, standards,
+    policy or endorsement of the Naval Academy or the United States
+    Government.</p>
+  Page maintained by Daniel S. Roche (<a href="mailto:roche [AT] usna [DOT] edu" id="emaillink1">roche [AT] usna [DOT] edu</a><script type='text/javascript'><!--
+        var b="he@usna.edu";
+        var a="roc";
+        document.getElementById("emaillink1").href='mailto:'+a+b;
+        document.getElementById("emaillink1").innerHTML=a+b;
+        // --></script>). Last updated 05 February 2017 18:25.</div></footer><script src="../../scripts/prism.js"></script><script type="text/javascript">var the_body = $('html, body');
+var sticky_height = $('.stickynav').height();
+$('.linkin').click(function(){
+  var href = $(this).attr('href');
+  var offset;
+  if (href == '#top') offset = 0;
+  else offset = $(href).offset().top - sticky_height;
+  the_body.animate({ scrollTop: offset }, 500);
+  return false;
+});</script></body></html>

@@ -1,0 +1,37 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int sum(int* array, int size);
+
+int main() {
+  // read size n
+  int n;
+  do {
+    printf("Enter size: ");
+    fflush(stdout);
+  } while(scanf(" %i", &n) != 1 || n <= 0);
+
+  // allocate array and read in contents
+  int* data = calloc(n, sizeof(int));
+  printf("Enter %i integers, space separated.\n", n);
+  for (int i=0; i<n; ++i) {
+    scanf(" %i", &data[i]);
+  }
+
+  // CALL YOUR FUNCTION(S) HERE
+  double avg = sum(data, n) / (double)n;
+  // AND PRINT OUT THE RESULTS
+  printf("The average is %g\n", avg);
+
+  // clean-up time
+  free(data);
+  return 0;
+}
+
+int sum(int* array, int size) {
+  int tot = 0;
+  for (int i=0; i < size; ++i) {
+    tot += array[i];
+  }
+  return tot;
+}

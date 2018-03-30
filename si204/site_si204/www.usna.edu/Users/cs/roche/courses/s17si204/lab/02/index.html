@@ -1,0 +1,145 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Lab 02: Currency conversion</title><meta name="viewport" content="width=device-width, initial-scale=1.0"><link href="../../scripts/prism.css" rel="stylesheet" /><link rel="stylesheet" type="text/css" href="../../style.css"><script type="text/javascript" src="../../../../mathjax/MathJax.js%3Fconfig=TeX-AMS_HTML"></script><script type="text/javascript" src="../../scripts/jquery-3.1.1.min.js"></script><style>
+@media only screen and (min-width: 600px) {
+  #main>header {background-image: url("../../scripts/header.png");}
+}
+</style>  <meta name="generator" content="pandoc">
+  <style type="text/css">code{white-space: pre;}</style>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head><body><div id="main"><header><nav class="topnav"><div>
+            <a href="../../index.php.html">SI 204</a>
+            </div><div>
+            <a href="../../calendar.php.html">Calendar</a>
+            </div><div>
+            <a href="../../notes/index.html">Notes</a>
+            </div><div>
+            <a href="../../hw/index.html">HWs</a>
+            </div><div id="navparent">
+            <a href="../index.html">Labs</a>
+            </div><div>
+            <a href="../../proj/index.html">Projects</a>
+            </div><div>
+            <a href="../../exams/index.html">Exams</a>
+            </div><div>
+            <a href="../../admin/index.html">Resources</a>
+            </div><div>
+            <a href="https://www.usna.edu/Users/cs/roche/">Roche</a>
+            </div><div>
+            <a href="https://www.usna.edu/Users/cs/albing/">Albing</a>
+            </div></nav></header><div id="mainbox"><div class="printonly"><h1 class="printtitle">SI 204 Spring 2017 / Labs</h1><hr></div><article id="mainart"><header><h1>Lab 02: Currency conversion</h1></header><div id="TOC"><ul><li><a class="linkin" href="index.html#converting-currencies"><span class="toc-section-number">1</span> Converting Currencies</a></li>
+<li><a class="linkin" href="index.html#two-word-currencies"><span class="toc-section-number">2</span> Two-word currencies</a></li>
+<li><a class="linkin" href="index.html#adding-multiple-currencies-going-further-"><span class="toc-section-number">3</span> Adding multiple currencies (going further)</a></li>
+<li><a class="linkin" href="index.html#classifying-triangles-going-even-further-"><span class="toc-section-number">4</span> Classifying triangles (going even further)</a></li></ul></div><div class="panbody"><p>This lab will exercise your skill with <code>if</code> statements in dealing with currency conversions. Some useful references will be the <a href="../../notes/02/index.html">Unit 2 notes</a> and, as always, the <a href="../../admin/cref.php.html">C functions reference for this class</a>.</p>
+<p>Submit in <a href="../../admin/submit.php.html">the normal way</a>, being sure to put your files in a directory called <code>lab02</code>.</p>
+<h1 id="converting-currencies"><a class ="linkin" href="index.html#top"><span class="header-section-number">1</span> Converting Currencies</a></h1><p>Write a program <code>conv1.c</code> that converts between Dollars, Euros and Yen. The program reads input from the user in the following format: <code>Convert &lt;amount&gt; &lt;currency1&gt; to &lt;currency2&gt;</code> and prints out the resulting currency amount. Here are a couple of sample runs:</p>
+<pre><code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./conv1</code>
+<code class="language-text output"></code><code class="language-text input">Convert 3.50 Euros to Dollars</code>
+<code class="language-text output">3.76344</code>
+<code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./conv1</code>
+<code class="language-text output"></code><code class="language-text input">Convert 350 Yen to Euros</code>
+<code class="language-text output">2.83982</code></pre><p>Here are the conversion rates you’ll need: 1.00 Dollar is 0.93 Euros and 1.00 Dollar is 114.62 Yen.</p>
+<h1 id="two-word-currencies"><a class ="linkin" href="index.html#top"><span class="header-section-number">2</span> Two-word currencies</a></h1><p>You are going to extend your program from Part 1 into a <em>new file</em> called <code>conv2.c</code>. <strong>Important</strong>: don’t delete your working Part 1 <code>conv1.c</code> file! Once you have part 1 working perfectly, just copy that file using a command like</p>
+<pre><code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">cp conv1.c conv2.c</code></pre><p>and then get to work on this part under the new filename.</p>
+<p>Your <code>conv2.c</code> program will allow for Canadian dollars as well as the other currencies. Now the user can’t simply put “Dollars” in the input, it must be either “Dollars US” or “Dollars Canadian”. Here are a couple of sample runs:</p>
+<pre><code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./conv2</code>
+<code class="language-text output"></code><code class="language-text input">Convert 3.50 Euros to Dollars Canadian</code>
+<code class="language-text output">5.00538</code>
+<code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./conv2</code>
+<code class="language-text output"></code><code class="language-text input">Convert 11.72 Dollars US to Dollars Canadian</code>
+<code class="language-text output">15.5876</code>
+<code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./conv2</code>
+<code class="language-text output"></code><code class="language-text input">Convert 350 Yen to Euros</code>
+<code class="language-text output">2.83982</code></pre><p>You’ll be interested to know that 1.00 Dollars US is 1.33 Dollars Canadian.</p>
+<h1 id="adding-multiple-currencies-going-further-"><a class ="linkin" href="index.html#top"><span class="header-section-number">3</span> Adding multiple currencies (going further)</a></h1><blockquote>The rest of this lab is <em>optional</em> for your
+enrichment and enjoyment. Be sure to work on this only after getting
+everything else perfect. You should still submit this work, but make
+sure it doesn't break any of the parts you already had working correctly!
+</blockquote>
+  <p>Copy your program to a new file called <code>conv3.c</code> for this part.</p>
+<p>Extend your program again so that, in addition to dealing with <code>Dollars US</code> and <code>Dollars Canadian</code>, the user <em>may</em> also add up two currencies to convert by using the word <code>and</code>. However, note that they should still be able to do just one currency like before. For example:</p>
+<pre><code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./conv3</code>
+<code class="language-text output"></code><code class="language-text input">Convert 3.50 Euros and 2 Dollars US to Dollars Canadian</code>
+<code class="language-text output">7.66538</code>
+<code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./conv3</code>
+<code class="language-text output"></code><code class="language-text input">Convert 11.72 Dollars US to Dollars Canadian</code>
+<code class="language-text output">15.5876</code>
+<code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./conv3</code>
+<code class="language-text output"></code><code class="language-text input">Convert 1 Dollars Canadian and 8 Dollars Canadian to Yen</code>
+<code class="language-text output">775.624</code></pre><h1 id="classifying-triangles-going-even-further-"><a class ="linkin" href="index.html#top"><span class="header-section-number">4</span> Classifying triangles (going even further)</a></h1><p>There are two common ways of classifying a triangle:</p>
+<div class="bareannotation">
+<p><img src="triangle.gif" height="200" /><br />
+This is an acute isosceles triangle.</p>
+</div>
+<ol type="1">
+<li>By describing its interior angles
+<ul>
+<li>Acute triangles have three interior angles that are all less than 90 degrees</li>
+<li>Right triangles have an interior angle that is exactly 90 degrees</li>
+<li>Obtuse triangles have an interior angle that is greater than 90 degrees</li>
+</ul></li>
+<li>By describing the lengths of the sides in relation to each other
+<ul>
+<li>Equilateral triangles have three sides that are all of equal length</li>
+<li>Isosceles triangles have two sides that are of equal length</li>
+<li>Scalene triangle have all three sides of different lengths</li>
+</ul></li>
+</ol>
+<p>A well known property of all triangles is that the sum of any two sides will always be greater than the third, a fact known as the <em>triangle inequality</em>. Given a set of three lengths it is possible to determine if they can form a triangle by adding two lengths together and comparing them to the third.</p>
+<p>Given the three lengths of the sides of a triangle, a, b and c, it is also possible to calculate the area of a triangle using Heron’s formula.</p>
+<p><span class="math display">\[ \Delta = \sqrt{s(s-a)(s-b)(s-c)} \mbox{, where } s = \frac{1}{2}(a + b + c) \]</span></p>
+<p>Also, from the side lengths <span class="math inline">\(a\)</span>, <span class="math inline">\(b\)</span> and <span class="math inline">\(c\)</span>, it is possible to calculate the three interior angles, <span class="math inline">\(A\)</span>, <span class="math inline">\(B\)</span> and <span class="math inline">\(C\)</span>, of the triangle using the law of sines:</p>
+<p><span class="math display">\[ \frac{sin{A}}{a} = \frac{sin{B}}{b} = \frac{sin{C}}{c} = \frac{2\Delta}{abc}. \]</span></p>
+<p><strong>Your job:</strong> write a program <code>triangles.c</code> that reads three lengths from the user displays the type of triangle that is formed by the input according to both kinds of classification. E.g. “This is an obtuse scalene triangle”</p>
+<pre><code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./triangles</code>
+<code class="language-text output">Enter side lengths: </code><code class="language-text input">1 2 3</code>
+<code class="language-text output">These lengths violate the triangle inequality!</code>
+<code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./triangles</code>
+<code class="language-text output">Enter side lengths: </code><code class="language-text input">1.5 2 3</code>
+<code class="language-text output">This is an obtuse scalene triangle.</code>
+<code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./triangles</code>
+<code class="language-text output">Enter side lengths: </code><code class="language-text input">2 2 3</code>
+<code class="language-text output">This is an obtuse isosceles triangle.</code>
+<code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./triangles</code>
+<code class="language-text output">Enter side lengths: </code><code class="language-text input">3 4 5</code>
+<code class="language-text output">This is a right scalene triangle.</code>
+<code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./triangles</code>
+<code class="language-text output">Enter side lengths: </code><code class="language-text input">2 2 2</code>
+<code class="language-text output">This is an acute equilateral triangle.</code>
+<code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./triangles</code>
+<code class="language-text output">Enter side lengths: </code><code class="language-text input">2 2 1.5</code>
+<code class="language-text output">This is an acute isosceles triangle.</code></pre><p><strong>Tips</strong>: The <code>math.h</code> library has a function <code>asin()</code> that computes the arcsine of an angle. Enter <code>man asin</code> on the command line for documentation. We have a bit of a problem in that for any positive angle <span class="math inline">\(\theta\)</span> less than <span class="math inline">\(\pi/2\)</span>, we have that <span class="math inline">\(\sin(\theta) = \sin(\pi - \theta)\)</span>. Thus, when we use <span class="math inline">\(\theta\)</span> <code>= asin(w)</code> for positive <code>w</code>, we don’t know whether we really want the angle <span class="math inline">\(\theta\)</span> or <span class="math inline">\(\pi - \theta\)</span>. In our triangle case, we can fix things like this: if the three angles we calculate (A, B and C) sum up to a lot less than <span class="math inline">\(\pi\)</span> (in fact, we should probably check that the sum is less than 3), we replace the angle opposite the longest side with <span class="math inline">\(\pi\)</span> minus that angle. So, for example, if <span class="math inline">\(A\)</span> is opposite the longest side, then we replace <span class="math inline">\(A\)</span> with <span class="math inline">\(\pi - A\)</span>.</p>
+<figure>
+<img src="plot.png" />
+</figure>
+<p><strong>BTW:</strong> as long as you’re including <code>math.h</code>, the constant <code>M_PI</code> gives you a high-precision double representation of <span class="math inline">\(\pi\)</span>.</p>
+<p><strong>Also:</strong> the function <code>sqrt( )</code> computes square roots.</p>
+<p><strong>Also:</strong> Don’t forget to add <code>-lm</code> to the end of your <code>gcc</code> command in order to compile with the math library support.</p>
+  </div></article></div></div><nav class="stickynav"><div><div class="dropdown"><a href="../../index.php.html" class="ddown-btn">SI 204</a><div class="ddown-content"><a href="../../calendar.php.html">Calendar</a><a href="../../notes/index.html">Notes</a><a href="../../hw/index.html">HWs</a><a href="../index.html">Labs</a><a href="../../proj/index.html">Projects</a><a href="../../exams/index.html">Exams</a><a href="../../admin/index.html">Resources</a><a href="https://www.usna.edu/Users/cs/roche/">Roche</a><a href="https://www.usna.edu/Users/cs/albing/">Albing</a></div></div><div class="dropdown"><a href="index.html#top" class="linkin pagetop">Lab 02: Currency conversion</a><div class="ddown-content ddtoc"><ul><li><a class="linkin" href="index.html#converting-currencies"><span class="toc-section-number">1</span> Converting Currencies</a></li>
+<li><a class="linkin" href="index.html#two-word-currencies"><span class="toc-section-number">2</span> Two-word currencies</a></li>
+<li><a class="linkin" href="index.html#adding-multiple-currencies-going-further-"><span class="toc-section-number">3</span> Adding multiple currencies (going further)</a></li>
+<li><a class="linkin" href="index.html#classifying-triangles-going-even-further-"><span class="toc-section-number">4</span> Classifying triangles (going even further)</a></ul></div></div></nav><footer><div id="foottext">    <p class="disclaimer">Material contained above is made available
+    for the purpose of peer review and discussion and does not
+    necessarily reflect the views of the Department of the Navy or the
+    Department of Defense.
+    Some links above are to sites that are not
+    located at the United States Naval Academy. The USNA is not
+    responsible for the content found on these sites. In addition, the
+    content of these sites does not reflect the opinions, standards,
+    policy or endorsement of the Naval Academy or the United States
+    Government.</p>
+  Page maintained by Daniel S. Roche (<a href="mailto:roche [AT] usna [DOT] edu" id="emaillink1">roche [AT] usna [DOT] edu</a><script type='text/javascript'><!--
+        var b="he@usna.edu";
+        var a="roc";
+        document.getElementById("emaillink1").href='mailto:'+a+b;
+        document.getElementById("emaillink1").innerHTML=a+b;
+        // --></script>). Last updated 24 January 2017 8:16.</div></footer><script src="../../scripts/prism.js"></script><script type="text/javascript">var the_body = $('html, body');
+var sticky_height = $('.stickynav').height();
+$('.linkin').click(function(){
+  var href = $(this).attr('href');
+  var offset;
+  if (href == '#top') offset = 0;
+  else offset = $(href).offset().top - sticky_height;
+  the_body.animate({ scrollTop: offset }, 500);
+  return false;
+});</script></body></html>

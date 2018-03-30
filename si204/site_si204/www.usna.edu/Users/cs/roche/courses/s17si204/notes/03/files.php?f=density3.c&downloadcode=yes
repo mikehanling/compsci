@@ -1,0 +1,82 @@
+#include "si204.h"
+
+int main() {
+  // Get target density from the user
+  double target;
+  fputs("Desired population density (people per sq mile): ", stdout);
+  target = readnum(stdin);
+
+  // variables for the best state and its density.
+  cstring best_state;
+  double best_density;
+  strcpy(best_state, "ERROR");
+  best_density = 0.0;
+
+  // Open data file pop.txt
+  stream popin = fopen("pop.txt", "r");
+
+  // Read in (and ignore!) the beginning with the header line
+  // and overall USA population data
+  { // start a block so we can declare variables locally!
+    cstring garbage; // this will be used to read over unwanted data
+    // count how many words need to be ignored in the header
+    int initial_ignore = (3+11) + 2 + (1+11) + (4+11);
+    for (int i=0; i < initial_ignore; ++i) {
+      readstring(garbage, popin);
+    }
+  }
+
+  // Loop over each state
+  // there are 50 states + DC and PR
+  for (int statenum=0; statenum < 52; ++statenum) {
+    /*****************************/
+    /* Process that state's info */
+    /*****************************/
+    cstring state;
+    double density;
+    cstring garbage; // this will be used to read over unwanted data
+
+    readstring(state, popin);
+
+    // add to state name until we see the word "Population"
+    readstring(garbage, popin);
+    while (strcmp(garbage, "Population") != 0) {
+      strcat(state, " ");
+      strcat(state, garbage);
+      readstring(garbage, popin);
+    }
+
+    // second line: 11 values
+    for (int i=0; i<11; ++i) {
+      readstring(garbage, popin);
+    }
+
+    // third line: 4 words, 10 unwanted values, then the density
+    for (int i=0; i<14; ++i) {
+      readstring(garbage, popin);
+    }
+    density = readnum(popin);
+
+    // fourth line: 2 words, 11 values
+    for (int i=0; i<13; ++i) {
+      readstring(garbage, popin);
+    }
+
+    // Determine if each state is closest
+    // (in this version, just copy this state's info as the "best")
+    strcpy(best_state, state);
+    best_density = density;
+  }
+
+  // Close the data file
+  fclose(popin);
+
+  // print out the name of the closest state
+  fputs("You should live in ", stdout);
+  fputs(best_state, stdout);
+  fputs(" with ", stdout);
+  writenum(best_density, stdout);
+  fputs(" people per square mile.\n", stdout);
+
+  return 0;
+}

@@ -1,0 +1,143 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+         "http://www.w3.org/TR/html4/strict.dtd"><html><head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"><title>density3.c</title><link href="../../scripts/prism.css" rel="stylesheet" />    <style type="text/css">
+    body {
+      margin: 0;
+      padding:55px 0 0 0;
+    }
+    div#header {
+      position:absolute;
+      top: 0;
+      left: 0;
+      width:100%;
+      height:50px;
+      border-bottom: 5px solid red;
+      text-align: center;
+      background-color: #d0d0d0;
+      z-index: 1000;
+    }
+    @media screen{
+      body>div#header{
+        position:fixed;
+      }
+    }
+    * html body{
+      overflow:hidden;
+    }
+    * html div#content {
+      height: 100%;
+      overflow: auto;
+    }
+    .warning {
+      margin: 3px auto;
+      background-color: black;
+      color: yellow;
+      font-weight: bold;
+      max-width: 600px;
+      font-family: sans-serif;
+      text-align: center;
+    }
+    /*
+    .codeblock {
+      margin:10px auto 10px;
+      min-width:500px;
+      max-width:800px;
+    }
+    .codeblock td.de1 {
+      border:1px solid black;
+    }
+    .codeblock td.ln {
+      border:1px solid white;
+    }
+    pre {
+      margin:10px auto 10px;
+      max-width:800px;
+    }
+    .plainpre {
+      border: 1px solid black;
+      padding:2px;
+    }
+    */
+    </style>
+  </head><body><div id="header"><p><a href="files.php%3Ff=density3.c&amp;downloadcode=yes">Click here</a> to download <code>density3.c</code>.</p></div><div id="content"><pre class="line-numbers"><code class="language-C">#include &quot;si204.h&quot;
+
+int main() {
+  // Get target density from the user
+  double target;
+  fputs(&quot;Desired population density (people per sq mile): &quot;, stdout);
+  target = readnum(stdin);
+
+  // variables for the best state and its density.
+  cstring best_state;
+  double best_density;
+  strcpy(best_state, &quot;ERROR&quot;);
+  best_density = 0.0;
+
+  // Open data file pop.txt
+  stream popin = fopen(&quot;pop.txt&quot;, &quot;r&quot;);
+
+  // Read in (and ignore!) the beginning with the header line
+  // and overall USA population data
+  { // start a block so we can declare variables locally!
+    cstring garbage; // this will be used to read over unwanted data
+    // count how many words need to be ignored in the header
+    int initial_ignore = (3+11) + 2 + (1+11) + (4+11);
+    for (int i=0; i &lt; initial_ignore; ++i) {
+      readstring(garbage, popin);
+    }
+  }
+
+  // Loop over each state
+  // there are 50 states + DC and PR
+  for (int statenum=0; statenum &lt; 52; ++statenum) {
+    /*****************************/
+    /* Process that state's info */
+    /*****************************/
+    cstring state;
+    double density;
+    cstring garbage; // this will be used to read over unwanted data
+
+    readstring(state, popin);
+
+    // add to state name until we see the word &quot;Population&quot;
+    readstring(garbage, popin);
+    while (strcmp(garbage, &quot;Population&quot;) != 0) {
+      strcat(state, &quot; &quot;);
+      strcat(state, garbage);
+      readstring(garbage, popin);
+    }
+
+    // second line: 11 values
+    for (int i=0; i&lt;11; ++i) {
+      readstring(garbage, popin);
+    }
+
+    // third line: 4 words, 10 unwanted values, then the density
+    for (int i=0; i&lt;14; ++i) {
+      readstring(garbage, popin);
+    }
+    density = readnum(popin);
+
+    // fourth line: 2 words, 11 values
+    for (int i=0; i&lt;13; ++i) {
+      readstring(garbage, popin);
+    }
+
+    // Determine if each state is closest
+    // (in this version, just copy this state's info as the &quot;best&quot;)
+    strcpy(best_state, state);
+    best_density = density;
+  }
+
+  // Close the data file
+  fclose(popin);
+
+  // print out the name of the closest state
+  fputs(&quot;You should live in &quot;, stdout);
+  fputs(best_state, stdout);
+  fputs(&quot; with &quot;, stdout);
+  writenum(best_density, stdout);
+  fputs(&quot; people per square mile.\n&quot;, stdout);
+
+  return 0;
+}</code></pre></div><script src="../../scripts/prism.js"></script></body></html>

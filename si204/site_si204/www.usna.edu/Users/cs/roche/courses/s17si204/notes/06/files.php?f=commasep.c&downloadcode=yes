@@ -1,0 +1,23 @@
+/*****************************************************************
+ print elements of A separated by commas
+ *****************************************************************/
+#include <stdio.h>
+
+int main() {
+  // read size n, allocate array of n doubles, read values into array
+  int n;
+  scanf(" %i", &n);
+  double A[n];
+  for(int i = 0; i < n; ++i) {
+    scanf(" %lg", &A[i]);
+  }
+
+  // print elements with commas between
+  printf("A = [");
+  for (int i=0; i < n-1; ++i) {
+    printf("%g, ", A[i]);
+  }
+  printf("%g]\n", A[n-1]);
+
+  return 0;
+}

@@ -1,0 +1,64 @@
+#!/bin/bash
+
+################################################################
+# This is just a convenience utility for printing code.  It's
+# just a wrapper call to enscript. If you need to modify its 
+# behavior, use enscript directly!  CWB, 5 JAN 2009
+# NEW: This version is set to create pdf's rather than go 
+# straight to the printer.  This meets the need of IC210 AY2015.
+################################################################
+
+if [ $# -eq 0 ]
+then
+  echo "usage: codeprint <file1> ... <filek>"
+  echo "codeprint prints out source files nicely using lp."
+  echo "This is codeprint version 1.1 - 1/18/2015"
+else
+  ###############################################################
+  # Generate temp file name 
+  ff=0
+  tfn=`mktemp`.cpp
+  touch $tfn
+
+  ##############################################################
+  # Get username to include in header
+  uname=`whoami`
+
+  ###############################################################
+  # Loop over files
+  for name in $@
+  do
+    /bin/echo -e "\n/*--- $(basename ${name}) ---*/" >> ${tfn}
+
+    # Extensions I want to treat as C++
+    f1=${name%.cpp}
+    f2=${name%.ypp}
+    f3=${name%.cc}
+    f4=${name%.l}
+    f5=${name%.c}
+    f6=${name%.h}
+    f7=${name%.java}
+
+    # Decide if the current file is C++ or not
+    if [ ${f1} = ${name} -a ${f5} = ${name} -a ${f6} = ${name} \
+         -a ${f7} = ${name} \
+         -a ${f3} = ${name} -a ${f2} = ${name} -a ${f4} = ${name} ]
+    then
+	/bin/echo "/*" >> ${tfn}
+	cat ${name} >> ${tfn}
+	/bin/echo "\n*/" >> ${tfn}
+    else
+	cat ${name} >> ${tfn}
+    fi
+    ff=$((ff+1))
+  done
+
+  ###############################################################
+  # Print this monstrosity and get out of Dodge!
+  # Note:
+
+  # enscript --header=${uname}'|%W %C|Page $% of $=' -2 --landscape --color --rotate-even-pages -E ${tfn} -p out.pdf
+  enscript --silent --header=${uname}'|%W %C|Page $% of $=' -2 --landscape --color --rotate-even-pages -E ${tfn} -p - | ps2pdf - out.pdf
+  echo "final output has been left in the file out.pdf"
+  rm -f $tfn
+fi

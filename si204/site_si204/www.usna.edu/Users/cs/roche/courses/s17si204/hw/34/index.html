@@ -1,0 +1,84 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Homework 34: Getting your feet wet with C++</title><meta name="viewport" content="width=device-width, initial-scale=1.0"><link href="../../scripts/prism.css" rel="stylesheet" /><link rel="stylesheet" type="text/css" href="../../style.css"><script type="text/javascript" src="../../../../mathjax/MathJax.js%3Fconfig=TeX-AMS_HTML"></script><style>
+@media only screen and (min-width: 600px) {
+  #main>header {background-image: url("../../scripts/header.png");}
+}
+</style></head><body><div id="main"><header><nav class="topnav"><div>
+            <a href="../../index.php.html">SI 204</a>
+            </div><div>
+            <a href="../../calendar.php.html">Calendar</a>
+            </div><div>
+            <a href="../../notes/index.html">Notes</a>
+            </div><div id="navparent">
+            <a href="../index.html">HWs</a>
+            </div><div>
+            <a href="../../lab/index.html">Labs</a>
+            </div><div>
+            <a href="../../proj/index.html">Projects</a>
+            </div><div>
+            <a href="../../exams/index.html">Exams</a>
+            </div><div>
+            <a href="../../admin/index.html">Resources</a>
+            </div><div>
+            <a href="https://www.usna.edu/Users/cs/roche/">Roche</a>
+            </div><div>
+            <a href="https://www.usna.edu/Users/cs/albing/">Albing</a>
+            </div></nav></header><div id="mainbox"><div class="printonly"><h1 class="printtitle">SI 204 Spring 2017 / HWs</h1><hr></div><article id="mainart"><header><h1>Homework 34: Getting your feet wet with C++</h1></header><div class="printonly">
+  <div class="blanks">
+  <p>
+  Name: _____________________________________________   Alpha: ___________________
+  </p>
+  <p>
+  Describe help received: ________________________________________________________
+  </p>
+  </div>
+</div>
+  <ul>
+    <li><strong>Due before class on Wednesday, April 19</strong>
+    </li><li>This homework contains code to be submitted electronically.
+      Put your code in a folder called <code>hw34</code> and submit
+      using the <code>204sub</code> command.</li><li>This is an <em>electronic homework</em> and you do not need to
+      print out anything to turn in during class.</li></ul><h1>Assignment</h1><ol class="ass"><li><b>Required reading</b>:
+  Sections 1 (C++ basics), 2 (Bool), 3 (Functions), and 4 (allocation)
+  from the <a href="../../notes/10/index.html">Unit 10 notes</a>.
+</li>
+<li>
+  Write a <b>C++</b> program called <code>evens.cpp</code> that reads in
+  an array of numbers and then reports how many of those numbers are even.
+  (Of course you could just check whether they're even as you read them in,
+  but I really want you to actually make and use an array.)
+  <p>You <b>must</b> define and use the following two functions in your program:</p>
+  <pre><code class="language-c">// prompts for the size, then allocates and reads in an array
+// of that size, returning a pointer to the array.
+// Of course you should use &quot;new&quot; to do the allocation!
+// Notice that size is passed by reference.
+int* readnums(int&amp; size);
+
+// Returns true if x is an even number, otherwise false
+bool isEven(int x);</code></pre>
+  <p>Example runs:</p>
+<pre><code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./evens</code>
+<code class="language-text output">How many numbers? </code><code class="language-text input">3</code>
+<code class="language-text output"></code><code class="language-text input">4 4 7</code>
+<code class="language-text output">2 even numbers</code></pre><pre><code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./evens</code>
+<code class="language-text output">How many numbers? </code><code class="language-text input">5</code>
+<code class="language-text output"></code><code class="language-text input">6 5 4 3 2</code>
+<code class="language-text output">3 even numbers</code></pre><pre><code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./evens</code>
+<code class="language-text output">How many numbers? </code><code class="language-text input">1</code>
+<code class="language-text output"></code><code class="language-text input">19</code>
+<code class="language-text output">0 even numbers</code></pre></li>
+</ol></article></div></div><nav class="stickynav"><div><div class="dropdown"><a href="../../index.php.html" class="ddown-btn">SI 204</a><div class="ddown-content"><a href="../../calendar.php.html">Calendar</a><a href="../../notes/index.html">Notes</a><a href="../index.html">HWs</a><a href="../../lab/index.html">Labs</a><a href="../../proj/index.html">Projects</a><a href="../../exams/index.html">Exams</a><a href="../../admin/index.html">Resources</a><a href="https://www.usna.edu/Users/cs/roche/">Roche</a><a href="https://www.usna.edu/Users/cs/albing/">Albing</a></div></div><a href="index.html#top" class="linkin pagetop">Homework 34: Getting your feet wet with C++</a></nav><footer><div id="foottext">    <p class="disclaimer">Material contained above is made available
+    for the purpose of peer review and discussion and does not
+    necessarily reflect the views of the Department of the Navy or the
+    Department of Defense.
+    Some links above are to sites that are not
+    located at the United States Naval Academy. The USNA is not
+    responsible for the content found on these sites. In addition, the
+    content of these sites does not reflect the opinions, standards,
+    policy or endorsement of the Naval Academy or the United States
+    Government.</p>
+  Page maintained by Daniel S. Roche (<a href="mailto:roche [AT] usna [DOT] edu" id="emaillink1">roche [AT] usna [DOT] edu</a><script type='text/javascript'><!--
+        var b="he@usna.edu";
+        var a="roc";
+        document.getElementById("emaillink1").href='mailto:'+a+b;
+        document.getElementById("emaillink1").innerHTML=a+b;
+        // --></script>). Last updated 17 April 2017 7:07.</div></footer><script src="../../scripts/prism.js"></script><script type="text/javascript"></script></body></html>

@@ -1,0 +1,44 @@
+/***************************************
+ * Read in a file of the following form:
+ * the file begins with a number n, and
+ * then has n lines, each containing one
+ * number.  Your goal is to keep a running
+ * sum where the first number is added, the
+ * second subtracted, the third added, the
+ * fourth subtracted, and so on.  The file's
+ * name is input by the user.
+ ***************************************/
+#include "si204.h"
+
+int main() {
+  // Get file name
+  cstring fname;
+  fputs("Filename: ", stdout);
+  readstring(fname, stdin);
+
+  // Open file and read n - we really should check that the file was found!
+  stream fin = fopen(fname, "r");
+
+  // read the first number, which is the number of lines
+  int numlines = readnum(fin);
+
+  // read and sum values
+  int sum = 0;
+  for(int i=0; i < numlines; i++) {
+    int next = readnum(fin);
+    if (i % 2 == 0) {
+      sum += next;
+    } else {
+      sum -= next;
+    }
+  }
+
+  // close file
+  fclose(fin);
+
+  // print result
+  writenum(sum, stdout);
+  fputs("\n", stdout);
+
+  return 0;
+}

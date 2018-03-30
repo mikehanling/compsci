@@ -1,0 +1,88 @@
+/*********************************************
+This program reads in student/grade data from
+namedgrades.txt, and prints out student names
+and HW#4 scores in order from lowest to highest
+score on HW#4.
+**********************************************/
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+/*********************************************
+ ** PROTOTYPES & STRUCT DEFINITIONS
+ *********************************************/
+struct student {
+  int* hw;
+  char name[128];
+};
+
+void sort(struct student* data, int size);
+int before(struct student a, struct student b);
+
+
+/*********************************************
+ ** MAIN FUNCTION
+ *********************************************/
+int main() {
+  // Open file and read header info
+  int numstu, numhw;
+  FILE* fin = fopen("namedgrades.txt", "r");
+  fscanf(fin, " %i students %i homeworks", &numstu, &numhw);
+
+  // Create array of numstu students with numhw grades each
+  struct student* stu = calloc(numstu, sizeof(struct student));
+  for(int i = 0; i < numstu; i++) {
+    stu[i].hw = calloc(numhw, sizeof(int));
+  }
+
+  // Read and store student names and grades
+  for(int i = 0; i < numstu; i++) {
+    fscanf(fin, " %s", stu[i].name);
+    for(int j = 0; j < numhw; j++) {
+      fscanf(fin, " %i", &stu[i].hw[j]);
+    }
+  }
+
+  // SORT!
+  sort(stu, numstu);
+
+  // Write out student records
+  for(int i = 0; i < numstu; ++i) {
+    printf("%s got a %i on HW #4\n", stu[i].name, stu[i].hw[4]);
+  }
+
+  // clean up
+  fclose(fin);
+  for (int i=0; i < numstu; ++i) {
+    free(stu[i].hw);
+  }
+  free(stu);
+
+  return 0;
+}
+
+/*********************************************
+ ** FUNCTION DEFINITIONS
+ *********************************************/
+// Determines whether student a comes before b
+// when ordered by increasing score on HW #4.
+int before(struct student a, struct student b) {
+  return a.hw[4] < b.hw[4];
+}
+
+// THE USUAL SORTING STUFF!!
+void sort(struct student* data, int size) {
+  for(int length = size; length > 1; --length) {
+    // Find imax, the index of the largest
+    int imax = 0;
+    for(int i = 1; i < length; ++i) {
+      if (before(data[imax], data[i])) {
+        imax = i;
+      }
+    }
+    // Swap data[imax] & the last element
+    struct student temp = data[imax];
+    data[imax] = data[length - 1];
+    data[length - 1] = temp;
+  }
+}

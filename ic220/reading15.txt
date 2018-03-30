@@ -1,0 +1,66 @@
+Mike Hanling
+R15: B.7-10, B.12
+
+
+Key Points:
+  Edge-trigered clocking: scheme in which all state changes occur on a
+                          clock edge
+  Clocking methodology: the approach used to determine when data is
+                        valid and stable relative to the clock
+  State Element: a memory element
+  Synchronous system: memory system that employs clock and where data
+                      signals are read only when the clock indicates that the
+                      signal values are stable
+  Register file: a state element that consists of a set of registers
+                  that can be read and written by supplying a register number to
+                  be accessed
+  Flip-flop: memory element for which the output is equal to the value
+            of the stored state inside the element and doe which the internal
+            state is changed only on a clock edge
+  Latch: memory element in which the output is equal to the value of the
+         stored state inside the element and the state is changed whenever the
+         appropriate inputs change and the clock is asserted
+  D flip-flop: a flip-flop with one data input signal in the internal
+              memory when the clock edge occurs.
+  Setup time: the minimum time that the input to a memory device must be
+              value before the clock edge
+  Hold time: the minimum time during which the input must be valid after
+              the clock edge
+  Static Memory Access Memory (SRAM): memory where data is stored
+                                      statically (as in flip-flops) rather than
+                                      dynamically (as in DRAM).
+                                      SRAMs are faster than DRAMs, but less dense
+                                      and more expensive per bit
+  Error detection code: code that enable the detection of an error in
+                        data, but not the precise location and, hence, correction
+                        of the error
+  Finite-state machine: sequential logic function consisting of a set of
+                        inputs and out puts, a next-state function that maps the
+                        current state and inputs to a new state, and an output 
+                        function that maps the
+                        current state and possibly the inputs to a sett of 
+                        asserted outputs
+  Next-state function: a combinational function that, given the inputs
+                      and the current state, determines the next state
+                      of a finite-state machine
+  Field programmable devices (FPD): integrated circuit containing the
+                                    combinational logic, and possibly memory 
+                                    devices, that are configurable by the end user
+  Programmable logic device (PLD): integrated circuit containing
+                                  combinational logic whose function is 
+                                  configured by the end user
+  Field programmable gate array (FPGA): configurable integrated circuit
+                                        containing both combinational logic 
+                                        blocks and flip-flops
+  Simple programmable logic device (SPLD): programmable logic device,
+                                          usually containing either a single PAL 
+                                          or PLA
+  Programmable array logic (PAL): contains a programmable and-plane
+                                  followed by a fixed or-plane
+  Antifuse: structure in an integrated circuit that when programmed
+            makes a permanent connection between two wires
+  Look up tables (LUTs): in an FPD, the name given to the cells because
+                          they consist of a small amount of logic and RAM
+
+What Confuses Me:
+  None

@@ -1,0 +1,24 @@
+Mike Hanling
+R12: 2.4, 3.1 - 3.3
+
+
+Key Points:
+  Binary digit == binary bit == 0 || 1
+  LSB - right most, corresponding to 1 or 0
+  MSB - left most, corresponding to 2^n or 0
+  Unsigned TYPE has more positive range that signed TYPE
+    No negative numbers, all positive
+  MSB is sign bit in signed numbers
+  Subtraction: addition's tricky pal
+  MIPS instructions: addu, subu, addiu
+  Exception: an unscheduled event that disrupts program execution;
+              used to detect overflow
+  Interrupt: An exception that comes from outside of the processor.
+              (Some architectures use the term interrupt for all
+              exceptions.)
+  Multiplication is vexation. Division is as bad; The rule of three doth
+              puzzle me, and practice drives me mad.
+  Mult: do the adds in parallel
+
+What Confuses Me:
+  None

@@ -1,0 +1,70 @@
+/*****************************************************************
+ Volleyball version 1
+
+ This is what you might have as "backyard rules" of volleyball.
+
+ A game is a series of rallies. Each rally has a winning team,
+ and the winning team scores one point. The first team to 10
+ points is the winner.
+
+ This program should start by reading in the names of the two
+ teams, and then go into a while loop reading in the name of which
+ team wins each rally. After each rally, print out the current
+ score, and when someone reaches 10 points, the program should
+ print out the winning team.
+*****************************************************************/
+#include "si204.h"
+
+int main() {
+  // read in team names
+  cstring name1;
+  fputs("Team 1 name: ", stdout);
+  readstring(name1, stdin);
+  cstring name2;
+  fputs("Team 2 name: ", stdout);
+  readstring(name2, stdin);
+  fputs("\n", stdout);
+
+  // set up scores
+  int score1 = 0; // current score of team 1
+  int score2 = 0; // current score of team 2
+  int winat = 10; // how many points needed to win
+
+  // Stores who wins each rally
+  // It's at the outer scope so we can announce the winner at the end!
+  cstring winname;
+
+  // play the game until it's over
+  while (score1 < winat && score2 < winat) {
+    // get winner of next rally
+    fputs("Winner of next rally: ", stdout);
+    readstring(winname, stdin);
+
+    // update the appropriate score
+    if (strcmp(winname, name1) == 0) {
+      ++score1;
+    } else if (strcmp(winname, name2) == 0) {
+      ++score2;
+    } else {
+      fputs("Invalid team name; please try again.\n", stdout);
+    }
+
+    // print out current scores
+    fputs(name1, stdout);
+    fputs(": ", stdout);
+    writenum(score1, stdout);
+    fputs(", ", stdout);
+    fputs(name2, stdout);
+    fputs(": ", stdout);
+    writenum(score2, stdout);
+    fputs("\n\n", stdout);
+  }
+
+  // print out who won
+  // Notice: the winname is whoever won the last rally, which must be the
+  // same as the overall game winner.
+  fputs(winname, stdout);
+  fputs(" is the winner!\n", stdout);
+
+  return 0;
+}

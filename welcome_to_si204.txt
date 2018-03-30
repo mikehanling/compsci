@@ -1,0 +1,22 @@
+Welcome to SI204!
+
+If you're reading this file, then congrats! You've installed your VM
+and run the SI204 script to set it up correctly.
+
+The next step is to download the submit script (customized for you!)
+that you'll use to submit all your assignments in this class. Get it by
+going to:
+and signing in with your USNA username and password. Copy the downloaded
+file to your bin/ directory.
+
+Other things to remember and keep in mind:
+* Always run "csmount" to mount your csunix/ directory before starting
+  work
+* Save your files under the csunix/ directory to keep them backed up
+  and accessible in the labs.
+* Work on each assignment in a separate folder with that assignment's
+  name. For example, for the first lab you probably want to do your work
+  (meaning, save your code) in a folder called "lab01".
+
+This is a lot of new stuff to get used to! Don't feel bad to ask
+questions in MGSP or contact your instructor for EI.

@@ -1,0 +1,131 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+         "http://www.w3.org/TR/html4/strict.dtd"><html><head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"><title>vball1.c</title><link href="../../scripts/prism.css" rel="stylesheet" />    <style type="text/css">
+    body {
+      margin: 0;
+      padding:55px 0 0 0;
+    }
+    div#header {
+      position:absolute;
+      top: 0;
+      left: 0;
+      width:100%;
+      height:50px;
+      border-bottom: 5px solid red;
+      text-align: center;
+      background-color: #d0d0d0;
+      z-index: 1000;
+    }
+    @media screen{
+      body>div#header{
+        position:fixed;
+      }
+    }
+    * html body{
+      overflow:hidden;
+    }
+    * html div#content {
+      height: 100%;
+      overflow: auto;
+    }
+    .warning {
+      margin: 3px auto;
+      background-color: black;
+      color: yellow;
+      font-weight: bold;
+      max-width: 600px;
+      font-family: sans-serif;
+      text-align: center;
+    }
+    /*
+    .codeblock {
+      margin:10px auto 10px;
+      min-width:500px;
+      max-width:800px;
+    }
+    .codeblock td.de1 {
+      border:1px solid black;
+    }
+    .codeblock td.ln {
+      border:1px solid white;
+    }
+    pre {
+      margin:10px auto 10px;
+      max-width:800px;
+    }
+    .plainpre {
+      border: 1px solid black;
+      padding:2px;
+    }
+    */
+    </style>
+  </head><body><div id="header"><p><a href="files.php%3Ff=vball1.c&amp;downloadcode=yes">Click here</a> to download <code>vball1.c</code>.</p></div><div id="content"><pre class="line-numbers"><code class="language-C">/*****************************************************************
+ Volleyball version 1
+
+ This is what you might have as &quot;backyard rules&quot; of volleyball.
+
+ A game is a series of rallies. Each rally has a winning team,
+ and the winning team scores one point. The first team to 10
+ points is the winner.
+
+ This program should start by reading in the names of the two
+ teams, and then go into a while loop reading in the name of which
+ team wins each rally. After each rally, print out the current
+ score, and when someone reaches 10 points, the program should
+ print out the winning team.
+*****************************************************************/
+#include &quot;si204.h&quot;
+
+int main() {
+  // read in team names
+  cstring name1;
+  fputs(&quot;Team 1 name: &quot;, stdout);
+  readstring(name1, stdin);
+  cstring name2;
+  fputs(&quot;Team 2 name: &quot;, stdout);
+  readstring(name2, stdin);
+  fputs(&quot;\n&quot;, stdout);
+
+  // set up scores
+  int score1 = 0; // current score of team 1
+  int score2 = 0; // current score of team 2
+  int winat = 10; // how many points needed to win
+
+  // Stores who wins each rally
+  // It's at the outer scope so we can announce the winner at the end!
+  cstring winname;
+
+  // play the game until it's over
+  while (score1 &lt; winat &amp;&amp; score2 &lt; winat) {
+    // get winner of next rally
+    fputs(&quot;Winner of next rally: &quot;, stdout);
+    readstring(winname, stdin);
+
+    // update the appropriate score
+    if (strcmp(winname, name1) == 0) {
+      ++score1;
+    } else if (strcmp(winname, name2) == 0) {
+      ++score2;
+    } else {
+      fputs(&quot;Invalid team name; please try again.\n&quot;, stdout);
+    }
+
+    // print out current scores
+    fputs(name1, stdout);
+    fputs(&quot;: &quot;, stdout);
+    writenum(score1, stdout);
+    fputs(&quot;, &quot;, stdout);
+    fputs(name2, stdout);
+    fputs(&quot;: &quot;, stdout);
+    writenum(score2, stdout);
+    fputs(&quot;\n\n&quot;, stdout);
+  }
+
+  // print out who won
+  // Notice: the winname is whoever won the last rally, which must be the
+  // same as the overall game winner.
+  fputs(winname, stdout);
+  fputs(&quot; is the winner!\n&quot;, stdout);
+
+  return 0;
+}</code></pre></div><script src="../../scripts/prism.js"></script></body></html>

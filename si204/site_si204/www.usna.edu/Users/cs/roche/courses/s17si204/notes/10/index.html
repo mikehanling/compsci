@@ -1,0 +1,444 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Unit 10: C++</title><meta name="viewport" content="width=device-width, initial-scale=1.0"><link href="../../scripts/prism.css" rel="stylesheet" /><link rel="stylesheet" type="text/css" href="../../style.css"><script type="text/javascript" src="../../../../mathjax/MathJax.js%3Fconfig=TeX-AMS_HTML"></script><script type="text/javascript" src="../../scripts/jquery-3.1.1.min.js"></script><style>
+@media only screen and (min-width: 600px) {
+  #main>header {background-image: url("../../scripts/header.png");}
+}
+</style><link rel="stylesheet" type="text/css" href="../../notes.css">  <meta name="generator" content="pandoc">
+  <style type="text/css">code{white-space: pre;}</style>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head><body><div id="main"><header><nav class="topnav"><div>
+            <a href="../../index.php.html">SI 204</a>
+            </div><div>
+            <a href="../../calendar.php.html">Calendar</a>
+            </div><div id="navparent">
+            <a href="../index.html">Notes</a>
+            </div><div>
+            <a href="../../hw/index.html">HWs</a>
+            </div><div>
+            <a href="../../lab/index.html">Labs</a>
+            </div><div>
+            <a href="../../proj/index.html">Projects</a>
+            </div><div>
+            <a href="../../exams/index.html">Exams</a>
+            </div><div>
+            <a href="../../admin/index.html">Resources</a>
+            </div><div>
+            <a href="https://www.usna.edu/Users/cs/roche/">Roche</a>
+            </div><div>
+            <a href="https://www.usna.edu/Users/cs/albing/">Albing</a>
+            </div></nav></header><div id="mainbox"><div class="printonly"><h1 class="printtitle">SI 204 Spring 2017 / Notes</h1><hr></div><article id="mainart"><header><h1>Unit 10: C++</h1></header><div id="TOC"><ul><li><a class="linkin" href="index.html#c-basics"><span class="toc-section-number">1</span> C++ Basics</a>
+<ul><li><a class="linkin" href="index.html#history"><span class="toc-section-number">1.1</span> History</a></li><li><a class="linkin" href="index.html#c-is-mostly-a-subset-of-c-"><span class="toc-section-number">1.2</span> C is (mostly) a subset of C++</a></li><li><a class="linkin" href="index.html#naming-and-compiling-c-programs"><span class="toc-section-number">1.3</span> Naming and compiling C++ programs</a></li></ul></li>
+<li><a class="linkin" href="index.html#bool"><span class="toc-section-number">2</span> Bool</a></li>
+<li><a class="linkin" href="index.html#functions"><span class="toc-section-number">3</span> Functions</a>
+<ul><li><a class="linkin" href="index.html#overloading"><span class="toc-section-number">3.1</span> Overloading</a></li><li><a class="linkin" href="index.html#pass-by-reference"><span class="toc-section-number">3.2</span> Pass by reference</a></li></ul></li>
+<li><a class="linkin" href="index.html#memory-allocation"><span class="toc-section-number">4</span> Memory allocation</a></li>
+<li><a class="linkin" href="index.html#structs-and-classes"><span class="toc-section-number">5</span> Structs and classes</a>
+<ul><li><a class="linkin" href="index.html#syntax"><span class="toc-section-number">5.1</span> Syntax</a></li><li><a class="linkin" href="index.html#operator-overloading"><span class="toc-section-number">5.2</span> Operator overloading</a></li><li><a class="linkin" href="index.html#functions-inside-structs-methods-"><span class="toc-section-number">5.3</span> Functions inside structs (“methods”)</a></li></ul></li>
+<li><a class="linkin" href="index.html#i-o"><span class="toc-section-number">6</span> I/O</a>
+<ul><li><a class="linkin" href="index.html#cin-and-cout"><span class="toc-section-number">6.1</span> cin and cout</a></li><li><a class="linkin" href="index.html#reading-and-writing-files"><span class="toc-section-number">6.2</span> Reading and writing files</a></li><li><a class="linkin" href="index.html#making-i-o-work-for-your-own-types"><span class="toc-section-number">6.3</span> Making I/O work for your own types</a></li></ul></li>
+<li><a class="linkin" href="index.html#standard-template-library"><span class="toc-section-number">7</span> Standard template library</a>
+<ul><li><a class="linkin" href="index.html#string"><span class="toc-section-number">7.1</span> String</a></li><li><a class="linkin" href="index.html#a-brief-note-on-templates"><span class="toc-section-number">7.2</span> A BRIEF note on templates</a></li><li><a class="linkin" href="index.html#vector"><span class="toc-section-number">7.3</span> Vector</a></li></ul></li>
+<li><a class="linkin" href="index.html#going-further"><span class="toc-section-number">8</span> Going further</a></li></ul></div><div class="panbody"><p>As the final unit of the semester, we will learn how to translate the concepts we learned in C to a new (but closely related) programming language called C++. Seeing some different ways to code and exposure to different languages is important to being a well-rounded programmer, and this unit will also serve as a good review of all the concepts we have learned this semester.</p>
+<h1 id="c-basics"><a class ="linkin" href="index.html#top"><span class="header-section-number">1</span> C++ Basics</a></h1><h2 id="history"><a class="linkin" href="index.html#top"><span class="header-section-number">1.1</span> History</a></h1><p>In the late 1970s, a new and exciting idea was making its way through the world of computer science called <em>object-oriented programming</em>. You know that a <code>struct</code> in C gets to put together a bunch of variables and combine them in a nice little package. Well, the main idea of object-oriented programming is that you also put <em>functions</em> in with these little bundles of data, and call them <em>objects</em> or <em>classes</em>.</p>
+<p>Bjarne Stroustrup created C++ originally as “C with classes”, to add on objects to the C language which was already pretty widely used. Eventually this grew and grew into what we now know as C++ (get the joke?). Part of the object-oriented impetus for C++ means that there is a much stronger emphasis on <em>types</em>, and consequently more interesting things we can do with types, in C++. The standard <em>library</em> for C++ is also more expansive than the one for C, meaning there are more “built-in” things that let you write bigger programs more easily.</p>
+<p>There’s an entire class on object-oriented programming at USNA, and you’ll have plenty of time to learn more about that aspect later. For now, we’ll just see how C++ differs from C for the kinds of programs that we’ve written so far, and how the <strong>increased emphasis on types</strong> in C++ changes the way we might think about programming.</p>
+<h2 id="c-is-mostly-a-subset-of-c-"><a class="linkin" href="index.html#top"><span class="header-section-number">1.2</span> C is (mostly) a subset of C++</a></h1><p>Originally at least, C++ was designed as a <em>strict extension</em> of the C language. That means that (for the most part) any C program is also a C++ program!</p>
+<p>However, partly to protect against potential divergence between the two languages, officially C++ has different <em>standard library header files</em> than C. For all the C libraries you have used, you just add the letter <code>c</code> to the front of the name and drop the <code>.h</code>. So <code>#include &lt;stdio.h&gt;</code> becomes <code>#include &lt;cstdio&gt;</code>, <code>&lt;string.h&gt;</code> becomes <code>&lt;cstring&gt;</code>, and so on.</p>
+<p>One other aspect is that C++ has <em>namespaces</em> to help you avoid, say, accidentally naming one of your variables with the same name as a built-in function. But since our programs are still pretty small, we’ll just avoid doing that and write <code>using namespace std;</code> after all the <code>#include</code>s to indicate that we can use built-in standard functions with their usual names.</p>
+<p>With all that, here is a totally non-exciting C++ program:</p>
+<pre><code class="language-c++">#include &lt;cstdio&gt;
+#include &lt;cstring&gt;
+using namespace std;
+
+int main() {
+  char name[128];
+  printf(&quot;What is your name? &quot;);
+  fflush(stdout);
+  scanf(&quot; %s&quot;, name);
+
+  printf(&quot;Hi, %s!\n&quot;, name);
+
+  return 0;
+}</code></pre><h2 id="naming-and-compiling-c-programs"><a class="linkin" href="index.html#top"><span class="header-section-number">1.3</span> Naming and compiling C++ programs</a></h1><p>Source code for C programs usually goes in a file with a <code>.c</code> extension such as <code>myprogram.c</code>. To help remind you (and your text editor!) that C++ programs are different, we’ll use the <code>.cpp</code> filename extension for C++ programs, like <code>myprog.cpp</code>. (Another popular choice that you might see sometimes is <code>.cc</code>.)</p>
+<p>Since C++ is a different language, it also needs a different compiler. Fortunately, the same folks that make <code>gcc</code> also make a C++ compiler called <code>g++</code> that should be installed on your VMs as well as the lab machine.</p>
+<p>For example, if you saved the program above to a file called <code>firstprog.cpp</code>, you could compile and run it with:</p>
+<pre><code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">g++ firstprog.cpp -o firstprog</code>
+<code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./firstprog</code>
+<code class="language-text output">What is your name? </code><code class="language-text input">Dan</code>
+<code class="language-text output">Hi, Dan!</code></pre><!-- ` -->
+<h1 id="bool"><a class ="linkin" href="index.html#top"><span class="header-section-number">2</span> Bool</a></h1><p>In C, we use 0 to mean “false” and <em>any nonzero number</em> to mean “true” in things like <code>if</code> statements and <code>while</code> loops. This works, but can be kind of unclear sometimes, like if a function returns an <code>int</code> - will that be a 0/1 <code>int</code> for true/false, or will it be a count or some other kind of actual number?</p>
+<p>To help you out with this, C++ introduces a new basic type called <code>bool</code> that can be either <code>true</code> or <code>false</code>, and can be used for things like the conditions of <code>if</code> statements or <code>while</code> loops. <code>bool</code> is also what gets returned by comparison operators such as <code>==</code> and boolean operators such as <code>&amp;&amp;</code>.</p>
+<p>For example:</p>
+<pre><code class="language-C">bool stop = false;
+while (! stop) {
+  char word[128];
+  scanf(&quot; %s&quot;, word);
+  if (strcmp(word, &quot;END&quot;) == 0) {
+    stop = true;
+  }
+  printf(&quot;The next word is %s\n&quot;, word);
+}</code></pre>
+<p>Interestingly, a <code>bool</code> in C++ is really still stored as a 0 or a 1, and you can see that if you try to print one out:</p>
+<pre><code class="language-C">printf(&quot;%i\n&quot;, true); // prints 1
+printf(&quot;%i\n&quot;, false); // prints 0</code></pre>
+<h1 id="functions"><a class ="linkin" href="index.html#top"><span class="header-section-number">3</span> Functions</a></h1><p>Functions are probably the most important programming construct in C, and they’re very important in C++ too! As you may recall, one of the main reasons for the C++ language was to add functions to <code>struct</code>s (as we will discuss below).</p>
+<p>In order to make that possible, C++ lets you do a few things with functions that we couldn’t do in C. By themselves, these features are mostly about convenience and writing cooler “looking” programs. But together, they make the C++ language much more powerful because due to the richer use of <em>types</em>.</p>
+<h2 id="overloading"><a class="linkin" href="index.html#top"><span class="header-section-number">3.1</span> Overloading</a></h1><p>C won’t let you have two functions with the same name. If you try to do this:</p>
+<pre><code class="language-C">void foo(int x) {
+  printf(&quot;x is %i\n&quot;, x);
+}
+
+void foo(int x, int y) {
+  printf(&quot;x is %i and y is %i\n&quot;, x, y);
+}</code></pre>
+<p>any C compiler will give you an error message on the second function definition, telling you that <code>foo</code> has already been declared. You can’t have two different functions with the same name.</p>
+<p>But in C++, you can do this! <em>Function overloading</em> is a feature added to C++ that lets you have multiple functions with the same name. The compiler will figure out “which one you meant” when you call an overloaded function by looking at the <em>number</em> and <em>types</em> of the arguments passed to the function.</p>
+<p>So for the example above, if compiled in C++,</p>
+<pre><code class="language-C">foo(13)     // will print &quot;x is 13&quot;
+foo(14, 15) // will print &quot;x is 14 and y is 15&quot;</code></pre>
+<p>It’s important to emphasize that these functions are <em>completely</em> separate from each other and can do totally different and unrelated things. They just happen to share the same name.</p>
+<p>Importantly, since the compiler uses the number and types of arguments to distinguish between different overloaded versions, <strong>every overloaded function must have a different number or types of parameters</strong>.</p>
+<p>Even then, the compiler can still have a hard time deciding what to do. For example, here are a pair of overloaded functions to “raise” a character or an integer:</p>
+<pre><code class="language-C">char raise(char c) {
+  if (c &gt;= &#39;a&#39; &amp;&amp; c &lt;= &#39;z&#39;) {
+    // convert to uppercase
+    return c - (&#39;a&#39; - &#39;A&#39;);
+  }
+  else {
+    return c;
+  }
+}
+
+int raise(int c) {
+  return c + 1;
+}</code></pre>
+<p>That’s all great, and we can call <code>raise(3)</code> to get back the <code>int</code> value 4 or <code>raise('d')</code> to get back the <code>char</code> value <code>'D'</code>.</p>
+<p>But what happens if we call <code>raise(2.5)</code>, passing a <code>double</code> rather than an <code>int</code> or a <code>char</code>? The compiler doesn’t know what to do here, because while it <em>could</em> convert that double to either a <code>char</code> or an <code>int</code> (by truncating), it’s not sure which one you want. You have to either write another overloaded version of the function that takes a <code>double</code>, or do the cast to <code>int</code> or <code>char</code> yourself before calling <code>raise</code>.</p>
+<h2 id="pass-by-reference"><a class="linkin" href="index.html#top"><span class="header-section-number">3.2</span> Pass by reference</a></h1><p>Remember that one of the reasons in C why you might pass a pointer to a function, is if you want to allow that function to change the value of what you passed into it.</p>
+<p>For example, here’s a super simple function to increase the first number’s value by 3:</p>
+<pre><code class="language-C">void add3(int* xptr) {
+  *xptr = *xptr + 3;
+}</code></pre>
+<p>That works, but can be a bit annoying because we have to use the dereference operator <code>*</code> all over the place in our function. Besides that, we have to remember to add the address-of operator wherever we might call this function, like:</p>
+<pre><code class="language-C">int a = 10;
+add3(&amp;a);
+add3(&amp;a);
+// now a equals 16</code></pre>
+<p>Since pointers can be tricky and sometimes “dangerous” to use, C++ tries to avoid some of the situations where we might have to use them. The answer in this case is to use a <em>reference variable</em> as the parameter to the <code>add3</code> function, like so:</p>
+<pre><code class="language-C">void add3(int&amp; x) {
+  x = x + 3;
+}</code></pre>
+<p>Specifying a reference type is similar to specifying a pointer type, except you use an <code>&amp;</code> with the type instead of a <code>*</code>. What that means is that the <code>x</code> passed to the function is a <em>reference</em> to whatever variable the function is called on. Changing <code>x</code> in the function, when <code>x</code> is a reference variable, also changes the original value!</p>
+<pre><code class="language-C">int a = 10;
+add3(a); // works now, no pointer needed!
+add3(a);
+// now a = 16</code></pre>
+<p>Pass by reference is also used in C++ to return multiple values from a function (by passing in multiple arguments by reference), or to avoid copying something that is large or otherwise wouldn’t make sense to copy.</p>
+<h1 id="memory-allocation"><a class ="linkin" href="index.html#top"><span class="header-section-number">4</span> Memory allocation</a></h1><p>In C we used the functions <code>calloc</code> and <code>free</code> from the standard header <code>&lt;stdlib.h&gt;</code> in order to allocate and deallocate memory on the heap.</p>
+<p>C++ builds that same functionality into the language itself with two special operators <code>new</code> and <code>delete</code>. These don’t require any special header files, and (conveniently!) <code>new</code> uses the type name automatically to reserve the right amount of space.</p>
+<p>Here’s how you would use <code>new</code> to allocate an array of 19 <code>int</code>s:</p>
+<pre><code class="language-C">int* arr = new int[19]; // allocate
+delete [] arr;          // deallocate</code></pre>
+<p>Of course, the <code>19</code> in the program above could be replaced by any positive integer. Just like <code>calloc</code>, the <code>new</code> operator returns a pointer to the newly allocated space. Make sure you don’t miss the empty brackets <code>[]</code> that tell the <code>delete</code> operator that you’re deleting an entire array!</p>
+<p>There is also a simpler syntax to allocate just one thing, like when you want to create a new <code>node</code>. Previously we would do something like:</p>
+<pre><code class="language-C">node* temp = calloc(1, sizeof(node)); // old school
+free(temp);</code></pre>
+<p>but in C++ that looks much simpler:</p>
+<pre><code class="language-C">node* temp = new node; // allocate
+delete temp;           // deallocate</code></pre>
+<p>Notice that you don’t use any <code>[]</code> brackets in the <code>new</code> <em>or</em> <code>delete</code> statements here, since it’s just a single item and not an array.</p>
+<h1 id="structs-and-classes"><a class ="linkin" href="index.html#top"><span class="header-section-number">5</span> Structs and classes</a></h1><h2 id="syntax"><a class="linkin" href="index.html#top"><span class="header-section-number">5.1</span> Syntax</a></h1><p>A struct definition in C++ looks exactly like it would in C:</p>
+<pre><code class="language-C">struct length {
+  int feet;
+  double inches;
+};</code></pre>
+<p>The difference in C++ is, <strong>you don’t need the typedef anymore</strong> in order to drop the keyword <code>struct</code>. That is, in the previous example, the name <code>length</code> is the type of the struct, and without any typedefs, you can do things like:</p>
+<pre><code class="language-C">length len;
+len.feet = 6;
+len.inches = 0.9;</code></pre>
+<p>C++ also has something similar to a struct called <code>class</code>. This is really the same as a struct except that the fields by default in a <code>class</code> are “private”, meaning they can’t be accessed directly from outside the class:</p>
+<pre><code class="language-C">class mathop {
+  double num1;
+  char op;
+  double num2;
+};
+
+mathop a; // works
+a.op = &#39;+&#39;; // error: op is &quot;private&quot;</code></pre>
+<p>What “private” means here and how such a thing would be useful is a topic for a later class when you learn about object-oriented programming. For now, just remember that classes and structs are equivalent concepts in C++, but with different defaults that make structs easier for us to deal with.</p>
+<h2 id="operator-overloading"><a class="linkin" href="index.html#top"><span class="header-section-number">5.2</span> Operator overloading</a></h1><p>And now for something truly cool in C++. Like many modern programming languages, C++ allows you to change how the language itself works so that any new types you create can look and behave just built-in types.</p>
+<p>Take the <code>length</code> example from above:</p>
+<pre><code class="language-C">struct length {
+  int feet;
+  double inches;
+};</code></pre>
+<p>In C or C++ we can always write some function that adds up two length structs, no problem. But in C++, you can actually <em>make the <code>+</code> operator work for our own types</em> by “overloading the operator”. To do this, we write a function with a special keyword <code>operator</code>, like so:</p>
+<pre><code class="language-C">length operator + (length a, length b) {
+  length result;
+  result.feet = a.feet + b.feet;
+  result.inches = a.inches + b.inches;
+  while (result.inches &gt;= 12) {
+    result.feet++;
+    result.inches -= 12;
+  }
+  return result;
+}</code></pre>
+<p>Then in your <code>main</code> or anywhere else, you could really do something like this:</p>
+<pre><code class="language-C">length meter = {3, 3.37};
+length avgheight = {5, 10};
+length x = meter + avgheight;
+// now x.feet == 9 and x.inches == 1.37</code></pre>
+<p>The compiler turns that <code>+</code> operation into a call to the <em>function that you wrote</em>. That’s pretty awesome!</p>
+<p>Note that you could really write <em>anything</em> inside that function call above — it doesn’t really have to do anything related to addition (although it probably should). All that really matters is that the parameter and return types are correct.</p>
+<p>You can similarly define overloaded functions for any other operator in C++. And you can define different versions of each operator for different types, or even different <em>combinations</em> of types. It’s called <em>operator overloading</em> because it’s really two things: (1) treating operators like they’re function calls, and then (2) overloading that function call with different types. Both things that you definitely can’t do in C!</p>
+<h2 id="functions-inside-structs-methods-"><a class="linkin" href="index.html#top"><span class="header-section-number">5.3</span> Functions inside structs (“methods”)</a></h1><p>One of the “big deal” ideas with object-oriented programming (the basis for creating C++) is combining <em>data</em> and <em>behavior</em> into a single package in your code. In C++, you do this by adding functions <em>inside</em> a <code>struct</code> or <code>class</code> definition. The standard object-oriented thing is to call these functions “methods” of the object.</p>
+<p>Here’s a simple example of a method inside our <code>length</code> struct from before:</p>
+<pre><code class="language-C">struct length {
+  int feet;
+  double inches;
+
+  int nearest_foot() {
+    if (inches &lt; 6) {
+      return feet;
+    } else {
+      return feet + 1;
+    }
+  }
+};</code></pre>
+<p>Notice that the method can access the fields of the struct it’s called on. Just like with the fields of a struct, you use the <em>dot operator</em> to call a method, like:</p>
+<pre><code class="language-C">length ht = {6, 0.8};
+printf(&quot;%i\n&quot;, ht.nearest_foot()); // prints 6
+ht.inches = 11;
+printf(&quot;%i\n&quot;, ht.nearest_foot()); // prints 7</code></pre>
+<p>Something that’s worth pointing out here is that these struct methods don’t really do anything we couldn’t do already, for example by writing an external function that takes the struct as a parameter such as:</p>
+<pre><code class="language-C">int nearest_foot(length len);</code></pre>
+<p>So the main benefits to having methods in classes is about <em>organization</em>: keeping all these related pieces of information (the fields like <code>feet</code> and <code>incches</code>) and operations on that information (the methods like <code>nearest_foot</code>) in the same place in code. That kind of organization can be really helpful when you are designing larger and more complicated programs.</p>
+<p>(Come back next semester to see a lot more of this and learn all about object-oriented programming!)</p>
+<h1 id="i-o"><a class ="linkin" href="index.html#top"><span class="header-section-number">6</span> I/O</a></h1><p>We’ve covered all of the main new features of the C++ <em>language</em> that you need to know about. Now we’ll see how those language features really shine and become useful for everyday programming, in how they are incorporated to the C++ standard libraries.</p>
+<p>As we have seen so far, you <em>can</em> do I/O in C++ using <code>printf</code>, <code>scanf</code>, and friends by including the <code>&lt;cstdio&gt;</code> library. However, C++ also has an improved library for I/O called the <a href="http://en.cppreference.com/w/cpp/io">iostream library</a>.</p>
+<p>The C <code>&lt;stdio.h&gt;</code> library relies on format strings, where you as the programmer have to explicitly specify (with a format string specifier) the type of every argument.</p>
+<p>As we have seen already, C++ has a much stronger support for <em>types</em>, and the compiler is willing and able to do more “work” for you. This is reflected in the C++ <code>&lt;iostream&gt;</code> library, which relies on types and operator overloading in order to do I/O. The result is that you as a programmer don’t (usually) have to specify the type of what’s being printed out, but can instead let the compiler figure that out for you.</p>
+<h2 id="cin-and-cout"><a class="linkin" href="index.html#top"><span class="header-section-number">6.1</span> cin and cout</a></h1><p>In C-style I/O using <code>&lt;stdio.h&gt;</code> or <code>&lt;cstdio&gt;</code>, the basic I/O type is <code>FILE*</code>, and standard input and output are called <code>stdin</code> and <code>stdout</code>, respectively. Here’s a small example and reminder of how C-style I/O works:</p>
+<pre><code class="language-C">int num;
+char let;
+printf(&quot;Enter a number and a letter.\n&quot;);
+
+fscanf(stdin, &quot; %i %c&quot;, &amp;num, &amp;let);
+// could also use scanf(...) and drop stdin
+
+fprintf(stdout, &quot;You entered %i %c\n&quot;, num, let);
+// could also use printf(...) and drop stdout</code></pre>
+<p>In the C++ <code>&lt;iostream&gt;</code> library, there are two basic I/O types: <code>istream</code> and <code>ostream</code> (for input and output, respectively), and the standard in and out streams are called <code>cin</code> and <code>cout</code>.</p>
+<p>To perform I/O using <code>&lt;iostream&gt;</code>, the example above would be written as:</p>
+<pre><code class="language-C">int num;
+char let;
+cout &lt;&lt; &quot;Enter a number and a letter.&quot;;
+cout &lt;&lt; endl;
+
+cin &gt;&gt; num;
+cin &gt;&gt; let;
+
+cout &lt;&lt; &quot;You entered &quot;;
+cout &lt;&lt; num;
+cout &lt;&lt; &quot; &quot;;
+cout &lt;&lt; let;
+cout &lt;&lt; endl;</code></pre>
+<p>First a comment about this <code>endl</code> thing. It stands for “end of line” and is a shortcut to end the line <em>and</em> flush the buffer. So it’s like printing out a newline <code>&quot;\n&quot;</code> and then calling <code>fflush</code> at once.</p>
+<p>Now as you can see, the <code>&gt;&gt;</code> and <code>&lt;&lt;</code> operators are used to perform input and output. These operators are actually “shift” operators from C, which are used to move around the bits of numbers. But in C++, they are repurposed to do input and output. Sometimes <code>&lt;&lt;</code> is called the <em>stream insertion</em> operator and <code>&gt;&gt;</code> the <em>stream extraction</em> operator.</p>
+<p>The important thing to notice is, we didn’t have to specify the type of what was being read or written! The commands to read <code>num</code> and <code>let</code> are exactly the same, just changing the variable. This is different from using <code>scanf</code>, where you would have to put <code>%i</code> for <code>num</code> and <code>%c</code> for <code>let</code>.</p>
+<p>What’s actually happening is <em>operator overloading</em>! The C++ <code>&lt;iostream&gt;</code> library provides overloaded versions for the <code>&lt;&lt;</code> and <code>&gt;&gt;</code> operators based on all the standard types, where the left-hand side is an <code>istream</code> or <code>ostream</code> object, and the right-hand side is whatever you are reading or writing. This allows the compiler to automatically change the way each thing is read or written based on the <em>type</em> of that variable.</p>
+<p>In fact, that overloaded operation also <em>returns the same stream object it was called on</em>. For example, the expression <code>cin &gt;&gt; num</code> calls an overloaded operator, passing in arguments <code>cin</code> and <code>num</code>, and <em>returning</em> <code>cin</code> at the end. That means that we can “chain” these operations together, like:</p>
+<pre><code class="language-C">(cin &gt;&gt; num) &gt;&gt; let;</code></pre>
+<p>What that line does is:</p>
+<ol type="1">
+<li>Read in <code>num</code> from stream <code>cin</code></li>
+<li>Return <code>cin</code> from the first part of the expression</li>
+<li>Read in <code>let</code> from stream <code>cin</code></li>
+</ol>
+<p>In fact, since the <code>&gt;&gt;</code> and <code>&lt;&lt;</code> operators are left-associative, you can chain them without using parentheses. Here’s how the above example can be written using I/O operator chaining:</p>
+<pre><code class="language-C">int num;
+char let;
+cout &lt;&lt; &quot;Enter a number and a letter.&quot; &lt;&lt; endl;
+
+cin &gt;&gt; num &gt;&gt; let;
+
+cout &lt;&lt; &quot;You entered &quot; &lt;&lt; num &lt;&lt; &quot; &quot; &lt;&lt; let &lt;&lt; endl;</code></pre>
+<h2 id="reading-and-writing-files"><a class="linkin" href="index.html#top"><span class="header-section-number">6.2</span> Reading and writing files</a></h1><p>OK, so <code>cin</code> has type <code>istream</code> and is the C++ equivalent of <code>stdin</code>, and <code>cout</code> has type <code>ostream</code> and is the C++ equivalent of <code>stdout</code>.</p>
+<p>You should also know that <code>cerr</code> is the C++ equivalent of <code>stderr</code>, used to write to the “standard error” stream.</p>
+<p>Of course we can also open our own files for reading and writing. The type of a file input stream is <code>ifstream</code> and to use it you have to <code>#include &lt;fstream&gt;</code> at the beginning of your program. Then you could use it like this:</p>
+<pre><code class="language-C">ifstream fin;           // declare variable of type ifstream
+fin.open(&quot;myfile.txt&quot;); // open myfile.txt for reading
+
+// read in an int from the file
+int x;
+fin &gt;&gt; x;
+
+fin.close();</code></pre>
+<p>Notice: <code>ifstream</code> is a class, and it has methods <code>open</code> and <code>close</code> (among others). In fact, C++ will automatically call the <code>close()</code> method when the object is destroyed, and you can also declare and open a file all at once, so the above can be even more simply done as:</p>
+<pre><code class="language-C">ifstream fin(&quot;myfile.txt&quot;);
+int x;
+fin &gt;&gt; x;</code></pre>
+<p>You can do the same thing for printing <em>to</em> a file by using the <code>ofstream</code> class, like so:</p>
+<pre><code class="language-C">ofstream fout(&quot;created.txt&quot;);
+fout &lt;&lt; &quot;Writing thirty to created.txt: &quot; &lt;&lt; (5*6) &lt;&lt; endl;</code></pre>
+<p>Something subtle to notice here: <code>fin</code> above has type <code>ifstream</code>, but <code>cin</code> has type <code>istream</code> (no “f”). Yet the two objects are somehow compatible, and can be used in the same way. What gives?</p>
+<p>This is part of the object-oriented features in C++ that we won’t get into much in this class. The gist is that C++ class types are <em>hierarchical</em>, meaning that one type can be a “sub-type” of another one. In this example, the type <code>ifstream</code> is a sub-type of <code>istream</code>, so anything of type <code>ifstream</code> <em>also</em> has type <code>istream</code>. Similarly, every <code>ofstream</code> is also type <code>ostream</code>. You’ll learn more about this type hierarchy if you take a future data structures or object-oriented programming class.</p>
+<h2 id="making-i-o-work-for-your-own-types"><a class="linkin" href="index.html#top"><span class="header-section-number">6.3</span> Making I/O work for your own types</a></h1><p>Something really cool that we can do with C++ I/O is to tell the compiler how to read in <em>any</em> type, including types that we make up. You do this by writing an overloaded version of the <code>&lt;&lt;</code> or <code>&gt;&gt;</code> operator that accepts the type you’re interested in.</p>
+<p>For example, here’s how to tell C++ how to read and write lengths in a format like <code>5' 6.2&quot;</code> to mean “5 feet and 6.2 inches”:</p>
+<pre><code class="language-C">struct length {
+  int feet;
+  double inches;
+};
+
+// tell C++ how to print out a length struct
+ostream&amp; operator&lt;&lt; (ostream&amp; out, length len) {
+  out &lt;&lt; len.feet &lt;&lt; &quot;&#39; &quot; &lt;&lt; len.inches &lt;&lt; &#39;&quot;&#39;;
+  return out;
+}
+
+// tell C++ how to read in a length struct
+// notice: len is passed BY REFERENCE so it can be changed!
+istream&amp; opeartor&gt;&gt; (istream&amp; in, length&amp; len) {
+  char junk; // used to store the &#39; and &quot; characters
+  in &gt;&gt; len.feet &gt;&gt; junk &gt;&gt; len.inches &gt;&gt; junk;
+  return in;
+}</code></pre>
+<p>After providing those definitions, we can read and write <code>length</code>s just like any other type:</p>
+<pre><code class="language-C">int main() {
+  length height;
+  cout &lt;&lt; &quot;How tall are you? &quot;;
+  cin &gt;&gt; height;
+  cout &lt;&lt; &quot;You are &quot; &lt;&lt; height &lt;&lt; &quot; tall.&quot; &lt;&lt; endl;
+}</code></pre>
+<p>In this way, the types that we create in C++ can really be made to work and act like any of the built-in language types. This makes the C++ language more easily customizable and extendible as a programming language.</p>
+<h1 id="standard-template-library"><a class ="linkin" href="index.html#top"><span class="header-section-number">7</span> Standard template library</a></h1><p>A big part of what C++ gives us is an extended set of libraries. The <code>&lt;iostream&gt;</code> library we just learned about really provides similar features to the C <code>stdio.h</code> library, but with some extra convenience with C++ types.</p>
+<p>The <a href="http://en.cppreference.com/w/cpp/container">standard template library for <em>containers</em> in C++</a> is something entirely new. It provides types (really, they’re <code>class</code>es or <code>struct</code>s) to store and access data efficiently. We’ll just look at two basic container types, both of which are based on arrays but with extra features and convenience for programmers.</p>
+<h2 id="string"><a class="linkin" href="index.html#top"><span class="header-section-number">7.1</span> String</a></h1><p>In C, you store a string of letters as an array of <code>char</code>s, type <code>char*</code>. This is called a “C-style string”, and the <code>&lt;string.h&gt;</code> library (called <code>&lt;cstring&gt;</code> in C++) provides a number of convenient functions to deal with <code>char*</code> strings such as <code>strlen</code>, <code>strcmp</code>, and <code>strcpy</code>.</p>
+<p>In C++, the header <code>&lt;string&gt;</code> provides a new type called (un-creatively) <code>string</code>. The <code>string</code> class in C++ provides a number of methods and overloaded operators to:</p>
+<ul>
+<li>read in a string from a stream using the <code>&gt;&gt;</code> operator</li>
+<li>write out a string to a stream using the <code>&lt;&lt;</code> operator</li>
+<li>create or copy a strings value using the assignment <code>=</code> operator</li>
+<li>concatenate two strings using the <code>+</code> operator</li>
+<li>get the length of a string using the <code>.length()</code> method</li>
+<li>get an individual <code>char</code> by using the index operator <code>[]</code> as if the string were a char array.</li>
+<li>compare strings alphabetically using the normal comparison operators like <code>&lt;</code>, <code>==</code>, and <code>&gt;=</code>.</li>
+</ul>
+<p>What this all means is that <strong>you can treat strings like any other regular type</strong> in C++. With C-style strings of type <code>char*</code>, we have to think always about how this differs from the normal C types such as <code>int</code> or <code>double</code>. You don’t have to think about this as much when programming with <code>string</code>s in C++, because the compiler is doing more of that work for you.</p>
+<p>A big part of this work is keeping track of the <em>size</em> of the string and automatically re-sizing it as necessary. In C, we usually just chose 128 as the default size of our <code>char</code> arrays, hoping that no one would enter a string longer than 128. We could write more complicated programs that only read in a few characters at a time, then re-allocate arrays as necessary, but we didn’t do that. Fortunately in C++, the developers of the standard library have already done this for you with the <code>string</code> class.</p>
+<p>Here’s an example program that reads in and then prints out a name using C++ <code>string</code>s:</p>
+<pre><code class="language-c++">#include &lt;iostream&gt;
+#include &lt;string&gt;
+using namespace std;
+
+int main() {
+  string first;
+  string last;
+
+  cout &lt;&lt; &quot;Enter your name (first and last): &quot;;
+  cin &gt;&gt; first &gt;&gt; last;
+
+  string complete = first + &quot; &quot; + last;
+  cout &lt;&lt; &quot;Your complete name is &quot; &lt;&lt; complete &lt;&lt; endl;
+  cout &lt;&lt; &quot;This name has &quot; &lt;&lt; complete.length() &lt;&lt; &quot; characters.&quot; &lt;&lt; endl;
+
+  return 0;
+}</code></pre><h2 id="a-brief-note-on-templates"><a class="linkin" href="index.html#top"><span class="header-section-number">7.2</span> A BRIEF note on templates</a></h1><p>A very powerful mechanism that was added to C++ around 1990 is that of <em>templates</em>. In short, templates allow you to write <em>generic</em> structs, classes, or functions without saying exactly what all of the types are. Then, based on how that struct or function gets used, the compiler automatically generates copies of that function or struct with the types specified.</p>
+<p>There is so much to learn about templates that we could spend an entire course on it! But just to give you the idea, consider a generic linked list node struct:</p>
+<pre><code class="language-C">template &lt;typename T&gt;
+struct node {
+  T data;
+  node* next;
+};</code></pre>
+<p>First, notice what is the same as always: we have a <code>struct node</code> declaration, with two fields for <code>data</code> and <code>next</code>. The type of <code>next</code> is <code>node*</code> like usual, but the type of <code>data</code> is weird: it’s listed as <code>T</code>. So what is <code>T</code>?</p>
+<p>Well, <code>T</code> is declared just before the struct definition begins as a <em>template</em> that can stand for any type such as <code>int</code> or <code>string</code> or anything else. Think of this definition as a recipe for the compiler to follow: “If someone asks for a node, make a struct just like this except replace the type <code>T</code> with the type that they want”.</p>
+<p>How you specify the “type that you want” for a template is using angle brackets with the template type name. So for example, to make a linked list of two <code>strings</code> using the template definition above, we might do something like this:</p>
+<pre><code class="language-C">node&lt;string&gt;* L = NULL;
+L = new node&lt;string&gt;;
+L-&gt;data = &quot;first&quot;;
+L-&gt;next = new node&lt;string&gt;;
+L-&gt;next-&gt;data = &quot;second&quot;;
+L-&gt;next-&gt;next = NULL;</code></pre>
+<p>If on the other hand we wanted a linked list of doubles, we would start with</p>
+<pre><code class="language-C">node&lt;double&gt;* L = NULL;</code></pre>
+<p>and go from there. In other words, each of <code>node&lt;int&gt;</code>, <code>node&lt;double&gt;</code>, or <code>node&lt;any_type_here&gt;</code> is its very own type and causes the compiler to generate a new copy of that struct definition above, replacing the type <code>T</code> in the definition with whatever you put in the angle brackets.</p>
+<h2 id="vector"><a class="linkin" href="index.html#top"><span class="header-section-number">7.3</span> Vector</a></h1><p>The C++ standard template library is so called because it has many classes which are used to store data, which are <em>templatized</em> based on the type of data you want to store.</p>
+<p>We’ll just look at one of the most useful of these which is the <a href="http://en.cppreference.com/w/cpp/container/vector">vector class</a>, which you can get by including the header named, unsurprisingly, <code>&lt;vector&gt;</code>.</p>
+<p>Think of C++’s <code>&lt;vector&gt;</code> as an array that can do a whole lot more:</p>
+<ul>
+<li>Automatically resizes itself as items are added or removed</li>
+<li>You can use the <code>[]</code> operator to look up any element, just like with an array.</li>
+<li>Better yet, use the <code>at(index)</code> method to look up any element <em>and</em> check for array index out of bounds.</li>
+<li>The <code>size()</code> method will tell you the size of the vector at any point.</li>
+<li>The <code>push_back</code> method adds one more element to the end of the vector and is very efficient.</li>
+<li>Similarly, the <code>pop_back</code> method removes the last element of the vector and re-sizes it accordingly.</li>
+</ul>
+<p>Now all of these things you <em>could</em> program yourself in C, by making a struct to hold a pointer (for the array) and an int to keep track of the size, and writing some useful functions there. And that understanding of how <code>vector</code> is implemented will make you a more effective user of it.</p>
+<p>But the joy of using <code>vector</code> is that you don’t have to worry about these details every time you want to use an array in your program, which lets you write bigger, more useful programs in less time. Of course there is a tradeoff, and each of the features of <code>vector</code> make it a <em>little</em> bit slower than using regular C arrays in your program. But for most use cases, that’s a tradeoff you’re probably willing to make.</p>
+<p>Here’s an exciting example program that reads in numbers until the user hits -1, and then prints them out in reverse order:</p>
+<pre><code class="language-c++">#include &lt;iostream&gt;
+#include &lt;vector&gt;
+using namespace std;
+
+int main () {
+  cout &lt;&lt; &quot;Enter some numbers followed by a negative number:&quot; &lt;&lt; endl;
+  vector&lt;int&gt; nums;
+
+  int next;
+  cin &gt;&gt; next;
+  while (next &gt;= 0) {
+    nums.push_back(next);
+    cin &gt;&gt; next;
+  }
+
+  cout &lt;&lt; &quot;You entered &quot; &lt;&lt; nums.size() &lt;&lt; &quot; numbers.&quot; &lt;&lt; endl;
+
+  cout &lt;&lt; &quot;In reverse order:&quot;;
+  for (int i = nums.size() - 1; i &gt;= 0; --i) {
+    cout &lt;&lt; &quot; &quot; &lt;&lt; nums.at(i);
+  }
+  cout &lt;&lt; endl;
+
+  return 0;
+}</code></pre><p>Notice that <code>vector</code> is a templated type, so we use <code>vector&lt;int&gt;</code> to make a vector of ints, but you could do <code>vector&lt;string&gt;</code> for a vector of strings, or even something crazy like <code>vector&lt; vector&lt;double&gt; &gt;</code>.</p>
+<h1 id="going-further"><a class ="linkin" href="index.html#top"><span class="header-section-number">8</span> Going further</a></h1><p>That’s it for our semester! I hope that you’ve enjoyed this class, that you’ve been challenged, and that you have some new ways of thinking about problem solving with computers.</p>
+<p>You should feel great about what you’ve accomplished this semester. With the skills you’ve learned, <em>you can write any program</em>. Given enough time and patience, you could write a program to do absolutely anything that a computer can do.</p>
+<p>Of course, you will need much more experience and knowledge to be <em>proficient</em> at that, or to write bigger programs as efficiently as possible, and we have courses where you can learn those things. But you have the power of the computer in your hands, and the freedom to explore and solve new problems is just a text editor away. Good luck, and have fun!</p>
+  </div></article></div></div><nav class="stickynav"><div><div class="dropdown"><a href="../../index.php.html" class="ddown-btn">SI 204</a><div class="ddown-content"><a href="../../calendar.php.html">Calendar</a><a href="../index.html">Notes</a><a href="../../hw/index.html">HWs</a><a href="../../lab/index.html">Labs</a><a href="../../proj/index.html">Projects</a><a href="../../exams/index.html">Exams</a><a href="../../admin/index.html">Resources</a><a href="https://www.usna.edu/Users/cs/roche/">Roche</a><a href="https://www.usna.edu/Users/cs/albing/">Albing</a></div></div><div class="dropdown"><a href="index.html#top" class="linkin pagetop">Unit 10: C++</a><div class="ddown-content ddtoc"><ul><li><a class="linkin" href="index.html#c-basics"><span class="toc-section-number">1</span> C++ Basics</a>
+<ul><li><a class="linkin" href="index.html#history"><span class="toc-section-number">1.1</span> History</a></li><li><a class="linkin" href="index.html#c-is-mostly-a-subset-of-c-"><span class="toc-section-number">1.2</span> C is (mostly) a subset of C++</a></li><li><a class="linkin" href="index.html#naming-and-compiling-c-programs"><span class="toc-section-number">1.3</span> Naming and compiling C++ programs</a></li></ul></li>
+<li><a class="linkin" href="index.html#bool"><span class="toc-section-number">2</span> Bool</a></li>
+<li><a class="linkin" href="index.html#functions"><span class="toc-section-number">3</span> Functions</a>
+<ul><li><a class="linkin" href="index.html#overloading"><span class="toc-section-number">3.1</span> Overloading</a></li><li><a class="linkin" href="index.html#pass-by-reference"><span class="toc-section-number">3.2</span> Pass by reference</a></li></ul></li>
+<li><a class="linkin" href="index.html#memory-allocation"><span class="toc-section-number">4</span> Memory allocation</a></li>
+<li><a class="linkin" href="index.html#structs-and-classes"><span class="toc-section-number">5</span> Structs and classes</a>
+<ul><li><a class="linkin" href="index.html#syntax"><span class="toc-section-number">5.1</span> Syntax</a></li><li><a class="linkin" href="index.html#operator-overloading"><span class="toc-section-number">5.2</span> Operator overloading</a></li><li><a class="linkin" href="index.html#functions-inside-structs-methods-"><span class="toc-section-number">5.3</span> Functions inside structs (“methods”)</a></li></ul></li>
+<li><a class="linkin" href="index.html#i-o"><span class="toc-section-number">6</span> I/O</a>
+<ul><li><a class="linkin" href="index.html#cin-and-cout"><span class="toc-section-number">6.1</span> cin and cout</a></li><li><a class="linkin" href="index.html#reading-and-writing-files"><span class="toc-section-number">6.2</span> Reading and writing files</a></li><li><a class="linkin" href="index.html#making-i-o-work-for-your-own-types"><span class="toc-section-number">6.3</span> Making I/O work for your own types</a></li></ul></li>
+<li><a class="linkin" href="index.html#standard-template-library"><span class="toc-section-number">7</span> Standard template library</a>
+<ul><li><a class="linkin" href="index.html#string"><span class="toc-section-number">7.1</span> String</a></li><li><a class="linkin" href="index.html#a-brief-note-on-templates"><span class="toc-section-number">7.2</span> A BRIEF note on templates</a></li><li><a class="linkin" href="index.html#vector"><span class="toc-section-number">7.3</span> Vector</a></li></ul></li>
+<li><a class="linkin" href="index.html#going-further"><span class="toc-section-number">8</span> Going further</a></ul></div></div></nav><footer><div id="foottext">    <p class="disclaimer">Material contained above is made available
+    for the purpose of peer review and discussion and does not
+    necessarily reflect the views of the Department of the Navy or the
+    Department of Defense.
+    Some links above are to sites that are not
+    located at the United States Naval Academy. The USNA is not
+    responsible for the content found on these sites. In addition, the
+    content of these sites does not reflect the opinions, standards,
+    policy or endorsement of the Naval Academy or the United States
+    Government.</p>
+  Page maintained by Daniel S. Roche (<a href="mailto:roche [AT] usna [DOT] edu" id="emaillink1">roche [AT] usna [DOT] edu</a><script type='text/javascript'><!--
+        var b="he@usna.edu";
+        var a="roc";
+        document.getElementById("emaillink1").href='mailto:'+a+b;
+        document.getElementById("emaillink1").innerHTML=a+b;
+        // --></script>). Last updated 25 April 2017 8:56.</div></footer><script src="../../scripts/prism.js"></script><script type="text/javascript">var the_body = $('html, body');
+var sticky_height = $('.stickynav').height();
+$('.linkin').click(function(){
+  var href = $(this).attr('href');
+  var offset;
+  if (href == '#top') offset = 0;
+  else offset = $(href).offset().top - sticky_height;
+  the_body.animate({ scrollTop: offset }, 500);
+  return false;
+});</script></body></html>

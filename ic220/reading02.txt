@@ -1,0 +1,36 @@
+Mike Hanling
+R02: 2.1-2.3 , 2.5-2.6
+
+Key Points:
+  Instruction come from Instruction Sets and speak to the hardware
+  This course: MIPS
+    Easy to switch to x86 or ARM from there
+  Stored-program conception: data can be stored as numbers in computers
+  One instruction per line in MIPS
+  # is for comments
+  Simplicity favors regularity (having a set number of params)
+  Smaller is faster
+  MIPS has 32 registers (the only accepted instructions)
+  Addition:
+    add storedIn, num1, num2
+    sub works as well
+    addi can use constants for the nums
+  Data Transfer Instruction:
+    lw registerToLoad offset(baseRegister) #last piece is addess
+    above is memory to register
+    switch lw to sw for register to memory
+  Good design demands good compromises
+  Today's computers built on two key principles:
+    instructions are represented as numbers
+    programs are stored in memory to be read or written, just like data
+  MIPS uses shift left, shift right, bit AND, bit OR, bit NOT, bit NOR
+
+
+
+
+
+
+
+What Confuses Me:
+  If MIPS supports negative integers, then why have "sub"?
+  The mapping of the 32 registers

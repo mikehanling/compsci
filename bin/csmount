@@ -1,0 +1,48 @@
+#!/bin/bash
+
+set -e
+set -u
+
+##################################################################
+# csmount - This script mounts your CS Department Unix account
+# usage: csmount [username]
+# home directory in your local machine home directory at ~/csunix. 
+##################################################################
+
+USERNAME=${1-$USER}
+MOUNTDIR="$HOME/csunix"
+SERVER="mope.academy.usna.edu"
+
+# function to check the mount status
+function is_mounted {
+  grep -q "$MOUNTDIR" /etc/mtab
+}
+
+# function to disconnect and print an error if something fails
+function cleanup {
+  [[ $# -ge 1 ]] && echo "ERROR: $1"
+  set +e
+  is_mounted && fusermount -u "$MOUNTDIR"
+  chmod -rwx "$MOUNTDIR"
+  exit 1
+}
+
+# make sure the mount point directory exists with the right permissions
+mkdir -p "$MOUNTDIR" || cleanup "Couldn't create $MOUNTDIR"
+chmod u+rwX "$MOUNTDIR" || cleanup "Couldn't set permissions on $MOUNTDIR"
+
+if is_mounted; then
+  echo "$MOUNTDIR is already mounted!"
+  exit 0
+fi
+
+# actually make the connection
+if sshfs "$USERNAME@$SERVER": "$MOUNTDIR" -oworkaround=rename,ServerAliveInterval=15,ServerAliveCountMax=3
+then
+  # connection worked
+  echo "Your CS dept home directory is now mounted as $MOUNTDIR."
+  exit 0
+else
+  # connection failed
+  cleanup "Could not connect to $SERVER" 
+fi

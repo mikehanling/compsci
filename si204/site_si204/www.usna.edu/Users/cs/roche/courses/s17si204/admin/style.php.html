@@ -1,0 +1,365 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8"><title>C Programming Style Guide</title><meta name="viewport" content="width=device-width, initial-scale=1.0"><link href="../scripts/prism.css" rel="stylesheet" /><link rel="stylesheet" type="text/css" href="../style.css"><script type="text/javascript" src="../scripts/jquery-3.1.1.min.js"></script><style>
+@media only screen and (min-width: 600px) {
+  #main>header {background-image: url("../scripts/header.png");}
+}
+</style></head><body><div id="main"><header><nav class="topnav"><div>
+            <a href="../index.php.html">SI 204</a>
+            </div><div>
+            <a href="../calendar.php.html">Calendar</a>
+            </div><div>
+            <a href="../notes/index.html">Notes</a>
+            </div><div>
+            <a href="../hw/index.html">HWs</a>
+            </div><div>
+            <a href="../lab/index.html">Labs</a>
+            </div><div>
+            <a href="../proj/index.html">Projects</a>
+            </div><div>
+            <a href="../exams/index.html">Exams</a>
+            </div><div id="navparent">
+            <a href="index.html">Resources</a>
+            </div><div>
+            <a href="https://www.usna.edu/Users/cs/roche/">Roche</a>
+            </div><div>
+            <a href="https://www.usna.edu/Users/cs/albing/">Albing</a>
+            </div></nav></header><div id="mainbox"><div class="printonly"><h1 class="printtitle">SI 204 Spring 2017 / Resources</h1><hr></div><article id="mainart"><header><h1>C Programming Style Guide</h1></header><div id="TOC"><ul><li><a class="linkin" href="style.php.html#general"><span class="toc-section-number">1</span> General</a></li>
+<li><a class="linkin" href="style.php.html#visual-layout"><span class="toc-section-number">2</span> Visual Layout</a></li>
+<li><a class="linkin" href="style.php.html#curly-braces-i-e-s"><span class="toc-section-number">3</span> Curly braces, i.e. { }'s</a></li>
+<li><a class="linkin" href="style.php.html#comments"><span class="toc-section-number">4</span> Comments</a></li>
+<li><a class="linkin" href="style.php.html#naming"><span class="toc-section-number">5</span> Naming</a></li>
+<li><a class="linkin" href="style.php.html#miscellaneous-but-important-stuff"><span class="toc-section-number">6</span> Miscellaneous but Important Stuff</a></li></ul></div><div class="panbody">
+  <h1 id="general"><a class ="linkin" href="style.php.html#top"><span class="header-section-number">1</span> General</a></h1>  This style guide is mandatory for all submitted work for grading
+  (homework, projects, labs, exams).    The purpose of the guide is
+  not to restrict your programming but rather to establish a
+  consistent style format for your programs. This will help you debug
+  and maintain your programs, and help others (including your
+  instructor) to understand them. As your programs grow in length and
+  complexity, it is critical to use a consistent style. In the long
+  run this will help you since one focus of this course is to build a
+  foundation for later courses.  Points will be deducted from
+  submitted work that does not conform to this style guide.
+
+  <h1 id="visual-layout"><a class ="linkin" href="style.php.html#top"><span class="header-section-number">2</span> Visual Layout</a></h1>      "Whitespace" refers to newlines, space characters and tabs.
+      In source code we do not generally use tabs &mdash; in fact,
+      your editor should be replacing tab characters with an appropriate number of
+      space characters.  In many circumstances whitespace is not
+      required in order for compilers to correctly compile source
+      code, even though the result is unreadable to us.  For
+      example, the following is a perfectly valid program:
+  <br>
+  <br>
+      <table>
+        <tr>
+          <td><b>Bad Formatting</b></td>
+          <td style="width:3em;"></td>
+          <td><b>Good Formatting</b></td>
+        </tr><td>
+<pre>#include "si204.h"
+int main(){int
+x; int y=
+  1; x =readnum
+  (stdin); while
+(x&gt;0){y=2*y;--
+
+
+             x;}
+writenum
+           (  y
+, stdout); fputs(
+"\n",stdout);return 0
+    ;      }</pre>
+</td><td>
+</td><td>
+<pre><code class="language-c">#include &quot;si204.h&quot;
+
+int main() {
+  int x;
+  int y = 1;
+
+  x = readnum(stdin);
+
+  while(x &gt; 0) {
+    y = 2*y;
+    --x;
+  }
+
+  writenum(y, stdout);
+  fputs(&quot;\n&quot;, stdout);
+
+  return 0;
+}</code></pre></td></tr>
+</table>
+
+    ... but pretty hard to read.  there are three major ways we
+    use whitespace to format code for maximum clarity:
+<ul class="inst">
+  <li><b>whitespace separating elements of code:</b>
+    consistent use of whitespace
+    transcends blank lines and indentation, it also looks at how
+    spaces are used to separate elements of a line of code. the style guide
+    recommends whitespace between operators and operands, except
+    where precedence is highlighted by leaving out spaces.
+    <br>
+    <table class="rm" cellpadding="4pt">
+      <tr>
+        <td>good</td>
+        <td><code class="language-c">y = 2*y + x/y + 5;</code></td>
+        <td><code class="language-c">if (y &gt;= 2*y - 5 &amp;&amp; x*y &lt;= 24)</code></td>
+      </tr>
+      <tr>
+        <td>bad</td>
+        <td><code>y=2*y+x/y+5;</code></td>
+        <td><code>if (y&gt;=2* y-5&amp;&amp;x * y&lt;=24)</code></td>
+        </tr>
+    </table>
+  </li>
+  <li><b>blank lines:</b>
+    in source code, use blank lines to separate
+    chunks of code that accomplish distinct tasks.
+    while to some extent this is taste and art, you should expect
+    distinct functions to be separated by blank lines, and a long
+    function body should usually be broken into chunks by blank
+    lines as well.
+  </li>
+  <li><b>indentation:</b>
+    indentation highlights the block structure of programs, much
+    as it does in formatting outlines.  each level of block
+    nesting must be indented by a consistent number of spaces
+    (two in the emacs settings we provide you).  new levels of
+    indenting are introduced by function bodies, for, while and
+    do-while bodies, the then and else blocks of an if
+    statement, and struct definitions.
+  </li>
+</ul>
+
+
+<h1 id="curly-braces-i-e-s"><a class ="linkin" href="style.php.html#top"><span class="header-section-number">3</span> Curly braces, i.e. { }'s</a></h1>Curly braces, i.e. <code>{ }</code>'s in C are used to create a "block"
+from one or more statements.  the delineate the bodies of
+functions, loops and switch statements, struct definitions, and
+the then and else blocks of if statments.  generally, one should
+either always put the opening curly brace at the end of the line,
+or on a new line by itself. (The exception is that a comment
+may follow an opening curly brace.)
+<p>
+Once again consistency is key.  If the opening
+brace goes on a new line, the preference for this course is to
+keep the previous line's indentation &mdash; i.e. do not indent
+the curly brace.  The closing curly brace is usually the only
+thing on its line, and should <em>always</em>
+be indented at the same level as the opening of the block.
+</p>
+
+<table class="RM"
+<tr><td>Good</td><td>Good</td></tr>
+<tr>
+<td><pre><code class="language-c">if (x &lt; 3) {
+  fputs(&quot;x is tiny\n&quot;, stdout);
+  ++x;
+} else if (x &lt; 10) {
+  fputs(&quot;just right\n&quot;, stdout);
+} else {
+  fputs(&quot;x is big\n&quot;, stdout);
+  --x;
+}
+fputs(&quot;all done\n&quot;, stdout);</code></pre></td>
+<td><pre><code class="language-c">if (x &lt; 3)
+{
+  fputs(&quot;x is tiny\n&quot;, stdout);
+  ++x;
+}
+else if (x &lt; 10)
+{
+  fputs(&quot;just right\n&quot;, stdout);
+}
+else
+{
+  fputs(&quot;x is big\n&quot;, stdout);
+  --x;
+}
+fputs(&quot;all done\n&quot;, stdout);</code></pre></td>
+</tr></table>
+
+<table class="RM"
+<tr><td>Bad</td><td>Bad</td></tr>
+<tr>
+<td><pre>
+if (x &lt; 3)
+{ fputs("x is tiny\n", stdout);
+  ++x; }
+else if (x &lt; 10)
+{ fputs("just right\n", stdout); }
+else
+{ fputs("x is big\n", stdout);
+  --x; }
+fputs("all done\n", stdout);
+</pre></td>
+<td><pre>
+if (x &lt; 3) { fputs("x is tiny\n", stdout);
+  ++x;
+} else if (x &lt; 10) {
+  fputs("just right\n", stdout); }
+else {
+fputs("x is big\n", stdout);
+--x; } fputs("all done\n", stdout);
+<td><pre>
+</pre></td>
+</tr>
+</table>
+
+
+<h1 id="comments"><a class ="linkin" href="style.php.html#top"><span class="header-section-number">4</span> Comments</a></h1>Comments should be indented consistently with the block of code they
+describe. Every file you write should start with a comment saying
+what the program/file is for and stating your name.
+<p>Comments can be divided into two general categories,
+strategic and tactical:</p>
+<ul>
+  <li><b>Strategic comments</b> are used to give the reader a
+  general overview of what is going on. These comments appear at the
+  beginning of files, before important functions, and above
+  important blocks of code. Strategic comments tend to be written in
+  sentences with an emphasis on explaining the big picture of what
+  the block of code is designed to do.</li>
+  <li><b>Tactical comments</b> are designed to explain tricky areas
+    of code, what parameters do, and hints about the control flow of
+    the program. These comments should be intermixed in the code when
+    needed. They should be shorter than strategic comments, in bullet
+    format, and may be in inline format. One should, for instance,
+    place a tactical comment next to the statement that assigns a
+    fixed, non-obvious value to a variable.
+</ul>
+
+  The following example shows good commenting.  Note the tactical
+  comment about why "9.0" is used instead of "9".
+
+<pre><code class="language-c">/* Fahrenheit to Celsius Conversion
+ * Dr. Roche, January 2017
+ */
+#include &quot;si204.h&quot;
+
+int main() {
+  // Read temperature in Fahrenheit
+  double Tf;
+  fputs(&quot;Enter temperature in Fahrenheit: &quot;, stdout);
+  Tf = readnum(stdin);
+
+  // Compute temperature in Celsius
+  double Tc;
+  Tc = (Tf - 32)*(5/9.0); // .0 forces division as double
+
+  // Write temperature in Celsius
+  fputs(&quot;That is &quot;, stdout);
+  writenum(Tc, stdout);
+  fputs(&quot; degrees Celsius.\n&quot;, stdout);
+
+  return 0;
+}</code></pre>
+  <h1 id="naming"><a class ="linkin" href="style.php.html#top"><span class="header-section-number">5</span> Naming</a></h1>  Variables should have meaningful names. For example,
+  consider a program that uses a variable to track the yards per carry
+  of a football game.  Such a variable should be called
+  <code>yardsPerCarry</code>
+  vice <code>ypc</code> for program readability. This must be balanced against
+  using names which are too long, which can obscure the code. (Fifteen
+  or so characters approaches the “too long” limit.)
+  It should be mentioned that this is most important for variables
+  that have large scope &mdash; i.e. they are visible and need to be
+  used either from different files or from widely separated lines in
+  the same file.  The code example above seems to violate this rule,
+  but variables <code>Tf</code> and <code>Tc</code> only a appear, and
+  are only in scope, within less than a dozen lines of code, and in
+  the context of those few lines they are descriptive enough.  Also,
+  because this is an example embedded in a document, compactness of
+  the code is very important.
+<p>
+  Single letter variables or constants should generally not be used.
+  An exception to this rule is when it is common
+  practice to identify something with a single letter. An example of
+  this is the coordinate system (x, y, and z). A second exception
+  occurs in the use of loop counter variables where it is common
+  practice to use variables like i and j as counters in for loops.
+</p>
+ <p>
+   Function names and variable names should begin with a lower case
+   letter. An identifier consisting of multiple names SHALL have each
+   name distinguished by making the first letter of each name part
+   (after the first)
+   upper case (e.g. yardsPerCarry) or by using underscores
+   (yards_per_carry).
+</p><p>
+   Constants should be named in all upper case
+   letters. Example:
+   <code class="language-c">const int THISYEAR = 2017;</code></p><p>
+   It's generally good to avoid lower case letter ‘L’, or the letter
+   ‘O’ in names unless they are part of normal words. This is to avoid
+   confusion with the numbers 1 and 0. For example, is "<code>cell</code>" c- e -
+   1- ONE or c- e- 1-1?
+</p><p>
+   Avoid names that differ only in case, look similar, or differ only slightly.
+   For example, InputData, InData and DataInput will certainly be confusing if
+   used in the same program.
+</p><p>
+   Names of functions should reflect what they do (printArray), or what they
+   return (getAge). Boolean (true/false)
+   variable names should sound like Yes/No things &mdash;
+   "isEmpty" and "isFinished" are possible examples.
+ </p>
+
+  <h1 id="miscellaneous-but-important-stuff"><a class ="linkin" href="style.php.html#top"><span class="header-section-number">6</span> Miscellaneous but Important Stuff</a></h1>   No line of code should go past 80 characters (sticking below 72 is even better).
+   If a line of
+   code becomes too long, break it up into pieces. Remember the
+   compiler largely ignores extra whitespace in your programs that
+   aren't in strings.
+<p>For breaking up strings, the compiler will automatically
+combine string literals that are on separate lines. For example,
+the following line of code:
+<pre><code class="language-c">fputs(&quot;This is my very long string.\nIt is so long that it will go past 80 characters and sadness will ensue.\n&quot;, stdout);</code></pre>could be written instead as
+<pre><code class="language-c">fputs(&quot;This is my very long string.\n&quot;
+      &quot;It is so long that it will go past &quot;
+      &quot;80 characters and sadness will ensue.\n&quot;,
+      stdout);</code></pre></p>
+
+<p>
+Always use the most appropriate operator or construct for the work
+you want it to do. Good design and clarity take precedence over
+optimization. Try not to declare or use more variables than are
+necessary.
+</p>
+
+<p>
+Numerical constants ("magic numbers") should not be coded
+directly. The only allowable exceptions are for 0, 1 or -1, and
+those which are not likely to change; for example code determining
+if a number is even can use the number 2 since it is not likely to
+change. Numerical constants must have a comment explaining the
+value if it is not evident from the name.
+</p>
+
+</div></article></div></div><nav class="stickynav"><div><div class="dropdown"><a href="../index.php.html" class="ddown-btn">SI 204</a><div class="ddown-content"><a href="../calendar.php.html">Calendar</a><a href="../notes/index.html">Notes</a><a href="../hw/index.html">HWs</a><a href="../lab/index.html">Labs</a><a href="../proj/index.html">Projects</a><a href="../exams/index.html">Exams</a><a href="index.html">Resources</a><a href="https://www.usna.edu/Users/cs/roche/">Roche</a><a href="https://www.usna.edu/Users/cs/albing/">Albing</a></div></div><div class="dropdown"><a href="style.php.html#top" class="linkin pagetop">C Programming Style Guide</a><div class="ddown-content ddtoc"><ul><li><a class="linkin" href="style.php.html#general"><span class="toc-section-number">1</span> General</a></li>
+<li><a class="linkin" href="style.php.html#visual-layout"><span class="toc-section-number">2</span> Visual Layout</a></li>
+<li><a class="linkin" href="style.php.html#curly-braces-i-e-s"><span class="toc-section-number">3</span> Curly braces, i.e. { }'s</a></li>
+<li><a class="linkin" href="style.php.html#comments"><span class="toc-section-number">4</span> Comments</a></li>
+<li><a class="linkin" href="style.php.html#naming"><span class="toc-section-number">5</span> Naming</a></li>
+<li><a class="linkin" href="style.php.html#miscellaneous-but-important-stuff"><span class="toc-section-number">6</span> Miscellaneous but Important Stuff</a></ul></div></div></nav><footer><div id="foottext">    <p class="disclaimer">Material contained above is made available
+    for the purpose of peer review and discussion and does not
+    necessarily reflect the views of the Department of the Navy or the
+    Department of Defense.
+    Some links above are to sites that are not
+    located at the United States Naval Academy. The USNA is not
+    responsible for the content found on these sites. In addition, the
+    content of these sites does not reflect the opinions, standards,
+    policy or endorsement of the Naval Academy or the United States
+    Government.</p>
+  Page maintained by Daniel S. Roche (<a href="mailto:roche [AT] usna [DOT] edu" id="emaillink1">roche [AT] usna [DOT] edu</a><script type='text/javascript'><!--
+        var b="he@usna.edu";
+        var a="roc";
+        document.getElementById("emaillink1").href='mailto:'+a+b;
+        document.getElementById("emaillink1").innerHTML=a+b;
+        // --></script>). Last updated 25 January 2017 0:34.</div></footer><script src="../scripts/prism.js"></script><script type="text/javascript">var the_body = $('html, body');
+var sticky_height = $('.stickynav').height();
+$('.linkin').click(function(){
+  var href = $(this).attr('href');
+  var offset;
+  if (href == '#top') offset = 0;
+  else offset = $(href).offset().top - sticky_height;
+  the_body.animate({ scrollTop: offset }, 500);
+  return false;
+});</script></body></html>

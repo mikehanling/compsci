@@ -1,0 +1,190 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Lab 06: Green-Screening</title><meta name="viewport" content="width=device-width, initial-scale=1.0"><link href="../../scripts/prism.css" rel="stylesheet" /><link rel="stylesheet" type="text/css" href="../../style.css"><script type="text/javascript" src="../../../../mathjax/MathJax.js%3Fconfig=TeX-AMS_HTML"></script><script type="text/javascript" src="../../scripts/jquery-3.1.1.min.js"></script><style>
+@media only screen and (min-width: 600px) {
+  #main>header {background-image: url("../../scripts/header.png");}
+}
+</style>  <meta name="generator" content="pandoc">
+  <style type="text/css">code{white-space: pre;}</style>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head><body><div id="main"><header><nav class="topnav"><div>
+            <a href="../../index.php.html">SI 204</a>
+            </div><div>
+            <a href="../../calendar.php.html">Calendar</a>
+            </div><div>
+            <a href="../../notes/index.html">Notes</a>
+            </div><div>
+            <a href="../../hw/index.html">HWs</a>
+            </div><div id="navparent">
+            <a href="../index.html">Labs</a>
+            </div><div>
+            <a href="../../proj/index.html">Projects</a>
+            </div><div>
+            <a href="../../exams/index.html">Exams</a>
+            </div><div>
+            <a href="../../admin/index.html">Resources</a>
+            </div><div>
+            <a href="https://www.usna.edu/Users/cs/roche/">Roche</a>
+            </div><div>
+            <a href="https://www.usna.edu/Users/cs/albing/">Albing</a>
+            </div></nav></header><div id="mainbox"><div class="printonly"><h1 class="printtitle">SI 204 Spring 2017 / Labs</h1><hr></div><article id="mainart"><header><h1>Lab 06: Green-Screening</h1></header><div id="TOC"><ul><li><a class="linkin" href="index.html#background"><span class="toc-section-number">1</span> Background</a>
+<ul><li><a class="linkin" href="index.html#binary-files"><span class="toc-section-number">1.1</span> Binary files</a></li><li><a class="linkin" href="index.html#bmp-files"><span class="toc-section-number">1.2</span> BMP files</a></li><li><a class="linkin" href="index.html#writing-and-reading-binary-in-c"><span class="toc-section-number">1.3</span> Writing and reading binary in C</a></li><li><a class="linkin" href="index.html#starter-code-and-files"><span class="toc-section-number">1.4</span> Starter code and files</a></li></ul></li>
+<li><a class="linkin" href="index.html#replacing-the-green"><span class="toc-section-number">2</span> Replacing the green</a></li>
+<li><a class="linkin" href="index.html#green-screen"><span class="toc-section-number">3</span> Green Screen</a></li>
+<li><a class="linkin" href="index.html#offset-going-further-"><span class="toc-section-number">4</span> Offset (going further)</a></li></ul></div><div class="panbody"><p>In today’s lab, you will implement “Green Screening”, which is where two images are combined by replacing all of the green pixels of one image with the second one. <a href="https://www.youtube.com/watch?v=YCR-lOD75LQ">Here’s an example of green screening in action.</a></p>
+<p>Specifically, you’ll be writing programs that read and write bitmap images (stills) in the <a href="http://www.dragonwins.com/domains/getteched/bmp/bmpfileformat.htm">bmp format</a>. As this is a binary format (as opposed to text-based), you’ll first have to learn a little bit of how binary data is written and read in C. This is what happens all the time in writing low-level drivers and device controllers too, so it’s pretty useful stuff and worth getting some practice in.</p>
+<h1 id="background"><a class ="linkin" href="index.html#top"><span class="header-section-number">1</span> Background</a></h1><h2 id="binary-files"><a class="linkin" href="index.html#top"><span class="header-section-number">1.1</span> Binary files</a></h1><p>BMP is an image format that was developed by Microsoft in the 1980’s when Windows looked like this:</p>
+<figure>
+<img src="windows1.bmp" alt="Screenshot of Windows 1" /><figcaption>Screenshot of Windows 1</figcaption>
+</figure>
+<p>In fact, the image above is itself a bitmap that <a href="windows1.bmp">you can download</a>. BMP is a <em>binary format</em>, meaning that if you try to look at that file in a text editor, you’ll just see a bunch of weird characters.</p>
+<p>Instead, you have to use a <em>hex editor</em> to look at the data. The simplest tool for this on your lab machine or VM is <code>hd</code> (for “hexadecimal dump”), which will show each byte of the file, 16 bytes per line.</p>
+<p>Tips:</p>
+<ul>
+<li><p>Use <code>hd somefile.bmp</code> to see the bytes of a bitmap file</p></li>
+<li><p>Each byte is written as two hexidecimal (base 16) characters. So for example, a byte <code>5e</code> means decimal value <code>94</code>, computed according to the formula <span class="math display">\[\mathtt{&#39;5e&#39;} = \mathtt{&#39;5&#39;}\cdot 16 + \mathtt{&#39;e&#39;}
+= 5\cdot 16 + 14 = 94\]</span></p></li>
+<li><p>Some BMP files are big, so running <code>hx</code> will show a lot of lines. You can <em>pipe</em> the output through the program <code>less</code> to be able to scroll through it, with a command line such as</p>
+<pre><code class="language-.bash">hd myimagefile.bmp | less</code></pre>
+<p>Note: hit up/down to scroll through the data, and type <code>q</code> to quit <code>less</code> and get back to the command line.</p></li>
+<li><p>To compare two binary files and see if they’re exactly the same, you can use the <code>diff</code> command like this:</p>
+<pre><code class="language-.bash">diff -qc file1.bmp file2.bmp</code></pre>
+<p>If you want to see <em>where</em> the files are different, you can use <code>diff</code> in conjuction with <code>hd</code>, like this:</p>
+<pre><code class="language-.bash">diff &lt;(hd file1.bmp) &lt;(hd file2.bmp)</code></pre></li>
+</ul>
+<h2 id="bmp-files"><a class="linkin" href="index.html#top"><span class="header-section-number">1.2</span> BMP files</a></h1><p>The <a href="http://www.dragonwins.com/domains/getteched/bmp/bmpfileformat.htm">BMP format specification</a> contains many options and variants, but for this lab we’ll focus on one specific version, described below.</p>
+<p>A BMP file starts with a 54-byte <em>header</em>, which starts with a 14-byte <em>file header</em> and then a 40-byte <em>image header</em>. There are many settings in these header bytes, most of which you won’t have to worry about. The most important part of the header (for your purposes) are that it indicates the <em>height</em> and <em>width</em> of the image, in terms of number of pixels.</p>
+<p>After the 54-byte header, the rest of the file consists of indications of each pixel’s color. Each color is given as a series of three bytes, indicating the red, green, and blue concentration values of that pixel, also known as the RGB value. Since each concentration is a single byte, they will be represented as integers between 0 and 255.</p>
+<p>There is one somewhat unusual feature of BMP files - <em>everything is backwards</em>. First, each pixels RGB color values are stored in reverse byte order: first the <em>blue</em> byte, then green, then red. The second backwards thing is that the pixels themselves are stored row by row, left to right and <em>bottom to top</em>. So the very first pixel is the bottom-left of the image, and the last pixel is the top-right.</p>
+<h2 id="writing-and-reading-binary-in-c"><a class="linkin" href="index.html#top"><span class="header-section-number">1.3</span> Writing and reading binary in C</a></h1><p>All of the functions you know so far such as <code>fprintf</code> and <code>fscanf</code> are only meant to work on text files or streams. To open a binary file, you should add the <code>b</code> character to the “mode” given to <code>fopen</code>, such as:</p>
+<pre><code class="language-C">FILE* in = fopen(&quot;inputfile.bmp&quot;, &quot;rb&quot;);
+FILE* out = fopen(&quot;outputfile.bmp&quot;, &quot;wb&quot;);</code></pre>
+<p>The <code>stdio.h</code> library has two functions that can be used to read or write binary data:</p>
+<pre><code class="language-C">void fread(void* data, int size, int count, FILE* stream);
+void fwrite(void* data, int size, int count, FILE* stream);</code></pre>
+<p>(These are not <em>exactly</em> the correct function signatures that you can find <a href="http://en.cppreference.com/w/c/io/fread">here</a> and <a href="http://en.cppreference.com/w/c/io/fwrite">here</a>, but they are close enough for our purposes.)</p>
+<p>A few things to know about <code>fread</code> and <code>fwrite</code> are:</p>
+<ul>
+<li>Type <code>void*</code> basically means “pointer to anything”. So the first argument could point to an int, or to a char, or anything else. But it really has to be a pointer!</li>
+<li>The <code>size</code> field is the number of bytes in whatever type is pointed to, like 4 bytes for an <code>int</code> or 1 byte for a <code>char</code>. In fact, C has a convenient built-in operator for this called <code>typeof</code>; for example <code>typeof(int)</code> equals 4 on your lab machines or VMs.</li>
+<li>The <code>count</code> field for our purposes will always be 1. (It could be more if you had arrays, but we haven’t learned array yet.)</li>
+<li>The <code>stream</code> is an input or output stream, as appropriate.</li>
+</ul>
+<h2 id="starter-code-and-files"><a class="linkin" href="index.html#top"><span class="header-section-number">1.4</span> Starter code and files</a></h1><p>I am giving you some small C programs and example image files to get started for this lab:</p>
+<ul>
+<li><a href="files.php%3Ff=makeyellow.c.html">makeyellow.c</a></li>
+<li><a href="files.php%3Ff=testyellow.c.html">testyellow.c</a></li>
+<li><a href="mario.bmp" class="uri">mario.bmp</a></li>
+<li><a href="smallbg.bmp" class="uri">smallbg.bmp</a></li>
+<li><a href="awesomo.bmp" class="uri">awesomo.bmp</a></li>
+<li><a href="space.bmp" class="uri">space.bmp</a></li>
+<li><a href="usna.bmp" class="uri">usna.bmp</a></li>
+<li><a href="windows1.bmp" class="uri">windows1.bmp</a></li>
+</ul>
+<p>You can get all these files at once by downloading the file <a href="starter.tar.gz" class="uri">starter.tar.gz</a> and running <code>tar xzvf starter.tar.gz</code></p>
+<h1 id="replacing-the-green"><a class ="linkin" href="index.html#top"><span class="header-section-number">2</span> Replacing the green</a></h1><p>For the first part of your lab, you will write a program <code>replace.c</code> that reads in the name of an input bmp file and an output bmp file, and copies the input file to the output file, replacing each green pixel with a different color.</p>
+<p>To help you get started, check out the two programs <a href="starter.php%3Ff=makeyellow.c.html">makeyellow.c</a> and <a href="starter.php%3Ff=testyellow.c.html">testyellow.c</a>, which (respectively) make an image filled with pure yellow pixels, and read an image and count how many pixels are yellow.</p>
+<p>Your <code>replace.c</code> program will need to do something very similar to <code>makeyellow.c</code> <em>and</em> <code>testyellow.c</code> combined, since it has to read in a file and create a bmp file too. So mostly what you want to do in this step is copy and combine those two programs into one.</p>
+<p>You should keep all the existing functions in those files, and make some new functions to make your code stay nice and organized! I recommend writing the following four functions for this part:</p>
+<pre><code class="language-C">// read all 54 bytes of the bmp header and save the
+// width and height values to first two pointers
+void read_bmp_head(int* wptr, int* hptr, FILE* in);
+
+// write all 54 bytes of the bmp header with specified
+// width and height
+void write_bmp_head(int width, int height, FILE* out);
+
+// read in the 3 bytes for a single pixel, saving the RGB
+// values into the three pointers
+void read_color(int* rptr, int* gptr, int* bptr, FILE* in);
+
+// write out the 3 bytes for a single pixel
+void write_color(int red, int green, int blue, FILE* out);</code></pre>
+<p>Here’s how your program should work:</p>
+<pre><code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./replace</code>
+<code class="language-text output">Input file: </code><code class="language-text input">mario.bmp</code>
+<code class="language-text output">Output file: </code><code class="language-text input">mblue.bmp</code>
+<code class="language-text output">Replacement color values (RGB): </code><code class="language-text input">100 100 200</code>
+<code class="language-text output">Image saved to mblue.bmp</code></pre><!-- ` -->
+<p>The example run above turns the green pixels (red=0, green=255, blue=0) in the <a href="mario.bmp" class="uri">mario.bmp</a> file <img src="mario.bmp" /> into a light blue color specified by (red 100, blue 100, green 200), producing the file <a href="mblue.bmp" class="uri">mblue.bmp</a> <img src="mblue.bmp" />.</p>
+<p>Here’s another example run based on the <a href="awesomo.bmp" class="uri">awesomo.bmp</a> file:</p>
+<pre><code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./replace</code>
+<code class="language-text output">Input file: </code><code class="language-text input">awesomo.bmp</code>
+<code class="language-text output">Output file: </code><code class="language-text input">apink.bmp</code>
+<code class="language-text output">Replacement color values (RGB): </code><code class="language-text input">255 192 203</code>
+<code class="language-text output">Image saved to apink.bmp</code></pre><p>The resulting <a href="apink.bmp" class="uri">apink.bmp</a> file looks like this:</p>
+<figure>
+<img src="apink.bmp" />
+</figure>
+<!-- ` -->
+<h1 id="green-screen"><a class ="linkin" href="index.html#top"><span class="header-section-number">3</span> Green Screen</a></h1><p>Now write a program <code>background.c</code> that reads in <em>two</em> input files: a “foreground file” that contains some green pixels, and a “background file” with the same dimensions. You’ll then create a new output bmp file that is the same as the foreground image, except every green pixel is replaced by the corresponding pixel from the background image.</p>
+<p>You might want another function or two to help keep your code organized, easy to maintain, and easy to follow.</p>
+<p>Example run:</p>
+<pre><code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./background</code>
+<code class="language-text output">Foreground file: </code><code class="language-text input">mario.bmp</code>
+<code class="language-text output">Background file: </code><code class="language-text input">smallbg.bmp</code>
+<code class="language-text output">Output file: </code><code class="language-text input">m2.bmp</code>
+<code class="language-text output">Image saved to m2.bmp</code></pre><!-- ` -->
+<p>Which turns <a href="mario.bmp" class="uri">mario.bmp</a> <img src="mario.bmp" /> into <a href="m2.bmp" class="uri">m2.bmp</a> <img src="m2.bmp" />.</p>
+<p>Another example run:</p>
+<pre><code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./background</code>
+<code class="language-text output">Foreground file: </code><code class="language-text input">awesomo.bmp</code>
+<code class="language-text output">Background file: </code><code class="language-text input">usna.bmp</code>
+<code class="language-text output">Output file: </code><code class="language-text input">robotmid.bmp</code>
+<code class="language-text output">Image saved to robotmid.bmp</code></pre><!-- ` -->
+<p>Which combines <a href="awesomo.bmp" class="uri">awesomo.bmp</a> and <a href="usna.bmp" class="uri">usna.bmp</a> to make <a href="robotmid.bmp" class="uri">robotmid.bmp</a>:</p>
+<figure>
+<img src="robotmid.bmp" />
+</figure>
+<h1 id="offset-going-further-"><a class ="linkin" href="index.html#top"><span class="header-section-number">4</span> Offset (going further)</a></h1><p>The biggest limitation of your <code>background.c</code> program from the previous part is that the foreground and background images have to be exactly the same size. So let’s fix that!</p>
+<p>You’ll create a program <code>offset.c</code> that, after reading the foreground and background filenames, also reads in an (x,y) position <em>offset</em> of where the foreground image should show up on the background. The size of the output image will always be the same as the background image size, but the foreground image (with proper green-screening!) will be shifted within the background according to the given offset.</p>
+<p>For example, an offset of (100,200) would start the foreground image 100 pixels to the right and 200 pixels up from the bottom-left of the background. An offset of (0,0) would be the same as the previous part.)</p>
+<p>For example, here’s how to put Mario in space:</p>
+<pre><code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./offset</code>
+<code class="language-text output">Foreground file: </code><code class="language-text input">mario.bmp</code>
+<code class="language-text output">Background file: </code><code class="language-text input">space.bmp</code>
+<code class="language-text output">Enter offset (XY): </code><code class="language-text input">100 150</code>
+<code class="language-text output">Output file: </code><code class="language-text input">mspace.bmp</code>
+<code class="language-text output">Image saved to mspace.bmp</code></pre><p>which results in <a href="mspace.bmp" class="uri">mspace.bmp</a>:</p>
+<figure>
+<img src="mspace.bmp" />
+</figure>
+<p>The trickiest part here is that the foreground image might go outside of the bounds of the background image. If that’s the case (for example, because of negative offset values or the foreground is too large), then you should <em>ignore the foreground pixels that are out of the range</em>. For example:</p>
+<pre><code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./offset</code>
+<code class="language-text output">Foreground file: </code><code class="language-text input">awesomo.bmp</code>
+<code class="language-text output">Background file: </code><code class="language-text input">windows1.bmp</code>
+<code class="language-text output">Enter offset (XY): </code><code class="language-text input">200 -100</code>
+<code class="language-text output">Output file: </code><code class="language-text input">awin.bmp</code>
+<code class="language-text output">Image saved to awin.bmp</code></pre><p>which results in <a href="awin.bmp" class="uri">awin.bmp</a>:</p>
+<figure>
+<img src="awin.bmp" />
+</figure>
+  </div></article></div></div><nav class="stickynav"><div><div class="dropdown"><a href="../../index.php.html" class="ddown-btn">SI 204</a><div class="ddown-content"><a href="../../calendar.php.html">Calendar</a><a href="../../notes/index.html">Notes</a><a href="../../hw/index.html">HWs</a><a href="../index.html">Labs</a><a href="../../proj/index.html">Projects</a><a href="../../exams/index.html">Exams</a><a href="../../admin/index.html">Resources</a><a href="https://www.usna.edu/Users/cs/roche/">Roche</a><a href="https://www.usna.edu/Users/cs/albing/">Albing</a></div></div><div class="dropdown"><a href="index.html#top" class="linkin pagetop">Lab 06: Green-Screening</a><div class="ddown-content ddtoc"><ul><li><a class="linkin" href="index.html#background"><span class="toc-section-number">1</span> Background</a>
+<ul><li><a class="linkin" href="index.html#binary-files"><span class="toc-section-number">1.1</span> Binary files</a></li><li><a class="linkin" href="index.html#bmp-files"><span class="toc-section-number">1.2</span> BMP files</a></li><li><a class="linkin" href="index.html#writing-and-reading-binary-in-c"><span class="toc-section-number">1.3</span> Writing and reading binary in C</a></li><li><a class="linkin" href="index.html#starter-code-and-files"><span class="toc-section-number">1.4</span> Starter code and files</a></li></ul></li>
+<li><a class="linkin" href="index.html#replacing-the-green"><span class="toc-section-number">2</span> Replacing the green</a></li>
+<li><a class="linkin" href="index.html#green-screen"><span class="toc-section-number">3</span> Green Screen</a></li>
+<li><a class="linkin" href="index.html#offset-going-further-"><span class="toc-section-number">4</span> Offset (going further)</a></ul></div></div></nav><footer><div id="foottext">    <p class="disclaimer">Material contained above is made available
+    for the purpose of peer review and discussion and does not
+    necessarily reflect the views of the Department of the Navy or the
+    Department of Defense.
+    Some links above are to sites that are not
+    located at the United States Naval Academy. The USNA is not
+    responsible for the content found on these sites. In addition, the
+    content of these sites does not reflect the opinions, standards,
+    policy or endorsement of the Naval Academy or the United States
+    Government.</p>
+  Page maintained by Daniel S. Roche (<a href="mailto:roche [AT] usna [DOT] edu" id="emaillink1">roche [AT] usna [DOT] edu</a><script type='text/javascript'><!--
+        var b="he@usna.edu";
+        var a="roc";
+        document.getElementById("emaillink1").href='mailto:'+a+b;
+        document.getElementById("emaillink1").innerHTML=a+b;
+        // --></script>). Last updated 28 February 2017 9:38.</div></footer><script src="../../scripts/prism.js"></script><script type="text/javascript">var the_body = $('html, body');
+var sticky_height = $('.stickynav').height();
+$('.linkin').click(function(){
+  var href = $(this).attr('href');
+  var offset;
+  if (href == '#top') offset = 0;
+  else offset = $(href).offset().top - sticky_height;
+  the_body.animate({ scrollTop: offset }, 500);
+  return false;
+});</script></body></html>

@@ -1,0 +1,103 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+         "http://www.w3.org/TR/html4/strict.dtd"><html><head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"><title>gcdnofun.c</title><link href="../../scripts/prism.css" rel="stylesheet" />    <style type="text/css">
+    body {
+      margin: 0;
+      padding:55px 0 0 0;
+    }
+    div#header {
+      position:absolute;
+      top: 0;
+      left: 0;
+      width:100%;
+      height:50px;
+      border-bottom: 5px solid red;
+      text-align: center;
+      background-color: #d0d0d0;
+      z-index: 1000;
+    }
+    @media screen{
+      body>div#header{
+        position:fixed;
+      }
+    }
+    * html body{
+      overflow:hidden;
+    }
+    * html div#content {
+      height: 100%;
+      overflow: auto;
+    }
+    .warning {
+      margin: 3px auto;
+      background-color: black;
+      color: yellow;
+      font-weight: bold;
+      max-width: 600px;
+      font-family: sans-serif;
+      text-align: center;
+    }
+    /*
+    .codeblock {
+      margin:10px auto 10px;
+      min-width:500px;
+      max-width:800px;
+    }
+    .codeblock td.de1 {
+      border:1px solid black;
+    }
+    .codeblock td.ln {
+      border:1px solid white;
+    }
+    pre {
+      margin:10px auto 10px;
+      max-width:800px;
+    }
+    .plainpre {
+      border: 1px solid black;
+      padding:2px;
+    }
+    */
+    </style>
+  </head><body><div id="header"><p><a href="files.php%3Ff=gcdnofun.c&amp;downloadcode=yes">Click here</a> to download <code>gcdnofun.c</code>.</p></div><div id="content"><pre class="line-numbers"><code class="language-C">/******************************************
+ This Program gets two positive integers
+ from the user and computes their GCD.
+ ******************************************/
+#include &lt;stdio.h&gt;
+
+int main() {
+  int a;
+  int b;
+
+  // Read in a
+  printf(&quot;Enter a positive integer: &quot;);
+  fflush(stdout);
+  int check = scanf(&quot; %i&quot;, &amp;a);
+  while(check &lt; 1 || a &lt;= 0) {
+    printf(&quot;I said *positive*, try again: &quot;);
+    fflush(stdout);
+    check = scanf(&quot; %i&quot;, &amp;a);
+  }
+
+  // Read in b
+  printf(&quot;Enter a positive integer: &quot;);
+  fflush(stdout);
+  check = scanf(&quot; %i&quot;, &amp;b);
+  while(check &lt; 1 || b &lt;= 0) {
+    printf(&quot;I said *positive*, try again: &quot;);
+    fflush(stdout);
+    check = scanf(&quot; %i&quot;, &amp;b);
+  }
+
+  // Compute gcd
+  while(b != 0) {
+    int r = a % b;
+    a = b;
+    b = r;
+  }
+
+  // Write out gcd
+  printf(&quot;The gcd is %i\n&quot;, a);
+
+  return 0;
+}</code></pre></div><script src="../../scripts/prism.js"></script></body></html>

@@ -1,0 +1,53 @@
+-------------------
+Manual Page for wc
+-------------------
+
+USAGE: ./wc [ [-l] [-w] [-c] <filename> [(<filename> | +)*] ]
+
+
+DESCRIPTION: 
+      For each file, wc prints a line will the following space separated
+          -file name
+          -line count
+          -word count
+          -character count
+      If more than one file, wc will print the totals in the same format
+
+      -stdin- is read in the following situations:
+          -no file name is given
+          - "+" is given for a file name
+
+      Regardless of options, the filename is printed
+      If no options are given, full output is given
+
+
+OPTIONS:
+      
+      -l    print the line count
+
+      -w    print the word count
+
+      -c    print the character count
+
+
+EXAMPLES:
+  COMMAND:                    OUTPUT:
+
+  ./wc foo.txt                foo.txt <lineCount> <wordCount> <charCount>
+
+  cat foo.txt | ./wc -l -w    -stdin- <lineCount> <wordCount>
+
+  ./wc foo.txt bar.txt        foo.txt <lineCount> <wordCount> <charCount>
+                              bar.txt <lineCount> <wordCount> <charCount>
+                              totals <lineTotal> <wordTotal> <charTotal>
+
+  cat foo.txt | ./wc f + b    f <charCount>
+                              -stdin- <charCount>
+                              b <charCount>
+                              totals <charCount>
+
+
+
+
+
+

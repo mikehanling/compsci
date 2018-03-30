@@ -1,0 +1,30 @@
+/***************************************************
+Addition Calculator
+
+This program reads in two numbers and writes out
+their sum.
+***************************************************/
+#include "si204.h"
+
+int main() {
+  // Read first number
+  int x;  
+  fputs("Enter first number : ", stdout);
+  x = readnum(stdin);
+
+  // Read second number
+  int y;
+  fputs("Enter second number: ", stdout);
+  y = readnum(stdin);
+
+  // Calculate sum
+  int sum;
+  sum = x + y;
+
+  // Print sum
+  fputs("The sum is: ", stdout);
+  writenum(sum, stdout);
+  fputs("\n", stdout);
+
+  return 0;
+}

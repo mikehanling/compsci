@@ -1,0 +1,843 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Unit 2: Variables and If</title><meta name="viewport" content="width=device-width, initial-scale=1.0"><link href="../../scripts/prism.css" rel="stylesheet" /><link rel="stylesheet" type="text/css" href="../../style.css"><script type="text/javascript" src="../../../../mathjax/MathJax.js%3Fconfig=TeX-AMS_HTML"></script><script type="text/javascript" src="../../scripts/jquery-3.1.1.min.js"></script><style>
+@media only screen and (min-width: 600px) {
+  #main>header {background-image: url("../../scripts/header.png");}
+}
+</style><link rel="stylesheet" type="text/css" href="../../notes.css">  <meta name="generator" content="pandoc">
+  <style type="text/css">code{white-space: pre;}</style>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head><body><div id="main"><header><nav class="topnav"><div>
+            <a href="../../index.php.html">SI 204</a>
+            </div><div>
+            <a href="../../calendar.php.html">Calendar</a>
+            </div><div id="navparent">
+            <a href="../index.html">Notes</a>
+            </div><div>
+            <a href="../../hw/index.html">HWs</a>
+            </div><div>
+            <a href="../../lab/index.html">Labs</a>
+            </div><div>
+            <a href="../../proj/index.html">Projects</a>
+            </div><div>
+            <a href="../../exams/index.html">Exams</a>
+            </div><div>
+            <a href="../../admin/index.html">Resources</a>
+            </div><div>
+            <a href="https://www.usna.edu/Users/cs/roche/">Roche</a>
+            </div><div>
+            <a href="https://www.usna.edu/Users/cs/albing/">Albing</a>
+            </div></nav></header><div id="mainbox"><div class="printonly"><h1 class="printtitle">SI 204 Spring 2017 / Notes</h1><hr></div><article id="mainart"><header><h1>Unit 2: Variables and If</h1></header><div id="TOC"><ul><li><a class="linkin" href="index.html#starting-out"><span class="toc-section-number">1</span> Starting out</a>
+<ul><li><a class="linkin" href="index.html#hello-world-explained"><span class="toc-section-number">1.1</span> Hello, world explained</a></li><li><a class="linkin" href="index.html#slightly-longer-example"><span class="toc-section-number">1.2</span> Slightly longer example</a></li></ul></li>
+<li><a class="linkin" href="index.html#variables"><span class="toc-section-number">2</span> Variables</a>
+<ul><li><a class="linkin" href="index.html#types"><span class="toc-section-number">2.1</span> Types</a></li><li><a class="linkin" href="index.html#variable-names"><span class="toc-section-number">2.2</span> Variable Names</a></li></ul></li>
+<li><a class="linkin" href="index.html#representing-data-in-a-computer"><span class="toc-section-number">3</span> Representing data in a computer</a>
+<ul><li><a class="linkin" href="index.html#binary-numbers"><span class="toc-section-number">3.1</span> Binary numbers</a></li><li><a class="linkin" href="index.html#bytes-how-type-depends-on-interpreting-bit-sequences"><span class="toc-section-number">3.2</span> Bytes - How type depends on interpreting bit-sequences</a></li><li><a class="linkin" href="index.html#other-types"><span class="toc-section-number">3.3</span> Other types</a></li></ul></li>
+<li><a class="linkin" href="index.html#input-output-and-type-conversions"><span class="toc-section-number">4</span> Input/Output and Type Conversions</a>
+<ul><li><a class="linkin" href="index.html#i-o-streams"><span class="toc-section-number">4.1</span> I/O Streams</a></li><li><a class="linkin" href="index.html#when-types-collide-conversion"><span class="toc-section-number">4.2</span> When types collide - conversion</a></li><li><a class="linkin" href="index.html#variable-declaration-assignment-shortcuts-and-good-ideas"><span class="toc-section-number">4.3</span> Variable declaration/assignment shortcuts and good ideas</a></li></ul></li>
+<li><a class="linkin" href="index.html#expressions-and-statements"><span class="toc-section-number">5</span> Expressions and Statements</a>
+<ul><li><a class="linkin" href="index.html#a-note-on-expressions-precedence-and-associativity"><span class="toc-section-number">5.1</span> A Note on expressions, precedence and associativity</a></li></ul></li>
+<li><a class="linkin" href="index.html#branching"><span class="toc-section-number">6</span> Branching</a>
+<ul><li><a class="linkin" href="index.html#scope-and-blocks"><span class="toc-section-number">6.1</span> Scope and Blocks</a></li><li><a class="linkin" href="index.html#boolean-operators"><span class="toc-section-number">6.2</span> Boolean Operators</a></li><li><a class="linkin" href="index.html#if-statement-shortcuts"><span class="toc-section-number">6.3</span> If statement shortcuts</a></li></ul></li>
+<li><a class="linkin" href="index.html#switch-statements-optional-"><span class="toc-section-number">7</span> Switch statements (optional)</a></li>
+<li><a class="linkin" href="index.html#practice-problems-and-questions"><span class="toc-section-number">8</span> Practice Problems and Questions</a></li></ul></div><div class="panbody"><p>(Credit to <a href="https://www.usna.edu/Users/cs/wcbrown/">Chris Brown</a> for the original version of these notes.)</p>
+<!-- from l03 -->
+<h1 id="starting-out"><a class ="linkin" href="index.html#top"><span class="header-section-number">1</span> Starting out</a></h1><h2 id="hello-world-explained"><a class="linkin" href="index.html#top"><span class="header-section-number">1.1</span> Hello, world explained</a></h1><p>The example below shows the structure of a very simple C program along the lines of our “Hello World” example from last class. It’s annotated to describe the different parts of the program.</p>
+<pre><code class="language-c">/* Everything inside these slash-star characters is a &quot;comment&quot;
+ * that will be ignored by the compiler. */
+
+#include &quot;si204.h&quot;  /* This line &quot;includes&quot; code needed to standard things
+                     * such as input/output and handling strings.
+                     * Later we'll use the system-provided libraries instead,
+                     * but to start out you just need to include si204.h
+                     * at the top of every program you write. */
+
+int main() {  /* The &quot;main&quot; tells the compiler where your program should start.
+               * For now, all of our code will go between the { following
+               * main() and the } at the end of the file. */
+
+  fputs(&quot;Hello, world!\n&quot;, stdout); 
+    /* fputs is a standard C library function (provided through si204.h)
+     * to print out a string of characters. The &quot;Hello, world\n&quot; is the
+     * string to be printed. stdout is the name of the output stream that
+     * goes to the terminal. For now, we will always just use stdout.  */
+
+  return 0;  /* The return code indicates to the operating system whether our
+              * program worked correctly or not. The standard is that
+              * a return code of 0 means &quot;everything worked&quot;. */
+
+} /* This is the matching &quot;close brace&quot; for the { following main() above. */</code></pre><p>In the early part of the course, the C statements that comprise your program are listed between the { }’s in the body of the “main function”. Just as with JavaScript, these statements are executed one after the other from top to bottom.</p>
+<p>Strings can be printed to “standard out” (which is the terminal window) using the function <code>fputs</code>. There are different functions to print different types of things like numbers, as we will see soon.</p>
+<p>Also notice that every statement inside the main function <strong>MUST</strong> end with a semicolon. C ignores all code comments <code>/* between slash-stars */'</code> and it also treats all “whitespace” (spaces or newlines) as the same. So you need to put semicolons in to indicate where each statement ends. Even if it seems obvious to you from looking at the code, it’s not obvious to the computer!</p>
+<h2 id="slightly-longer-example"><a class="linkin" href="index.html#top"><span class="header-section-number">1.2</span> Slightly longer example</a></h1><p>Here is a slightly longer example that illustrates the main concepts from this unit. See if you can figure out what it does just by looking at the code. Feel free to copy to a text file, compile, and run it yourself!</p>
+<pre><code class="language-c">#include &quot;si204.h&quot;
+
+int main() {
+  /* Read name into a variable */
+  fputs(&quot;What is your name? &quot;, stdout);
+  cstring name;
+  readstring(name, stdin);
+
+  /* Read age into a variable */
+  fputs(&quot;How old are you now? &quot;, stdout);
+  int age = readnum(stdin);
+
+  /* Make a crucial decision */
+  if (age &gt;= 21) {
+    fputs(name, stdout);
+    fputs(&quot; can... rent a car!\n&quot;, stdout);
+  } 
+  else {
+    fputs(&quot;Sorry, no fun for &quot;, stdout);
+    fputs(name, stdout);
+    fputs(&quot; (yet).\n&quot;, stdout);
+  }
+
+  return 0;
+}</code></pre><p>This is a simple program, but there is a lot going on! For the first time, we have to save some pieces of information and retrieve them later. The <em>variables</em> <code>name</code> and <code>age</code> are used for that purpose. Also notice that they have different <em>types</em> — <code>name</code> is a <code>cstring</code> whereas <code>age</code> is an <code>int</code>. And finally, the program makes a decision based on whether the age is at least 21, using an <em>if statement</em>.</p>
+<p>We’ll now get into all of those elements in greater detail.</p>
+<h1 id="variables"><a class ="linkin" href="index.html#top"><span class="header-section-number">2</span> Variables</a></h1><p>Suppose I want to compute something like <span class="math inline">\((523 - 248)^3\)</span>. I can do this with C, but “^” doesn’t mean exponentiation in C, so instead I would need to write:</p>
+<pre><code class="language-C">writenum((523 - 248) * (523 - 248) * (523 - 248), stdout);</code></pre>
+<p>This is a bit of a hassle. Normally we would think of first computing (523 - 248), then taking the resulting value and cubing it. Hopefully we think something like: “let x be (523 - 248) and compute x*x*x.” We need a <em>variable</em> in which to store the value (523 - 248)!</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td><p>So we try creating the following program:</p></td>
+<td><pre><code class="language-C">#include &quot;si204.h&quot;
+
+int main() {
+  x = 523 - 248;
+  writenum(x*x*x, stdout);
+  return 0;
+}</code></pre></td>
+</tr>
+</tbody>
+</table>
+<p>When we compile this, we get an error message like</p>
+<pre><code class="language-C">  error line 4: &#39;x&#39; is an undeclared identifier</code></pre>
+<p>What the compiler is saying is this: “<strong>x</strong>??? you never told me there was going to be an <strong>x</strong>!” If you want to use x to store the value (523 - 248), you need to first tell the compiler that the name <strong>x</strong> is going to stand for a number - this is called <strong>declaring</strong> the variable <strong>x</strong>.</p>
+<p>The statement <code>int x;</code> <strong>declares</strong> that x is a variable <strong>of type int</strong>, which means that it’s a variable that can stand for a (positive or negative) integer number. The <strong>type</strong> of a variable tells you what kind of data objects, such as an integer or real number or something else …, can be stored in the variable. There are a number of different types in C, and we will use many of them in this course.</p>
+<p>The <code>=</code> operator <strong>assign</strong>s a value to the variable x. So to make the program above work, we just add a <strong>declaration</strong> of variable <code>x</code> of type <code>int</code> before the assignment:</p>
+<pre><code class="language-c">#include &quot;si204.h&quot;
+
+int main() {
+  int x;                   // DECLARE x of type int
+  x = 523 - 248;           // ASSIGN x to the difference 
+  writenum(x*x*x, stdout); // PRINT x cubed
+  fputs(&quot;\n&quot;, stdout);     // print a newline at the end
+  return 0;                // success!
+}</code></pre><p>Once x has been declared as a variable of type int, it can be used in the program just like a normal number, either to print or to use in arithmetic expressions, like <code>writenum(x*x*x,stdout)</code>, which does both.</p>
+<p>What really goes on here is that space in your computer’s memory is allocated for one object of type <code>int</code>, and given the name x. When you ask for the value of x (by involving it in an arithmetic expression or by trying to print it) the computer fetches a copy of the value from memory. When you use the <code>=</code> operator, the computer takes the value on the right hand side, and copies it into the space reserved for x.</p>
+<p>Thus, strange sequences like:</p>
+<pre><code class="language-C">int x;
+x = 3;
+x = 200;</code></pre>
+<p>… make perfect sense to the compiler — even if the second line is a complete waste of time. After the statement <code>int x;</code>, space is reserved for x, though we have no idea what actual value is in there - at this point x is <strong>uninitialized</strong>. The statement <code>x = 3;</code> copies the value 3 into the space reserved for x. Finally, the statement <code>x = 200;</code> copies the value 200 into the space reserved for x, thus overwriting the 3 that had been there previously. Think of <code>x</code> as being the name of a box into which <code>int</code> values can be written.</p>
+<h2 id="types"><a class="linkin" href="index.html#top"><span class="header-section-number">2.1</span> Types</a></h1><p>As you might have expected, <code>int</code> is not the only type of variable that we are allowed to have. Let’s look at a few more of the most important types that we can use in C. As the course goes on, we will see even more types, and we’ll even eventually see how to define types of our own! But for now, we’ll stick to <code>int</code>, <code>double</code>, <code>char</code>, and <code>cstring</code>:</p>
+<div class="annotation">
+<p>Actually, there is one other type besides these four, which is the type of <code>stdout</code> and <code>stdin</code>. These are <em>streams</em> that you can read or write to, but there’s not much more to say about them for a few more weeks. We’ll sort of ignore streams as types until there’s something more that we can do with them.</p>
+</div>
+<ul>
+<li><p><code>int</code></p>
+<p>The <code>int</code> stands for integers. This type is the real workhorse of computing. As with integers, there are no fractions, but unlike integers there are limits on both the positive and negative ends (in the billions of billions on a typical PC today). If you just write a number like <code>65</code> in your program, which is called a <em>literal</em>, it is interpreted as an <code>int</code> by default.</p>
+<p>The operations for addition (<code>+</code>), subtraction (<code>-</code>), and multiplication (<code>*</code>) work pretty much as you’d expect.</p>
+<p>Division (<code>/</code>) with integers is a little funny, because the result of the division has to be an integer too. What happens is that any fractional remainder left over after the division is simply chopped off (truncated). For example,</p>
+<pre><code class="language-C">int x;
+x = 17 / 3;             /* x now equals 5, which is 17/3 rounded down. */
+writenum(1/2, stdout)   /* this will print 0 - surprise!! */</code></pre>
+<p>This rounding down of so-called <em>integer division</em> is a common source of subtle program bugs, so watch out for it.</p>
+<p>A related — and very important — <code>int</code> operator is modulus, or <code>%</code>. This gives you the remainder when one integer is divided by another. For example, <code>17 % 3</code> equals 2, which is the remainder when 17 is divided by 3. Have a look at the <a href="files.php%3Ff=minsec.c.html">Minutes and Seconds</a> program to see an exampls of this in action.</p></li>
+<li><p><code>double</code></p>
+<p>A <code>double</code> is a decimal number, which mathematicians would call a <em>real number</em> and which we might more accurately call a <em>floating-point number</em>.</p>
+<p>(The term “double” actually comes from “double-precision floating point”.)</p>
+<p>We saw that a literal number like <code>123</code> in your program automatically becomes an <code>int</code>, but if there’s a decimal place in the literal such as <code>4.97</code>, that will be a <code>double</code> by default.</p>
+<p>Actually, doubles are only a “simulation” of real numbers because most numbers can only be approximated by a double, analogous to the way we approximate 1/3 as the 6-digit decimal 0.333333. We’d need an infinite number of digits to get 1/3 exactly, and in just the same way, the double type is limited to just approximating numbers like 1/3. The issue of how to get good and reliable answers when we can only approximate such numbers is the concern of <em>numerical analysis</em>, which is an important field on the border between mathematics and computer science.</p>
+<p>All of the basic math operations — including division <code>/</code> — work as you’d expect with doubles. There are also many other functions such as <code>sqrt</code> and <code>log</code> that you can compute with doubles that are part of the standard math library. <a href="http://en.cppreference.com/w/c/numeric/math">Here is some online documentation on that library</a>. To use it, you have to <code>#include &lt;math.h&gt;</code> at the top of your program.</p></li>
+<li><p><code>char</code></p>
+<p>The <code>char</code> stands for character. These are letters or numbers, or stranger things … for example there is a “bell character”. Writing it causes your computer to beep! <code>char</code> literals are written inside single quotes, so for example the <code>char</code> a is written inside a program as <code>'a'</code>. Unusual “characters”, like tabs or newlines, use “escape codes”. They are identified by a backslash. Tab is <code>'\t'</code>, and newline is <code>'\n'</code>. Operations on <code>char</code>’s will be more important later on.</p></li>
+<li><p><code>cstring</code></p>
+<p>The types we’ve seen so far (<code>int</code>, <code>double</code>, and <code>char</code>) are all <em>built-in types</em>. This means that they are part of the core language rather than part of some library. The last type we’ll talk about today, the type <code>cstring</code>, is not a built-in type, it is defined in our library <code>si204.h</code>. It is used for strings of characters, like we’ve already seen many times. For example <code>&quot;Hello World!&quot;</code>, quotes and all, is a string literal.</p>
+<p>Because <code>cstring</code> is not a built-in type, none of the built-in operators like <code>+</code> or <code>*</code> work with strings. Instead, we have to use library functions! Some rather useful functions for strings can be used from the <code>si204.h</code> library, such as:</p>
+<ul>
+<li><code>strcpy(s1, s2)</code>: sets string <code>s1</code> equal to <code>s2</code></li>
+<li><code>strlen(s)</code>: returns the length of string <code>s</code></li>
+<li><code>strcmp(s1, s2)</code>: returns a number indicating the dictionary order between strings <code>s1</code> and <code>s2</code>. A negative number from <code>strcmp</code> means that <code>s1</code> comes before <code>s2</code>, a positive number means <code>s1</code> comes after <code>s2</code> alphabetically, and zero means the two strings are equal.</li>
+</ul></li>
+</ul>
+<h2 id="variable-names"><a class="linkin" href="index.html#top"><span class="header-section-number">2.2</span> Variable Names</a></h1><div class="annotation" style="width: 380pt">
+<p>In some programming languages variables have to begin with funny characters. Such a character is usually referred to as a “sigil”. In bash scripting variables begin with a “$”, which is a common sigil. Perl has many sigils, including $, @ and %. For better or for worse, C doesn’t do that to us.<br />
+<img src="http://imgs.xkcd.com/comics/sigil_cycle.png" title="The cycle seems to be &#39;we need these symbols to clarify what types of things we&#39;re referring to!&#39; followed by &#39;wait, it turns out words already do that.&#39;" alt="Sigil Cycle" /><br />
+<a href="http://xkcd.com/1306/" class="uri">http://xkcd.com/1306/</a></p>
+</div>
+<p>Variables in C consist of three things: a <strong>name</strong>, a <strong>type</strong>, and a <strong>value</strong>. We’ve just discussed the type <code>int</code> above, and the <code>value</code> of the variable is dependent on what the program computes or what the user types in, controlled of course according to the type. But what about the <em>name</em>? That’s up to us as programmers!</p>
+<p>There are some rules about variable names in C. A variable name <em>must begin</em> with a letter (lowercase or uppercase) or an underscore ( _ ). It may be any length you want (although anything after the first 32 characters will be ignored) but it can only contain letters, digits, and the underscore. Except in special situations, the use of the underscore to begin a variable name should be avoided. There are a special class of names called <em>keywords</em>, which are reserved for use by C, and you may not use one of them to name a variable. Examples of keywords are <code>int</code> and <code>return</code>. (A complete list can be found <a href="http://en.cppreference.com/w/c/keyword">on this page</a>.</p>
+<p>There are also names that you <em>could</em> choose for variables, but which are already used for important things. Examples of this are <code>main</code> and <code>fputs</code>. The problem with using such a name is that it creates ambiguity. For example, what would happen with the following:</p>
+<pre><code class="language-C">int stdin; // bad choice for a variable name!!!
+stdin = readnum(stdin);</code></pre>
+<p>As it turns out, the compiler will assume that both <code>stdin</code>’s refer to your new <code>double</code> and you won’t be able to use <code>stdin</code> for reading. As we proceed, it will (hopefully!) become obvious what cannot be used as variable names.</p>
+<p>C distinguishes between uppercase and lowercase. As a result, <code>Answer</code> and <code>answer</code> will be considered different variable names. A very common mistake that beginning programmers make is to be sloppy in writing variable names, sometimes using capitals and sometimes not. It is not good programming practice to use two variable names that are spelled the same except for capitalization because it leads to errors. Your source code will be easier for mere mortals to understand (interpret this to mean the instructor grading your programs) if you use <strong>meaningful variables names</strong>.</p>
+<!-- from l05 -->
+<h1 id="representing-data-in-a-computer"><a class ="linkin" href="index.html#top"><span class="header-section-number">3</span> Representing data in a computer</a></h1><p><strong>Note:</strong> I strongly recommend that you review the class on <a href="http://www.usna.edu/Users/cs/wcbrown/courses/si110AY13S/lec/l01/lec.html">Digital Data</a> from <a href="http://www.usna.edu/Users/cs/wcbrown/courses/si110AY13S/index.html">the si110 website</a>. You are expected to understand about bits and bytes, binary-to-decimal and decimal-to-binary conversion, and how the ASCII table defines a mapping between characters and bytes. What’s here in the notes is just a brief overview of that. Here’s a link to a <a href="http://en.cppreference.com/w/c/language/ascii">full ASCII table</a>.</p>
+<p>You’ve probably heard terms like <em>bits</em> and <em>bytes</em> used in connection with computers, and you’ve probably heard people say that inside a computer everything is 0’s and 1’s. If not, I’ll say it now: Inside a computer everything is 0’s and 1’s! (A <em>bit</em> is just a 0/1 value.) But how can all of these things — <code>char</code>s, <code>int</code>s, and <code>double</code>s — be represented by zeros and ones? Our understanding of types will really depend on being able to answer these questions.</p>
+<h2 id="binary-numbers"><a class="linkin" href="index.html#top"><span class="header-section-number">3.1</span> Binary numbers</a></h1><p>First we’ll look how 0’s and 1’s suffice to represent any integer number, then we’ll look at other types of objects. When we deal with numbers we use the <em>decimal</em> number system, i.e. the base 10 number system. This means that all our numbers (lets look at non-negative integers for now) look like sequences of decimal digits, which are numbers in the range [0,9]. A number like 3027 is short-hand:</p>
+<pre><code class="language-C">3027 → 3*10^3 + 0*10^2 + 2*10^1 + 7*10^0</code></pre>
+<p>Or, for another example,</p>
+<pre><code class="language-C">1011 → 1*10^3 + 0*10^2 + 1*10^1 + 1*10^0</code></pre>
+<p>In the <em>binary number system</em> we have the same idea, but the base is now 2 rather than 10. So, binary digits are in the range [0,1], and now 1011 has a different interpretation. In binary it is short-hand for:</p>
+<pre><code class="language-C">1011 → 1*2^3 + 0*2^2 + 1*2^1 + 1*2^0 = 2^3 + 2 + 1 = 11 (in decimal)</code></pre>
+<p>So, in binary the decimal number 11 is represented as 1011. The binary number 1001 = 2^3 + 1 = 9, for another example. With four bits, i.e. four <strong>bi</strong>nary digi<strong>t</strong>s, we can represent any number from 0 up to 15 (which is 2^3 + 2^2 + 2^1 + 2^0). With four decimal digits I can represent from 0 up to 9999, i.e. from 0 up to 10000 - 1. So we need more bits than decimal digits, but given enough bits we can represent any number we care to. Using k-bits, we can represent the numbers from 0 up to 2^k - 1.</p>
+<h2 id="bytes-how-type-depends-on-interpreting-bit-sequences"><a class="linkin" href="index.html#top"><span class="header-section-number">3.2</span> Bytes - How type depends on interpreting bit-sequences</a></h1><p>The memory of a computer is simply one long sequence of bits. However, these bits are organized into chunks of 8 called <em>bytes</em>. To emphasize, a byte consists of 8-bits. In a byte, we can represent the numbers from 0 to 255.</p>
+<p>The type <code>char</code> is one way of interpreting a byte of memory. For example, the byte 01100001 is interpreted as the character <code>a</code>. This interpretation of bytes as characters is called the ASCII encoding, and <a href="http://en.cppreference.com/w/c/language/ascii">this table</a>, for example, shows you the whole thing. Interpreting 01100001 as a number in binary, we get the number 97, and if you look up 97 in the table, you’ll see that it corresponds to the character <code>a</code>.</p>
+<p>Already we see one of the fundamental ideas behind computing, different types of objects may be represented by treating sequences of 0’s and 1’s in different ways. That’s why C needs to keep track of the types of objects, so it knows how to interpret the contents of the chunk of memory associated with each object.</p>
+<h2 id="other-types"><a class="linkin" href="index.html#top"><span class="header-section-number">3.3</span> Other types</a></h1><p>A full <code>int</code> on your PC consists of 4 bytes, or 32 bits, so it can represent pretty big numbers. We’re not going to get into the question of how negative numbers are represented in binary. Essentially an <code>int</code> looks like the binary number representation we just talked about, but in 32 bits.</p>
+<div class="annotation">
+<p>Technically, the int 5 could be represented as</p>
+<pre><code class="language-.text">00000000 00000000 00000000 00000101</code></pre>
+<p>… or it could be represented as</p>
+<pre><code class="language-.text">00000101 00000000 00000000 00000000</code></pre>
+<p>… depending on what’s referred to as as the “endianness” of the underlying machine. That particular distinction is beyond the scope of this course, but you will encounter it in subsequent CS/IT course.</p>
+</div>
+<p>So, The <code>int</code> 5 is represented in the computer as:</p>
+<pre><code class="language-.text">00000000 00000000 00000000 00000101</code></pre>
+<p>… where I’ve broken things up into bytes to make it all a little clearer.</p>
+<p>A <code>double</code> takes up 8 bytes, or 64 bits. The format is more complex, however, and we will not go over it here, except to say that it is a binary version of the familiar scientific notation. However, instead of a base of 10, it uses a base of two. (Example: 12 is represented as 1.5 x 2^3.) Let it suffice to say that the <code>double</code> 1.0 is represented by the following 64 bits:</p>
+<pre><code class="language-.text">00000011 11111111 11111111 00000000  00000000 00000000 00000000 00000000</code></pre>
+<p>There are many other numerical types that use more or less bits. For example, <code>short int</code> is a 16-bit integer, <code>float</code> is a 32-bit decimal number, and <code>long long int</code> is a 64-bit integer. But please forget about all that for now; we can safely stick to <code>int</code> and <code>double</code> for the entirety of this class!</p>
+<h1 id="input-output-and-type-conversions"><a class ="linkin" href="index.html#top"><span class="header-section-number">4</span> Input/Output and Type Conversions</a></h1><p>One thing we will want to do with every type is reading in and writing out, referred to commonly as I/O. Here are the functions provided by the <code>si204.h</code> library for input and output on each type:</p>
+<ul>
+<li><p>Integers</p>
+<pre><code class="language-C">int x;
+x = readnum(stdin);
+writenum(x, stdout);</code></pre></li>
+<li><p>Doubles</p>
+<pre><code class="language-C">double x;
+x = readnum(stdin);
+writenum(x, stdout);</code></pre></li>
+<li><p>Characters</p>
+<pre><code class="language-C">char c;
+c = readchar(stdin);
+fputc(c, stdout);</code></pre></li>
+<li><p>Strings</p>
+<pre><code class="language-C">cstring s;
+readstring(s, stdin);
+fputs(s, stdout);</code></pre></li>
+</ul>
+<h2 id="i-o-streams"><a class="linkin" href="index.html#top"><span class="header-section-number">4.1</span> I/O Streams</a></h1><p>We’ve already seen how to output information from a program using <code>fputs</code> and <code>writenum</code>. In C (and in many other places) we refer to an <em>output stream</em>, the idea being that each thing we write goes out sequentially in the order we write it.</p>
+<p>In exactly the same way, we read from an <em>input stream</em>. Just as the standard output stream that prints to the terminal is called <code>stdout</code>, the standard input stream is called <code>stdin</code>.</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td><p>Code</p></td>
+<td><pre><code class="language-C">double x;
+cstring s;
+x = readnum(stdin);
+readstring(s, stdin);</code></pre></td>
+</tr>
+<tr class="even">
+<td><p>User Types</p></td>
+<td><pre><code class="language-C">12.3
+poptarts</code></pre></td>
+</tr>
+<tr class="odd">
+<td><p>Effect</p></td>
+<td><p><code>x</code> gets the value 12.0, <code>y</code> gets the value <code>&quot;poptarts&quot;</code>.</p></td>
+</tr>
+</tbody>
+</table>
+<p>Notice that the syntax of the <code>readstring</code> command is slightly different than <code>readnum</code>. That has to do with the fact that <code>double</code> is a built-in type whereas <code>cstring</code> is only available through the <code>si204.h</code> library.</p>
+<p>Both <code>readnum</code> and <code>readstring</code> skip any whitespace (spaces, tabs, and newlines) before they start actually reading. A <code>readstring</code> command will read everything up to the next whitespace, whereas <code>readnum</code> will stop reading as soon as it sees anything that’s not part of a number (such as a letter or a comma).</p>
+<p>Here’s a slightly more tricky example:</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td><p>Code</p></td>
+<td><pre><code class="language-C">double x;
+cstring s;
+double y;
+x = readnum(stdin);
+readstring(s, stdin);
+y = readnum(stdin);</code></pre></td>
+</tr>
+<tr class="even">
+<td><p>User Types</p></td>
+<td><pre><code class="language-C">12.0  25.0
+FUN</code></pre></td>
+</tr>
+<tr class="odd">
+<td><p>Effect</p></td>
+<td><p><code>x</code> gets the value 12.0, <code>s</code> gets the value <code>&quot;25.0&quot;</code> <em>as a string</em>, but reading <code>y</code> causes an error because the letters F isn’t part of a valid number.</p></td>
+</tr>
+</tbody>
+</table>
+<p>Putting this together, we can construct a very simple program <a href="files.php%3Ff=addition.c.html"><strong>Addition Calculator</strong></a>, which reads in two numbers from the user and adds them together. Notice that the variable that contains the sum of the two numbers input by the user is actually called <code>sum</code>. This is just to enhance the readability of my code. I could’ve called the variable “George” and it would’ve worked just the same.</p>
+<p>Let’s look at a more <em>useful</em> example. The following input:</p>
+<pre><code class="language-.text">Jones   3:25
+Smith   4:11</code></pre>
+<p>seems to be spread over several lines and composed of different elements - numbers, strings, and characters. However, it is in fact just one long line of characters, and by reading data we move through this line of characters called an input stream. Suppose, for example, we ran the code</p>
+<pre><code class="language-C">cstring str1, str2;
+int m1, m2, s1, s2;
+char c1, c2;
+readstring(str1, stdin);
+m1 = readnum(stdin);
+c1 = readchar(stdin);
+s1 = readnum(stdin);
+readstring(str2, stdin);
+m2 = readnum(stdin);
+c2 = readchar(stdin);
+s2 = readnum(stdin);</code></pre>
+<p>with the above as input. Then, because whitespace is skipped and <code>readnum</code> stops when it hits a non-numeric character, the values that end up in each of these variables are as follows:</p>
+<table style="width:35%;">
+<colgroup>
+<col style="width: 12%" />
+<col style="width: 22%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td><p><code>str1</code></p></td>
+<td><p><code>&quot;Jones&quot;</code></p></td>
+</tr>
+<tr class="even">
+<td><p><code>m1</code></p></td>
+<td><p><code>3</code></p></td>
+</tr>
+<tr class="odd">
+<td><p><code>c1</code></p></td>
+<td><p><code>':'</code></p></td>
+</tr>
+<tr class="even">
+<td><p><code>s1</code></p></td>
+<td><p><code>25</code></p></td>
+</tr>
+<tr class="odd">
+<td><p><code>str2</code></p></td>
+<td><p><code>&quot;Smith&quot;</code></p></td>
+</tr>
+<tr class="even">
+<td><p><code>m2</code></p></td>
+<td><p><code>4</code></p></td>
+</tr>
+<tr class="odd">
+<td><p><code>c2</code></p></td>
+<td><p><code>':'</code></p></td>
+</tr>
+<tr class="even">
+<td><p><code>s2</code></p></td>
+<td><p><code>11</code></p></td>
+</tr>
+</tbody>
+</table>
+<h2 id="when-types-collide-conversion"><a class="linkin" href="index.html#top"><span class="header-section-number">4.2</span> When types collide - conversion</a></h1><p>You might have noticed that the I/O operations for <code>int</code>s and <code>double</code>s are the same (at least in the <code>si204.h</code> library): <code>readnum</code> and <code>writenum</code>. But how can this be?</p>
+<p>Well, technically <code>readnum</code> and <code>writenum</code> only operate on <code>double</code>s. But since every <code>int</code> can also be represented as a <code>double</code>, the C compiler does the conversion back and forth for us automatically without us even noticing.</p>
+<p>We can also practice these kinds of conversions ourselves:</p>
+<pre><code class="language-C">int x;
+double y;
+x = 3.7;
+y = 10;
+x = y;    // now x = 3, truncated
+x = 12.1; // now x = 12
+y = x;    // y = 12.0, no truncation
+y = x/5;  // tricky! y = 2.0, do you see why?</code></pre>
+<p>Although a <code>char</code> represents a single character like <code>'a'</code> or <code>'?'</code>, we know that these characters are actually represented by numbers in the range from 0 up to 127. When doing conversions with type <code>char</code>, they get treated as integers equal to their ASCII value. For example, calling</p>
+<pre><code class="language-C">writenum(&#39;d&#39;, stdout);</code></pre>
+<p>would cause 100 to be printed, which is the <a href="http://en.cppreference.com/w/c/language/ascii">ASCII value for a lowercase d</a>.</p>
+<p>Interestingly, C doesn’t know how to do arithmetic with <code>char</code> types directly, but it is happy to automatically convert them to ints and do integer arithmetic! This turns out to be convenient because the ASCII values are in a meaningful order. Consider <code>'b' - 'a'</code> for example. Looking at the ASCII table, we see that <code>'b'</code> corresponds to the number 98, and <code>'a'</code> to the number 97. The C compiler treats this as the <code>int</code> subtraction problem 98 - 97, which evaluates to 1. In fact, the letters of the alphabet appear in order, so that a is 97, b is 98, …, z is 122.</p>
+<p>Things get even more interesting when we try to do arithmetic with different types. What should it mean to multiply a <code>double</code> and an <code>int</code>? The compiler knows how to convert between these two types, but it only knows how to multiply one type by another number of the same type. So if we have code like <code>7 * 2.3</code>, should it do the multiplication as two doubles or as two ints?</p>
+<p>For arithmetic, types are always converted in the direction that gives the most precision - this is referred to as type <em>promotion</em> - which in this case means that the <code>int</code> is converted (or promoted) to a double, and the operation is performed on two doubles. It wouldn’t make nearly as much sense the other way round, would it?</p>
+<p>This kind of type conversion is called <em>implicit</em> because it happens automatically behind the scenes, without you doing anything directly. We have seen it in assignment, in calling I/O routines, and in doing arithmetic. The C compiler always assumes (often wrongly!) that the programmer knows what they’re doing and really means what they write. So the compiler will implicitly convert whatever types it knows how in order to make your program work, using the rule of type promotion.</p>
+<p>We also have <em>explicit</em> type conversion, where the programmer says exactly what the type should be. Suppose, for example, that <code>m</code> and <code>n</code> are <code>int</code>s, <code>n</code> being the larger. We’d like to print out the value of <code>m/n</code>. Well,</p>
+<pre><code class="language-C">writenum(m / n, stdout);</code></pre>
+<p>will just print out zero! (Make sure you know why!) We’d like to get some fractional value, in other words, we’d like these values treated as <code>double</code>s. To explicitly convert them to <code>double</code>s first we’d write:</p>
+<pre><code class="language-C">writenum((double)m / n, stdout);</code></pre>
+<p>The <code>(double)</code> before the value <code>m</code> indicates that we want to convert <code>m</code> to a double first, and then do the division. Now the compiler is dividing a double by an int, so it will <em>promote</em> the other argument, <code>int n</code>, to a double as well, before doing the actual division.</p>
+<table>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><strong>Some Quick Conversion Rules</strong></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">int → double : This does exactly what you’d expect.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">double → int : This simply truncates the value, meaning that whatever’s after the decimal point just gets chopped. You can get in trouble if the double value is too big.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">int → char : if the int is in the range 0-127 the char value is determined by the ASCII table;</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">char → int : the int value is determined by the ASCII table;</td>
+</tr>
+</tbody>
+</table>
+<h2 id="variable-declaration-assignment-shortcuts-and-good-ideas"><a class="linkin" href="index.html#top"><span class="header-section-number">4.3</span> Variable declaration/assignment shortcuts and good ideas</a></h1><p>So far, we’ve been <em>declaring</em> all of our variables at the beginning of the <code>main</code> with statements such as</p>
+<pre><code class="language-C">int x;
+double y;</code></pre>
+<p>then <em>assigning</em> them values later, with statements like</p>
+<pre><code class="language-C">x = 4;
+y = 91.3;</code></pre>
+<p>In fact this corresponds to what really happens in the computer: when your <code>main</code> starts, space is reserved in memory (<em>allocated</em>) to store <code>x</code> and <code>y</code>. Notice that the compiler really needs to know the types here so it knows how many bytes to allocate for each one! In this case, you would get 4 bytes for <code>x</code> and 8 bytes for <code>y</code>.</p>
+<p>But there’s a potential pitfall here, which is that you can access the variables before they are ever assigned a value. For example, the following program:</p>
+<pre><code class="language-C">int x;
+writenum(x, stdout); // what will happen here??
+x = readint(stdin);
+writenum(x, stdout); // now we know what x will be</code></pre>
+<p>This program will actually compile (although it should generate a warning message), but we can’t say what will get printed on the second line. It just depends on whatever happens to be sitting around in your computer’s memory wherever those 4 bytes for <code>x</code> are allocated. It will <em>most likely</em> be 0, but we really can’t say! It’s what’s called <em>undefined behavior</em> — and it means that our program has a bug, a mistake.</p>
+<p>As we get into more complicated programs, this kind of mistake is actually a pretty common one to make. So I recommend that you save yourself from undefined behavior and just assign variables for values as soon as they are declared, like so:</p>
+<pre><code class="language-C">int x;
+x = 0;
+/* ... the rest of your program ... */</code></pre>
+<p>In fact, there’s a shortcut to doing this in C, which is that you can declare and assign all in the same line, like so:</p>
+<pre><code class="language-C">int x = 0; // wow, how convenient!
+/* ... the rest of your program ... */</code></pre>
+<p>However, it’s important to remember that this is really doing two things at once, declaring and assigning.</p>
+<p>Another shortcut is that you can declare (and optionally assign) multiple variables all on the same line, separated by commas, as long as they have the same type, such as:</p>
+<pre><code class="language-C">int x, y=3, z=12;
+// x is an int that is uninitialized
+// y is an int with value 3
+// z is an int with value 12</code></pre>
+<p>I personally (Dr. Roche) don’t like doing multiple declarations on one line, because of some things that show up later when we get to arrays. But there are other good reasons to program this way also; it’s a personal choice.</p>
+<p>I want to emphasize that all of the above about whether to assign right after you declare, and whether to do it on one line or as two separate statements, are all examples of some of the <em>options</em> we have when programming. There are always multiple correct ways to write a program, and we as programmers get to decide exactly how we want to do it. Sometimes there isn’t just one “best” way, just some good ways to do it (and usually some bad ways to do it too!). Even the examples on this website, are just showing you one <em>good</em> way of solving the problem; it doesn’t mean that there aren’t other equally good solutions as well!</p>
+<h1 id="expressions-and-statements"><a class ="linkin" href="index.html#top"><span class="header-section-number">5</span> Expressions and Statements</a></h1><p>Almost everything in a C program is an <em>expression</em>. An expression is textual piece of source code that can be evaluated to produce an object that has a <em>type</em> and <em>value</em>. The most familiar expressions are arithmetical. For example, if <code>k</code> is an <code>int</code> that’s been assigned the value 4, <code>(k - 2)*7</code> is an expression of type <code>int</code> and value 14.</p>
+<div class="annotation">
+<p>Often the <em>value</em> of an expression cannot be determined until the program is run. For example, in the code below</p>
+<pre><code class="language-C">int k = readnum(stdin);
+writenum(k + 7, stdout);</code></pre>
+<p>… what is the value of the expression <code>k+7</code>? Well, it depends what the user enters for input. That’s something that cannot be known until the program is run. However, the <em>type</em> of the expression <code>k+7</code> is something we do know before running the program: it’s <code>int</code>. This is always true in the C programming language, and because of it C is said to be a “statically-typed” language.</p>
+</div>
+<p>The library calls we have been making to do I/O are also expressions. For example, <code>readchar(stdin)</code> is an expression of type <code>char</code>. However, note that some library calls, such as <code>writenum(5,stdout)</code>, don’t have any type. It depends on the function!</p>
+<p>Even assignments in C, such as <code>k = 5</code>, are technically expressions as well. In this case, the type of <code>k=5</code> is the same as the type of <code>k</code> (<code>int</code> in this case), and the value is the same as whatever it gets assigned to (5 in this case). But usually it’s a good idea not to use assignments as expressions, and just let them stand by themselves. That’s not because it’s <em>incorrect</em> or an error to use assignments as expressions, but it’s something that is easy to get confused about (or to confuse others who may read your code!).</p>
+<p>At this point it may seem like everything’s an expression, but that’s not true. For example, anything with a ‘<strong>;</strong>’ (semicolon) at the end is a <em>statement</em>, not an expression. So while <code>k = 4</code> is an expression as used in <code>(k=4)*3</code> will evaluate to 12, the statement <code>k = 4;</code> as a line of code ending in a semicolon is not an expression. Declarations of variables, something like <code>int k</code> for example, are not expressions - regardless of whether the <strong>;</strong> is there. Still, most things are expressions, and understanding this fact and being able to identify the types and values of expressions are key to understanding C … and most any other programming language.</p>
+<!-- from l06 -->
+<h2 id="a-note-on-expressions-precedence-and-associativity"><a class="linkin" href="index.html#top"><span class="header-section-number">5.1</span> A Note on expressions, precedence and associativity</a></h1><p>What happens when an expression like <code>2 + 3 * 5</code> is evaluated? Do I get 17 or 25? Well, your math classes should have taught you that 17 is the answer, and indeed that’s true in C as well.</p>
+<p><em>When you have two different operators in an expression and parenthesization does not tell you which operation is performed first, the relative <strong>precedence</strong> of operators is what determines which operation is performed first.</em></p>
+<p>Since * has a higher precedence than +, the expression <code>2 + 3 * 5</code> is evaluated like <code>2 + (3 * 5)</code>. But what about when both operators are the same, or both have the same precedence? What happens with <code>a * b * c</code>?</p>
+<p><em>When you have two identical operators in an expression (or two different operators with the same precedence) and parenthesization does not tell you which operation is performed first, the associativity of the operator(s) is what determines which operation is performed first.</em></p>
+<p>The associativity of * and / (which both have the same precedence) is <em>left-to-right</em>, so <code>a * b * c</code> is evaluated as <code>(a * b) * c</code>. This can matter in C. (For example, what does <code>3 / 4 * 1.5</code> evaluate to?) However …</p>
+<p><strong>Always use parentheses rather than relying on subtle precedence and associativity rules!</strong></p>
+<p><a href="http://en.cppreference.com/w/c/language/operator_precedence">This table</a> lists the operators and their associativities. They are grouped together on lines with operators of the same precedence, and the lines go from highest precedence at the top, to lowest at the bottom. You should know about precedence and associativity, and you should be able to use tables like this to fix precedence and associativity related bugs, but rely on parentheses when you’re unsure.</p>
+<p><strong>Associativity matters:</strong> Associativity makes expressions like <code>a = b = 0</code> do what you want, which is to assign both <code>a</code> and <code>b</code> to equal 0. Only in this case = is is right-to-left associative, so we get <code>a = (b = 0)</code>. The key here is that an assignment expression evaluates to the value of the left-hand-side object <em>after</em> the assignment. So b gets assigned value zero, the expression has value zero, and then that’s what is assigned to a.</p>
+<h1 id="branching"><a class ="linkin" href="index.html#top"><span class="header-section-number">6</span> Branching</a></h1><blockquote>
+<p><em>If you can wait and not be tired by waiting,<br />
+  Or being lied about, don’t deal in lies,<br />
+<br />
+Or being hated, don’t give way to hating,<br />
+ And yet don’t look too good, nor talk too wise …</em><br />
+<br />
+- Rudyard Kipling, “If”</p>
+</blockquote>
+<p>Now we’re ready to learn about a very powerful construct in any programming language, the <em>if statement</em>.</p>
+<p>The ability to make decisions and react to different input is a key part of the power of computers. For example, we would certainly expect it to be possible to write a program that reads in a number and writes “even” if the number is even, and “odd” if the number is odd. In C (as in English!) “if” is the key to expressing this.</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td><pre><code class="language-C">int k;
+k = readnum(stdin);
+if (k is even) {
+  fputs(&quot;even\n&quot;, stdout);
+} else {
+  fputs(&quot;odd\n&quot;, stdout);
+}</code></pre></td>
+<td>Of course we’ve got to figure out some C that will do the “<em>k is even</em>” for us. What’s inside the ()’s in an <code>if</code> statement needs to be an expression that evaluates to a number. If the expression is not equal to zero, then the first block of code (code surrounded by {}’s forms a <strong>block</strong>) is executed. Otherwise the block following the <code>else</code> is executed. This is called the <strong>test condition</strong>.</td>
+</tr>
+</tbody>
+</table>
+<p>A number is even if 2 divides it evenly, i.e. if its remainder when divided by 2 is 0. So for <code>k</code> to be even, <code>k % 2</code> must be zero. We can test this using the <code>==</code> operator. A single “=” in C is used for assigning values to variables, whereas a double “=” (i.e. <code>==</code>) is used to test whether two values are equal. A “<code>==</code>” expression evaluates to an <code>int</code> value that is either 1 if the two values are equal, or 0 if they are not equal. In general, the C language specifies that <code>0</code> can be used to indicate something is “false”, whereas <em>any number other than 0</em> can be used to indicate something is “true”. (And <code>1</code> is the most convenient number other than 0!)</p>
+<p>Thus <code>(k % 2) == 0</code> is the test condition we need to replace “k is even” in the code above and make it work.</p>
+<h2 id="scope-and-blocks"><a class="linkin" href="index.html#top"><span class="header-section-number">6.1</span> Scope and Blocks</a></h1><p>We might consider solving the above problem in a slightly different way: We’ll assign a variable the value <code>&quot;even&quot;</code> if <code>k</code> is even and <code>&quot;odd&quot;</code> otherwise. Then, after the if-statement, we’ll do the printing. We might implement it like this:</p>
+<pre><code class="language-C">if ((k % 2) == 0) {
+  cstring s;
+  strcpy(s, &quot;even&quot;);
+}
+else {
+  cstring s;
+  strcpy(s, &quot;odd&quot;);
+}
+
+fputs(s, stdout);
+fputs(&quot;\n&quot;, stdout);</code></pre>
+<p><strong>However</strong>, when we try to compile this the compiler complains that <code>s</code> is an “undeclared identifier”, which is exactly what it would say if we’d never defined <code>s</code> at all! Well, as far as the compiler is concerned when it processes the “<code>fputs(s, stdout)</code>” statement, we <em>haven’t</em> defined <code>s</code>. The problem is caused by the <strong>scope</strong> of variables in C.</p>
+<p>In C, a variable only exists from the point at which it is declared to the <code>}</code> that closes off the innermost block in which it was declared. So the <code>s</code> that we define inside the else-block is invisible, is unknown, does not exist outside of that else-block. In particular, this is true for our <code>fputs</code>-statement. The <strong>scope</strong> of a variable is the portion of the code that “sees” the variable, i.e. that knows it exists. The <strong>scope</strong> of a variable ends with the innermost block in which it was defined.</p>
+<p>To fix up this version of our even/odd program, we simply need to move the declaration of <code>s</code> outside of the if/else-blocks so that its scope extends to <code>fputs</code> statement. This’ll work:</p>
+<pre><code class="language-C">cstring s;
+if ((k % 2) == 0) {
+  strcpy(s, &quot;even&quot;);
+}
+else {
+  strcpy(s, &quot;odd&quot;);
+}
+
+fputs(s, stdout);
+fputs(&quot;\n&quot;, stdout);</code></pre>
+<p>Code in between {}’s forms a <strong>block</strong>. So the <code>if</code> is followed by a block (the <em>then block</em>) and the else is followed by a block (the <em>else block</em>). You’ve already seen one example of a block: The block following <code>main()</code>. Anything you can write inside of the <code>main</code> block, you can write inside of any block. This means that our then blocks and else blocks can declare variables, read input, make assignments to variables… anything. So, suppose I wanted to write a program that would compute areas of circles and triangles for the user, first asking the user which kind of object she was interested in. My program might look something like:</p>
+<pre><code class="language-C">int main() {
+  // Read type of object: circle or triangle
+  cstring s;
+  fputs(&quot;Do you have a circle or a triangle? &quot;, stdout);
+  readstring(s, stdin);
+
+  // declare variable for the area in the main scope
+  double area;
+
+  // remember, strcmp(s1,s2) returns 0 if s1 and s2 are the same
+  if (strcmp(s, &quot;circle&quot;) == 0) {
+    // Compute area of circle
+  }
+  else {
+    // Compute area of triangle
+  }
+
+  // print out the computed area
+  fputs(&quot;The area is: &quot;, stdout);
+  writenum(area, stdout);
+  fputs(&quot;\n&quot;, stdout);
+
+  return 0;
+}</code></pre>
+<p>… where we’d have to fill in the then-block with code that gets the radius of the circle and computes and outputs its area, and we’d have to fill in the else-block with code that reads in the base and height from the user and computes and outputs the triangle’s area.</p>
+<table>
+<tr>
+<td style="vertical-align: top;">
+<p><strong>Code for circle area</strong></p>
+<pre><code class="language-C">double Pi = 3.14159265358979324;
+double radius;
+
+fputs(&quot;Radius of the circle: &quot;, stdout);
+radius = readnum(stdin);
+
+area = Pi * radius * radius;</code></pre>
+</td>
+<td style="vertical-align: top;">
+<p><strong>Code for triangle area</strong></p>
+<pre><code class="language-C">double base;
+double height;
+
+fputs(&quot;Base of the triangle: &quot;, stdout);
+base = readnum(stdin);
+
+fputs(&quot;Height of the triangle: &quot;, stdout);
+height = readnum(stdin);
+
+area = .5 * base * height;</code></pre>
+</td>
+</tr>
+</table>
+<p>Each of these “miniprograms” can be placed in its appropriate block, and we get <a href="files.php%3Ff=area.c.html">the whole program</a>.</p>
+<!-- from l07 -->
+<h2 id="boolean-operators"><a class="linkin" href="index.html#top"><span class="header-section-number">6.2</span> Boolean Operators</a></h1><p>The “<code>==</code>” is an example of a <strong>comparison operator</strong>. Relational operators make comparisons of their left and right-hand arguments, and return 1 for true or 0 for false. These op values accordingly. They are:</p>
+<pre><code class="language-.text">== (equal)
+!= (not equal)
+&lt;  (less than)
+&gt;  (greater than)
+&lt;= (less than or equal to)
+&gt;= (greater than or equal to)</code></pre>
+<p>As you can see from <a href="http://en.cppreference.com/w/c/language/operator_precedence">the operator precedence table</a>, they have lower precedence than the arithmetic operators, so things like <code>2*k &gt; k + 5</code> do what we’d like them to do - they evaluate the arithmetic expressions on the left and right, <em>then</em> they apply the <code>&gt;</code> operator to compare the two values. This means, for example, that instead of writing <code>((k % 2) == 0)</code> we could write <code>(k % 2 == 0)</code> and get the same result.</p>
+<p>So what happens when we compare objects of different type? For example, what happens with <code>k == x</code>, where k is an int, and x is a double? The answer is that the same automatic type conversions are applied as in arithmetic expressions. So, <code>k</code> is implicitly converted to a double, and this double value is compared to <code>x</code>. Thus, <code>5 == 5.2</code> evaluates to 0, since 5 is converted to 5.0 prior to the comparison, and we end up actually doing <code>5.0 == 5.2</code>.</p>
+<p>Consider a code fragment that reads in a value from the user and returns the “arcsine” or inverse sine of the value. We’ll use the <code>asin</code> function from the <a href="http://en.cppreference.com/w/c/numeric/math">math.h library</a> to compute our value. Now, the arcsine is only defined for values between negative 1 and 1, so if the user enters a value outside of this range we should print an error message. Doing this with what we know so far is ugly:</p>
+<pre><code class="language-C">if (x &lt;= 1.0) {
+  if (x &gt;= -1.0) {
+    writenum(asin(x), stdout);
+    fputs(&quot;\n&quot;, stdout);
+  }
+  else {
+    fputs(&quot;Error! Value outside of [-1,1]\n&quot;, stdout);
+  }
+} else {
+  fputs(&quot;Error! Value outside of [-1,1]\n&quot;, stdout);
+}</code></pre>
+<p>We want to be able to say in our test condition that x must be less than or equal to 1 <strong>AND</strong> greater than or equal to -1. In C the operator <code>&amp;&amp;</code> is “and”. So our program fragment becomes:</p>
+<pre><code class="language-C">if ((x &lt;= 1.0) &amp;&amp; (x &gt;= -1.0)) {
+  writenum(asin(x), stdout);
+  fputs(&quot;\n&quot;, stdout);
+} else {
+  fputs(&quot;Error! Value outside of [-1,1]\n&quot;, stdout);
+}</code></pre>
+<p>… which is substantially simpler. More to the point, this does a much better job of reflecting what we’re thinking.</p>
+<p>Now at first glance, <code>&amp;&amp;</code> looks like something mysterious and new. It’s not. It’s an operator just like <code>+</code>, <code>*</code>, and <code>&gt;</code>, all of which we’ve used a lot already. It takes two objects of type <code>int</code> and evaluates to an object of type <code>int</code>. We have an intuitive idea of what “and” means, and it coincides with C’s technical, exact definition of what <code>&amp;&amp;</code> means:</p>
+<div style="align: center;">
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: center;"><code>a</code></th>
+<th style="text-align: center;"><code>b</code></th>
+<th style="text-align: center;"><code>a &amp;&amp; b</code></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">zero</td>
+<td style="text-align: center;">zero</td>
+<td style="text-align: center;"><code>0</code></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">zero</td>
+<td style="text-align: center;">nonzero</td>
+<td style="text-align: center;"><code>0</code></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">nonzero</td>
+<td style="text-align: center;">zero</td>
+<td style="text-align: center;"><code>0</code></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">nonzero</td>
+<td style="text-align: center;">nonzero</td>
+<td style="text-align: center;"><code>1</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>So, something like <code>(x &lt;= 1.0) &amp;&amp; (x &gt;= -1.0)</code> makes sense because <code>x &lt;= 1.0</code> evaluates to an <code>int</code> that is 1 or 0 depending on the comparison, and <code>x &gt;= -1.0</code> also evaluates to 1 or 0 depending on the second comparison, and then the <code>&amp;&amp;</code> operator combines those two comparison results.</p>
+<div class="annotation">
+<p>This definition of “or” for the <code>||</code> operator is not quite what we sometimes mean in English by saying “or”. The <code>||</code> operator is what’s known as an <em>inclusive or</em>, meaning that if both parts are true (nonzero), then the <code>||</code> also evaluates to true (1). In English, if you said “I’m eating pizza or a burrito”, no one would expect you to be eating both, but in C that’s very possible!</p>
+</div>
+<p>There are three boolean operators, the now familiar <code>&amp;&amp;</code> (and), the <code>||</code> operator (or), and the <code>!</code> (not) operator. The <code>||</code> operator is much like <code>&amp;&amp;</code>, it takes two <code>int</code>s and evaluates to <code>1</code> if either of those <code>int</code>s is nonzero, or to <code>0</code> if both of the <code>int</code>s are 0.</p>
+<p>The <code>!</code> operator is a <em>unary</em> operator. Instead of operating on left and right-had values, it operates on a single value - the value following it on the right. It evaluates to 0 if the number following it is nonzero, and it evaluates to 1 if the number following it is 0.</p>
+<p>Things get especially interesting when you combine boolean operators. For example: Suppose you want to write a program that reads a character from the user and prints “Letter” or “Not a Letter” depending on whether or not the user entered a character that’s a letter. Your program will, more or less, look like this:</p>
+<pre><code class="language-C">  // Read char
+  char c;
+  fputs(&quot;Enter a letter: &quot;, stdout);
+  c = readchar(stdin);
+
+  // Decide: Letter or not a letter?
+  if (c is a letter) {
+    fputs(&quot;Letter\n&quot;, stdout);
+  } else {
+    fputs(&quot;Not a letter\n&quot;, stdout);
+  }</code></pre>
+<p>But, of course, the problem is the test condition <em><code>c</code> is a letter</em>. Letters come in two flavors, uppercase and lowercase. So a refinement of our if statement wuold be:</p>
+<pre><code class="language-C">  // Decide: Letter or not a letter?
+  if ((c is an uppercase letter) || (c is a lowercase letter)) {
+    fputs(&quot;Letter\n&quot;, stdout);
+  } else {
+    fputs(&quot;Not a letter\n&quot;, stdout);
+  }</code></pre>
+<p>From any <a href="http://en.cppreference.com/w/c/language/ascii">ASCII table</a> we would see that uppercase letters range from <code>'A'</code> (65) to <code>'Z'</code> (90). So <em><code>c</code> is an uppercase letter</em> boils down to <code>(c &gt;= 'A' &amp;&amp; c &lt;= 'Z')</code>. Similarly, because lowercase letters range from <code>'a'</code> (97) up to <code>'z'</code> (122), we know that <em><code>c</code> is a lowercase letter</em> boils down to <code>(c &gt;= 'a' &amp;&amp; c &lt;= 'z')</code>. Put it all together and we get:</p>
+<pre><code class="language-C">  // Decide: Letter or not a letter?
+  if ((c &gt;= &#39;A&#39; &amp;&amp; c &lt;= &#39;Z&#39;) || (c &gt;= &#39;a&#39; &amp;&amp; c &lt;= &#39;z&#39;)) {
+    fputs(&quot;Letter\n&quot;, stdout);
+  } else {
+    fputs(&quot;Not a letter\n&quot;, stdout);
+  }</code></pre>
+<div class="annotation">
+<p>The binary logical operators <code>&amp;&amp;</code> and <code>||</code> follow <em>short circuit</em> evaluation rules. This means that the left-hand operand expression is evaluated first, and if the truth or falsity of the expression can be determined based only on the left-hand side, the right-hand operand expression is never even evaluated. So, for example, in the expression:</p>
+<pre><code class="language-C">(x &gt;= -1) &amp;&amp; (x &lt;= 1)</code></pre>
+<p>if <code>x</code> is, say, <code>-5</code>, then the first part of the <code>&amp;&amp;</code>, the expression <code>(x &gt;= -1)</code>, evaluates to <code>0</code>. Since <code>0 &amp;&amp; ANYTHING</code> will always evaluate to <code>0</code>, the right-hand side <code>(x &lt;= 1)</code> is never actually evaluated.</p>
+<p>Right now this is more of a curiosity than anything. However, later in the semester, this behavior becomes very important.</p>
+</div>
+<p>Note that I wrapped my uppercase and lowercase tests in parentheses, because I wanted to be sure that the <code>&amp;&amp;</code>’s were evaluated before the <code>||</code>. Is that necessary? (Think about how you would decide this!) Even if it isn’t, adding the ()’s makes the meaning clear to everyone.</p>
+<p>Also observe, we could have used the ASCII integer values like 65 for <code>'A'</code> or 90 for <code>'Z'</code> in the code above, but that would make it much less clear, plus we have to make sure to copy from the ASCII table correctly! When you can, it’s always better to use the character literals like <code>'A'</code> and <code>'Z'</code> rather than the integer values from the ASCII table.</p>
+<h2 id="if-statement-shortcuts"><a class="linkin" href="index.html#top"><span class="header-section-number">6.3</span> If statement shortcuts</a></h1><p><strong>Dropping the Else</strong></p>
+<p>Sometimes you have a condition which, if it’s true, should cause you to do some extra work, but which, if it’s false, should have no effect on the program. For example, suppose we read an <code>int</code> from the user and we want to change it to its absolute value and print it out. We’d probably write something like this:</p>
+<pre><code class="language-C">int k;
+k = readnum(stdin);
+
+if (k &lt; 0) {
+  k = -1*k;
+} else {
+  // nothing to do here!
+}
+
+writenum(k, stdout);
+fputs(&quot;\n&quot;, stdout);</code></pre>
+<p>When there’s nothing to do in the else-block, we can simply drop it. (Sometimes your if-statement is written so that the then-block is empty and the else-block isn’t. You can’t simply drop the then-block, so first rewrite your if-statement with a new condition so that the then-block contains the work.)</p>
+<pre><code class="language-C">int k;
+k = readnum(stdin);
+
+if (k &lt; 0) {
+  k = -1*k;
+}
+
+writenum(k, stdout);
+fputs(&quot;\n&quot;, stdout);</code></pre>
+<p><strong>Single-statement block</strong></p>
+<p>If your block is only a single statement, you can drop the ‘{’ and ‘}’ characters, like so:</p>
+<pre><code class="language-C">if (readnum(stdin) &gt; 100)
+  fputs(&quot;You entered a big number.\n&quot;, stdout);
+else
+  fputs(&quot;You entered a small number.\n&quot;, stdout);</code></pre>
+<p>However, <em>this shortcut is not recommended</em> by us (Dr. Roche and Dr. Albing). The reason is, you are likely to add another line to one of those parts, with the same indentation, and <em>think</em> that it’s part of the same then-block or else-block, but it really isn’t since each block is a single statement only! Trust us, writing those two extra ‘{’ and ‘}’ characters isn’t that much effort, and it makes your code more bullet-proof to future bugs.</p>
+<p><strong>The <code>else if</code></strong></p>
+<p>However, the single-statement block does allow us to simplify code in one very common situation, where you have a number of conditions to check and only one of the corresponding blocks should be executed.</p>
+<p>For example, let’s say you want to output who won an important football game. Here’s how we might do it right now:</p>
+<pre><code class="language-C">int eagles = 4;
+int cowboys = 3;
+
+if (eagles &gt; cowboys) {
+  fputs(&quot;Eagles win, hooray!\n&quot;, stdout);
+}
+else {
+  if (cowboys &gt; eagles) {
+    fputs(&quot;Cowboys win, boo hiss\n&quot;, stdout);
+  } else {
+    fputs(&quot;Tie game, boring\n&quot;, stdout);
+  }
+}</code></pre>
+<p>But this is kind of bad looking, and it will get worse and worse (with more and more levels of indentation) if we have more cases than just three. Well, since an <code>if</code> is considered a “single statement”, we can drop the <code>{</code> and <code>}</code> around the second big <code>else</code> block in the code above, like so:</p>
+<pre><code class="language-C">if (eagles &gt; cowboys) {
+  fputs(&quot;Eagles win, hooray!\n&quot;, stdout);
+}
+else
+  if (cowboys &gt; eagles) {
+    fputs(&quot;Cowboys win, boo hiss\n&quot;, stdout);
+  } else {
+    fputs(&quot;Tie game, boring\n&quot;, stdout);
+  }</code></pre>
+<p>Hmm, that still looks bad (worse, actually), but if we move around the spaces a little, it looks very nice:</p>
+<pre><code class="language-C">if (eagles &gt; cowboys) {
+  fputs(&quot;Eagles win, hooray!\n&quot;, stdout);
+} else if (cowboys &gt; eagles) {
+  fputs(&quot;Cowboys win, boo hiss\n&quot;, stdout);
+} else {
+  fputs(&quot;Tie game, boring\n&quot;, stdout);
+}</code></pre>
+<p>This is called an “else-if” and it’s a very useful construction. We can add more “else if” cases if we want and they will be checked one at a time until you reach the last “else”, or until one of the conditions is true.</p>
+<p>For an even better example of the way this makes code more readable, look at <a href="files.php%3Ff=dateconv.c.html">this example of converting a date</a>. If we didn’t use <code>else if</code> for the months checking, it would end up being a nested <code>if</code> that goes 12 levels deep!</p>
+<h1 id="switch-statements-optional-"><a class ="linkin" href="index.html#top"><span class="header-section-number">7</span> Switch statements (optional)</a></h1><blockquote>
+<p>This section is <em>optional reading</em> if you want to learn more about C programming. You won’t be required to understand switch statements or to use them in your code. But if you read a lot of C code, you will probably come across <code>switch</code> sooner or later, so you might want to know about it. (You are also free to use <code>switch</code> yourself if you think there’s a good reason to do so.)</p>
+</blockquote>
+<p>A <code>switch</code> statement is an alternative way to write a long <code>if</code> / <code>else if</code> / <code>else</code> statement if all of your conditions have the same certain form. You use a <code>switch</code> statement when you want to test a single variable or expression for several different cases. The hitch is that the variable pretty much needs to be an <code>int</code> or a <code>char</code>, which limits when <code>switch</code> can be used. Switch breaks things up into cases. You write</p>
+<pre><code class="language-C">switch(expr) {</code></pre>
+<p>… where <em>expr</em> is an expression of type <code>int</code> or <code>char</code>, and then list cases consisting of possible values of <em>expr</em>. These cases must be constants, and each case is followed by a <code>:</code>, then a sequence of statements to be executed, and finally a <code>break;</code>. In other words, each case looks like this:</p>
+<pre><code class="language-C">case constk:
+  stmt1;
+  stmt2;
+  ...
+  stmtr;
+  break;</code></pre>
+<p>You can list as many of these cases as you want. You can also put</p>
+<pre><code class="language-C">default:
+  stmt1;
+  stmt2;
+  ...
+  stmtr;
+  break;</code></pre>
+<p>as one “case”. This is a catch-all that catches every situation in which <em>expr</em> didn’t match one of the other cases, similar to an <code>else</code> condition.</p>
+<p>For example, the following two blocks of code are equivalent:</p>
+<div class="boxyline">
+<div>
+<pre><code class="language-C">int year;
+fputs(&quot;Which year are you? &quot;, stdout);
+year = readint(stdin);
+
+if (year == 1) {
+  fputs(&quot;Hi there, Plebe.\n&quot;, stdout);
+} else if (year == 2) {
+  fputs(&quot;Hello, Youngster.\n&quot;, stdout);
+} else if (year == 3) {
+  fputs(&quot;nameless...\n&quot;, stdout);
+} else if (year == 4) {
+  fputs(&quot;Howdy, Firstie.\n&quot;, stdout);
+} else {
+  fputs(&quot;Not at USNA!\n&quot;, stdout);
+}</code></pre>
+</div>
+<div>
+<pre><code class="language-C">int year;
+fputs(&quot;Which year are you? &quot;, stdout);
+year = readint(stdin);
+
+switch(year) {
+  case 1:
+    fputs(&quot;Hi there, Plebe.\n&quot;, stdout);
+    break;
+  case 2:
+    fputs(&quot;Hello, Youngster.\n&quot;, stdout);
+    break;
+  case 3:
+    fputs(&quot;nameless...\n&quot;, stdout);
+    break;
+  case 4:
+    fputs(&quot;Howdy, Firstie.\n&quot;, stdout);
+    break;
+  default:
+    fputs(&quot;Not at USNA!\n&quot;, stdout);
+    break;
+}</code></pre>
+</div>
+</div>
+<p>Here’s another <a href="files.php%3Ff=switch.c.html">example program using <code>switch</code></a>. It reads a date in “mm/dd/yyyy” format and returns the date in “dd <em>monthname</em>, yyyy” format.</p>
+<h1 id="practice-problems-and-questions"><a class ="linkin" href="index.html#top"><span class="header-section-number">8</span> Practice Problems and Questions</a></h1><p>Here is a list of problems and solutions. With even the very basic construction of input, output, variables, and expressions, we can write some useful programs.</p>
+<ul>
+<li><strong>Variables and Types</strong>
+<ul>
+<li><a href="files.php%3Ff=ftoc.c.html">Fahrenheit - Celsius Conversion</a></li>
+<li><a href="files.php%3Ff=radians.c.html">Converting radians to degrees, minutes, and seconds</a>. This requires conversions between types! See if you can identify where they happen.</li>
+<li><a href="files.php%3Ff=caesar.c.html">Ceasar Shift Encryption</a> The <a href="http://www.usc.edu/~douglast/202/lecture16/ceasar.html">Ceasar Shift</a> is an early method of encrypted communication. This program implements it for 4-letter messages. It requires understanding the mod operator (<code>%</code>), and the correspondence between ASCII encoded characters and numbers.</li>
+<li><a href="files.php%3Ff=gpa.c.html">GPA Calculator</a></li>
+<li><a href="files.php%3Ff=minsec.c.html">Minutes and Seconds</a></li>
+<li><a href="files.php%3Ff=classyear.c.html">Class Year from E-Mail Addresses</a></li>
+<li><a href="files.php%3Ff=hms2sec.c.html">Converting hh:mm:ss to seconds</a></li>
+</ul></li>
+<li><strong>If statements</strong>
+<ul>
+<li>Solving for the unknown quantity in <span class="math inline">\(F=ma\)</span>. For this problem, <a href="files.php%3Ff=fma1.c.html">Solution 1</a> is easier to come up with but more complicated to implement. <a href="files.php%3Ff=fma2.c.html">Solution 2</a> is more subtle, but cleaner and less complicated to program.</li>
+<li><a href="files.php%3Ff=dateconv.c.html">Date conversion program</a></li>
+<li><a href="files.php%3Ff=remainder.c.html">Remainders</a> - this is a toy problem that forces you to face a fundamental problem in computer science: swapping values. This is important to know and understand!</li>
+<li>Converting 12-hour clock time to 24-hour clock time. <a href="files.php%3Ff=12to24.c.html">The solution</a> gives a nice example of an <code>if</code> without <code>else</code>.</li>
+<li><a href="files.php%3Ff=h20.c.html">Determining the state of H<sub>2</sub>0</a> — gives a good look at multiple <code>if</code> statements. Note, you could also write this with nested <code>if</code>s, but that would make for a more complicated solution.</li>
+</ul></li>
+</ul>
+<p><strong>Do You Know …</strong></p>
+<ul>
+<li>The difference between an “object” and a “type”?</li>
+<li>Why 1/2 is 0 in C?</li>
+<li>What is a <em>literal</em>?</li>
+<li>What’s the difference between associativity and precedence?</li>
+<li>What do we mean by a variable’s “scope”?</li>
+<li>What is the distinction between a <em>statement</em> and an <em>expression</em>?</li>
+<li>What are the comparison operators and how do they work?</li>
+<li>How about the logical boolean operators?</li>
+</ul>
+  </div></article></div></div><nav class="stickynav"><div><div class="dropdown"><a href="../../index.php.html" class="ddown-btn">SI 204</a><div class="ddown-content"><a href="../../calendar.php.html">Calendar</a><a href="../index.html">Notes</a><a href="../../hw/index.html">HWs</a><a href="../../lab/index.html">Labs</a><a href="../../proj/index.html">Projects</a><a href="../../exams/index.html">Exams</a><a href="../../admin/index.html">Resources</a><a href="https://www.usna.edu/Users/cs/roche/">Roche</a><a href="https://www.usna.edu/Users/cs/albing/">Albing</a></div></div><div class="dropdown"><a href="index.html#top" class="linkin pagetop">Unit 2: Variables and If</a><div class="ddown-content ddtoc"><ul><li><a class="linkin" href="index.html#starting-out"><span class="toc-section-number">1</span> Starting out</a>
+<ul><li><a class="linkin" href="index.html#hello-world-explained"><span class="toc-section-number">1.1</span> Hello, world explained</a></li><li><a class="linkin" href="index.html#slightly-longer-example"><span class="toc-section-number">1.2</span> Slightly longer example</a></li></ul></li>
+<li><a class="linkin" href="index.html#variables"><span class="toc-section-number">2</span> Variables</a>
+<ul><li><a class="linkin" href="index.html#types"><span class="toc-section-number">2.1</span> Types</a></li><li><a class="linkin" href="index.html#variable-names"><span class="toc-section-number">2.2</span> Variable Names</a></li></ul></li>
+<li><a class="linkin" href="index.html#representing-data-in-a-computer"><span class="toc-section-number">3</span> Representing data in a computer</a>
+<ul><li><a class="linkin" href="index.html#binary-numbers"><span class="toc-section-number">3.1</span> Binary numbers</a></li><li><a class="linkin" href="index.html#bytes-how-type-depends-on-interpreting-bit-sequences"><span class="toc-section-number">3.2</span> Bytes - How type depends on interpreting bit-sequences</a></li><li><a class="linkin" href="index.html#other-types"><span class="toc-section-number">3.3</span> Other types</a></li></ul></li>
+<li><a class="linkin" href="index.html#input-output-and-type-conversions"><span class="toc-section-number">4</span> Input/Output and Type Conversions</a>
+<ul><li><a class="linkin" href="index.html#i-o-streams"><span class="toc-section-number">4.1</span> I/O Streams</a></li><li><a class="linkin" href="index.html#when-types-collide-conversion"><span class="toc-section-number">4.2</span> When types collide - conversion</a></li><li><a class="linkin" href="index.html#variable-declaration-assignment-shortcuts-and-good-ideas"><span class="toc-section-number">4.3</span> Variable declaration/assignment shortcuts and good ideas</a></li></ul></li>
+<li><a class="linkin" href="index.html#expressions-and-statements"><span class="toc-section-number">5</span> Expressions and Statements</a>
+<ul><li><a class="linkin" href="index.html#a-note-on-expressions-precedence-and-associativity"><span class="toc-section-number">5.1</span> A Note on expressions, precedence and associativity</a></li></ul></li>
+<li><a class="linkin" href="index.html#branching"><span class="toc-section-number">6</span> Branching</a>
+<ul><li><a class="linkin" href="index.html#scope-and-blocks"><span class="toc-section-number">6.1</span> Scope and Blocks</a></li><li><a class="linkin" href="index.html#boolean-operators"><span class="toc-section-number">6.2</span> Boolean Operators</a></li><li><a class="linkin" href="index.html#if-statement-shortcuts"><span class="toc-section-number">6.3</span> If statement shortcuts</a></li></ul></li>
+<li><a class="linkin" href="index.html#switch-statements-optional-"><span class="toc-section-number">7</span> Switch statements (optional)</a></li>
+<li><a class="linkin" href="index.html#practice-problems-and-questions"><span class="toc-section-number">8</span> Practice Problems and Questions</a></ul></div></div></nav><footer><div id="foottext">    <p class="disclaimer">Material contained above is made available
+    for the purpose of peer review and discussion and does not
+    necessarily reflect the views of the Department of the Navy or the
+    Department of Defense.
+    Some links above are to sites that are not
+    located at the United States Naval Academy. The USNA is not
+    responsible for the content found on these sites. In addition, the
+    content of these sites does not reflect the opinions, standards,
+    policy or endorsement of the Naval Academy or the United States
+    Government.</p>
+  Page maintained by Daniel S. Roche (<a href="mailto:roche [AT] usna [DOT] edu" id="emaillink1">roche [AT] usna [DOT] edu</a><script type='text/javascript'><!--
+        var b="he@usna.edu";
+        var a="roc";
+        document.getElementById("emaillink1").href='mailto:'+a+b;
+        document.getElementById("emaillink1").innerHTML=a+b;
+        // --></script>). Last updated 03 February 2017 11:10.</div></footer><script src="../../scripts/prism.js"></script><script type="text/javascript">var the_body = $('html, body');
+var sticky_height = $('.stickynav').height();
+$('.linkin').click(function(){
+  var href = $(this).attr('href');
+  var offset;
+  if (href == '#top') offset = 0;
+  else offset = $(href).offset().top - sticky_height;
+  the_body.animate({ scrollTop: offset }, 500);
+  return false;
+});</script></body></html>

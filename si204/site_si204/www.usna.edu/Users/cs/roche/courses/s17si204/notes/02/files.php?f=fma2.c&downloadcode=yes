@@ -1,0 +1,66 @@
+/***************************************************
+F = m a Program
+
+Write a program that solves for the unknown variable
+in the F = m a equation.  The user enters two
+variable = value pairs (e.g "m = 10.0 F = 3.5") and
+the program writes the unknown variable and its
+value ("a = .35" in our example).
+
+In this solution, we first sort our variables so
+that var1 is always before var2 in alphabetical
+order, and this makes it easier to figure out which
+variable we're solving for.
+***************************************************/
+#include "si204.h"
+
+int main() {
+  fputs("The F = m a Program\n", stdout);
+
+  // Read first variable/value pair
+  char var1;
+  char c;
+  double val1;
+  fputs("Enter <var> = <value> : ", stdout);
+  var1 = readchar(stdin); // the variable
+  c = readchar(stdin);    // the equals sign
+  val1 = readnum(stdin);  // the value
+
+  // Read second variable/value pair
+  char var2;
+  double val2;
+  fputs("Enter <var> = <value> : ", stdout);
+  var2 = readchar(stdin); // the variable
+  c = readchar(stdin);    // the equals sign
+  val2 = readnum(stdin);  // the value
+
+  // ensure that var1 is alphabetically before var2
+  if (var1 > var2) {
+    // swap var1 and var2
+    char tvar = var1;
+    var1 = var2;
+    var2 = tvar;
+
+    // swap val1 and val2
+    double tval = val1;
+    val1 = val2;
+    val2 = tval;
+  }
+
+  // Decide which variable is missing & solve
+  if (var1 == 'F' && var2 == 'a') {
+    fputs("m = ", stdout);
+    writenum(val1 / val2, stdout);
+    fputs("\n", stdout);
+  } else if (var1 == 'F' && var2 == 'm') {
+    fputs("a = ", stdout);
+    writenum(val1 / val2, stdout);
+    fputs("\n", stdout);
+  } else if (var1 == 'a' && var2 == 'm') {
+    fputs("F = ", stdout);
+    writenum(val1 * val2, stdout);
+    fputs("\n", stdout);
+  }
+
+  return 0;
+}

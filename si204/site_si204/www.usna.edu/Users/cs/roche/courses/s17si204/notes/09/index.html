@@ -1,0 +1,686 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Unit 9: Linked lists</title><meta name="viewport" content="width=device-width, initial-scale=1.0"><link href="../../scripts/prism.css" rel="stylesheet" /><link rel="stylesheet" type="text/css" href="../../style.css"><script type="text/javascript" src="../../../../mathjax/MathJax.js%3Fconfig=TeX-AMS_HTML"></script><script type="text/javascript" src="../../scripts/jquery-3.1.1.min.js"></script><style>
+@media only screen and (min-width: 600px) {
+  #main>header {background-image: url("../../scripts/header.png");}
+}
+</style><link rel="stylesheet" type="text/css" href="../../notes.css">  <meta name="generator" content="pandoc">
+  <style type="text/css">code{white-space: pre;}</style>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head><body><div id="main"><header><nav class="topnav"><div>
+            <a href="../../index.php.html">SI 204</a>
+            </div><div>
+            <a href="../../calendar.php.html">Calendar</a>
+            </div><div id="navparent">
+            <a href="../index.html">Notes</a>
+            </div><div>
+            <a href="../../hw/index.html">HWs</a>
+            </div><div>
+            <a href="../../lab/index.html">Labs</a>
+            </div><div>
+            <a href="../../proj/index.html">Projects</a>
+            </div><div>
+            <a href="../../exams/index.html">Exams</a>
+            </div><div>
+            <a href="../../admin/index.html">Resources</a>
+            </div><div>
+            <a href="https://www.usna.edu/Users/cs/roche/">Roche</a>
+            </div><div>
+            <a href="https://www.usna.edu/Users/cs/albing/">Albing</a>
+            </div></nav></header><div id="mainbox"><div class="printonly"><h1 class="printtitle">SI 204 Spring 2017 / Notes</h1><hr></div><article id="mainart"><header><h1>Unit 9: Linked lists</h1></header><div id="TOC"><ul><li><a class="linkin" href="index.html#pointers-recursive-structs-linked-lists"><span class="toc-section-number">1</span> Pointers, recursive structs, linked lists</a>
+<ul><li><a class="linkin" href="index.html#pointers-to-a-single-object"><span class="toc-section-number">1.1</span> Pointers to a single object</a></li><li><a class="linkin" href="index.html#linked-list-intro"><span class="toc-section-number">1.2</span> Linked List Intro</a></li><li><a class="linkin" href="index.html#linked-list-node-struct"><span class="toc-section-number">1.3</span> Linked list node struct</a></li><li><a class="linkin" href="index.html#printing-the-values-in-a-linked-list"><span class="toc-section-number">1.4</span> Printing the values in a linked list</a></li></ul></li>
+<li><a class="linkin" href="index.html#creating-linked-lists"><span class="toc-section-number">2</span> Creating linked lists</a>
+<ul><li><a class="linkin" href="index.html#the-hard-way-making-a-list-manually"><span class="toc-section-number">2.1</span> The hard way: making a list manually</a></li><li><a class="linkin" href="index.html#adding-a-node"><span class="toc-section-number">2.2</span> Adding a Node</a></li><li><a class="linkin" href="index.html#the-empty-list"><span class="toc-section-number">2.3</span> The empty list</a></li><li><a class="linkin" href="index.html#add2front-function"><span class="toc-section-number">2.4</span> add2front function</a></li></ul></li>
+<li><a class="linkin" href="index.html#linked-lists-with-loops"><span class="toc-section-number">3</span> Linked lists with loops</a>
+<ul><li><a class="linkin" href="index.html#traversing-a-list"><span class="toc-section-number">3.1</span> Traversing a list</a></li><li><a class="linkin" href="index.html#a-typical-linked-list-problem-compute-the-length"><span class="toc-section-number">3.2</span> A typical linked list problem - compute the length</a></li><li><a class="linkin" href="index.html#deleting-a-list"><span class="toc-section-number">3.3</span> Deleting a list</a></li></ul></li>
+<li><a class="linkin" href="index.html#linked-lists-with-recursion"><span class="toc-section-number">4</span> Linked lists with recursion</a>
+<ul><li><a class="linkin" href="index.html#a-recursive-approach-to-functions-on-lists"><span class="toc-section-number">4.1</span> A recursive approach to functions on lists</a></li><li><a class="linkin" href="index.html#printing-a-list-recursively"><span class="toc-section-number">4.2</span> Printing a list recursively</a></li><li><a class="linkin" href="index.html#recursive-length"><span class="toc-section-number">4.3</span> Recursive length</a></li><li><a class="linkin" href="index.html#recursive-free"><span class="toc-section-number">4.4</span> Recursive free</a></li></ul></li>
+<li><a class="linkin" href="index.html#more-linked-list-functions"><span class="toc-section-number">5</span> More linked list functions</a>
+<ul><li><a class="linkin" href="index.html#adding-to-the-back-of-a-list"><span class="toc-section-number">5.1</span> Adding to the back of a list</a></li><li><a class="linkin" href="index.html#sum-of-a-list"><span class="toc-section-number">5.2</span> Sum of a list</a></li><li><a class="linkin" href="index.html#max-of-a-list"><span class="toc-section-number">5.3</span> Max of a list</a></li></ul></li>
+<li><a class="linkin" href="index.html#problems"><span class="toc-section-number">6</span> Problems</a></li></ul></div><div class="panbody"><p>In this unit, we’ll see how to make a list of things <em>without</em> using arrays, just by linking a bunch of structs together in a chain. This idea of putting together small pieces (or “nodes”) to organize a large amount of information is really powerful, and will be the basis of much of what you learn in your data structures class next year.</p>
+<p><img src="fb.jpg" /> <br> source: <a href="https://darthmojo.wordpress.com/2009/08/14/music-post-ferris-buellers-day-off/" class="uri">https://darthmojo.wordpress.com/2009/08/14/music-post-ferris-buellers-day-off/</a></p>
+<p>(Credit to <a href="https://www.usna.edu/Users/cs/wcbrown/">Chris Brown</a> for the original version of these notes.)</p>
+<!-- from l36 -->
+<h1 id="pointers-recursive-structs-linked-lists"><a class ="linkin" href="index.html#top"><span class="header-section-number">1</span> Pointers, recursive structs, linked lists</a></h1><h2 id="pointers-to-a-single-object"><a class="linkin" href="index.html#top"><span class="header-section-number">1.1</span> Pointers to a single object</a></h1><p>Although we frequently use pointers to refer to <em>arrays</em>, remember that you can also have a pointer just to a single object. Another way to think of this is as an array of length one. For example:</p>
+<table>
+<colgroup>
+<col style="width: 54%" />
+<col style="width: 45%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td><pre><code class="language-C">int *p;
+int x = 2;                 // Step 1
+p = calloc(1, sizeof(int)) // Step 2
+*p = x + 1;                // Step 3</code></pre></td>
+<td><img src="pointer1.gif" title="fig:" /></td>
+</tr>
+</tbody>
+</table>
+<p>Remember that the <code>*</code> in Step 3 above is a <em>dereference</em> operator, and that we should also call <code>free(p)</code> at some point to deallocate the heap space allocated on Step 2.</p>
+<h2 id="linked-list-intro"><a class="linkin" href="index.html#top"><span class="header-section-number">1.2</span> Linked List Intro</a></h1><p>Of course there are many times in programming when we want to store a sequence or list of objects. Up to this point we’ve used arrays for that, which are great, but they also have a few important limitations:</p>
+<ol type="1">
+<li>You have to choose the size of the array when you declare it with <code>[]</code> or <code>calloc</code> and changing the size later is somewhat painful and slow. This can be rough if you don’t know the size of the array ahead of time.</li>
+<li>Adding an element to the front of an array, or inserting an element somewhere in the middle, is a big job - first you need extra “room” in the array, and second you need to move everything else in the array back an element, which is potentially slow.</li>
+</ol>
+<p>Linked lists are an alternative to arrays that avoids these limitations. A linked list consists of “nodes”, each of which contains a piece of data and a link to the “next” node in the list. The following picture shows a linked list storing the numbers 87, 42, 53, 4.</p>
+<figure>
+<img src="linkedlist1.gif" />
+</figure>
+<p>You absolutely have to keep this kind of picture in mind if you want to program with linked lists! The idea here is that you move through the collection starting with a pointer to the first node in the list, which is marked “<code>LIST</code>” in the picture. From there you simply follow the links (arrows) from one piece of data to the next. The last node in a linked list does not have a link to a “next” node - we usually show its next-field with a slash to indicate that.</p>
+<h2 id="linked-list-node-struct"><a class="linkin" href="index.html#top"><span class="header-section-number">1.3</span> Linked list node struct</a></h1><p>To realize this picture in C code, we see that we have to manipulate “nodes”. Therefore, it’s natural to make a struct <code>node</code>. Let’s assume that we want to store doubles in our list. Then a <code>struct node</code> will consist of a double, which we might call “data”, and a link to the “next” node.</p>
+<p>The question is, what type of object would the link to the “next” node be? Hopefully you see that what we need is a <em>pointer</em> to the next node in the list, which means we need a pointer to an object of type <code>node</code> - i.e. we need a data member of type <code>struct node*</code>.</p>
+<pre><code class="language-C">struct node {
+  double data;
+  struct node* next;
+};</code></pre>
+<p>By convention, the <code>next</code> field of the last element in the list is set to the value <code>NULL</code> to indicate that it’s not pointing to anything. This is called a “null pointer”.</p>
+<p>This is a <em>recursive</em> type, because the type <code>struct node</code> contains a pointer to another object of the same type. Cool! But it does create a small issue if you try to use the <code>typedef</code> struct definition, since the compiler has to know what the type is during the type definition itself.</p>
+<p>But of course, it’s possible to use a <code>typedef</code> to avoid having to type the <code>struct node</code> every time for the type name; you just have to do it in two lines, using what’s called a “forward declaration” of the struct type, like so:</p>
+<pre><code class="language-C">// tell the compiler that &quot;node&quot; is the same as &quot;struct node&quot;
+typedef struct node node;
+
+// declare the struct
+struct node {
+  double data;
+  node* next;
+};
+
+// now you can use &quot;node&quot; by itself to refer to this struct type</code></pre>
+<h2 id="printing-the-values-in-a-linked-list"><a class="linkin" href="index.html#top"><span class="header-section-number">1.4</span> Printing the values in a linked list</a></h1><p>Remember that we manipulate an array in our programs by manipulating a pointer variable that points to the array. Similarly, we manipulate a linked list by manipulating a <em>pointer to the first node in the list</em>. So, suppose we want to deal with linked lists of integers. We would define a struct <code>node</code> like:</p>
+<pre><code class="language-C">struct node {
+  int data;
+  struct node* next;
+};</code></pre>
+<p>Now, we might have a variable of type <code>struct node*</code> called <code>LIST</code> that points to the first node in our linked list of integers. Our list might look something like this:</p>
+<figure>
+<img src="linkedlist1.gif" />
+</figure>
+<p>We could print out the first integer in our list with the statement</p>
+<pre><code class="language-C">printf(&quot;%i\n&quot;, LIST-&gt;data);</code></pre>
+<p>which says “print the <code>data</code> field of the <code>struct node</code> pointed to by <code>LIST</code>”. You can simply follow that in the picture, it prints out 87. Now, to print out the second integer in the list, we’d like to say the same thing, except instead of <code>LIST</code>, which points to the <em>first</em> node in the list, we need a pointer to the second node in the list. Then we could write:</p>
+<pre><code class="language-C">printf(&quot;%i\n&quot;, (pointer to the second node)-&gt;data);</code></pre>
+<p>Now, if you look back at the picture, you see that there is a pointer to the second node in the list, it is the <code>next</code> field from the first node in the list, i.e. <code>LIST-&gt;next</code> is a pointer to the second node in the list. So, to print out the second node in the list you write:</p>
+<pre><code class="language-C">printf(&quot;%i\n&quot;, (LIST-&gt;next)-&gt;data);</code></pre>
+<p>Actually you don’t need the parentheses, because the <code>-&gt;</code> is left associative. Anyway, to print out the third element of the list you could write:</p>
+<pre><code class="language-C">printf(&quot;%i\n&quot;, LIST-&gt;next-&gt;next-&gt;data);</code></pre>
+<p>But this way lies madness! It’s usually better to simply make a temporary pointer that points to what you want, and move that pointer through the list. For example:</p>
+<pre><code class="language-C">struct node* cur = LIST;   // Set cur to point to first node
+printf(&quot;%i\n&quot;, cur-&gt;data); // print out the first element
+cur = cur-&gt;next;           // Set cur to point to second node
+printf(&quot;%i\n&quot;, cur-&gt;data); // print out the second element
+cur = cur-&gt;next;           // Set cur to point to third node
+printf(&quot;%i\n&quot;, cur-&gt;data); // print out the third element</code></pre>
+<h1 id="creating-linked-lists"><a class ="linkin" href="index.html#top"><span class="header-section-number">2</span> Creating linked lists</a></h1><p>We just saw how to print out a linked list, but how do we make one in the first place?</p>
+<h2 id="the-hard-way-making-a-list-manually"><a class="linkin" href="index.html#top"><span class="header-section-number">2.1</span> The hard way: making a list manually</a></h1><p>Below is the code to create a linked list of four integers shown by this picture:</p>
+<figure>
+<img src="linkedlist1.gif" />
+</figure>
+<pre><code class="language-C">// make first node
+LIST = calloc(1, sizeof(struct node));
+LIST-&gt;data = 87;
+// make second node
+LIST-&gt;next = calloc(1, sizeof(struct node));
+LIST-&gt;next-&gt;data = 42;
+// make third node
+LIST-&gt;next-&gt;next = calloc(1, sizeof(struct node));
+LIST-&gt;next-&gt;next-&gt;data = 53;
+// make fourth node
+LIST-&gt;next-&gt;next-&gt;next = calloc(1, sizeof(struct node));
+LIST-&gt;next-&gt;next-&gt;next-&gt;data = 4;
+LIST-&gt;next-&gt;next-&gt;next-&gt;next = NULL;</code></pre>
+<p>Two things should be clear from the example above. First, we pretty much <em>have</em> to use heap-based allocation to create linked lists. The reason is that we have just a single variable (in this case, <code>LIST</code>) that points to any number of linked list nodes. It’s not possible to allocate those all at once, since the whole point of linked lists is that we don’t have to know the size in advance.</p>
+<p>The second thing that should be really, really clear is that again, “this way lies madness”. Unless you want to be writing <code>next-&gt;next-&gt;next-&gt;next</code> all day, we need a way to do this more simply. The trick is to start with an empty list, and then add one node at a time.</p>
+<h2 id="adding-a-node"><a class="linkin" href="index.html#top"><span class="header-section-number">2.2</span> Adding a Node</a></h1><p>Adding a node to the front of a linked list consists of just a few steps: You create a new <code>struct node</code>, set it’s <code>data</code> and <code>next</code> fields, and set <code>LIST</code> to point to it, since it’s supposed to be the new “first node in the list”. Here’s how this happens in code, step by step.</p>
+<ol type="1">
+<li><p>Initially we have:</p>
+<figure>
+<img src="linkedlist2.gif" />
+</figure></li>
+<li><p><code>struct node* temp = calloc(1, sizeof(struct node));</code></p>
+<figure>
+<img src="linkedlist3.gif" />
+</figure></li>
+<li><p><code>temp-&gt;data = 8;</code></p>
+<figure>
+<img src="linkedlist4.gif" />
+</figure></li>
+<li><p><code>temp-&gt;next = LIST;</code></p>
+<figure>
+<img src="linkedlist5.gif" />
+</figure></li>
+<li><p><code>LIST = temp;</code></p>
+<figure>
+<img src="linkedlist6.gif" />
+</figure></li>
+<li><p>At the end we have:</p>
+<figure>
+<img src="linkedlist7.gif" />
+</figure></li>
+</ol>
+<p>Whenever you want to add a new value <code>val</code> to the front of a linked list <code>LIST</code>, the same sequence of steps will do the job:</p>
+<pre><code class="language-C">struct node* temp = calloc(1, sizeof(struct node));
+temp-&gt;data = val;
+temp-&gt;next = LIST;
+LIST = temp;</code></pre>
+<h2 id="the-empty-list"><a class="linkin" href="index.html#top"><span class="header-section-number">2.3</span> The empty list</a></h1><p>When you tell people that the ancient Greeks, who were extremely sophisticated mathematicians, had no concept of zero, most people think “What was wrong with them? It’s so obvious!” Well, that’s not a very fair appraisal, and you may gain a little appreciation of why when we talk about … the empty list. When speaking of lists, it’s <em>really</em> handy to have the concept of an <strong>empty list</strong>, i.e. a list of zero nodes. If you’re thinking “Why would I do that? A list of nothing doesn’t even make sense?”, then you know how the ancient Greeks felt!</p>
+<p>In our programs, we represent an empty list by a null pointer, i.e. with a pointer whose value is <code>NULL</code>. Once you accept the empty list, lots of things become a bit easier to discuss. For example, the sequence of steps we used to add a new element to the front of a list works perfectly well even when the list is empty. Try running the same sequence of steps above, but where initially we just have <code>LIST</code> being a null pointer, like:</p>
+<figure>
+<img src="empty6.gif" />
+</figure>
+<p>At the end of the same sequence of insertion steps, you can insert a new number <code>3</code> in the front of this list, ending up with:</p>
+<figure>
+<img src="empty1.gif" />
+</figure>
+<h2 id="add2front-function"><a class="linkin" href="index.html#top"><span class="header-section-number">2.4</span> add2front function</a></h1><p>At this point, we should have the idea that, since we have a fixed sequence of steps that add a new element to the front of a list, we might want to make a function! Remember that the basic steps are:</p>
+<ol type="1">
+<li>Make a new node</li>
+<li>Set the node’s <code>value</code> field accordingly</li>
+<li>Set the node’s <code>next</code> to the beginning of the existing list</li>
+<li>Set the beginning of the list to our new node</li>
+</ol>
+<p>Based on that, you might be tempted to write the following:</p>
+<pre><code class="language-C">// WARNING! THIS VERSION DOESN&#39;T WORK!!
+void add2front(int val, struct node* oldlist) {
+  struct node* temp = calloc(1, sizeof(struct node));
+  temp-&gt;data = val;
+  temp-&gt;next = oldlist;
+  oldlist = temp;
+}</code></pre>
+<p>So what’s the problem? Well everything here is correct except for the last step, where we want to “set the beginning of the list to our new node”. The issue is that in C, function arguments are a <em>copy</em> of the original using pass by value. In this case, the <code>oldlist</code> argument itself is just a <em>copy</em> of the original <code>LIST</code> pointer that might be inside our <code>main</code>. So changing the value of <code>oldlist</code> on the last line of the function just changes the copied pointer, not the original pointer inside <code>main</code> or wherever this function was called from!</p>
+<p>There are two ways to solve this. One way is that you could change the second function argument’s type to be <code>struct node**</code>, i.e., a pointer to the pointer. That could work, but it can get kind of messy and difficult dealing with a pointer to a pointer in our code.</p>
+<p>Instead, we can use the return value from the function, as a way of passing the pointer to the newly-created node back to the place where this function was called, like so:</p>
+<pre><code class="language-C">// correct version: returns a pointer to the new list
+struct node* add2front(int val, struct node* oldlist) {
+  struct node* temp = calloc(1, sizeof(struct node));
+  temp-&gt;data = val;
+  temp-&gt;next = oldlist;
+  return temp;
+}</code></pre>
+<p>Now in your program you have to use this return value! Typically, if you have your linked list defined as</p>
+<pre><code class="language-C">struct node* LIST;</code></pre>
+<p>inside <code>main</code>, then you would write</p>
+<pre><code class="language-C">LIST = add2front(3, LIST);</code></pre>
+<p>to add a new node with value 3 to the front of <code>LIST</code>. Notice that the pointer variable <code>LIST</code> shows up in two places in that line of code - once as the argument to the function (the “old list”), and once as the left hand side getting the new front of the list assigned to it. This is a very common pattern in functions that manipulate linked lists, so learn to love it!</p>
+<p>Armed with thie <code>add2front</code> function, the very tedious example above of making a linked list with 4 numbers can be done much, much more simply:</p>
+<pre><code class="language-C">struct node* LIST = NULL;
+LIST = add2front(4, LIST);
+LIST = add2front(53, LIST);
+LIST = add2front(42, LIST);
+LIST = add2front(87, LIST);</code></pre>
+<p>Which results in the following picture:</p>
+<figure>
+<img src="linkedlist1.gif" />
+</figure>
+<p><strong>Notice</strong>: we added the elements to the list in reverse order from how they ended up! Since we are always adding to the front of the list, the <em>last</em> thing we add has to be the first thing in the list.</p>
+<!-- from l37 -->
+<h1 id="linked-lists-with-loops"><a class ="linkin" href="index.html#top"><span class="header-section-number">3</span> Linked lists with loops</a></h1><p>So far we can add things to a linked list one at a time and access linked list elements one at a time. To make useful programs, we want to be able to do this many, many times depending on how long the list is. At first, we’ll look at some examples of doing this with loops. Later we’ll see how to do all the same tasks using recursion instead, which can be <em>much</em> easier in many cases.</p>
+<h2 id="traversing-a-list"><a class="linkin" href="index.html#top"><span class="header-section-number">3.1</span> Traversing a list</a></h1><p>We’ll start things off by looking at the simplest of programs: read and store ints in a linked list, then print the values stored in a list.</p>
+<p>Printing a list, and indeed most things you do with a linked list, involves <em>traversing</em> a list – which means visiting each node in the list, in order. Doing this iteratively means using a temporary pointer that points to the first node originally, then moves to point to the second node in the list, then moves to point to the third, and so on.</p>
+<pre><code class="language-C">struct node* cur = L;
+while(cur != NULL) {
+   // do whatever you have to do
+   cur = cur-&gt;next;
+}</code></pre>
+<p>The last line of the while-loop body, <code>cur = cur-&gt;next;</code> is what moves us from one node to the next.</p>
+<p>Here’s a complete example to rad and print a linked list full of ints:</p>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+struct node {
+  int data;
+  struct node* next;
+};
+
+struct node* add2front(int val, struct node* oldlist);
+
+int main() {
+  // create an empty list
+  struct node* L = NULL;
+
+  // read numbers into the list until -1 is entered
+  printf(&quot;Enter numbers ending with -1:\n&quot;);
+  int x;
+  while (scanf(&quot; %i&quot;, &amp;x) == 1 &amp;&amp; x != -1) {
+    L = add2front(x, L);
+  }
+
+  // print the list
+  printf(&quot;Here's your list:\n&quot;);
+  struct node* temp = L;
+  while (temp != NULL) {
+    printf(&quot;%i\n&quot;, temp-&gt;data);
+    temp = temp-&gt;next;
+  }
+
+  return 0;
+}
+
+struct node* add2front(int val, struct node* oldlist) {
+  struct node* temp = calloc(1, sizeof(struct node));
+  temp-&gt;data = val;
+  temp-&gt;next = oldlist;
+  return temp;
+}</code></pre><p>In fact, that last <code>while</code> loop can be written even more compactly and nicely using <code>for</code>:</p>
+<pre><code class="language-C">for (struct node* cur = L; cur; cur = cur-&gt;next) {
+  printf(&quot;%i\n&quot;, cur-&gt;data);
+}</code></pre>
+<p>Besides the <code>for</code> syntax itself, I also used the fact that in C anything that is not 0 is considered “true”. Since a <code>NULL</code> pointer is equal to 0, the condition <code>cur != NULL</code> can be written more succinctly as just <code>cur</code>.</p>
+<h2 id="a-typical-linked-list-problem-compute-the-length"><a class="linkin" href="index.html#top"><span class="header-section-number">3.2</span> A typical linked list problem - compute the length</a></h1><p>Here’s a typical example of a linked list problem: Write a function that determines the length of a linked list - i.e. the number of nodes. The prototype of our function should look like this:</p>
+<pre><code class="language-C">int length(struct note*);</code></pre>
+<p>It returns an <code>int</code> because, of course, the length of a list is an integer. It takes a pointer to a <code>struct node</code>, because we manipulate lists by manipulating pointers, just like with arrays.</p>
+<p>The process we use to determine the length is to move through the list from front to back, one node at a time, keeping track of how many you visit in the process.</p>
+<p>Here I’m using the same exact <code>for</code> loop as the example above, except that instead of printing inside the loop, we add to a <code>count</code> variable that will determine the length.</p>
+<pre><code class="language-C">int length(struct node* L) {
+  int count = 0;
+  for (struct node* cur = L; cur; cur = cur-&gt;next) {
+    ++count;
+  }
+  return count;
+}</code></pre>
+<p>Try tracing this function through on a small example such as</p>
+<figure>
+<img src="linkedlist1.gif" />
+</figure>
+<p>to make sure you understand deeply how it works. Try it with an empty list too - that length should be zero!</p>
+<p>It’s important to say that this very same <code>for</code> loop won’t work for every linked list problem, but it’s not a bad way to start out. Usually the tough things involve thinking about “when do I want to stop the loop?” and “how does this work for an empty list?”.</p>
+<h2 id="deleting-a-list"><a class="linkin" href="index.html#top"><span class="header-section-number">3.3</span> Deleting a list</a></h1><p>Since nodes in a linked list are each created dynamically with “<code>calloc</code>”, they live on in your program until they are each individually destroyed with “<code>free</code>”. It is often useful to have a function <code>void freelist(struct node* L);</code> that deletes each of the nodes in a list.</p>
+<p>Now you might be tempted to use our same old <code>for</code> loop, like:</p>
+<pre><code class="language-C">// WARNING: THIS DOES NOT WORK!!
+void freelist(struct node* L) {
+  for (struct node* cur = L; cur; cur = cur-&gt;next) {
+    free(cur);
+  }
+}</code></pre>
+<p>Now try that yourself so you can see what the problem is. It might be clearer if we re-write this as a <code>while</code> loop:</p>
+<pre><code class="language-C">// WARNING: STILL DOESN&#39;T WORK!
+void freelist(struct node* L) {
+  struct node* cur = L;
+  while (cur != NULL) {
+    free(cur);
+    cur = cur-&gt;next;
+  }
+}</code></pre>
+<p>The problem is that we destroy the current node <code>cur</code> and then immediately afterwards try to grab the value of <code>cur-&gt;next</code>. That won’t work, since we’ve just deallocated the memory for <code>cur</code> itself; <code>cur-&gt;next</code> is gone by the time we try and use it!</p>
+<p>The solution here is that you have to save the value of <code>cur-&gt;next</code> into a temporary variable, before doing <code>free(cur)</code>, and then use that saved value in place of <code>cur-&gt;next</code>:</p>
+<pre><code class="language-C">void freelist(struct node* L) {
+  struct node* cur = L;
+  while (cur != NULL) {
+    struct node* temp = cur-&gt;next;
+    free(cur);
+    cur = temp;
+  }
+}</code></pre>
+<p>In fact, we can be a little more slick about it by using the original pointer <code>L</code> in place of <code>cur</code>, equivalently to the version above but a bit shorter:</p>
+<pre><code class="language-C">void freelist(struct node* L) {
+  while (L) {
+    struct node* temp = L-&gt;next;
+    free(L);
+    L = temp;
+  }
+}</code></pre>
+<p>One thing you should take away from this example is that <em>the order is REALLY important with linked list functions</em>. If you took the three statements of the <code>while</code> loop above in any other order, it definitely would not work! Frequently with linked lists, the code we need to write is relatively simple or short, but we have to think very carefully to avoid getting seg faults or otherwise incorrect code.</p>
+<h1 id="linked-lists-with-recursion"><a class ="linkin" href="index.html#top"><span class="header-section-number">4</span> Linked lists with recursion</a></h1><p>We’ve seen recursive functions before, and you probably had some combination of the following emotions about them:</p>
+<ol type="1">
+<li>Recursion is a fun, challenging puzzle</li>
+<li>Recursion is craziness that I do not understand</li>
+<li>Recursion is a useless waste of effort because loops are easier</li>
+</ol>
+<p>Well I can’t say much more about (1) and (2), but the last point is different with linked lists. Linked list functions work very <em>naturally</em> with recursion because the linked list node struct itself:</p>
+<pre><code class="language-C">struct node {
+  int data;
+  struct node* next;
+};</code></pre>
+<p>is itself a recursive type! Once you get the hang of it, writing recursive functions with linked lists is great, and much <em>easier</em> than the loop versions. Granted, it can take some practice to “get the hang of it”, but trust me that this effort is worthwhile. Or if you don’t trust me, ask anyone you know who’s taken a data structures class, whether they wish needed to understand recursion with linked lists. It’s an investment in time, but one that will pay excellent dividends to you as a programmer.</p>
+<h2 id="a-recursive-approach-to-functions-on-lists"><a class="linkin" href="index.html#top"><span class="header-section-number">4.1</span> A recursive approach to functions on lists</a></h1><p>Remember that every recursive function has to have a <em>base case</em> where the recursion stops, and a <em>recursive call</em> to itself on some smaller size.</p>
+<p>With linked lists, the typical base case is an empty list, and the typical recursive call is for the rest of the list after the first node. That gives us a sort of template for a recursive function on linked lists:</p>
+<pre><code class="language-C">void fun(struct node* L) {
+  if (L == NULL) {
+    // base case; depends on what you&#39;re doing
+  } else {
+    // maybe do something with L-&gt;data here
+    fun(L-&gt;next);
+  }
+}</code></pre>
+<p>The important parts are testing for the empty list with <code>if (L == NULL)</code> and making the recursive call <code>fun(L-&gt;next)</code>.</p>
+<p>Let’s look at a few examples to see this in action. Of course, depending on the problem at hand, you might have to change this template in one way or another, but what we have above is always a good place to start.</p>
+<h2 id="printing-a-list-recursively"><a class="linkin" href="index.html#top"><span class="header-section-number">4.2</span> Printing a list recursively</a></h1><p>To write a recursive function to print out a linked list, we can start with the template above:</p>
+<pre><code class="language-C">void printlist(struct node* L) {
+  if (L == NULL) {
+    // base case; depends on what you&#39;re doing
+  } else {
+    // maybe do something with L-&gt;data here
+    printlist(L-&gt;next);
+  }
+}</code></pre>
+<p>and then fill in the two comment lines.</p>
+<p>First we have to answer the question, “What should happen in the base case?” Another way of putting that is, “What should happen when we try to print an empty list?” And the answer is, nothing! So we can leave that part blank in the code.</p>
+<p>The second question is, “What do we do for each node in the list?” That’s easy too — you print out the node’s <code>data</code> field using a <code>printf</code>! This gives us the complete function:</p>
+<pre><code class="language-C">void printlist(struct node* L) {
+  if (L == NULL) {
+    // printing an empty list - nothing to do here!
+  } else {
+    printf(L-&gt;data);
+    printlist(L-&gt;next);
+  }
+}</code></pre>
+<p>In fact, since the base case here is empty, we could simplify this function even further as:</p>
+<pre><code class="language-C">void printlist(struct node* L) {
+  if (L) {
+    printf(L-&gt;data);
+    printlist(L-&gt;next);
+  }
+}</code></pre>
+<p>See what I mean when I said that recursion can be really “natural” with linked lists?</p>
+<h2 id="recursive-length"><a class="linkin" href="index.html#top"><span class="header-section-number">4.3</span> Recursive length</a></h1><p>As far as the <code>length</code> problem is concerned, we can start with the same basic template again:</p>
+<pre><code class="language-C">void length(struct node* L) {
+  if (L == NULL) {
+    // base case; depends on what you&#39;re doing
+  } else {
+    // maybe do something with L-&gt;data here
+    length(L-&gt;next);
+  }
+}</code></pre>
+<p>Once again we have to answer two questions:</p>
+<ol type="1">
+<li>What to do in the base case? In this case, that means, “What is the length of an empty list?” That’s not a zen puzzle, it’s zero!</li>
+<li>What to do in the recursive case? The trick here is to <em>use</em> the value from the recursive call, and notice that the length of a list is one more than the length of the list with the first item removed.</li>
+</ol>
+<p>Which leads to this recursive function:</p>
+<pre><code class="language-C">void length(struct node* L) {
+  if (L == NULL) {
+    return 0;
+  } else {
+    return 1 + length(L-&gt;next);
+  }
+}</code></pre>
+<p>Pretty nice, right? I hope that you can follow along how this works and the basic process for writing a recursive function like this. But the only way to really understand recursive functions is to write (and debug) a few yourself! Check out the problems at the end of this unit and try to solve them both iteratively and recursively.</p>
+<h2 id="recursive-free"><a class="linkin" href="index.html#top"><span class="header-section-number">4.4</span> Recursive free</a></h1><p>One place recursion really “shines” with linked lists is in de-allocating a list. Remember that for the iterative version, we had to think carefully about not deleting the node before we use it, and had to create an extra temp variable for this purpose:</p>
+<pre><code class="language-C">void freelist(struct node* L) {
+  struct node* cur = L;
+  while (cur != NULL) {
+    struct node* temp = cur-&gt;next;
+    free(cur);
+    cur = temp;
+  }
+}</code></pre>
+<p>This gets much simpler with recursion! The logic goes like this:</p>
+<ul>
+<li>If the list is empty, there’s nothing to delete.</li>
+<li>Otherwise, you have to delete the first node, and you use recursion to delete all the other nodes.</li>
+<li>The first node should be the last thing you delete.</li>
+</ul>
+<p>Which leads to the following simple recursive function to de-allocate a linked list:</p>
+<pre><code class="language-C">void freelist(struct node* L) {
+  if (L) {
+    freelist(L-&gt;next);
+    free(L);
+  }
+}</code></pre>
+<p>Again, let me emphasize that the purpose of recursion is not just to have shorter, more “elegant” functions (although that’s nice), it’s to get comfortable with multiple ways of programming so that you have more options available when solving a new problem.</p>
+<p>Sometimes recursion seems “better” for the problem at hand, and sometimes a loop is a more natural solution. But remember that, since you’re more used to writing loops now, you won’t get a good feel for this until you’ve written many small recursive functions. So get to work!</p>
+<h1 id="more-linked-list-functions"><a class ="linkin" href="index.html#top"><span class="header-section-number">5</span> More linked list functions</a></h1><h2 id="adding-to-the-back-of-a-list"><a class="linkin" href="index.html#top"><span class="header-section-number">5.1</span> Adding to the back of a list</a></h1><p>Adding to the front of our bare-bones linked lists is very natural. Adding to the back takes more work! You have two basic cases, which really need to be handled separately:</p>
+<ol type="1">
+<li><strong>the original list <code>L</code> is empty</strong><br />
+In this case you must create a new node and change the actual pointer L to point to that new node.</li>
+<li><strong>the original list <code>L</code> is non-empty</strong><br />
+In this case the pointer <code>L</code> will remain unchanged. Instead, you will have to traverse the list in order to get to the last node, and then set the last node’s <code>next</code> to point to a new node that you create.</li>
+</ol>
+<p>Here’s a nice little implementation of an <code>add2back</code> function that works in just this way. As with <code>add2front</code>, the function <em>returns</em> a pointer to the new list. Interestingly here, that will usually be exactly the same as the pointer that was passed in, <em>except</em> when you are adding to an empty list.</p>
+<pre><code class="language-C">struct node* add2back(int x, struct node* L) {
+  struct node* newlast = calloc(1, sizeof(struct node));
+  newlast-&gt;data = x;
+  newlast-&gt;next = NULL;
+
+  if (L == NULL) {
+    // empty list case
+    return newlast;
+  } else {
+    // list has at least 1 node already
+    // start by finding the last node in the list
+    struct node* last = L;
+    while (last-&gt;next != NULL) {
+      last = last-&gt;next;
+    }
+    // now tack newlast on after last
+    last-&gt;next = newlast;
+    // return (beginning of) the new list
+    return L;
+  }
+}</code></pre>
+<p>We can also view add2back recursively. Adding to the back of list <code>L</code> is actually the same as adding to the back of list <code>L-&gt;next</code> Moreover, if <code>L</code> is empty, adding to the back is the same as adding to the front! These two observations, along with of course the <code>add2front</code> function we wrote already, give us the following beautiful recursive formulation:</p>
+<pre><code class="language-C">struct node* add2back(int x, struct node* L) {
+  if (L == NULL) {
+    return add2front(x, L);
+  } else {
+    return add2back(x, L-&gt;next);
+  }
+}</code></pre>
+<h2 id="sum-of-a-list"><a class="linkin" href="index.html#top"><span class="header-section-number">5.2</span> Sum of a list</a></h1><p>Let’s look carefully at recursion and linked lists. An essential property of a recursive solution to a problem is that solving the initial problem involves solving a smaller version of the same problem. How does this fit with linked lists? Very nicely, actually. Remember that a list is represented by a variable <code>L</code> that is a pointer — a pointer to the first node in the list. Now, if you look at the <code>next</code> member of that first node (i.e. look at <code>L-&gt;next</code>), what is that? It’s a pointer — a pointer that represents the list of everything after the first node. So, for example, in the following linked list</p>
+<script type="text/javascript" src="linkedlists.js"></script>
+<script type="text/javascript">
+{ var base = "foo"; makeSVGBBase(base); var DA = document.getElementById("drawarea"+base); DA["nvbase"] = base; makePointerVar(DA,20,10,"L",100,20); nameNode(DA,100,20,"5",175,20); nameNode(DA,175,20,"9",250,20); nameNode(DA,250,20,"2",325,20); nameNode(DA,325,20,"8",400,20); nameNode(DA,400,20,"4",null,null); var c1 = makeCircle(20+7.5,10+7.5,10,base); c1.style.stroke="#ff0000"; c1.style.strokeOpacity="0.75"; DA.appendChild(c1); var c2 = makeCircle(100+25+7.5,20 + 5 +7.5,10,base); c2.style.stroke="#0000FF"; c2.style.strokeOpacity="0.75"; DA.appendChild(c2); }
+</script>
+<p>The pointer <code style="color: #FF0000;">L</code> <em>is</em> the list 5,9,2,8,4, and just as much the pointer <code style="color: #0000FF;">L-&gt;next</code> <em>is</em> the list 9,2,8,4. This makes it natural for a recursive function called with argument <code>L</code> to make its recursive call with argument <code>L-&gt;next</code>. We saw the example of such a recursive call with the recursive version of length:</p>
+<pre><code class="language-C">int length(struct node* L) {
+  if (L == NULL) {
+    return 0;
+  } else {
+    return 1 + length(L-&gt;next);
+  }
+}</code></pre>
+<p>Hopefully this makes sense now that we see that <code>L</code> is the list <code>L-&gt;next</code> plus one extra node, the node with data value 5. Most other recursive functions with lists work the same way. For example, suppose we want to calculate the sum of the elements of list L. In the above example, it is 5 + the sum of 9,2,8,4. In other words, <code>L-&gt;data</code> plus the sum of the elements of the list <code>L-&gt;next</code>. So the recursive case is:</p>
+<pre><code class="language-C">return L-&gt;data + sum(L-&gt;next);</code></pre>
+<p>Of course we need a base case as well - can you figure out what should be returned for the sum of an empty list?</p>
+<pre><code class="language-C">int sum(struct node* L) {
+  if (L == NULL) {
+    return 0;
+  } else {
+    return L-&gt;data + sum(L-&gt;next);
+  }
+}</code></pre>
+<h2 id="max-of-a-list"><a class="linkin" href="index.html#top"><span class="header-section-number">5.3</span> Max of a list</a></h1><p>If you want to find the maximum element of L recursively, you think about comparing the data value of the first node with the maximum of the list of the remaining elements. Here there are really <em>three</em> cases:</p>
+<ol type="1">
+<li>The list has one element, so that’s the max</li>
+<li>The list has many elements, and the first one is that max.</li>
+<li>The list has many elements, and the first one is <em>not</em> the max.</li>
+</ol>
+<p>The base case (1) here is a little more tricky than usual. Usually we would check for an empty list <code>if (L == NULL)</code> for the base case, but here we want it to not be empty but instead have one thing in it, since asking for the max of an empty list doesn’t really make any sense.</p>
+<p>The key is that <em>if list <code>L</code> has one element, then <code>L-&gt;next</code> is <code>NULL</code></em>, and that becomes the condition for the base case.</p>
+<p>Cases (2) and (3) both involve comparing <code>L-&gt;data</code> to the result of the return value from <code>maxelt(L-&gt;next)</code>. You might imagine this is a clever way to write that function:</p>
+<pre><code class="language-C">int maxelt(struct node* L) {
+  if (L.next == NULL) {
+    // single-element list
+    return L-&gt;data;
+  } else if (L-&gt;data &gt;= maxelt(L-&gt;next)) {
+    // first thing in the list is the largest
+    return L-&gt;data;
+  } else {
+    // first thing is not the largest
+    return maxelt(L-&gt;next);
+  }
+}</code></pre>
+<p>This seems great, right? It actually works well too, for a while at least. But if you play around with this, particularly when the largest element is towards the end of your array, you’ll find that it gets mind-bogglingly slow for longer lists. What gives?</p>
+<p>You’ll learn much much more about this if you take a data structures or algorithms class, but the gist is that <em>multiple recursive functions makes code slow down exponentially</em>. In this case, it calls <code>maxelt(L-&gt;next)</code> twice: once in the <code>else if</code> condition, and once in the final <code>return</code> statement. To fix this, we just have to restructure the code to save the recursive call result in a variable, to avoid making the recursive call execute twice:</p>
+<pre><code class="language-C">int maxelt(struct node* L) {
+  if (L.next == NULL) {
+    // single-element list
+    return L-&gt;data;
+  } else {
+    int restmax = maxelt(L-&gt;next);
+    if (L-&gt;data &gt;= restmax) {
+      // first thing in the list is the largest
+      return L-&gt;data;
+    } else {
+      // first thing is not the largest
+      return restmax;
+    }
+  }
+}</code></pre>
+<p><!-- *. --></p>
+<div style="display:none;">
+<h1 id="problems"><a class ="linkin" href="index.html#top"><span class="header-section-number">6</span> Problems</a></h1><ol type="1">
+<li><p>Assuming you have files <a href="https://www.usna.edu/Users/cs/roche/courses/s17si204/notes/09/dbpoint.h" class="uri">dbpoint.h</a> and <a href="https://www.usna.edu/Users/cs/roche/courses/s17si204/notes/09/dbpoint.cpp" class="uri">dbpoint.cpp</a> that provide a nice implementation of a struct <code>Point</code>, write a program that reads a comma separated list of data points from the user (terminated by a semi-colon) and then repeatedly asks the user for a reference point, and responds by printing out average of the distances of the data points from the reference point.<br />
+<strong>Note:</strong> By all means look at the code from the previous lesson that shows how to build and traverse (to print) a linked list.</p>
+<pre><code class="language-C">~/$ ./prog
+(0.5,-0.25), (1.3,2.8), (3.1,0.9), (-0.8,-1.1) ;
+(2,3)
+average = 2.91075
+(2,1.5)
+average = 2.21384
+(2,0.5)
+average = 2.11915
+(2,-0.5)
+average = 2.38453</code></pre></li>
+<li><p>Build on the above problem code, and print the list out in the same format it was entered: comma-separated, semi-colon terminated. A run of the program might look like this:</p>
+<pre><code class="language-C">~/$ ./prog
+(0.5,-0.25), (1.3,2.8), (3.1,0.9), (-0.8,-1.1) ;
+List read was (0.5,-0.25), (1.3,2.8), (3.1,0.9), (-0.8,-1.1) ;
+(2,3)
+average = 2.91075
+(2,1.5)
+average = 2.21384
+(2,0.5)
+average = 2.11915
+(2,-0.5)
+average = 2.38453</code></pre></li>
+<li><p>Build on the above problem code, and print the last element in the list. A run of the program might look like this:</p>
+<pre><code class="language-C">~/$ ./prog
+(0.5,-0.25), (1.3,2.8), (3.1,0.9), (-0.8,-1.1) ;
+Last element is (-0.8,-1.1)
+(2,3)
+average = 2.91075
+(2,1.5)
+average = 2.21384
+(2,0.5)
+average = 2.11915
+(2,-0.5)
+average = 2.38453</code></pre></li>
+<li><p>Build on the above problem code, and print the next-to-last element in the list. A run of the program might look like this:</p>
+<pre><code class="language-C">~/$ ./prog
+(0.5,-0.25), (1.3,2.8), (3.1,0.9), (-0.8,-1.1) ;
+Next to last element is (3.1,0.9)
+(2,3)
+average = 2.91075
+(2,1.5)
+average = 2.21384
+(2,0.5)
+average = 2.11915
+(2,-0.5)
+average = 2.38453</code></pre></li>
+<li>Try implementing an <code>insert_in_order</code> function for doubly linked lists.</li>
+<li><p>Try implementing a <code>deleteNode</code> function, which takes a pointer to a node in a doubly linked list and and removes that node from the list. Don’t forget to delete the node when you’re done with it!</p></li>
+</ol>
+<!-- from l40 -->
+<p>[For prof’s: <a href="https://www.usna.edu/Users/cs/roche/courses/s17si204/notes/09/activity.html">activity sheet</a>]<br />
+When you have a new problem to solve, you should ask yourself: do I need to store stuff beyond local variables? should I use an array? should I use a 2D array? should I use a struct? should I use a linked list? Do I need to sort? The answers to these questions will help shape your solution. Below are two Problem Scenarios, each with several variations of what problem actually needs to be solved. Annotate each with your answers to the above questions, along with justifications!</p>
+<ul>
+<li><p><strong>Problem I:</strong> Customer orders come in to a warehouse like this: (customerID, itemNumber, quantity) and these items are prefetched and brought to a holding area. Then the command to ship to customer identified by ID comes in, and all the prefetched items are shipped to that customer in a single box. Assume the total number of items in the order (sum or quantities) is all that’s required to determine the box size. Assume each customerID is a unique string of upper-case letters , e.g. “JONEXXK” or “BROWKZL”.</p>
+<pre><code class="language-C">  A. Read from user a sequence of commands:
+
+     add (JONEXXK,228700,5) &lt;-- adds this item to the orders
+
+     maxq &lt;-- prints out the (customerID, itemNumber, quantity) of order
+              with the largest quantity seen so far.  If no items have
+              been added yet, print (?,?,?)
+
+     quit &lt;-- quits program
+
+  B. Assume that the system will not need to process more than 1000 orders
+     before quitting.  Read a sequence of commands:
+
+     add (JONEXXK,228700,5) &lt;-- adds this item to the orders
+
+     print &lt;-- writes out all the orders (don&#39;t care what order they appear)
+
+     quit
+
+  C. Assume that the system will not need to process more than 1000 orders
+     before quitting.  Read a sequence of commands:
+
+     add (JONEXXK,228700,5) &lt;-- adds this item to the orders
+
+     print &lt;-- writes out all the order summaries for each customer, like
+               this:
+
+     BROWKZL
+       108520 4
+       228700 1
+       920022 1
+       Total: 6
+     JONEXXK
+       800231 2
+       920022 1
+       998735 10
+       Total: 13
+
+               Customers should be listed alphabetically by CustomerID.
+
+     quit &lt;-- quits program
+
+  D.  Make no assumption about number of orders.  Now we add a command
+      to ship to a customer, which should print a summary of the order,
+      and remove the shipped orders from storage.  If a customerID is
+      entered with the ship command for which there are no unshipped
+      orders, print &quot;No orders pending!&quot;.
+
+      add
+      ship CustomerID
+      quit</code></pre></li>
+<li><p><strong>Problem II:</strong> Your job is to read in a bunch of (alphacode,1/C..4/C,M/F,100m-sprint-times) data lines like:</p>
+<pre><code class="language-C">  (183488,4/C,F,11.33)</code></pre>
+<p>and process them.</p>
+<pre><code class="language-C">  A. print the average time
+
+  B. print average times for each class/gender (8 total)
+
+  C. print the alphacodes/class/geneder/time of the first 20 data lines
+     (read in but ignore all subsequent lines) in increasing order of
+     times.  If multiple data lines have the same time, they should appear
+     in increasing alphacode order.
+
+  D. after reading the data lines, you are given range (rmin,rmax)
+     print the alphacodes/class/geneder/time  of all mids whose
+     100m-sprint-time lies within the range.</code></pre></li>
+</ul>
+<ol type="1">
+<li>Find the maximum value in a list of <code>double</code>’s. Check out <a href="https://www.usna.edu/Users/cs/roche/courses/s17si204/notes/09/P2.html">my recursive and iterative solutions</a></li>
+<li>Construct a copy of a list of <code>double</code>’s. Check out <a href="https://www.usna.edu/Users/cs/roche/courses/s17si204/notes/09/P3.html">my recursive solution</a> to this problem. An iterative solution is tougher!</li>
+<li>Construct a reverse copy of a list of <code>double</code>’s. Check out <a href="https://www.usna.edu/Users/cs/roche/courses/s17si204/notes/09/P4.html">my iterative solution</a> to this problem. A recursive solution is tougher!</li>
+</ol>
+</div>
+  </div></article></div></div><nav class="stickynav"><div><div class="dropdown"><a href="../../index.php.html" class="ddown-btn">SI 204</a><div class="ddown-content"><a href="../../calendar.php.html">Calendar</a><a href="../index.html">Notes</a><a href="../../hw/index.html">HWs</a><a href="../../lab/index.html">Labs</a><a href="../../proj/index.html">Projects</a><a href="../../exams/index.html">Exams</a><a href="../../admin/index.html">Resources</a><a href="https://www.usna.edu/Users/cs/roche/">Roche</a><a href="https://www.usna.edu/Users/cs/albing/">Albing</a></div></div><div class="dropdown"><a href="index.html#top" class="linkin pagetop">Unit 9: Linked lists</a><div class="ddown-content ddtoc"><ul><li><a class="linkin" href="index.html#pointers-recursive-structs-linked-lists"><span class="toc-section-number">1</span> Pointers, recursive structs, linked lists</a>
+<ul><li><a class="linkin" href="index.html#pointers-to-a-single-object"><span class="toc-section-number">1.1</span> Pointers to a single object</a></li><li><a class="linkin" href="index.html#linked-list-intro"><span class="toc-section-number">1.2</span> Linked List Intro</a></li><li><a class="linkin" href="index.html#linked-list-node-struct"><span class="toc-section-number">1.3</span> Linked list node struct</a></li><li><a class="linkin" href="index.html#printing-the-values-in-a-linked-list"><span class="toc-section-number">1.4</span> Printing the values in a linked list</a></li></ul></li>
+<li><a class="linkin" href="index.html#creating-linked-lists"><span class="toc-section-number">2</span> Creating linked lists</a>
+<ul><li><a class="linkin" href="index.html#the-hard-way-making-a-list-manually"><span class="toc-section-number">2.1</span> The hard way: making a list manually</a></li><li><a class="linkin" href="index.html#adding-a-node"><span class="toc-section-number">2.2</span> Adding a Node</a></li><li><a class="linkin" href="index.html#the-empty-list"><span class="toc-section-number">2.3</span> The empty list</a></li><li><a class="linkin" href="index.html#add2front-function"><span class="toc-section-number">2.4</span> add2front function</a></li></ul></li>
+<li><a class="linkin" href="index.html#linked-lists-with-loops"><span class="toc-section-number">3</span> Linked lists with loops</a>
+<ul><li><a class="linkin" href="index.html#traversing-a-list"><span class="toc-section-number">3.1</span> Traversing a list</a></li><li><a class="linkin" href="index.html#a-typical-linked-list-problem-compute-the-length"><span class="toc-section-number">3.2</span> A typical linked list problem - compute the length</a></li><li><a class="linkin" href="index.html#deleting-a-list"><span class="toc-section-number">3.3</span> Deleting a list</a></li></ul></li>
+<li><a class="linkin" href="index.html#linked-lists-with-recursion"><span class="toc-section-number">4</span> Linked lists with recursion</a>
+<ul><li><a class="linkin" href="index.html#a-recursive-approach-to-functions-on-lists"><span class="toc-section-number">4.1</span> A recursive approach to functions on lists</a></li><li><a class="linkin" href="index.html#printing-a-list-recursively"><span class="toc-section-number">4.2</span> Printing a list recursively</a></li><li><a class="linkin" href="index.html#recursive-length"><span class="toc-section-number">4.3</span> Recursive length</a></li><li><a class="linkin" href="index.html#recursive-free"><span class="toc-section-number">4.4</span> Recursive free</a></li></ul></li>
+<li><a class="linkin" href="index.html#more-linked-list-functions"><span class="toc-section-number">5</span> More linked list functions</a>
+<ul><li><a class="linkin" href="index.html#adding-to-the-back-of-a-list"><span class="toc-section-number">5.1</span> Adding to the back of a list</a></li><li><a class="linkin" href="index.html#sum-of-a-list"><span class="toc-section-number">5.2</span> Sum of a list</a></li><li><a class="linkin" href="index.html#max-of-a-list"><span class="toc-section-number">5.3</span> Max of a list</a></li></ul></li>
+<li><a class="linkin" href="index.html#problems"><span class="toc-section-number">6</span> Problems</a></ul></div></div></nav><footer><div id="foottext">    <p class="disclaimer">Material contained above is made available
+    for the purpose of peer review and discussion and does not
+    necessarily reflect the views of the Department of the Navy or the
+    Department of Defense.
+    Some links above are to sites that are not
+    located at the United States Naval Academy. The USNA is not
+    responsible for the content found on these sites. In addition, the
+    content of these sites does not reflect the opinions, standards,
+    policy or endorsement of the Naval Academy or the United States
+    Government.</p>
+  Page maintained by Daniel S. Roche (<a href="mailto:roche [AT] usna [DOT] edu" id="emaillink1">roche [AT] usna [DOT] edu</a><script type='text/javascript'><!--
+        var b="he@usna.edu";
+        var a="roc";
+        document.getElementById("emaillink1").href='mailto:'+a+b;
+        document.getElementById("emaillink1").innerHTML=a+b;
+        // --></script>). Last updated 10 April 2017 7:47.</div></footer><script src="../../scripts/prism.js"></script><script type="text/javascript">var the_body = $('html, body');
+var sticky_height = $('.stickynav').height();
+$('.linkin').click(function(){
+  var href = $(this).attr('href');
+  var offset;
+  if (href == '#top') offset = 0;
+  else offset = $(href).offset().top - sticky_height;
+  the_body.animate({ scrollTop: offset }, 500);
+  return false;
+});</script></body></html>

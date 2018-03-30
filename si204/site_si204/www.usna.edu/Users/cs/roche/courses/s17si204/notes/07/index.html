@@ -1,0 +1,307 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Unit 7: Sorting and Searching</title><meta name="viewport" content="width=device-width, initial-scale=1.0"><link href="../../scripts/prism.css" rel="stylesheet" /><link rel="stylesheet" type="text/css" href="../../style.css"><script type="text/javascript" src="../../../../mathjax/MathJax.js%3Fconfig=TeX-AMS_HTML"></script><script type="text/javascript" src="../../scripts/jquery-3.1.1.min.js"></script><style>
+@media only screen and (min-width: 600px) {
+  #main>header {background-image: url("../../scripts/header.png");}
+}
+</style><link rel="stylesheet" type="text/css" href="../../notes.css">  <meta name="generator" content="pandoc">
+  <style type="text/css">code{white-space: pre;}</style>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head><body><div id="main"><header><nav class="topnav"><div>
+            <a href="../../index.php.html">SI 204</a>
+            </div><div>
+            <a href="../../calendar.php.html">Calendar</a>
+            </div><div id="navparent">
+            <a href="../index.html">Notes</a>
+            </div><div>
+            <a href="../../hw/index.html">HWs</a>
+            </div><div>
+            <a href="../../lab/index.html">Labs</a>
+            </div><div>
+            <a href="../../proj/index.html">Projects</a>
+            </div><div>
+            <a href="../../exams/index.html">Exams</a>
+            </div><div>
+            <a href="../../admin/index.html">Resources</a>
+            </div><div>
+            <a href="https://www.usna.edu/Users/cs/roche/">Roche</a>
+            </div><div>
+            <a href="https://www.usna.edu/Users/cs/albing/">Albing</a>
+            </div></nav></header><div id="mainbox"><div class="printonly"><h1 class="printtitle">SI 204 Spring 2017 / Notes</h1><hr></div><article id="mainart"><header><h1>Unit 7: Sorting and Searching</h1></header><div id="TOC"><ul><li><a class="linkin" href="index.html#semi-review-function-design"><span class="toc-section-number">1</span> Semi-Review: Function Design</a>
+<ul><li><a class="linkin" href="index.html#what-we-ve-learned-about-functions"><span class="toc-section-number">1.1</span> What we’ve learned about functions</a></li><li><a class="linkin" href="index.html#what-makes-code-great"><span class="toc-section-number">1.2</span> What makes code great</a></li><li><a class="linkin" href="index.html#bottom-up-design"><span class="toc-section-number">1.3</span> Bottom-Up Design</a></li><li><a class="linkin" href="index.html#bottom-up-design-example"><span class="toc-section-number">1.4</span> Bottom-up design example</a></li></ul></li>
+<li><a class="linkin" href="index.html#sorting"><span class="toc-section-number">2</span> Sorting</a>
+<ul><li><a class="linkin" href="index.html#indices-rather-than-elements"><span class="toc-section-number">2.1</span> Indices rather than elements</a></li><li><a class="linkin" href="index.html#selection-sort"><span class="toc-section-number">2.2</span> Selection Sort</a></li><li><a class="linkin" href="index.html#comparison-functions-and-sorting"><span class="toc-section-number">2.3</span> Comparison Functions and Sorting</a></li><li><a class="linkin" href="index.html#sorting-arrays-of-any-type"><span class="toc-section-number">2.4</span> Sorting arrays of any type</a></li></ul></li>
+<li><a class="linkin" href="index.html#search"><span class="toc-section-number">3</span> Search</a>
+<ul><li><a class="linkin" href="index.html#search-and-match"><span class="toc-section-number">3.1</span> Search and Match</a></li><li><a class="linkin" href="index.html#generic-programming"><span class="toc-section-number">3.2</span> Generic programming</a></li></ul></li>
+<li><a class="linkin" href="index.html#problems"><span class="toc-section-number">4</span> Problems</a></li></ul></div><div class="panbody"><p>(Credit to <a href="https://www.usna.edu/Users/cs/wcbrown/">Chris Brown</a> for the original version of these notes.)</p>
+<p>We’re not going to learn any new C syntax in this unit. Instead, we’ll see some powerful ways that the previous two major topics — functions and arrays — can together solve two of the most common things we want a computer to do: organize a bunch of data (<em>sorting</em>) and look something up (<em>searching</em>). Beyond being very common things to want to program, the way we introduce these problems will help us better understand good <em>program design</em> so that we get better at writing all sorts of programs.</p>
+<!-- from l27 -->
+<h1 id="semi-review-function-design"><a class ="linkin" href="index.html#top"><span class="header-section-number">1</span> Semi-Review: Function Design</a></h1><h2 id="what-we-ve-learned-about-functions"><a class="linkin" href="index.html#top"><span class="header-section-number">1.1</span> What we’ve learned about functions</a></h1><p>The ideas behind functions in programming are very important, and we’ve covered a lot of ground in the past few weeks. For example:</p>
+<ul>
+<li>prototype versus definition</li>
+<li>return type and arguments/parameters</li>
+<li>passing a <em>copy</em> of a value to a function</li>
+<li>passing a <em>pointer</em> to a value to a function</li>
+<li>passing a pointer to an <em>array</em> to a function</li>
+<li>implicit type conversion for function arguments</li>
+<li>recursion</li>
+<li>local variables and scope</li>
+<li>“the stack” of function calls</li>
+<li>Top-down design</li>
+</ul>
+<p>When looking at this list of topics remember this: the most important thing to understand about functions in how they help us solve programming problems. A function can be viewed from the perspective of a <em>user</em> or from the perspective of an <em>implementer</em>. The <em>user</em> doesn’t care about <em>how</em> a function does something; they care about <em>what</em> the function does. For example, you (and I) have no idea <em>how</em> the <code>cos</code> function from <code>cmath</code> works, but we do know <em>what</em> it does (give it a <code>double</code> <em>r</em> and it returns a <code>double</code> representing the cosine of <em>r</em>), and that’s enough to use it.</p>
+<p>Essentially, the prototype (along with a comment or two) is all that the <em>user</em> of a function needs to know. The definition of the function is the realm of the <em>implementer</em>, who, of course, has to figure out <em>how</em> the function is going to do what it’s supposed to.</p>
+<p>When you work in groups, one person simply <em>uses</em> a certain set of functions in their part of the code, and the other person <em>implements</em> those functions. It’s a convenient way to divide up work, because once we agree on <em>what</em> the functions are supposed to do (i.e. figure out prototypes, etc) we can go our separate ways and work on our own.</p>
+<p>Within a program you write by yourself, functions are equally helpful, because they allow you to break up a large program into pieces that you can solve separately. Thus, no one piece is a big deal. In such cases, you are both <em>user</em> and <em>implementer</em> at different times - but never both at once!</p>
+<h2 id="what-makes-code-great"><a class="linkin" href="index.html#top"><span class="header-section-number">1.2</span> What makes code great</a></h1><p>Programming nirvana - the most enlightened state of programming - is reached when you have perfectly achieved two goals:</p>
+<ol type="1">
+<li><p>separation of <em>interface</em> from <em>implementation</em>, i.e. what is needed in order to use a thing is completely walled off from how the thing actually works, and</p></li>
+<li><p>code reuse, i.e. code you write for one project can be easily reused in all sorts of other projects, or reused within the same project (never duplicate code!).</p></li>
+</ol>
+<p>These two goals are independent of what language you program in; this is what everyone wants. In the paradigm (or style) of programming we cover in SI204, which is called <em>procedural programming</em>, the primary language construct provided to support these two goals is … functions! The prototype vs definition split, and the scoping rules for local variables within functions provide separation (perhaps imperfectly) of interface and implementation. Viewing programs as collections of functions provides code reuse, as well-designed functions from one project can be taken piecemeal and reused in other projects.</p>
+<h2 id="bottom-up-design"><a class="linkin" href="index.html#top"><span class="header-section-number">1.3</span> Bottom-Up Design</a></h1><p>In top-down design, you are a <em>user</em> first, as you write a program assuming the existence of a “wish-list” of functions. Then you go ahead and <em>implement</em> each of these functions separately - and separate from the larger program. If you did things the other way ’round, it would be <em>bottom-up</em> design.</p>
+<p>In bottom-up design you are the <em>implementer</em> of little functions first, and later you get around to using them in a larger program. For example, suppose you knew you were going to have to write a program that did some calculations with vectors for some basic physics problems. It’s clear that you’ll probably want to read, write, and add vectors, and probably you’ll want to do dot products and get the length of vectors. Putting all this together, and remembering that a vector will consist of two <code>double</code> values, we get the following prototypes:</p>
+<pre><code class="language-C">// Read vector from stream in and return through pointers variables x and y
+void read(double* x, double* y, FILE* in);
+
+// Write the vector (x,y) to stream out
+void write(double x, double y, FILE* out);
+
+// Add vectors (x1,y1) and (x2,y2) and return through pointers variables x and y
+void add(double x1, double y1, double x2, double y2, double* x, double* y);
+
+// Return the dot product of (x1,y1) and (x2,y2)
+double dot(double x1, double y1, double x2, double y2);
+
+// Return the length of (x,y)
+double length(double x, double y);</code></pre>
+<p>Whatever it is that I ultimately do in my program, if I have these functions I’ll probably be OK with the vector part. So I’ll go ahead and implement these now, and worry about the larger program later. That’s what bottom-up design is about.</p>
+<p>Bottom-up and top-down design aren’t mutually exclusive either; you can write a bunch of prototypes (top-down), then implement a few of them (bottom-up), then start to fill in your <code>main</code> (top-down), and so on. The main point is that there are multiple ways to tackle a big programming problem, depending on the situation at hand. Bottom-up design is an especially good way to get started with <em>something</em> when you’re not sure what to do first on a tough problem.</p>
+<h2 id="bottom-up-design-example"><a class="linkin" href="index.html#top"><span class="header-section-number">1.4</span> Bottom-up design example</a></h1><p>Suppose I have the following game: Some number of coins are spread in a row across a table, in a random order, also with a random side facing up. Play commences in turns. For their turn, a player has three options:</p>
+<ol type="1">
+<li>Take a coin (or two-coin pile, as we’ll see later) from one of the two ends of the coin row, and add the coin(s) to the player’s stash, keeping the same side(s) up. Note: piles stay piles in the stash.</li>
+<li>Take an uncovered coin from the player’s stash and place it (same side up) on an uncovered coin in the row.</li>
+<li>Flip an uncovered coin (or the top coin in a two-coin pile) in the coin row — but this is only allowed if the player’s previous move was not a flip!</li>
+</ol>
+<p>When the coin row is empty, each player sums up the values of the coins in their hands, counting heads-up coins as + their values, and tails-up coins as - their value. Whoever has the largest sum wins.</p>
+<p>Let’s do bottom-up design. The fundamental object we have to deal with here are <em>coin piles</em>, which may consist of one or two coins.</p>
+<p>First let’s think about how to represent a pile of coins as a single number. We might represent side value as heads-up = 0, tails-up = 1, and coins by their denomination, i.e. 25 for quarters, 10 for dimes, 5 for nickels and 1 for pennies.</p>
+<pre><code class="language-C">// one-coin piles:
+pilevalue = sidevalue + 10*coinvalue
+
+// two-coin piles:
+pilevalue = sidevalueTop + 10*coinvalueTop + 1000*(sidevalueBottom + 10* coinvalueBottom)</code></pre>
+<p>So, for example, if you have a quarter facing heads up, it would have pilevalue = <span class="math inline">\(0 + 10\cdot 25 = 250\)</span>. If you have a tails-up dime with a tails-up quarter on top, you would have pilevale = <span class="math inline">\(1 + 10\cdot 10 + 1000\cdot(1 + 10\cdot 25)\)</span>. We can unpack this stuff as follows (let <code>pv</code> be a pile value):</p>
+<pre><code class="language-C">if (pv &lt; 1000) {
+  // then pv represents a 1-coin pile
+} else {
+  // then pv represents a 2-coin pile
+}
+
+pv%10        // the sidevalue of the top coin
+(pv%100)/10  // the coinvalue of the top coin
+(pv/1000)%10 // the sidevalue of the bottom coin (if there is one)
+(pv/10000)   // the coin value of the bottom coin (if there is one)</code></pre>
+<p><strong>Your job:</strong> use bottom-up design and start writing prototypes and definitions for the functions you’d probably want to have if you were ultimately going to implement this game!</p>
+<!-- from l28 -->
+<h1 id="sorting"><a class ="linkin" href="index.html#top"><span class="header-section-number">2</span> Sorting</a></h1><h2 id="indices-rather-than-elements"><a class="linkin" href="index.html#top"><span class="header-section-number">2.1</span> Indices rather than elements</a></h1><p>Often with arrays it’s more important to return the <em>index</em> of an element with a certain property, rather than the <em>value</em> of the element. For example, if <code>char** names</code> is an array of names of contest participants, and <code>int* scores</code> is an array of scores, such that participant <code>names[i]</code> has score <code>scores[i]</code>, then knowing the <em>value</em> of the largest element in <code>scores</code> won’t tell me who the winner is, but knowing the <em>index</em> of the largest element in <code>scores</code> will.</p>
+<p>So, with this in mind, let’s consider writing a function <code>indexOfMax</code> that will return the index of the element with the maximum value in an array <code>data</code> of <code>size</code> objects of type <code>int</code>.</p>
+<pre><code class="language-C">int indexOfMax(int* data, int size) {
+  int imax = 0;
+  for (int i=1; i &lt; size; ++i) {
+    if (data[i] &gt; data[imax]) {
+      imax = i;
+    }
+  }
+  return imax;
+}</code></pre>
+<p>Very simple function! Now, using our above example, the winner of our contest is <code>names[indexOfMax(scores, size)]</code>.</p>
+<h2 id="selection-sort"><a class="linkin" href="index.html#top"><span class="header-section-number">2.2</span> Selection Sort</a></h1><p>Consider the following function that uses our <code>indexOfMax</code> function:</p>
+<pre><code class="language-C">void mystery(int* data, int size) {
+  for(int length = size; length &gt; 1; --length) {
+    int k = indexOfMax(data,length);
+    int temp = data[length-1];
+    data[length-1] = data[k];
+    data[k] = temp;
+  }
+}</code></pre>
+<p>What does the <code>mystery</code> function do? Well, it starts by swapping the largest element in the array with the last element of the array, and then pretends the last array slot isn’t there any more. Hopefully, you see that this puts the largest at the back of the array, the next largest in the second to last spot, etc. until the array is in <strong>sorted order</strong>!</p>
+<p>This sorting algorithm is known as <em>Selection Sort</em>, because it <em>selects</em> the largest of the remaining elements and puts it in its proper spot in the sorted array. If you define the <code>swap</code> function (as in <a href="../05/index.html#the-famous-swap-">Unit 5</a>), you can write a particularly succinct version of this function:</p>
+<pre><code class="language-C">void selectionSort(int* data, int size) {
+  for(int length = size; length &gt; 1; --length) {
+    swap(&amp;data[indexOfMax(data, length)], &amp;data[length-1]);
+  }
+}</code></pre>
+<p>Make sure you understand what the <code>&amp;</code> characters are doing there in the arguments to <code>swap</code>!</p>
+<h2 id="comparison-functions-and-sorting"><a class="linkin" href="index.html#top"><span class="header-section-number">2.3</span> Comparison Functions and Sorting</a></h1><p>It is important to note that there is no one “sorted order” once and for all. We get different orders depending on how we compare values. To make this a little more explicit, let’s imagine our <code>indexOfMax</code> function was changed to look like this:</p>
+<pre><code class="language-C">int indexOfMax(int* data, int size) {
+  int imax = 0;
+  for (int i = 1; i &lt; size; ++i) {
+    if (before(A[imax], A[i])) {
+      imax = i;
+    }
+  }
+}</code></pre>
+<p>Notice that the comparison that we did with the built-in <code>&gt;</code> operator originally is now done by a function <code>before</code>. That function clearly takes two integers and returns whether or not one is less than the other one:</p>
+<pre><code class="language-C">int before(int a, int b) {
+  return a &lt; b;
+}</code></pre>
+<p>This version tells you that you want <code>a</code> to come before <code>b</code> if <code>a</code> is smaller, i.e. we’ve got our same old smallest-to-largest sorted order. If, on the other hand, <code>before</code> is defined like this:</p>
+<pre><code class="language-C">int before(int a, int b) {
+  return a &gt; b;
+}</code></pre>
+<p>then we’ll get largest-to-smallest sorted order. Think of <code>before</code> as a <em>comes before</em> predicate. I use <code>before</code> to tell selection sort how to determine if one value should <em>come before</em> another element.</p>
+<p>Taking this example one step further, perhaps I want to sort numbers by increasing absolute value, with the negative number coming first if we have opposite pairs in the array. Then I might define <code>before</code> like this:</p>
+<pre><code class="language-C">int before(int a, int b) {
+  if (a != -b) {
+    return abs(a) &lt; abs(b);
+  } else {
+    return a &lt;= 0;
+  }
+}</code></pre>
+<p>Now we get an ordering by smallest-to-largest absolute values, with ties (i.e elements with equal absolute value and opposite signs) putting the positives to the back. For example,</p>
+<pre><code class="language-C">45  32  -12  -32 0 -18 6</code></pre>
+<p>would be “sorted” using this <code>before</code> function as:</p>
+<pre><code class="language-C">0  6  -12  -18 -32 32 45</code></pre>
+<p>This is an important concept. The sorted order produced by a sorting algorithm like Selection Sort depends on the definition of your <code>before</code> function - the same sorting algorithm works for any comparison function! In fact, when we get more advanced, we’ll even pass the <code>before</code> function as a parameter to selection sort! Of course, we don’t know how to do that yet!</p>
+<p><strong>Note:</strong> Most places you see selection sort they don’t break <code>indexOfMax</code> and <code>swap</code> out into their own functions. Instead, they incorporate the whole thing into a nested loop, like this:</p>
+<pre><code class="language-C">void selectionSort(int* data, int size) {
+  for(int length = size; length &gt; 1; --length) {
+    // Find imax, the index of the largest
+    int imax = 0;
+    for(int i = 1; i &lt; length; ++i) {
+      if (before(data[imax], data[i])) {
+        imax = i;
+      }
+    }
+    // Swap data[imax] &amp; the last element
+    int temp = data[imax];
+    data[imax] = data[length - 1];
+    data[length - 1] = temp;
+  }
+}</code></pre>
+<h2 id="sorting-arrays-of-any-type"><a class="linkin" href="index.html#top"><span class="header-section-number">2.4</span> Sorting arrays of any type</a></h1><p>We might decide that we want to sort an array of strings rather than an array of <code>int</code>s? What has to change in our selection sort algorithm? Not much! As you can see from <a href="stringsort.c">this program</a>, nothing really changes in the sorting part except the names of the types we’re working with. And the <code>before</code> function just needs to use <code>strcmp</code> instead of the built-in comparison operator.</p>
+<p>Now, by way of exercise, consider this problem: When I input strings with capital letters, capitals are counted as coming before lower-case. For example, here’s a run of my program:</p>
+<pre><code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./stringsort</code>
+<code class="language-text output">Enter number of strings: </code><code class="language-text input">4</code>
+<code class="language-text output">Enter strings: </code><code class="language-text input">Xena adroit lefty xylaphone</code>
+<code class="language-text output">Xena</code>
+<code class="language-text output">adroit</code>
+<code class="language-text output">lefty</code>
+<code class="language-text output">xylaphone</code></pre><p>Quite possibly, this is not what I want. How can I change the program so that capitalization is not taken into account when sorting, although when I print the strings they should have their original capitalization? To make it simple, let’s assume that the only possible capitals would be the first letter. Hopefully you see by now that all this requires is changing the function <code>before</code>:</p>
+<pre><code class="language-C">int before(char* a, char* b) {
+  if (a[0] &gt;= &#39;A&#39; &amp;&amp; a[0] &lt;= &#39;Z&#39;) {
+    a[0] = a[0] + (&#39;a&#39; - &#39;A&#39;);
+  }
+  if (b[0] &gt;= &#39;A&#39; &amp;&amp; b[0] &lt;= &#39;Z&#39;) {
+    b[0] = b[0] + (&#39;a&#39; - &#39;A&#39;);
+  }
+  return strcmp(a, b) &lt; 0;
+}</code></pre>
+<p>In fact, this can be written even more simply if you use the <code>tolower</code> function from the standard library <a href="http://en.cppreference.com/w/c/string/byte/tolower">ctype.h</a>:</p>
+<pre><code class="language-C">int before(char* a, char* b) {
+  a[0] = tolower(a[0]);
+  b[0] = tolower(b[0]);
+  return strcmp(a, b) &lt; 0;
+}</code></pre>
+<p>But wait, there’s a small problem here. This is what would happen if you ran this program:</p>
+<pre><code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./stringsort</code>
+<code class="language-text output">Enter number of strings: </code><code class="language-text input">4</code>
+<code class="language-text output">Enter strings: </code><code class="language-text input">Xena adroit lefty xylaphone</code>
+<code class="language-text output">adroit</code>
+<code class="language-text output">lefty</code>
+<code class="language-text output">xena</code>
+<code class="language-text output">xylaphone</code></pre><p>Notice what went wrong? The <code>X</code> in <code>&quot;Xena&quot;</code> was made lowercase in the <code>before</code> function, and it stayed that way! This is a consequence of the fact that strings are passed by pointer, and like any other array, changing the array <em>contents</em> within a function affects the original array contents.</p>
+<p>So probably we should update the <code>before</code> function so that it changes the letters back to their original values <em>after</em> doing the comparison, like so:</p>
+<pre><code class="language-C">int before(char* a, char* b) {
+  char orig_a0 = a[0];
+  a[0] = tolower(a[0]);
+  char orig_b0 = b[0];
+  b[0] = tolower(b[0]);
+
+  int result = strcmp(a, b) &lt; 0;
+
+  a[0] = orig_a0;
+  b[0] = orig_b0;
+}</code></pre>
+<p>An alternative option would be to make copies of <code>a</code> and <code>b</code> at the beginning and change the copies rather than changing the original strings. An even simpler approach would be to change the call to <code>strcmp()</code> to use the <code>strcasecmp()</code> function, which ignores case in the comparison of strings. However, <code>strcasecmp</code> is not part of the C language standard so it’s not available on every computer, even though it should be on your Linux lab machines and virtual machines.</p>
+<h1 id="search"><a class ="linkin" href="index.html#top"><span class="header-section-number">3</span> Search</a></h1><h2 id="search-and-match"><a class="linkin" href="index.html#top"><span class="header-section-number">3.1</span> Search and Match</a></h1><p>Searching for values in arrays is another fundamental operation. The basic format is <code>search(data, size, x)</code>, where we search for value <code>x</code> in the array <code>data</code> of <code>size</code> elements, and return the index of an element of <code>data</code> that matches the value <code>x</code>. If no such element is found, an index of <code>size</code> may be returned and, since it is not a valid index, the caller of the function can determine that no match was found.</p>
+<p>For example, to search in an array of objects of type <code>double</code>, I’d define the following function:</p>
+<pre><code class="language-C">int search(double* data, int size, double x) {
+  int i = 0;
+  while(i &lt; size &amp;&amp; data[i] != x) {
+    i++;
+  }
+  return i;
+}</code></pre>
+<p>As with <code>before</code> in sorting, we may imagine different ways in which elements are considered to match. But just like with sorting, we might like to leave our basic <code>search</code> function alone, and encompass what it means for to <code>match</code> in a separate function of its own. So we might re-write the <code>search</code> function as:</p>
+<pre><code class="language-C">int search(double* data, int size, double x) {
+  int i = 0;
+  while(i &lt; size &amp;&amp; !match(data[i], x)) {
+    i++;
+  }
+  return i;
+}</code></pre>
+<p>And actually having such a <code>match</code> function could be really useful in this case, because <code>double</code> computations can suffer from rounding errors. Maybe we’d just like to find a number in the array that’s within <code>0.1</code> of <code>x</code>? Then the <code>match</code> function could be written as:</p>
+<pre><code class="language-C">int match(double a, double b) {
+  double diff = a - b;
+  return diff &gt; -0.1 &amp;&amp; diff &lt; 0.1;
+}</code></pre>
+<p><strong>Tip:</strong> It may not seem natural or obvious to return an int equal to the size of the array when a search fails. Why not -1? Why not size-of-the-array + 1? Certainly both of those work, as do many other options. However, experience has shown that returning the array size on fail is a nice way to do it and this approach has become pretty standard. The fact that it is pretty standard is really the most compelling argument of all. In the absence of compelling reasons to do otherwise, shouldn’t we write our code to look like what people expect and are used to seeing?</p>
+<!-- from l29 -->
+<h2 id="generic-programming"><a class="linkin" href="index.html#top"><span class="header-section-number">3.2</span> Generic programming</a></h1><p>What we’ve seen here in both <code>selectionSort</code> and <code>search</code> is that (more or less) the same function can be used no matter what type of thing is in the array, and no matter how the elements are being compared.</p>
+<p>Code that works this way, where the algorithm stays the same regardless of what type of things you’re working with, is called <em>generic</em>. This is a really important concept, because it allows us as programmers to solve a problem once and then stop worrying about it.</p>
+<p>If you’re writing a program and you need to do sorting, by all means copy the <code>selectionSort</code> code from above and paste it into your program! If you change the type declarations and write a proper <code>before</code> function according to the task at hand, you’ll be all set.</p>
+<p>To be fair, this isn’t <em>entirely</em> a worry-free process because you still have to manually change the types for whatever you’re sorting, but that’s about the best we can get for generic programing in C. Other programming languages have <a href="http://en.cppreference.com/w/cpp/language/templates">much</a> <a href="https://docs.oracle.com/javase/tutorial/java/generics/types.html">more</a> <a href="https://en.wikipedia.org/wiki/Duck_typing">sophisticated</a> <a href="https://www.haskell.org/tutorial/classes.html">mechanisms</a> to help you write generic programs, but the underlying concept of re-using the same basic algorithm with different underlying types is the same.</p>
+<h1 id="problems"><a class ="linkin" href="index.html#top"><span class="header-section-number">4</span> Problems</a></h1><ol type="1">
+<li><a href="files.php%3Ff=printbin.c.html">Printing in binary</a></li>
+<li><a href="files.php%3Ff=numlen.c.html">Number of characters to print a number</a></li>
+<li><a href="files.php%3Ff=contfrac.c.html">Computing Continued Fractions</a></li>
+<li><p><a href="files.php%3Ff=fib.c.html">Fibonacci Numbers</a></p></li>
+<li><p>Write a program that reads in a list of non-negative integers from the user and sorts them by their last digit. Numbers with the same last digit should appear smallest to largest. So, 678 32 67 102 7 18 would appear as 32 102 7 67 18 678.</p>
+<ul>
+<li>Next, try allowing the user to enter a modulus M along with the numbers, and sort the numbers according to their mod M value - smaller mod M values first. Numbers with the same mod M values should appear smallest to largest.</li>
+</ul></li>
+<li><p>Write a program that reads in a list of 3D points <em>(x,y,z)</em> and prints them out in increasing distance from the origin. The points should be represented as arrays of length 3. <a href="files.php%3Ff=sortpoints.c.html">Here</a>’s my solution. Below is a sample run of the program:</p>
+<pre><code class="language-text output">./sortpoints</code>
+<code class="language-text output">How many points? </code><code class="language-text input">3</code>
+<code class="language-text output">Enter points (x,y,z): </code><code class="language-text input">(1,0,1) (1,0,-1.2) (-1,1,-1)</code>
+<code class="language-text output">(1,0,1) (1,0,-1.2) (-1,1,-1)</code></pre><ul>
+<li><p>Try the same thing, but sort by x-values, breaking ties by y-values, breaking those ties by z-values.</p></li>
+<li><p>Try the same thing, but sort in increasing order of distance from a point given by the user.</p></li>
+</ul></li>
+<li><p>Write a program that reads in a list of 10 names (first name followed by last name) from the file <a href="names.txt" class="uri">names.txt</a> and prints them out in the usual order - i.e. alphabetically by last name, using first names to break ties.</p>
+<p><strong>Note:</strong> You’ll want to represent a person’s name as an array of length 2.</p>
+<p>Here’s <a href="files.php%3Ff=sortnames.c.html">my solution</a></p></li>
+</ol>
+  </div></article></div></div><nav class="stickynav"><div><div class="dropdown"><a href="../../index.php.html" class="ddown-btn">SI 204</a><div class="ddown-content"><a href="../../calendar.php.html">Calendar</a><a href="../index.html">Notes</a><a href="../../hw/index.html">HWs</a><a href="../../lab/index.html">Labs</a><a href="../../proj/index.html">Projects</a><a href="../../exams/index.html">Exams</a><a href="../../admin/index.html">Resources</a><a href="https://www.usna.edu/Users/cs/roche/">Roche</a><a href="https://www.usna.edu/Users/cs/albing/">Albing</a></div></div><div class="dropdown"><a href="index.html#top" class="linkin pagetop">Unit 7: Sorting and Searching</a><div class="ddown-content ddtoc"><ul><li><a class="linkin" href="index.html#semi-review-function-design"><span class="toc-section-number">1</span> Semi-Review: Function Design</a>
+<ul><li><a class="linkin" href="index.html#what-we-ve-learned-about-functions"><span class="toc-section-number">1.1</span> What we’ve learned about functions</a></li><li><a class="linkin" href="index.html#what-makes-code-great"><span class="toc-section-number">1.2</span> What makes code great</a></li><li><a class="linkin" href="index.html#bottom-up-design"><span class="toc-section-number">1.3</span> Bottom-Up Design</a></li><li><a class="linkin" href="index.html#bottom-up-design-example"><span class="toc-section-number">1.4</span> Bottom-up design example</a></li></ul></li>
+<li><a class="linkin" href="index.html#sorting"><span class="toc-section-number">2</span> Sorting</a>
+<ul><li><a class="linkin" href="index.html#indices-rather-than-elements"><span class="toc-section-number">2.1</span> Indices rather than elements</a></li><li><a class="linkin" href="index.html#selection-sort"><span class="toc-section-number">2.2</span> Selection Sort</a></li><li><a class="linkin" href="index.html#comparison-functions-and-sorting"><span class="toc-section-number">2.3</span> Comparison Functions and Sorting</a></li><li><a class="linkin" href="index.html#sorting-arrays-of-any-type"><span class="toc-section-number">2.4</span> Sorting arrays of any type</a></li></ul></li>
+<li><a class="linkin" href="index.html#search"><span class="toc-section-number">3</span> Search</a>
+<ul><li><a class="linkin" href="index.html#search-and-match"><span class="toc-section-number">3.1</span> Search and Match</a></li><li><a class="linkin" href="index.html#generic-programming"><span class="toc-section-number">3.2</span> Generic programming</a></li></ul></li>
+<li><a class="linkin" href="index.html#problems"><span class="toc-section-number">4</span> Problems</a></ul></div></div></nav><footer><div id="foottext">    <p class="disclaimer">Material contained above is made available
+    for the purpose of peer review and discussion and does not
+    necessarily reflect the views of the Department of the Navy or the
+    Department of Defense.
+    Some links above are to sites that are not
+    located at the United States Naval Academy. The USNA is not
+    responsible for the content found on these sites. In addition, the
+    content of these sites does not reflect the opinions, standards,
+    policy or endorsement of the Naval Academy or the United States
+    Government.</p>
+  Page maintained by Daniel S. Roche (<a href="mailto:roche [AT] usna [DOT] edu" id="emaillink1">roche [AT] usna [DOT] edu</a><script type='text/javascript'><!--
+        var b="he@usna.edu";
+        var a="roc";
+        document.getElementById("emaillink1").href='mailto:'+a+b;
+        document.getElementById("emaillink1").innerHTML=a+b;
+        // --></script>). Last updated 27 March 2017 12:13.</div></footer><script src="../../scripts/prism.js"></script><script type="text/javascript">var the_body = $('html, body');
+var sticky_height = $('.stickynav').height();
+$('.linkin').click(function(){
+  var href = $(this).attr('href');
+  var offset;
+  if (href == '#top') offset = 0;
+  else offset = $(href).offset().top - sticky_height;
+  the_body.animate({ scrollTop: offset }, 500);
+  return false;
+});</script></body></html>

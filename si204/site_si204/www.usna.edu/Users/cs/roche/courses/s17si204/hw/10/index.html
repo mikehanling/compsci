@@ -1,0 +1,172 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Homework 10: Loops</title><meta name="viewport" content="width=device-width, initial-scale=1.0"><link href="../../scripts/prism.css" rel="stylesheet" /><link rel="stylesheet" type="text/css" href="../../style.css"><script type="text/javascript" src="../../../../mathjax/MathJax.js%3Fconfig=TeX-AMS_HTML"></script><style>
+@media only screen and (min-width: 600px) {
+  #main>header {background-image: url("../../scripts/header.png");}
+}
+</style></head><body><div id="main"><header><nav class="topnav"><div>
+            <a href="../../index.php.html">SI 204</a>
+            </div><div>
+            <a href="../../calendar.php.html">Calendar</a>
+            </div><div>
+            <a href="../../notes/index.html">Notes</a>
+            </div><div id="navparent">
+            <a href="../index.html">HWs</a>
+            </div><div>
+            <a href="../../lab/index.html">Labs</a>
+            </div><div>
+            <a href="../../proj/index.html">Projects</a>
+            </div><div>
+            <a href="../../exams/index.html">Exams</a>
+            </div><div>
+            <a href="../../admin/index.html">Resources</a>
+            </div><div>
+            <a href="https://www.usna.edu/Users/cs/roche/">Roche</a>
+            </div><div>
+            <a href="https://www.usna.edu/Users/cs/albing/">Albing</a>
+            </div></nav></header><div id="mainbox"><div class="printonly"><h1 class="printtitle">SI 204 Spring 2017 / HWs</h1><hr></div><article id="mainart"><header><h1>Homework 10: Loops</h1></header><div class="printonly">
+  <div class="blanks">
+  <p>
+  Name: _____________________________________________   Alpha: ___________________
+  </p>
+  <p>
+  Describe help received: ________________________________________________________
+  </p>
+  </div>
+</div>
+  <div class="noprint">
+  <a href="javascript:window.print();">Print this page</a>
+</div>
+  <ul>
+    <li><strong>Due before class on Friday, February 3</strong>
+    </li><li>This homework contains code to be submitted electronically.
+      Put your code in a folder called <code>hw10</code> and submit
+      using the <code>204sub</code> command.</li><li>This is a <em>written homework</em> - be sure to turn in a hard-copy
+      of your completed assignment before the deadline. Use the <code>codeprint</code> command to print out your code
+        and turn that in as well.</li></ul><h1>Assignment</h1><ol class="ass"><li>
+  Circle one to indicate how you did for the reading assignment from
+  <a href="../08/index.html">Homework 8</a> <em>before class on Monday</em>:
+  <p>How carefully did you complete the reading? (Circle one)</p>
+<div class="blanks">
+<div class="option">Not at all</div>
+<div class="option">Skimmed it</div>
+<div class="option">Read some</div>
+<div class="option">Read all</div>
+</div>
+  </li>
+<li>
+  Circle one to indicate how you did for the reading assignment from
+  <a href="../09/index.html">Homework 9</a> <em>before class on Wednesday</em>:
+  <p>How carefully did you complete the reading? (Circle one)</p>
+<div class="blanks">
+<div class="option">Not at all</div>
+<div class="option">Skimmed it</div>
+<div class="option">Read some</div>
+<div class="option">Read all</div>
+</div>
+  </li>
+<li>
+  The following is a standard set of questions to check your understanding
+  of the collaboration rules in our
+  <a href="../../admin/policy.php.html">course policy</a>, and more generally the
+  <a href="https://www.usna.edu/CS/_files/documents/ProgrammingPolicy.pdf">CS
+  department instruction on programming projects</a>.
+  <br>
+  Circle <b>all correct answer(s)</b> to each question.
+  <ol class="blanks">
+    <li>You can collaborate with classmates in SI204 on this type of assignment,
+      as long as the collaboration is cited on what you turn in. <br>
+      <span class="option">homeworks</span>
+      <span class="option">labs</span>
+      <span class="option">projects</span>
+      <span class="option">none of these</span>
+    </li>
+    <li>Which of the following sources of assistance is <em>always</em>
+      allowed, on any assignment?<br>
+      <span class="option">EI from your instructor</span>
+      <span class="option">help from other students</span>
+      <span class="option">your own class notes</span>
+      <span class="option">a binder of past assignments from an upperclassman</span>
+    </li>
+    <li>Which kind(s) of assignments do you need to cite your sources on? <br>
+      <span class="option">homeworks</span>
+      <span class="option">labs</span>
+      <span class="option">projects</span>
+      <span class="option">none of these</span>
+    </li>
+    <li>The collaboration rules for programming projects is the same as that for labs and homeworks. <br>
+      <span class="option">True</span>
+      <span class="option">False</span>
+    </li>
+    <li>If you get a tip from an instructor on a programming project, you are free to
+    share that tip with classmates.<br>
+      <span class="option">True</span>
+      <span class="option">False</span>
+    </li>
+    <li>Which websites are okay to use on homeworks and labs? <br>
+      <span class="option">the course website</span>
+      <span class="option">links from the course website</span>
+      <span class="option">questions you asked on StackOverflow</span>
+      <span class="option">questions other people asked on StackOverflow</span>
+      <span class="option">other websites about C programming</span>
+    </li>
+    <li>Which websites are okay to use on programming projects? <br>
+      <span class="option">the course website</span>
+      <span class="option">links from the course website</span>
+      <span class="option">questions you asked on StackOverflow</span>
+      <span class="option">questions other people asked on StackOverflow</span>
+      <span class="option">other websites about C programming</span>
+    </li>
+    <li>If you have a question about the course policy, who can answer it? <br>
+      <span class="option">Your instructor</span>
+      <span class="option">Another faculty member</span>
+      <span class="option">Another student</span>
+      <span class="option">Your dog</span>
+    </li>
+  </ol>
+</li>
+<li>
+  Write a program that prints rectangles (in text) on the screen.
+  The outline of the rectangles should be in <code>*</code> characters
+  and the inside should be empty (i.e., filled with spaces).
+  <p>
+    Your rectangle will have a certain height and width, as well as
+    an <em>offset</em> which is a number of spaces to the left of the
+    left side of your rectangle.
+  </p>
+  <p>
+    Here are some examples of how your program should work:
+  </p>
+<pre><code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./rect</code>
+<code class="language-text output">Height: </code><code class="language-text input">5</code>
+<code class="language-text output">Width: </code><code class="language-text input">8</code>
+<code class="language-text output">Offset: </code><code class="language-text input">3</code>
+<code class="language-text output">   ********</code>
+<code class="language-text output">   *      *</code>
+<code class="language-text output">   *      *</code>
+<code class="language-text output">   *      *</code>
+<code class="language-text output">   ********</code>
+<code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./rect</code>
+<code class="language-text output">Height: </code><code class="language-text input">3</code>
+<code class="language-text output">Width: </code><code class="language-text input">10</code>
+<code class="language-text output">Offset: </code><code class="language-text input">7</code>
+<code class="language-text output">       **********</code>
+<code class="language-text output">       *        *</code>
+<code class="language-text output">       **********</code></pre>  <p>In writing your program, use the idea of stepwise refinement that we talked
+  about in class. You may assume that the height and width will always be at least 2.</p>
+  <p>Submit the file <code>rect.c</code> using <code>204sub</code> command. In addition, use the <code>codeprint</code> command to make a PDF of your
+    file, print it out on paper, and include that with what you turn in (stapled together).</p></li>
+</ol></article></div></div><nav class="stickynav"><div><div class="dropdown"><a href="../../index.php.html" class="ddown-btn">SI 204</a><div class="ddown-content"><a href="../../calendar.php.html">Calendar</a><a href="../../notes/index.html">Notes</a><a href="../index.html">HWs</a><a href="../../lab/index.html">Labs</a><a href="../../proj/index.html">Projects</a><a href="../../exams/index.html">Exams</a><a href="../../admin/index.html">Resources</a><a href="https://www.usna.edu/Users/cs/roche/">Roche</a><a href="https://www.usna.edu/Users/cs/albing/">Albing</a></div></div><a href="index.html#top" class="linkin pagetop">Homework 10: Loops</a></nav><footer><div id="foottext">    <p class="disclaimer">Material contained above is made available
+    for the purpose of peer review and discussion and does not
+    necessarily reflect the views of the Department of the Navy or the
+    Department of Defense.
+    Some links above are to sites that are not
+    located at the United States Naval Academy. The USNA is not
+    responsible for the content found on these sites. In addition, the
+    content of these sites does not reflect the opinions, standards,
+    policy or endorsement of the Naval Academy or the United States
+    Government.</p>
+  Page maintained by Daniel S. Roche (<a href="mailto:roche [AT] usna [DOT] edu" id="emaillink1">roche [AT] usna [DOT] edu</a><script type='text/javascript'><!--
+        var b="he@usna.edu";
+        var a="roc";
+        document.getElementById("emaillink1").href='mailto:'+a+b;
+        document.getElementById("emaillink1").innerHTML=a+b;
+        // --></script>). Last updated 29 January 2017 1:55.</div></footer><script src="../../scripts/prism.js"></script><script type="text/javascript"></script></body></html>

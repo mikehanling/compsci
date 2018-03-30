@@ -1,0 +1,173 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+         "http://www.w3.org/TR/html4/strict.dtd"><html><head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"><title>testyellow.c</title><link href="../../scripts/prism.css" rel="stylesheet" />    <style type="text/css">
+    body {
+      margin: 0;
+      padding:55px 0 0 0;
+    }
+    div#header {
+      position:absolute;
+      top: 0;
+      left: 0;
+      width:100%;
+      height:50px;
+      border-bottom: 5px solid red;
+      text-align: center;
+      background-color: #d0d0d0;
+      z-index: 1000;
+    }
+    @media screen{
+      body>div#header{
+        position:fixed;
+      }
+    }
+    * html body{
+      overflow:hidden;
+    }
+    * html div#content {
+      height: 100%;
+      overflow: auto;
+    }
+    .warning {
+      margin: 3px auto;
+      background-color: black;
+      color: yellow;
+      font-weight: bold;
+      max-width: 600px;
+      font-family: sans-serif;
+      text-align: center;
+    }
+    /*
+    .codeblock {
+      margin:10px auto 10px;
+      min-width:500px;
+      max-width:800px;
+    }
+    .codeblock td.de1 {
+      border:1px solid black;
+    }
+    .codeblock td.ln {
+      border:1px solid white;
+    }
+    pre {
+      margin:10px auto 10px;
+      max-width:800px;
+    }
+    .plainpre {
+      border: 1px solid black;
+      padding:2px;
+    }
+    */
+    </style>
+  </head><body><div id="header"><p><a href="files.php%3Ff=testyellow.c&amp;downloadcode=yes">Click here</a> to download <code>testyellow.c</code>.</p></div><div id="content"><pre class="line-numbers"><code class="language-C">/* SI204 Spring 2017
+ * Lab 6: Green screening
+ * Starter code from Dr. Roche
+ */
+
+#include &lt;stdio.h&gt;
+#include &lt;assert.h&gt;
+
+typedef char cstring[128];
+
+/****************************************************************
+ * FUNCTION PROTOTYPES
+ ****************************************************************/
+int fread_int(FILE* in);
+int fread_byte(FILE* in);
+
+/****************************************************************
+ * MAIN FUNCTION
+ ****************************************************************/
+int main() {
+  // read input filename
+  cstring filename;
+  printf(&quot;Filename: &quot;);
+  fflush(stdout);
+  scanf(&quot; %s&quot;, filename);
+
+  FILE* fin = fopen(filename, &quot;rb&quot;);
+  if (! fin) {
+    printf(&quot;ERROR: file not found\n&quot;);
+    return 1;
+  }
+
+  // variables for important image parameters
+  int width;
+  int height;
+  int fhlen = 14;
+  int ihlen = 40;
+  int fsize;
+  int temp;
+
+  // read file header
+  temp = fread_byte(fin); // magic number part 1
+  assert (temp == 'B');
+  temp = fread_byte(fin); // magic number part 2
+  assert (temp == 'M');
+  fsize = fread_int(fin); // file size
+  fread_int(fin); // unused 4 bytes
+  temp = fread_int(fin); // pixels offset
+  assert (temp == fhlen + ihlen);
+
+  // read image header
+  temp = fread_int(fin); // image header length
+  assert (temp == ihlen);
+  width = fread_int(fin); // image width
+  height = fread_int(fin); // image height
+  temp = fread_int(fin); // 1 image plane, 24 bits per pixel
+  assert (temp == 1 + (24 &lt;&lt; 16));
+  temp = fread_int(fin); // compression type
+  assert (temp == 0);
+  fread_int(fin); // image size (ignored)
+  fread_int(fin); // horiz resolution (ignored)
+  fread_int(fin); // vertical resolution (ignored)
+  temp = fread_int(fin); // color map entries used
+  assert (temp == 0);
+  fread_int(fin); // # of &quot;important&quot; colors (ignored)
+
+  // check file size
+  int rowlen = width * 3;
+  int pixlen = height * rowlen;
+  assert (fsize == fhlen + ihlen + pixlen);
+
+  // count yellow pixels
+  int allpix = 0;
+  int yellowpix = 0;
+
+  // pixel data
+  for (int ycoord=0; ycoord &lt; height; ++ycoord) {
+    for (int xcoord=0; xcoord &lt; width; ++xcoord) {
+      // note: pixels written in reverse order (BGR)
+      int b = fread_byte(fin);
+      int g = fread_byte(fin);
+      int r = fread_byte(fin);
+      ++allpix;
+      // yellow pixel = red+green
+      if (r == 255 &amp;&amp; g == 255 &amp;&amp; b == 0) {
+        ++yellowpix;
+      }
+    }
+  }
+
+  // all done!
+  fclose(fin);
+  printf(&quot;%i out of %i pixels in %s are yellow.\n&quot;,
+         yellowpix, allpix, filename);
+  return 0;
+}
+
+/****************************************************************
+ * FUNCTION DEFINITIONS
+ ****************************************************************/
+
+int fread_int(FILE* in) {
+  int ans;
+  fread(&amp;ans, sizeof(int), 1, in);
+  return ans;
+}
+
+int fread_byte(FILE* in) {
+  unsigned char ans;
+  fread(&amp;ans, sizeof(char), 1, in);
+  return ans;
+};</code></pre></div><script src="../../scripts/prism.js"></script></body></html>

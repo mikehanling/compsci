@@ -1,0 +1,30 @@
+Mike Hanling
+R12: B.1-3, ~B.5
+
+
+Key Points:
+    Basic building blocks of logic are GATES
+    Gates operate on high or low voltage
+    Asserted signal: true or 1
+    Deasserted signal: false or 0
+    Combinational logic does not contain memory
+    Sequential logic does
+    Boolean algebra is used to represent the gates
+    Decoder: a logic block that has an n-bit input and 2n outputs,
+                where only one output is asserted for each input
+                combination
+    Multiplexor: a selector; selects one of the inputs as the output
+    Selector / Control Value: the signal used to select one of the input
+                                values of a multiplexor
+    Sum of Products: OR of ANDs
+    ROM: read-only memory
+    Bus: collection of data lines that is treated together as a single
+          logical signal
+    Arithmetic Logic Unit (ALU): device that performs all the math and
+                                  logic
+    MIPS's ALU is in Verilog
+
+
+
+What Confuses Me:
+  None

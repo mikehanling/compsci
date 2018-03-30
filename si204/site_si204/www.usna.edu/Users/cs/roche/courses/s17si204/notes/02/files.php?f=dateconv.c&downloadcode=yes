@@ -1,0 +1,83 @@
+/***************************************************
+Date conversion program
+
+Write a program that reads in a date in the form
+
+  <month name> <day>, <year>
+
+(for example, "January 12, 2017"), and prints out
+the same date in the form
+
+  <month>/<day/<last year digits>
+
+(for example, "01/12/17").
+***************************************************/
+#include "si204.h"
+
+int main() {
+  // Read date
+  cstring mname;
+  int day;
+  int year;
+  readstring(mname, stdin);
+  day = readnum(stdin);
+  readchar(stdin); // the comma
+  year = readnum(stdin);
+
+  int month = 0;
+  // compute year number
+  int shortyear = year % 100;
+
+  // compute month number
+  if (strcmp(mname, "January") == 0) {
+    month = 1;
+  } else if (strcmp(mname, "February") == 0) {
+    month = 2;
+  } else if (strcmp(mname, "March") == 0) {
+    month = 3;
+  } else if (strcmp(mname, "April") == 0) {
+    month = 4;
+  } else if (strcmp(mname, "May") == 0) {
+    month = 5;
+  } else if (strcmp(mname, "June") == 0) {
+    month = 6;
+  } else if (strcmp(mname, "July") == 0) {
+    month = 7;
+  } else if (strcmp(mname, "August") == 0) {
+    month = 8;
+  } else if (strcmp(mname, "September") == 0) {
+    month = 9;
+  } else if (strcmp(mname, "October") == 0) {
+    month = 10;
+  } else if (strcmp(mname, "November") == 0) {
+    month = 11;
+  } else if (strcmp(mname, "December") == 0) {
+    month = 12;
+  }
+
+  // print month
+  if (month < 10) {
+    fputs("0", stdout);
+  }
+  writenum(month, stdout);
+
+  fputs("/", stdout);
+
+  // print day
+  if (day < 10) {
+    fputs("0", stdout);
+  }
+  writenum(day, stdout);
+
+  fputs("/", stdout);
+
+  // print year
+  if (shortyear < 10) {
+    fputs("0", stdout);
+  }
+  writenum(shortyear, stdout);
+
+  fputs("\n", stdout);
+
+  return 0;
+}

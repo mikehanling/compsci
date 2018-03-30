@@ -1,0 +1,92 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Homework 29: Arrays in structs</title><meta name="viewport" content="width=device-width, initial-scale=1.0"><link href="../../scripts/prism.css" rel="stylesheet" /><link rel="stylesheet" type="text/css" href="../../style.css"><script type="text/javascript" src="../../../../mathjax/MathJax.js%3Fconfig=TeX-AMS_HTML"></script><style>
+@media only screen and (min-width: 600px) {
+  #main>header {background-image: url("../../scripts/header.png");}
+}
+</style></head><body><div id="main"><header><nav class="topnav"><div>
+            <a href="../../index.php.html">SI 204</a>
+            </div><div>
+            <a href="../../calendar.php.html">Calendar</a>
+            </div><div>
+            <a href="../../notes/index.html">Notes</a>
+            </div><div id="navparent">
+            <a href="../index.html">HWs</a>
+            </div><div>
+            <a href="../../lab/index.html">Labs</a>
+            </div><div>
+            <a href="../../proj/index.html">Projects</a>
+            </div><div>
+            <a href="../../exams/index.html">Exams</a>
+            </div><div>
+            <a href="../../admin/index.html">Resources</a>
+            </div><div>
+            <a href="https://www.usna.edu/Users/cs/roche/">Roche</a>
+            </div><div>
+            <a href="https://www.usna.edu/Users/cs/albing/">Albing</a>
+            </div></nav></header><div id="mainbox"><div class="printonly"><h1 class="printtitle">SI 204 Spring 2017 / HWs</h1><hr></div><article id="mainart"><header><h1>Homework 29: Arrays in structs</h1></header><div class="printonly">
+  <div class="blanks">
+  <p>
+  Name: _____________________________________________   Alpha: ___________________
+  </p>
+  <p>
+  Describe help received: ________________________________________________________
+  </p>
+  </div>
+</div>
+  <ul>
+    <li><strong>Due before class on Monday, April 3</strong>
+    </li><li>This homework contains code to be submitted electronically.
+      Put your code in a folder called <code>hw29</code> and submit
+      using the <code>204sub</code> command.</li><li>This is an <em>electronic homework</em> and you do not need to
+      print out anything to turn in during class.</li></ul><h1>Assignment</h1><ol class="ass"><li><b>Required reading</b>:
+  Section 4 (Structs with pointers and arrays))
+  from the <a href="../../notes/08/index.html">Unit 8 notes</a>.
+</li>
+<li>
+  Write a program called <code>raffle.c</code> that simulates a raffle lottery.
+  Your program will first read in a series of names and exactly 4 raffle ticket
+  numbers for each name, and then "draw" the winning number (by reading again), and
+  finally print out the name(s) of all winners who have that winning number.
+  <p>Of course, you should create a <code>struct</code> for each person that
+  contains their name as well as an array of their ticket numbers.
+  </p>
+  <p>Example runs:</p>
+<pre><code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./raffle</code>
+<code class="language-text output">How many people? </code><code class="language-text input">3</code>
+<code class="language-text output">Person 1 name: </code><code class="language-text input">Dave</code>
+<code class="language-text output">Person 1 tickets: </code><code class="language-text input">650 205 592 377</code>
+<code class="language-text output">Person 2 name: </code><code class="language-text input">Erin</code>
+<code class="language-text output">Person 2 tickets: </code><code class="language-text input">324 980 769 230</code>
+<code class="language-text output">Person 3 name: </code><code class="language-text input">Jim</code>
+<code class="language-text output">Person 3 tickets: </code><code class="language-text input">442 230 296 230</code>
+<code class="language-text output">Winning ticket: </code><code class="language-text input">592</code>
+<code class="language-text output">Dave won!</code></pre><pre><code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./raffle</code>
+<code class="language-text output">How many people? </code><code class="language-text input">2</code>
+<code class="language-text output">Person 1 name: </code><code class="language-text input">Erin</code>
+<code class="language-text output">Person 1 tickets: </code><code class="language-text input">324 980 769 230</code>
+<code class="language-text output">Person 2 name: </code><code class="language-text input">Jim</code>
+<code class="language-text output">Person 2 tickets: </code><code class="language-text input">442 230 296 230</code>
+<code class="language-text output">Winning ticket: </code><code class="language-text input">592</code></pre><pre><code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./raffle</code>
+<code class="language-text output">How many people? </code><code class="language-text input">2</code>
+<code class="language-text output">Person 1 name: </code><code class="language-text input">Erin</code>
+<code class="language-text output">Person 1 tickets: </code><code class="language-text input">324 980 769 230</code>
+<code class="language-text output">Person 2 name: </code><code class="language-text input">Jim</code>
+<code class="language-text output">Person 2 tickets: </code><code class="language-text input">442 230 296 230</code>
+<code class="language-text output">Winning ticket: </code><code class="language-text input">230</code>
+<code class="language-text output">Erin won!</code>
+<code class="language-text output">Jim won!</code></pre></li>
+</ol></article></div></div><nav class="stickynav"><div><div class="dropdown"><a href="../../index.php.html" class="ddown-btn">SI 204</a><div class="ddown-content"><a href="../../calendar.php.html">Calendar</a><a href="../../notes/index.html">Notes</a><a href="../index.html">HWs</a><a href="../../lab/index.html">Labs</a><a href="../../proj/index.html">Projects</a><a href="../../exams/index.html">Exams</a><a href="../../admin/index.html">Resources</a><a href="https://www.usna.edu/Users/cs/roche/">Roche</a><a href="https://www.usna.edu/Users/cs/albing/">Albing</a></div></div><a href="index.html#top" class="linkin pagetop">Homework 29: Arrays in structs</a></nav><footer><div id="foottext">    <p class="disclaimer">Material contained above is made available
+    for the purpose of peer review and discussion and does not
+    necessarily reflect the views of the Department of the Navy or the
+    Department of Defense.
+    Some links above are to sites that are not
+    located at the United States Naval Academy. The USNA is not
+    responsible for the content found on these sites. In addition, the
+    content of these sites does not reflect the opinions, standards,
+    policy or endorsement of the Naval Academy or the United States
+    Government.</p>
+  Page maintained by Daniel S. Roche (<a href="mailto:roche [AT] usna [DOT] edu" id="emaillink1">roche [AT] usna [DOT] edu</a><script type='text/javascript'><!--
+        var b="he@usna.edu";
+        var a="roc";
+        document.getElementById("emaillink1").href='mailto:'+a+b;
+        document.getElementById("emaillink1").innerHTML=a+b;
+        // --></script>). Last updated 27 March 2017 14:04.</div></footer><script src="../../scripts/prism.js"></script><script type="text/javascript"></script></body></html>

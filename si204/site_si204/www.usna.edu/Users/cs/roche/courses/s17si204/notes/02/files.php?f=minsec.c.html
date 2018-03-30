@@ -1,0 +1,102 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+         "http://www.w3.org/TR/html4/strict.dtd"><html><head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"><title>minsec.c</title><link href="../../scripts/prism.css" rel="stylesheet" />    <style type="text/css">
+    body {
+      margin: 0;
+      padding:55px 0 0 0;
+    }
+    div#header {
+      position:absolute;
+      top: 0;
+      left: 0;
+      width:100%;
+      height:50px;
+      border-bottom: 5px solid red;
+      text-align: center;
+      background-color: #d0d0d0;
+      z-index: 1000;
+    }
+    @media screen{
+      body>div#header{
+        position:fixed;
+      }
+    }
+    * html body{
+      overflow:hidden;
+    }
+    * html div#content {
+      height: 100%;
+      overflow: auto;
+    }
+    .warning {
+      margin: 3px auto;
+      background-color: black;
+      color: yellow;
+      font-weight: bold;
+      max-width: 600px;
+      font-family: sans-serif;
+      text-align: center;
+    }
+    /*
+    .codeblock {
+      margin:10px auto 10px;
+      min-width:500px;
+      max-width:800px;
+    }
+    .codeblock td.de1 {
+      border:1px solid black;
+    }
+    .codeblock td.ln {
+      border:1px solid white;
+    }
+    pre {
+      margin:10px auto 10px;
+      max-width:800px;
+    }
+    .plainpre {
+      border: 1px solid black;
+      padding:2px;
+    }
+    */
+    </style>
+  </head><body><div id="header"><p><a href="files.php%3Ff=minsec.c&amp;downloadcode=yes">Click here</a> to download <code>minsec.c</code>.</p></div><div id="content"><pre class="line-numbers"><code class="language-C">/***************************************************
+Minutes and Seconds
+
+Read in a time in seconds which will be input in
+the form:  
+
+     Time Elapsed 3112 Seconds
+
+The number of seconds will always be a whole number.
+Your program should write out the elapsed time in
+minutes and seconds.
+
+1) Remember that the &quot;%&quot; operator computes the 
+   remainder
+2) If s is a cstring, readstring(s,stdin) skips 
+   leading whitespace, then reads into the string all
+   characters up to the next whitespace character.
+***************************************************/
+#include &quot;si204.h&quot;
+
+int main() {
+  // read input
+  cstring junk;
+  readstring(junk, stdin); // reads the word &quot;Time&quot;
+  readstring(junk, stdin); // reads the word &quot;Elapsed&quot;
+  int t = readnum(stdin); // t is the total seconds
+  
+  // compute minutes and seconds
+  int m, s;
+  s = t % 60;
+  m = t / 60;
+
+  // write out result
+  fputs(&quot;Time Elapsed &quot;, stdout);
+  writenum(m, stdout);
+  fputs(&quot; minutes and &quot;, stdout);
+  writenum(s, stdout);
+  fputs(&quot; seconds\n&quot;, stdout);
+
+  return 0;
+}</code></pre></div><script src="../../scripts/prism.js"></script></body></html>

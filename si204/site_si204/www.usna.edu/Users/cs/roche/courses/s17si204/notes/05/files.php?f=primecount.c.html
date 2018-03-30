@@ -1,0 +1,119 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+         "http://www.w3.org/TR/html4/strict.dtd"><html><head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"><title>primecount.c</title><link href="../../scripts/prism.css" rel="stylesheet" />    <style type="text/css">
+    body {
+      margin: 0;
+      padding:55px 0 0 0;
+    }
+    div#header {
+      position:absolute;
+      top: 0;
+      left: 0;
+      width:100%;
+      height:50px;
+      border-bottom: 5px solid red;
+      text-align: center;
+      background-color: #d0d0d0;
+      z-index: 1000;
+    }
+    @media screen{
+      body>div#header{
+        position:fixed;
+      }
+    }
+    * html body{
+      overflow:hidden;
+    }
+    * html div#content {
+      height: 100%;
+      overflow: auto;
+    }
+    .warning {
+      margin: 3px auto;
+      background-color: black;
+      color: yellow;
+      font-weight: bold;
+      max-width: 600px;
+      font-family: sans-serif;
+      text-align: center;
+    }
+    /*
+    .codeblock {
+      margin:10px auto 10px;
+      min-width:500px;
+      max-width:800px;
+    }
+    .codeblock td.de1 {
+      border:1px solid black;
+    }
+    .codeblock td.ln {
+      border:1px solid white;
+    }
+    pre {
+      margin:10px auto 10px;
+      max-width:800px;
+    }
+    .plainpre {
+      border: 1px solid black;
+      padding:2px;
+    }
+    */
+    </style>
+  </head><body><div id="header"><p><a href="files.php%3Ff=primecount.c&amp;downloadcode=yes">Click here</a> to download <code>primecount.c</code>.</p></div><div id="content"><pre class="line-numbers"><code class="language-C">/*************************************************
+How common are primes?
+
+Write a program that reads a number n from the
+user and returns the percentage of the first n
+integers that are prime (we'll say 1 is *not*
+prime).  Write and use a predicate isprime(k)
+in your program.  Remember, a number k is prime
+if 1 and k are the only numbers that evenly
+divide k.
+*************************************************/
+#include &lt;stdio.h&gt;
+
+int isprime(int p);
+
+int main() {
+  // Get value n
+  int n;
+  printf(&quot;Enter n: &quot;);
+  fflush(stdout);
+  scanf(&quot; %d&quot;, &amp;n);
+
+  // Count number of primes
+  int count = 0;
+  for(int k = 1; k &lt;= n; k++) {
+    if (isprime(k)) {
+      count++;
+    }
+  }
+
+  // Compute and print out percentage
+  double p = count/(double)n * 100.0;
+  printf(&quot;%g%% of the first %i integers are prime\n&quot;,
+         count/(double)n * 100.0,
+         n);
+
+  return 0;
+}
+
+/***********************************
+ ** isprime(k)
+ ***********************************/
+int isprime(int p) {
+  // the smallest prime is 2
+  if (p &lt; 2) {
+    return 0;
+  }
+
+  // search for divisors in [2,p-1]
+  for(int div = 2; div &lt; p; div++) {
+    if (p % div == 0) {
+      return 0;
+    }
+  }
+
+  // no divisors were found, p's prime!
+  return 1;
+}</code></pre></div><script src="../../scripts/prism.js"></script></body></html>

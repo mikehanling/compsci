@@ -1,0 +1,48 @@
+Mike Hanling
+R25: 4.1 - 4.5
+
+
+Key Points:
+  Send the program counter to the memory that contains the code and
+  fetch the instruction from that memory.
+
+  Read one or two registers, using the fields of the instruction to
+  select the registers to read. For lw we need to read only one
+  register, but most require two.
+
+  Combinational element: an operational element, such as an AND gate or
+  an ALU.
+
+  State element: a memory element, such as a register or a memory.
+
+  Clocking methodology: the approach used to determine when data is
+  valid and stable relative to the clock.
+
+  Edge-triggered clocking: a clocking scheme in which all state changes
+  occur on a clock edge.
+
+  Control signal: a signal used for multiplexor selection or for
+  directing the operation of a functional unit; contrasts with a data
+  signal, which contains information that is operated on by a functional
+  unit.
+
+  asserted: the signal is logically high or true
+  deasserted: the signal is logically low or false
+
+  datapath element: a unit used to operate on or hold data within a
+  processor.  In the MIPS  implementation, the datapath elemetnts include
+  the instruction and data memories, the register file, the ALU, and
+  adders.
+
+  program counter: the register containing the address of the
+  instruction in the program being executed.  
+
+  register file: a state element that consists of a set of registers
+  that can be read and written by supplying a register number to be
+  accessed.
+
+  single-cycle implementation: implementation in which an instruction is
+  executed in one clock cycle. While easy to understand, it is too slow
+  to be practical.
+
+What Confused Me:

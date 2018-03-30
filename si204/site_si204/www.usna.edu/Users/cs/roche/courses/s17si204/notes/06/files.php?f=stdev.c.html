@@ -1,0 +1,122 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+         "http://www.w3.org/TR/html4/strict.dtd"><html><head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"><title>stdev.c</title><link href="../../scripts/prism.css" rel="stylesheet" />    <style type="text/css">
+    body {
+      margin: 0;
+      padding:55px 0 0 0;
+    }
+    div#header {
+      position:absolute;
+      top: 0;
+      left: 0;
+      width:100%;
+      height:50px;
+      border-bottom: 5px solid red;
+      text-align: center;
+      background-color: #d0d0d0;
+      z-index: 1000;
+    }
+    @media screen{
+      body>div#header{
+        position:fixed;
+      }
+    }
+    * html body{
+      overflow:hidden;
+    }
+    * html div#content {
+      height: 100%;
+      overflow: auto;
+    }
+    .warning {
+      margin: 3px auto;
+      background-color: black;
+      color: yellow;
+      font-weight: bold;
+      max-width: 600px;
+      font-family: sans-serif;
+      text-align: center;
+    }
+    /*
+    .codeblock {
+      margin:10px auto 10px;
+      min-width:500px;
+      max-width:800px;
+    }
+    .codeblock td.de1 {
+      border:1px solid black;
+    }
+    .codeblock td.ln {
+      border:1px solid white;
+    }
+    pre {
+      margin:10px auto 10px;
+      max-width:800px;
+    }
+    .plainpre {
+      border: 1px solid black;
+      padding:2px;
+    }
+    */
+    </style>
+  </head><body><div id="header"><p><a href="files.php%3Ff=stdev.c&amp;downloadcode=yes">Click here</a> to download <code>stdev.c</code>.</p></div><div id="content"><pre class="line-numbers"><code class="language-C">/****************************************************
+Write a program that reads in the file numbers.txt
+and prints out the standard deviation of the numbers
+there.  The file numbers .txt looks like this:
+
+N = 3
+DATA:
+67
+61
+82
+
+I.e. there's a header that tells you how many numbers
+are in the file, and then you get all the numbers.
+Recall that the standard deviation is
+
+      ______________________
+     / -- n
+    /  \     (xi - ave)^2
+   /    |    ------------
+  /    /        n - 1
+\/     -- i = 1
+
+ ****************************************************/
+#include &lt;stdio.h&gt;
+#include &lt;math.h&gt;
+
+int main() {
+  // Open input file, read header, get N = # of int's
+  FILE* fin = fopen(&quot;numbers.txt&quot;, &quot;r&quot;);
+  int N;
+  fscanf(fin, &quot; N = %i DATA:&quot;, &amp;N);
+
+  // Create array data and read N int's from input
+  int data[N];
+  for(int i = 0; i &lt; N; ++i) {
+    fscanf(fin, &quot; %i&quot;, &amp;data[i]);
+  }
+
+  // we can close the file now
+  fclose(fin);
+
+  // Cycle through array summing all the elements
+  int sum = 0;
+  for(int j = 0; j &lt; N; ++j) {
+    sum += data[j];
+  }
+  double average = sum / (double)N;
+
+  // Cycle through the array summing the squares of
+  // the elements minus the average
+  double sqsum = 0;
+  for(int j = 0; j &lt; N; ++j) {
+    sqsum += (data[j] - average) * (data[j] - average);
+  }
+  double stddev = sqrt(sqsum / (N-1));
+
+  // Print out standard deviation
+  printf(&quot;The standard deviation is %g\n&quot;, stddev);
+
+  return 0;
+}</code></pre></div><script src="../../scripts/prism.js"></script></body></html>

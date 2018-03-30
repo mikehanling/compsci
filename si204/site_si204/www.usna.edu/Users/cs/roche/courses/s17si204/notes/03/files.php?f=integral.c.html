@@ -1,0 +1,118 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+         "http://www.w3.org/TR/html4/strict.dtd"><html><head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"><title>integral.c</title><link href="../../scripts/prism.css" rel="stylesheet" />    <style type="text/css">
+    body {
+      margin: 0;
+      padding:55px 0 0 0;
+    }
+    div#header {
+      position:absolute;
+      top: 0;
+      left: 0;
+      width:100%;
+      height:50px;
+      border-bottom: 5px solid red;
+      text-align: center;
+      background-color: #d0d0d0;
+      z-index: 1000;
+    }
+    @media screen{
+      body>div#header{
+        position:fixed;
+      }
+    }
+    * html body{
+      overflow:hidden;
+    }
+    * html div#content {
+      height: 100%;
+      overflow: auto;
+    }
+    .warning {
+      margin: 3px auto;
+      background-color: black;
+      color: yellow;
+      font-weight: bold;
+      max-width: 600px;
+      font-family: sans-serif;
+      text-align: center;
+    }
+    /*
+    .codeblock {
+      margin:10px auto 10px;
+      min-width:500px;
+      max-width:800px;
+    }
+    .codeblock td.de1 {
+      border:1px solid black;
+    }
+    .codeblock td.ln {
+      border:1px solid white;
+    }
+    pre {
+      margin:10px auto 10px;
+      max-width:800px;
+    }
+    .plainpre {
+      border: 1px solid black;
+      padding:2px;
+    }
+    */
+    </style>
+  </head><body><div id="header"><p><a href="files.php%3Ff=integral.c&amp;downloadcode=yes">Click here</a> to download <code>integral.c</code>.</p></div><div id="content"><pre class="line-numbers"><code class="language-C">/***************************************************
+Integration of f(x) by simple end-point approximation
+
+Write a program that will approximate the integral of
+
+   f(x) = 2/sqrt(1-x^2)
+
+The bounds of integration should be supplied by the
+user, as well as the number of rectangles used in the
+approximation.
+
+Note:  The integral f(x) from 0 to 1 has a value
+you should recognize!
+
+Note:  You could change the function by changing a
+single line in the code, in case you want to
+approximate a different integral.
+***************************************************/
+#include &quot;si204.h&quot;
+#include &lt;math.h&gt;
+
+int main() {
+  // Read a and b
+  fputs(&quot;Enter integration bounds a and b: &quot;, stdout);
+  double a = readnum(stdin);
+  double b = readnum(stdin);
+
+  // Read n
+  fputs(&quot;Enter n, the number of steps: &quot;, stdout);
+  int n = readnum(stdin);
+
+  // Compute width of rectangles
+  double w = (b - a) / n;
+
+  // Initialize integral approximation value to zero
+  double approx = 0.0;
+
+  // update approximation from each step
+  for(int i=0; i &lt; n; i++) {
+    // Compute evaluation point x
+    double x = a + i*w;
+
+    // Compute fucntion value at x
+    // XXX: change this line to compute a different integral!
+    double fx = 2.0 / sqrt(1.0 - x*x);
+
+    // Add area of rectangle to approx
+    approx += fx * w;
+  }
+
+  // Write out answer
+  fputs(&quot;The integral is approximately &quot;, stdout);
+  writenum(approx, stdout);
+  fputs(&quot;\n&quot;, stdout);
+
+  return 0;
+}</code></pre></div><script src="../../scripts/prism.js"></script></body></html>

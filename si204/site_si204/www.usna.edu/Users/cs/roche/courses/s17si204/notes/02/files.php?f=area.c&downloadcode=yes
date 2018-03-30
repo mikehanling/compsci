@@ -1,0 +1,60 @@
+/***************************************************
+Areas of Circles and Triangles
+
+Write a program that calculates areas of circles
+and triangles, where the use chooses which kind of
+object he wants to caclulate areas for.
+
+The area of a circle is Pi r^2, where r is the
+radius and Pi is approximately 3.14159265358979324.
+The area of a triangle is 1/2 b h, where b is the
+length of the base, and h is the height.
+***************************************************/
+#include "si204.h"
+
+int main() {
+  // Read type of object: circle or triangle
+  cstring s;
+  fputs("Do you have a circle or a triangle? ", stdout);
+  readstring(s, stdin);
+
+  // declare this variable outside the blocks, so that it
+  // can be used afterwards
+  double area;
+
+  // remember, strcmp returns 0 if the strings are equal
+  if (strcmp(s, "circle") == 0) {
+    // Compute area of circle
+
+    // These variables are only needed inside the block!
+    double Pi = 3.14159265358979324;
+    double radius;
+
+    fputs("Enter the radius of your circle: ", stdout);
+    radius = readnum(stdin);
+
+    area = Pi * radius * radius;
+  }
+  else {
+    // Compute area of triangle
+
+    // These variables are only needed inside this block!
+    double base;
+    double height;
+
+    fputs("Enter base length: ", stdout);
+    base = readnum(stdin);
+
+    fputs("Enter height: ", stdout);
+    height = readnum(stdin);
+
+    area = 0.5 * base * height;
+  }
+
+  // print out the computed area
+  fputs("Area equals ", stdout);
+  writenum(area, stdout);
+  fputs("\n", stdout);
+
+  return 0;
+}

@@ -1,0 +1,40 @@
+/***************************************************
+Average of numbers
+
+Write a program that reads in positive integers from
+the user, each separated by a space, and the whole
+terminated by a negative number (e.g. 3 22 10 -2),
+and returns the average of the numbers entered (not
+including the terminated negative number!).  Note
+that the average might not be an integer!
+***************************************************/
+#include "si204.h"
+
+int main() {
+  fputs("Enter numbers separated by spaces"
+        " and ending with a negative.\n", stdout);
+
+  // initialization
+  int sum = 0;
+  int howmany = 0;
+  int nextnum;
+
+  // read first number
+  nextnum = readnum(stdin);
+
+  // Loop while the user enters more data
+  while (nextnum >= 0) {
+    sum = sum + nextnum;
+    howmany = howmany + 1;
+    nextnum = readnum(stdin);
+  }
+
+  double average = sum / (double)howmany;
+
+  // write out result
+  fputs("The average is ", stdout);
+  writenum(average, stdout);
+  fputs("\n", stdout);
+
+  return 0;
+}

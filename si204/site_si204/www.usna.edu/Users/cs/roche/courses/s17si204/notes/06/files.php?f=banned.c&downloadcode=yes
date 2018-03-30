@@ -1,0 +1,76 @@
+/**************************************************
+Write a program that reads a list of banned words
+from a file, stores them in an array,  and then
+simply reads words from the user and returns
+"banned" or "not banned" until the word "end" is
+encountered.  The file starts with a number, which
+is the number of banned words, and then the words
+themselves are listed.
+**************************************************/
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+int main() {
+  // Get name of banned-words file
+  char fname[128];
+  printf("Banned words file: ");
+  fflush(stdout);
+  scanf(" %s", fname);
+
+  // Create input file stream
+  FILE* fin = fopen(fname, "r");
+  if (!fin) {
+    printf("ERROR: file not found\n");
+    return 1;
+  }
+
+  // Read number of words & allocate array
+  int numwords;
+  fscanf(fin, " %i", &numwords);
+  char** bwords = calloc(numwords, sizeof(char*));
+  for (int i=0; i < numwords; ++i) {
+    bwords[i] = calloc(128, sizeof(char));
+  }
+
+  // Read words from file into array
+  for(int i=0; i < numwords; ++i) {
+    fscanf(fin, " %s", bwords[i]);
+  }
+
+  // we can close the file now
+  fclose(fin);
+
+  // Get words from user
+  char search[128];
+  printf("Enter list of words terminated by \"end\".\n");
+
+  scanf(" %s", search);
+  while (strcmp(search, "end") != 0) {
+    // Look for search in banned list
+    int found = 0;
+    for (int j=0; j < numwords; ++j) {
+      if (strcmp(search, bwords[j]) == 0) {
+        found = 1;
+        break;
+      }
+    }
+
+    // Print results
+    if (found) {
+      printf("%s is banned!\n", search);
+    } else {
+      printf("%s is not banned.\n", search);
+    }
+
+    scanf(" %s", search);
+  }
+
+  // clean-up
+  for (int i=0; i < numwords; ++i) {
+    free(bwords[i]);
+  }
+  free(bwords);
+
+  return 0;
+}

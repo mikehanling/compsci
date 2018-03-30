@@ -1,0 +1,130 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Homework 13: EOF</title><meta name="viewport" content="width=device-width, initial-scale=1.0"><link href="../../scripts/prism.css" rel="stylesheet" /><link rel="stylesheet" type="text/css" href="../../style.css"><script type="text/javascript" src="../../../../mathjax/MathJax.js%3Fconfig=TeX-AMS_HTML"></script><style>
+@media only screen and (min-width: 600px) {
+  #main>header {background-image: url("../../scripts/header.png");}
+}
+</style></head><body><div id="main"><header><nav class="topnav"><div>
+            <a href="../../index.php.html">SI 204</a>
+            </div><div>
+            <a href="../../calendar.php.html">Calendar</a>
+            </div><div>
+            <a href="../../notes/index.html">Notes</a>
+            </div><div id="navparent">
+            <a href="../index.html">HWs</a>
+            </div><div>
+            <a href="../../lab/index.html">Labs</a>
+            </div><div>
+            <a href="../../proj/index.html">Projects</a>
+            </div><div>
+            <a href="../../exams/index.html">Exams</a>
+            </div><div>
+            <a href="../../admin/index.html">Resources</a>
+            </div><div>
+            <a href="https://www.usna.edu/Users/cs/roche/">Roche</a>
+            </div><div>
+            <a href="https://www.usna.edu/Users/cs/albing/">Albing</a>
+            </div></nav></header><div id="mainbox"><div class="printonly"><h1 class="printtitle">SI 204 Spring 2017 / HWs</h1><hr></div><article id="mainart"><header><h1>Homework 13: EOF</h1></header><div class="printonly">
+  <div class="blanks">
+  <p>
+  Name: _____________________________________________   Alpha: ___________________
+  </p>
+  <p>
+  Describe help received: ________________________________________________________
+  </p>
+  </div>
+</div>
+  <div class="noprint">
+  <a href="javascript:window.print();">Print this page</a>
+</div>
+  <ul>
+    <li><strong>Due before class on Friday, February 10</strong>
+    </li><li>This homework contains code to be submitted electronically.
+      Put your code in a folder called <code>hw13</code> and submit
+      using the <code>204sub</code> command.</li><li>This is a <em>written homework</em> - be sure to turn in a hard-copy
+      of your completed assignment before the deadline. Use the <code>codeprint</code> command to print out your code
+        and turn that in as well.</li></ul><h1>Assignment</h1><ol class="ass"><li>
+  Circle one to indicate how you did for the reading assignment from
+  <a href="../11/index.html">Homework 11</a> <em>before class on Monday</em>:
+  <p>How carefully did you complete the reading? (Circle one)</p>
+<div class="blanks">
+<div class="option">Not at all</div>
+<div class="option">Skimmed it</div>
+<div class="option">Read some</div>
+<div class="option">Read all</div>
+</div>
+  </li>
+<li>
+  Circle one to indicate how you did for the reading assignment from
+  <a href="../12/index.html">Homework 12</a> <em>before class on Wednesday</em>:
+  <p>How carefully did you complete the reading? (Circle one)</p>
+<div class="blanks">
+<div class="option">Not at all</div>
+<div class="option">Skimmed it</div>
+<div class="option">Read some</div>
+<div class="option">Read all</div>
+</div>
+  </li>
+<li><b>Required reading for this homework</b>:
+  Section 5 (Odds &amp; Ends)
+  from the <a href="../../notes/04/index.html">Unit 4 notes</a>,
+</li>
+<li>Given the following code snippet:
+<pre><code class="language-c">double dog = 8.7;
+int bear = dog + 2;
+double* cat = &amp;dog;
+dog += 3;
+bear += 4;
+*cat += 5;</code></pre>  <p>Fill in the following table with the type and value of each expression
+  <em>after</em> executing the code above.</p>
+<table class="RM blanks">
+  <tr><td>expression</td><td style="width:1.5in;">type</td><td style="width:1.5in;">value</td></tr>
+  <tr><td><code>dog</code></td><td></td><td></td></tr>
+  <tr><td><code>bear</code></td><td></td><td></td></tr>
+  <tr><td><code>*cat</code></td><td></td><td></td></tr>
+  <tr><td><code>XXX</code></td><td></td><td></td></tr>
+</table>
+  <p>Fill in the following table with the <em>type only</em> of each expression,
+  and indicate "yes" or "no" whether each one is an "lvalue", meaning it could be used on the left-hand-side
+  of an assignment statement.</p>
+<table class="RM blanks">
+  <tr><td>expression</td><td style="width:1.5in;">type</td><td style="width:1.5in;">is lvalue?</td></tr>
+  <tr><td><code>&amp;bear</code></td><td></td><td></td></tr>
+  <tr><td><code>bear + dog</code></td><td></td><td></td></tr>
+  <tr><td><code>cat</code></td><td></td><td></td></tr>
+  <tr><td><code>*cat</code></td><td></td><td></td></tr>
+  <tr><td><code>*cat + 7</code></td><td></td><td></td></tr>
+</table>
+
+<li>
+  Write a program called <code>sum.c</code>
+  that reads in the name of a text file, then reads that file and
+  adds up all
+  the numbers in that file, reporting their total sum to
+  <code>stdout</code>.
+  <p>
+    For example, if <code>numbers.txt</code> consists of:
+  </p>
+  <pre><code class="language-txt">1.1
+15
+23.7
+6</code></pre>  <p>then your program should run as:</p>
+<pre><code class="language-text output">Filename: </code><code class="language-text input">numbers.txt</code>
+<code class="language-text output">45.8</code></pre>  <p>Your program <em>must not use <code>si204.h</code></em>; instead you
+  should include only the standard header file <code>&lt;stdio.h&gt;</code>.
+  </p>
+</li>
+</ol></article></div></div><nav class="stickynav"><div><div class="dropdown"><a href="../../index.php.html" class="ddown-btn">SI 204</a><div class="ddown-content"><a href="../../calendar.php.html">Calendar</a><a href="../../notes/index.html">Notes</a><a href="../index.html">HWs</a><a href="../../lab/index.html">Labs</a><a href="../../proj/index.html">Projects</a><a href="../../exams/index.html">Exams</a><a href="../../admin/index.html">Resources</a><a href="https://www.usna.edu/Users/cs/roche/">Roche</a><a href="https://www.usna.edu/Users/cs/albing/">Albing</a></div></div><a href="index.html#top" class="linkin pagetop">Homework 13: EOF</a></nav><footer><div id="foottext">    <p class="disclaimer">Material contained above is made available
+    for the purpose of peer review and discussion and does not
+    necessarily reflect the views of the Department of the Navy or the
+    Department of Defense.
+    Some links above are to sites that are not
+    located at the United States Naval Academy. The USNA is not
+    responsible for the content found on these sites. In addition, the
+    content of these sites does not reflect the opinions, standards,
+    policy or endorsement of the Naval Academy or the United States
+    Government.</p>
+  Page maintained by Daniel S. Roche (<a href="mailto:roche [AT] usna [DOT] edu" id="emaillink1">roche [AT] usna [DOT] edu</a><script type='text/javascript'><!--
+        var b="he@usna.edu";
+        var a="roc";
+        document.getElementById("emaillink1").href='mailto:'+a+b;
+        document.getElementById("emaillink1").innerHTML=a+b;
+        // --></script>). Last updated 06 February 2017 1:53.</div></footer><script src="../../scripts/prism.js"></script><script type="text/javascript"></script></body></html>

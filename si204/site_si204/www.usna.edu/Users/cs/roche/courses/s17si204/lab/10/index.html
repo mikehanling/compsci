@@ -1,0 +1,125 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Lab 10: Linked lists</title><meta name="viewport" content="width=device-width, initial-scale=1.0"><link href="../../scripts/prism.css" rel="stylesheet" /><link rel="stylesheet" type="text/css" href="../../style.css"><script type="text/javascript" src="../../../../mathjax/MathJax.js%3Fconfig=TeX-AMS_HTML"></script><script type="text/javascript" src="../../scripts/jquery-3.1.1.min.js"></script><style>
+@media only screen and (min-width: 600px) {
+  #main>header {background-image: url("../../scripts/header.png");}
+}
+</style>  <meta name="generator" content="pandoc">
+  <style type="text/css">code{white-space: pre;}</style>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head><body><div id="main"><header><nav class="topnav"><div>
+            <a href="../../index.php.html">SI 204</a>
+            </div><div>
+            <a href="../../calendar.php.html">Calendar</a>
+            </div><div>
+            <a href="../../notes/index.html">Notes</a>
+            </div><div>
+            <a href="../../hw/index.html">HWs</a>
+            </div><div id="navparent">
+            <a href="../index.html">Labs</a>
+            </div><div>
+            <a href="../../proj/index.html">Projects</a>
+            </div><div>
+            <a href="../../exams/index.html">Exams</a>
+            </div><div>
+            <a href="../../admin/index.html">Resources</a>
+            </div><div>
+            <a href="https://www.usna.edu/Users/cs/roche/">Roche</a>
+            </div><div>
+            <a href="https://www.usna.edu/Users/cs/albing/">Albing</a>
+            </div></nav></header><div id="mainbox"><div class="printonly"><h1 class="printtitle">SI 204 Spring 2017 / Labs</h1><hr></div><article id="mainart"><header><h1>Lab 10: Linked lists</h1></header><div id="TOC"><ul><li><a class="linkin" href="index.html#linked-list-library"><span class="toc-section-number">1</span> Linked list library</a></li>
+<li><a class="linkin" href="index.html#two-more-functions-going-further-"><span class="toc-section-number">2</span> Two more functions (going further)</a></li></ul></div><div class="panbody"><p>In this lab you will implement a number of functions for linked lists of strings, creating both an iterative version and a recursive version. This builds of course on <a href="../../notes/09/index.html">Unit 9 on linked lists</a> but also relies on <a href="../../notes/05/index.html">Section 5 from Unit 5</a> on how to write your own header files.</p>
+<h1 id="linked-list-library"><a class ="linkin" href="index.html#top"><span class="header-section-number">1</span> Linked list library</a></h1><p>You will write and submit three files for this lab: a header file <code>list.h</code> that contains a struct definition as well as function prototypes as outlined below, and two different definitions files <code>iterlist.c</code> and <code>recurlist.c</code>. Those definitions files will implement all the same functions listed in <code>list.h</code>, once using loops and once using recursive calls.</p>
+<p><a href="files.php%3Ff=main.c.html">Here is a main.c program</a> that shows some very small examples of using the functions you’re about to implement. To compile this program with the <code>iterlist.c</code> implementation, you would run</p>
+<pre><code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">gcc iterlist.c main.c -o main</code></pre><p>(And similarly to try it with the <code>recurlist.c</code> implementation.)</p>
+<p>Of course, this is just a very small test; you should definitely write your own tests and can create any other <code>main</code> programs you like! For grading, we will only look at <code>list.h</code>, <code>iterlist.c</code>, and <code>recurlist.c</code>.</p>
+<p>Here are the functions you should implement for this part:</p>
+<ul>
+<li><code>struct node* add2front(char* s, struct node* L);</code> — you’ve seen this one before</li>
+<li><code>void print_fwd(struct node* L);</code> — prints all the strings in the order they occur in the linked list</li>
+<li><code>void free_list(struct node* L);</code> — <code>free</code>s all nodes in the linked list</li>
+<li><code>int contains(char* s, struct node* L);</code> — returns <code>1</code> if the string <code>s</code> appears in the list <code>L</code>, otherwise returns <code>0</code></li>
+<li><code>char* get_ith(int i, struct node* L);</code> — returns the <code>i</code>th string in the linked list, counting the first item in the list as index 0</li>
+<li><code>int num_chars(struct node* L);</code> — returns the total number of characters in all the strings in the linked list</li>
+</ul>
+<p>And here is how the <a href="files.php%3Ff=main.c.html">main.c program</a> will run once you have those implemented:</p>
+<pre><code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./main</code>
+<code class="language-text output">Enter 5 words in reverse order: </code><code class="language-text input">blue green purple orange red</code>
+<code class="language-text output"></code>
+<code class="language-text output">Contents in order:</code>
+<code class="language-text output">red</code>
+<code class="language-text output">orange</code>
+<code class="language-text output">purple</code>
+<code class="language-text output">green</code>
+<code class="language-text output">blue</code>
+<code class="language-text output"></code>
+<code class="language-text output">contains orange: 1</code>
+<code class="language-text output">contains brown: 0</code>
+<code class="language-text output"></code>
+<code class="language-text output">the string at index 2 is purple</code>
+<code class="language-text output"></code>
+<code class="language-text output">the total number of characters is 24</code></pre><h1 id="two-more-functions-going-further-"><a class ="linkin" href="index.html#top"><span class="header-section-number">2</span> Two more functions (going further)</a></h1><blockquote>The rest of this lab is <em>optional</em> for your
+enrichment and enjoyment. Be sure to work on this only after getting
+everything else perfect. You should still submit this work, but make
+sure it doesn't break any of the parts you already had working correctly!
+</blockquote>
+  <p>Try these two if you have time, both iteratively and recursively. Which version do you like better?</p>
+<ul>
+<li><code>void print_rev(node* L);</code> — prints all the strings in reverse order, from last to first</li>
+<li><code>node* remove_ith(int i, node* L);</code> — removes the node at index <code>i</code> in the list, and returns the resulting list with that node removed.</li>
+</ul>
+<p>Once this part is finished, you can uncomment the last lines in the <a href="files.php%3Ff=main.c.html">main.c program</a> to get:</p>
+<pre><code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./main</code>
+<code class="language-text output">Enter 5 words in reverse order: </code><code class="language-text input">blue green purple orange red</code>
+<code class="language-text output"></code>
+<code class="language-text output">Contents in order:</code>
+<code class="language-text output">red</code>
+<code class="language-text output">orange</code>
+<code class="language-text output">purple</code>
+<code class="language-text output">green</code>
+<code class="language-text output">blue</code>
+<code class="language-text output"></code>
+<code class="language-text output">contains orange: 1</code>
+<code class="language-text output">contains brown: 0</code>
+<code class="language-text output"></code>
+<code class="language-text output">the string at index 2 is purple</code>
+<code class="language-text output"></code>
+<code class="language-text output">the total number of characters is 24</code>
+<code class="language-text output"></code>
+<code class="language-text output">Contents in reverse order:</code>
+<code class="language-text output">blue</code>
+<code class="language-text output">green</code>
+<code class="language-text output">purple</code>
+<code class="language-text output">orange</code>
+<code class="language-text output">red</code>
+<code class="language-text output"></code>
+<code class="language-text output">Contents after removing index 3:</code>
+<code class="language-text output">red</code>
+<code class="language-text output">orange</code>
+<code class="language-text output">purple</code>
+<code class="language-text output">blue</code></pre>  </div></article></div></div><nav class="stickynav"><div><div class="dropdown"><a href="../../index.php.html" class="ddown-btn">SI 204</a><div class="ddown-content"><a href="../../calendar.php.html">Calendar</a><a href="../../notes/index.html">Notes</a><a href="../../hw/index.html">HWs</a><a href="../index.html">Labs</a><a href="../../proj/index.html">Projects</a><a href="../../exams/index.html">Exams</a><a href="../../admin/index.html">Resources</a><a href="https://www.usna.edu/Users/cs/roche/">Roche</a><a href="https://www.usna.edu/Users/cs/albing/">Albing</a></div></div><div class="dropdown"><a href="index.html#top" class="linkin pagetop">Lab 10: Linked lists</a><div class="ddown-content ddtoc"><ul><li><a class="linkin" href="index.html#linked-list-library"><span class="toc-section-number">1</span> Linked list library</a></li>
+<li><a class="linkin" href="index.html#two-more-functions-going-further-"><span class="toc-section-number">2</span> Two more functions (going further)</a></ul></div></div></nav><footer><div id="foottext">    <p class="disclaimer">Material contained above is made available
+    for the purpose of peer review and discussion and does not
+    necessarily reflect the views of the Department of the Navy or the
+    Department of Defense.
+    Some links above are to sites that are not
+    located at the United States Naval Academy. The USNA is not
+    responsible for the content found on these sites. In addition, the
+    content of these sites does not reflect the opinions, standards,
+    policy or endorsement of the Naval Academy or the United States
+    Government.</p>
+  Page maintained by Daniel S. Roche (<a href="mailto:roche [AT] usna [DOT] edu" id="emaillink1">roche [AT] usna [DOT] edu</a><script type='text/javascript'><!--
+        var b="he@usna.edu";
+        var a="roc";
+        document.getElementById("emaillink1").href='mailto:'+a+b;
+        document.getElementById("emaillink1").innerHTML=a+b;
+        // --></script>). Last updated 18 April 2017 8:53.</div></footer><script src="../../scripts/prism.js"></script><script type="text/javascript">var the_body = $('html, body');
+var sticky_height = $('.stickynav').height();
+$('.linkin').click(function(){
+  var href = $(this).attr('href');
+  var offset;
+  if (href == '#top') offset = 0;
+  else offset = $(href).offset().top - sticky_height;
+  the_body.animate({ scrollTop: offset }, 500);
+  return false;
+});</script></body></html>

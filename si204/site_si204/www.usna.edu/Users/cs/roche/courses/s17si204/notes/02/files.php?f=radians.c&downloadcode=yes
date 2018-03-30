@@ -1,0 +1,61 @@
+/***************************************************
+Converting radians to degrees, minutes, seconds
+
+Write a program that reads in an angle measure in
+radians, and prints out the same angle measure in
+degrees, minutes and seconds.  Remember, if d,m,s
+is the degree/minutes/seconds measure, all must be
+integers, m and s must be in [0,59], and the angle
+in degrees must equal
+
+        d + m/60 + s/3600
+
+to within less than 1 second of a degree of error.
+
+To convert from a radians angle measure to degrees,
+
+        degrees = radians * 180/Pi
+
+where Pi is approximately 3.14159265358979323846.
+***************************************************/
+#include "si204.h"
+
+int main() {
+  // store Pi as a variable, for convenience and clarity
+  double pi = 3.14159265358979323846;
+
+  // read in radians measure
+  fputs("Enter angle measure in radians: ", stdout);
+  double r;
+  r = readnum(stdin);
+
+  // compute angle in degrees (with fractions)
+  double a;
+  a = r * 180.0 / pi;
+
+  // compute whole degree number + leftover
+  int d;
+  d = (int)a; // the fractional part of a gets truncated!
+  double r1;
+  r1 = a - d; // leftover in degrees
+
+  // compute whole minute number + leftover
+  int m;
+  m = (int)(r1 * 60.0); // fractional part gets truncated!
+  double r2;
+  r2 = r1 - m/60.0; // leftover in degrees
+
+  // compute whole second number + leftover
+  int s;
+  s = (int)(r2 * 3600.0);
+
+  // print out results
+  writenum(d, stdout);
+  fputs(" degrees, ", stdout);
+  writenum(m, stdout);
+  fputs(" minutes and ", stdout);
+  writenum(s, stdout);
+  fputs(" seconds\n", stdout);
+
+  return 0;
+}

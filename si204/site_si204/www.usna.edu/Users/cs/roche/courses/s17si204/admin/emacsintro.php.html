@@ -1,0 +1,121 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Introduction to emacs</title><meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="stylesheet" type="text/css" href="../style.css"><style>
+@media only screen and (min-width: 600px) {
+  #main>header {background-image: url("../scripts/header.png");}
+}
+</style></head><body><div id="main"><header><nav class="topnav"><div>
+            <a href="../index.php.html">SI 204</a>
+            </div><div>
+            <a href="../calendar.php.html">Calendar</a>
+            </div><div>
+            <a href="../notes/index.html">Notes</a>
+            </div><div>
+            <a href="../hw/index.html">HWs</a>
+            </div><div>
+            <a href="../lab/index.html">Labs</a>
+            </div><div>
+            <a href="../proj/index.html">Projects</a>
+            </div><div>
+            <a href="../exams/index.html">Exams</a>
+            </div><div id="navparent">
+            <a href="index.html">Resources</a>
+            </div><div>
+            <a href="https://www.usna.edu/Users/cs/roche/">Roche</a>
+            </div><div>
+            <a href="https://www.usna.edu/Users/cs/albing/">Albing</a>
+            </div></nav></header><div id="mainbox"><div class="printonly"><h1 class="printtitle">SI 204 Spring 2017 / Resources</h1><hr></div><article id="mainart"><header><h1>Introduction to emacs</h1></header>
+<p>(Thanks to Dr. Brown for this quick-start guide.)</p>
+
+<ol>
+  <li>
+    <b>Launching Emacs</b>
+    Launch emacs like this: <code>emacs&amp;</code>.  That's
+    a linux thing, not an emacs thing.  This way, emacs
+    launches but the terminal comes back for more commands
+    instead of waiting for emacs to finish.
+    If you want to edit or create a file at the same time
+    you're launching emacs, put the file name in before the
+    &amp; sign.  For example: <code>emacs foo.cpp&amp;</code>.
+  </li>
+  <li><b>Don't Panic!</b> If things get strange in emacs, hit ctrl-g.  If that
+    doesn't clear up, try ctrl-].</li>
+  <li>
+    <b>Insert vs. Overwrite</b>
+    Emacs works in either "insert" or "overwrite" mode just
+    like most text editors and word processors.  The
+    "insert" key on your keyboard toggles between them.  On
+    the bottom of the window you'll see "Ovwrt" when you're
+    in overwrite mode.  Play with that.
+  </li>
+  <li>
+    <b>Moving Around</b>
+    Pressing ctrl and using the left or right arrows
+    jumps you word-by word through a line.  Pressing ctrl
+    with the up or down arrows jumps you to chunks of text
+    separated by blank lines.
+    ctrl-a jumps you to the start of the line you're on, and
+    ctrl-e jumps you to the end.
+  </li>
+  <li>
+    <b>Cutting and Pasting</b>
+    The GUI's cut and paste works with emacs, but emacs
+    also has its own, separate system.  ctrl-space sets a
+    start point, move with arrows to the end point of the
+    region you want to mark (it should highlight).
+    Then ctrl-w cuts the highlighted region into
+    the emacs version of the clipboard,
+    and ctrl y "yanks" it out at whatever point you
+    move the cursor to.  If you want to copy the highlighted
+    region to the emacs version of the clipboard without
+    cutting it out of the text, that's esc-w.
+  </li>
+  <li>
+    <b>My Favorite &mdash; ctrl-k</b>
+    An alternative to marking a region is to use ctrl-k,
+    which kills the line from the point of your cursor to
+    the end of the line, adding it to the emacs version of
+    the clipboard.  You can
+    do this multiple times to add multiple lines to the
+    buffer.  Then use ctrl-y ("yank") as before.
+  </li>
+  <li>
+    <b>Opening and Saving Files</b>
+    ctrl-x ctrl-s saves the current buffer.  ctrl-x
+    ctrl-w does "save as".  ctrl-x ctrl-f lets you open a new buffer
+    (but wants you to give it a name and directory at the
+    same time) or an existing file.</li>
+  <li>
+    <b>Emacs Buffers vs. Files</b>
+    Emacs distinguishes between "files" and "buffers".
+    A file is something that exists in a directory
+    somewhere.  The thing that you are dealing with in emacs
+    is a "buffer" &mdash; a copy of the file in emacs's
+    memory.  So when you type, you are changing the buffer,
+    and only by saving the buffer to the file does the file
+    itself change.
+    You can have multiple buffers open in emacs at the same time.
+    There's a "Buffers" menu you can use to switch between
+    them, and you can split the window to show multiple
+    buffers: ctrl-x 1 gives you a single buffer in the
+    window, ctrl-x 2 splits the window horizontally to show
+    two buffers, and ctrl-x 3 splits
+    the window vertically to show
+    two buffers
+  </li>
+</ol>
+
+</article></div></div><nav class="stickynav"><div><div class="dropdown"><a href="../index.php.html" class="ddown-btn">SI 204</a><div class="ddown-content"><a href="../calendar.php.html">Calendar</a><a href="../notes/index.html">Notes</a><a href="../hw/index.html">HWs</a><a href="../lab/index.html">Labs</a><a href="../proj/index.html">Projects</a><a href="../exams/index.html">Exams</a><a href="index.html">Resources</a><a href="https://www.usna.edu/Users/cs/roche/">Roche</a><a href="https://www.usna.edu/Users/cs/albing/">Albing</a></div></div><a href="emacsintro.php.html#top" class="linkin pagetop">Introduction to emacs</a></nav><footer><div id="foottext">    <p class="disclaimer">Material contained above is made available
+    for the purpose of peer review and discussion and does not
+    necessarily reflect the views of the Department of the Navy or the
+    Department of Defense.
+    Some links above are to sites that are not
+    located at the United States Naval Academy. The USNA is not
+    responsible for the content found on these sites. In addition, the
+    content of these sites does not reflect the opinions, standards,
+    policy or endorsement of the Naval Academy or the United States
+    Government.</p>
+  Page maintained by Daniel S. Roche (<a href="mailto:roche [AT] usna [DOT] edu" id="emaillink1">roche [AT] usna [DOT] edu</a><script type='text/javascript'><!--
+        var b="he@usna.edu";
+        var a="roc";
+        document.getElementById("emaillink1").href='mailto:'+a+b;
+        document.getElementById("emaillink1").innerHTML=a+b;
+        // --></script>). Last updated 15 January 2017 21:11.</div></footer><script type="text/javascript"></script></body></html>

@@ -1,0 +1,150 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8"><title>C reference</title><meta name="viewport" content="width=device-width, initial-scale=1.0"><link href="../scripts/prism.css" rel="stylesheet" /><link rel="stylesheet" type="text/css" href="../style.css"><script type="text/javascript" src="../scripts/jquery-3.1.1.min.js"></script><style>
+@media only screen and (min-width: 600px) {
+  #main>header {background-image: url("../scripts/header.png");}
+}
+</style></head><body><div id="main"><header><nav class="topnav"><div>
+            <a href="../index.php.html">SI 204</a>
+            </div><div>
+            <a href="../calendar.php.html">Calendar</a>
+            </div><div>
+            <a href="../notes/index.html">Notes</a>
+            </div><div>
+            <a href="../hw/index.html">HWs</a>
+            </div><div>
+            <a href="../lab/index.html">Labs</a>
+            </div><div>
+            <a href="../proj/index.html">Projects</a>
+            </div><div>
+            <a href="../exams/index.html">Exams</a>
+            </div><div id="navparent">
+            <a href="index.html">Resources</a>
+            </div><div>
+            <a href="https://www.usna.edu/Users/cs/roche/">Roche</a>
+            </div><div>
+            <a href="https://www.usna.edu/Users/cs/albing/">Albing</a>
+            </div></nav></header><div id="mainbox"><div class="printonly"><h1 class="printtitle">SI 204 Spring 2017 / Resources</h1><hr></div><article id="mainart"><header><h1>C reference</h1></header><div id="TOC"><ul><li><a class="linkin" href="cref.php.html#header-files"><span class="toc-section-number">1</span> Header files</a></li>
+<li><a class="linkin" href="cref.php.html#input-output"><span class="toc-section-number">2</span> Input/Output</a></li>
+<li><a class="linkin" href="cref.php.html#string-operations"><span class="toc-section-number">3</span> String Operations</a></li>
+<li><a class="linkin" href="cref.php.html#math-functions"><span class="toc-section-number">4</span> Math functions</a></li></ul></div><div class="panbody">
+<p>This page will be updated throughout the semester with quick reference for
+the most important C language functions that will be needed for the class.
+Most external links are to
+<a href="http://en.cppreference.com/w/c">cppreference.com/w/c</a>, which is
+an excellent general reference on the C language and standard libraries.
+</p>
+
+<h1 id="header-files"><a class ="linkin" href="cref.php.html#top"><span class="header-section-number">1</span> Header files</a></h1><ul>
+<li><code>#include "<a href="../si204.php.html">si204.h</a>"</code><br>
+  Header file for SI204 that includes basic I/O and <code>cstring</code> functionality.
+</li>
+<li><code>#include &lt;<a href="http://en.cppreference.com/w/c/numeric/math">math.h</a>&gt;</code><br>
+  Standard library for extra math functions beyond basic arithmetic.<br>
+  <b>Important</b>: You need to compile with <code>-lm</code> if you use the <code>math.h</code> libary.
+</li>
+</ul>
+
+<h1 id="input-output"><a class ="linkin" href="cref.php.html#top"><span class="header-section-number">2</span> Input/Output</a></h1><p>From <code>#include "<a href="../si204.php.html">si204.h</a>"</code>:</p>
+<ul>
+  <li><code>void writenum(double num, stream destination);</code><br>
+    Writes <code>num</code> to the output stream <code>destination</code>.
+    Note that <code>num</code> could also be an <code>int</code>.<br>
+    Example: <code class="language-c">writenum(42, stdout);</code>  </li>
+  <li><code>void <a href="http://en.cppreference.com/w/c/io/fputs">fputs</a>(cstring output, stream destination);</code><br>
+    Writes <code>output</code> to the output stream <code>destination</code>.<br>
+    Example: <code class="language-c">fputs(&quot;Hello, world!\n&quot;, stdout);</code>  </li>
+  <li><code>void <a href="http://en.cppreference.com/w/c/io/fputc">fputc</a>(char c, stream destination);</code><br>
+    Write the single character <code>c</code> to the output stream <code>destination</code>.<br>
+    Example: <code class="language-c">fputc('!', stdout);</code>  </li>
+  <li><code>double readnum(stream source);</code><br>
+    Reads the next number (after skipping whitespace) from the input stream <code>source</code> and returns it.
+    Note that this can be used to read integers also.
+    If the next part of input is not an input, and error occurs.<br>
+    Example: <code class="language-c">int x = readnum(stdin);</code>  </li>
+  <li><code>char readchar(stream source);</code><br>
+    Reads the next non-whitespace character from the input stream <code>source</code> and returns it.
+    <br>
+    Example: <code class="language-c">char c = readchar(stdin);</code>  </li>
+  <li><code>void readstring(cstring dest, stream source);</code><br>
+    Reads the next group of non-whitespace characters from the input stream <code>source</code>
+    and saves them to the variable passed as the first argument. <br>
+    Example: <code class="language-c">readstring(mystring, stdin);</code>  </li>
+    <li><code>stream <a href="http://en.cppreference.com/w/c/io/fopen">fopen</a>(cstring filename, "r");</code><br>
+    Opens the given file as an input stream for reading.
+    If the file doesn't exist, a <code>stream</code> object is returned that is equal to 0 (i.e., false).<br>
+    Example: <code class="language-c">stream fin = fopen(&quot;file.txt&quot;, &quot;r&quot;);</code>  </li>
+  <li><code>void <a href="http://en.cppreference.com/w/c/io/fclose">fclose</a>(stream inorout);</code><br>
+    Closes the given file stream. You should call this after any successful call to <code>fopen</code>,
+    once you're done using the stream.<br>
+    Example: <code class="language-c">fclose(fin);</code>  </li>
+  </ul>
+
+<h1 id="string-operations"><a class ="linkin" href="cref.php.html#top"><span class="header-section-number">3</span> String Operations</a></h1><p>From <code>#include "<a href="../si204.php.html">si204.h</a>"</code>:</p>
+<ul>
+  <li><code>cstring <a href="http://en.cppreference.com/w/c/string/byte/strcpy">strcpy</a>(cstring dest, cstring src);</code><br>
+    Copies (assigns) the value of <code>src</code> to <code>dest</code>. 
+    The value of <code>dest</code> is also returned for convenience, but you usually don't use the return value.<br>
+    Example: <code class="language-c">strcpy(mystring, &quot;words of wisdom&quot;);</code>  </li>
+  <li><code>int <a href="http://en.cppreference.com/w/c/string/byte/strcmp">strcmp</a>(cstring a, cstring b);</code><br>
+    Compares strings <code>a</code> and <code>b</code> according to alphabetic (lexicographical) order,
+    and returns a 
+      <em>negative number</em> if <code>a</code> is less than <code>b</code>,
+      <code>0</code> if <code>a</code> is equal to <code>b</code>,
+      or a <em>positive number</em> if <code>a</code> is greater than <code>b</code>. <br>
+    Example 1: <code class="language-c">int x = strcmp(&quot;red&quot;, &quot;house&quot;); // x will be positive</code> <br>
+    Example 2: <code class="language-c">if (strcmp(name, &quot;Dan&quot;) == 0) { fputs(&quot;Hi, Dan!\n&quot;, stdout); }</code> 
+  </li>
+  <li><code>int <a href="http://en.cppreference.com/w/c/string/byte/strlen">strlen</a>(cstring s);</code><br>
+    Returns the number of characters (i.e., the <em>length</em>) of the string <code>s</code>. <br>
+    Example: <code class="language-c">int x = strlen(&quot;My bike&quot;); // x will equal 7</code>  </li>
+    <li><code>void <a href="http://en.cppreference.com/w/c/string/byte/strcat">strcat</a>(cstring dest, cstring src);</code><br>
+    Appends the second string <code>src</code> onto the end of <code>dest</code>, modifying <code>dest</code>
+    to make it longer. For example:
+    <pre><code class="language-c">strcpy(mystring, &quot;First&quot;);  // now mystring equals &quot;First&quot;
+strcat(mystring, &quot;Second&quot;); // now mystring equals &quot;FirstSecond&quot;</code></pre>  </li>
+  </ul>
+
+<h1 id="math-functions"><a class ="linkin" href="cref.php.html#top"><span class="header-section-number">4</span> Math functions</a></h1><p>From <code>#include &lt;<a href="http://en.cppreference.com/w/c/numeric/math">math.h</a>&gt;</code>
+ (don't forget to compile with <code>-lm</code>):</p>
+<ul>
+  <li><code>double <a href="http://en.cppreference.com/w/c/numeric/math/fabs">fabs</a>(double x);</code><br>
+    Returns the absolute value of <code>x</code>.<br>
+    Example: <code class="language-c">fabs(-1.2); // equals 1.2</code>  </li>
+  <li><code>double <a href="http://en.cppreference.com/w/c/numeric/math/pow">pow</a>(double x, double y);</code><br>
+    Returns <code>x</code> raised to the power <code>y</code>, i.e., \(x^y\)<br>
+    Example: <code class="language-c">pow(2.0, 3.0); // equals 8.0</code>  </li>
+  <li><code>double <a href="http://en.cppreference.com/w/c/numeric/math/sqrt">sqrt</a>(double x);</code><br>
+    Returns the square root of <code>x</code>.<br>
+    Example: <code class="language-c">sqrt(4.84); // equals 2.2</code>  </li>
+  <li><code>double <a href="http://en.cppreference.com/w/c/numeric/math/sqrt">log</a>(double x);</code><br>
+    Returns the natural logarithm (meaning log base <em>e</em>) of <code>x</code>.<br>
+    Example: <code class="language-c">log(45.6); // equals 3.8199...</code>  </li>
+</ul>
+
+</div></article></div></div><nav class="stickynav"><div><div class="dropdown"><a href="../index.php.html" class="ddown-btn">SI 204</a><div class="ddown-content"><a href="../calendar.php.html">Calendar</a><a href="../notes/index.html">Notes</a><a href="../hw/index.html">HWs</a><a href="../lab/index.html">Labs</a><a href="../proj/index.html">Projects</a><a href="../exams/index.html">Exams</a><a href="index.html">Resources</a><a href="https://www.usna.edu/Users/cs/roche/">Roche</a><a href="https://www.usna.edu/Users/cs/albing/">Albing</a></div></div><div class="dropdown"><a href="cref.php.html#top" class="linkin pagetop">C reference</a><div class="ddown-content ddtoc"><ul><li><a class="linkin" href="cref.php.html#header-files"><span class="toc-section-number">1</span> Header files</a></li>
+<li><a class="linkin" href="cref.php.html#input-output"><span class="toc-section-number">2</span> Input/Output</a></li>
+<li><a class="linkin" href="cref.php.html#string-operations"><span class="toc-section-number">3</span> String Operations</a></li>
+<li><a class="linkin" href="cref.php.html#math-functions"><span class="toc-section-number">4</span> Math functions</a></ul></div></div></nav><footer><div id="foottext">    <p class="disclaimer">Material contained above is made available
+    for the purpose of peer review and discussion and does not
+    necessarily reflect the views of the Department of the Navy or the
+    Department of Defense.
+    Some links above are to sites that are not
+    located at the United States Naval Academy. The USNA is not
+    responsible for the content found on these sites. In addition, the
+    content of these sites does not reflect the opinions, standards,
+    policy or endorsement of the Naval Academy or the United States
+    Government.</p>
+  Page maintained by Daniel S. Roche (<a href="mailto:roche [AT] usna [DOT] edu" id="emaillink1">roche [AT] usna [DOT] edu</a><script type='text/javascript'><!--
+        var b="he@usna.edu";
+        var a="roc";
+        document.getElementById("emaillink1").href='mailto:'+a+b;
+        document.getElementById("emaillink1").innerHTML=a+b;
+        // --></script>). Last updated 21 January 2017 13:28.</div></footer><script src="../scripts/prism.js"></script><script type="text/javascript">var the_body = $('html, body');
+var sticky_height = $('.stickynav').height();
+$('.linkin').click(function(){
+  var href = $(this).attr('href');
+  var offset;
+  if (href == '#top') offset = 0;
+  else offset = $(href).offset().top - sticky_height;
+  the_body.animate({ scrollTop: offset }, 500);
+  return false;
+});</script></body></html>

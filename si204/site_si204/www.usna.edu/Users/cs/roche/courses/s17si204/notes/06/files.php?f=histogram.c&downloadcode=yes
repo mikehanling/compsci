@@ -1,0 +1,53 @@
+/*************************************************
+This program reads in numbers in the range 0 to 100
+and prints out a histogram of the numbers, with
+"bins" for the ranges [0,10), [10-20), ... ,[90,100].
+ *************************************************/
+#include <stdio.h>
+
+//-- PROTOTYPES -----------------------------//
+int bin(double x);
+void rep(char c, int k);
+
+//-- MAIN -----------------------------------//
+int main() {
+  // Create and initialize histogram
+  int H[10] = {0};
+
+  // Read values and update histogram counts
+  printf("Enter data entries, followed by -1.\n");
+  double value;
+  scanf(" %lg", &value);
+  while (value >= 0) {
+    ++ H[ bin(value) ];
+    scanf(" %lg", &value);
+  }
+
+  // Print out histogram in ASCII
+  for(int k=0; k < 10; ++k) {
+    printf("%i:", k);
+    rep('*', H[k]);
+    printf("\n");
+  }
+
+  return 0;
+}
+
+//-- FUNCTION DEFINITIONS -------------------//
+// Categorizes value x into bins 0, 1, 2, ..., 9
+int bin(double x) {
+  int i = x/10;
+  if (i > 9) {
+    return 9;
+  } else if (i < 0) {
+    return 0;
+  } else {
+    return i;
+  }
+}
+
+void rep(char c, int k) {
+  for(int i = 0; i < k; i++) {
+    printf("%c", c);
+  }
+}

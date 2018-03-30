@@ -1,0 +1,132 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+         "http://www.w3.org/TR/html4/strict.dtd"><html><head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"><title>switch.c</title><link href="../../scripts/prism.css" rel="stylesheet" />    <style type="text/css">
+    body {
+      margin: 0;
+      padding:55px 0 0 0;
+    }
+    div#header {
+      position:absolute;
+      top: 0;
+      left: 0;
+      width:100%;
+      height:50px;
+      border-bottom: 5px solid red;
+      text-align: center;
+      background-color: #d0d0d0;
+      z-index: 1000;
+    }
+    @media screen{
+      body>div#header{
+        position:fixed;
+      }
+    }
+    * html body{
+      overflow:hidden;
+    }
+    * html div#content {
+      height: 100%;
+      overflow: auto;
+    }
+    .warning {
+      margin: 3px auto;
+      background-color: black;
+      color: yellow;
+      font-weight: bold;
+      max-width: 600px;
+      font-family: sans-serif;
+      text-align: center;
+    }
+    /*
+    .codeblock {
+      margin:10px auto 10px;
+      min-width:500px;
+      max-width:800px;
+    }
+    .codeblock td.de1 {
+      border:1px solid black;
+    }
+    .codeblock td.ln {
+      border:1px solid white;
+    }
+    pre {
+      margin:10px auto 10px;
+      max-width:800px;
+    }
+    .plainpre {
+      border: 1px solid black;
+      padding:2px;
+    }
+    */
+    </style>
+  </head><body><div id="header"><p><a href="files.php%3Ff=switch.c&amp;downloadcode=yes">Click here</a> to download <code>switch.c</code>.</p></div><div id="content"><pre class="line-numbers"><code class="language-C">/*******************************************
+ ** Reads in the date in mm/dd/yyyy format
+ ** and converts to dd monthname, yyyy.
+ *******************************************/
+#include &quot;si204.h&quot;
+
+int main() {
+  // Read day in mm/dd/yyyy format
+  int month;
+  int day;
+  int year;
+  month = readnum(stdin);
+  readchar(stdin); // '/'
+  day = readnum(stdin);
+  readchar(stdin); // '/'
+  year = readnum(stdin);
+
+  // Set moname to the name of the month
+  cstring moname;
+  switch(month) {
+  case 1:
+    strcpy(moname, &quot;January&quot;);
+    break;
+  case 2:
+    strcpy(moname, &quot;February&quot;);
+    break;
+  case 3:
+    strcpy(moname, &quot;March&quot;);
+    break;
+  case 4:
+    strcpy(moname, &quot;April&quot;);
+    break;
+  case 5:
+    strcpy(moname, &quot;May&quot;);
+    break;
+  case 6:
+    strcpy(moname, &quot;June&quot;);
+    break;
+  case 7:
+    strcpy(moname, &quot;July&quot;);
+    break;
+  case 8:
+    strcpy(moname, &quot;August&quot;);
+    break;
+  case 9:
+    strcpy(moname, &quot;September&quot;);
+    break;
+  case 10:
+    strcpy(moname, &quot;October&quot;);
+    break;
+  case 11:
+    strcpy(moname, &quot;November&quot;);
+    break;
+  case 12:
+    strcpy(moname, &quot;December&quot;);
+    break;
+  default:
+    strcpy(moname, &quot;ERROR&quot;);
+    break;
+  }
+
+  // Print date in dd month_name, yyyy format
+  writenum(day, stdout);
+  fputs(&quot; &quot;, stdout);
+  fputs(moname, stdout);
+  fputs(&quot;, &quot;, stdout);
+  writenum(year, stdout);
+  fputs(&quot;\n&quot;, stdout);
+
+  return 0;
+}</code></pre></div><script src="../../scripts/prism.js"></script></body></html>

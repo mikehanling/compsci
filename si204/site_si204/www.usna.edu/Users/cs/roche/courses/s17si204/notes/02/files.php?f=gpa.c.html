@@ -1,0 +1,101 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+         "http://www.w3.org/TR/html4/strict.dtd"><html><head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"><title>gpa.c</title><link href="../../scripts/prism.css" rel="stylesheet" />    <style type="text/css">
+    body {
+      margin: 0;
+      padding:55px 0 0 0;
+    }
+    div#header {
+      position:absolute;
+      top: 0;
+      left: 0;
+      width:100%;
+      height:50px;
+      border-bottom: 5px solid red;
+      text-align: center;
+      background-color: #d0d0d0;
+      z-index: 1000;
+    }
+    @media screen{
+      body>div#header{
+        position:fixed;
+      }
+    }
+    * html body{
+      overflow:hidden;
+    }
+    * html div#content {
+      height: 100%;
+      overflow: auto;
+    }
+    .warning {
+      margin: 3px auto;
+      background-color: black;
+      color: yellow;
+      font-weight: bold;
+      max-width: 600px;
+      font-family: sans-serif;
+      text-align: center;
+    }
+    /*
+    .codeblock {
+      margin:10px auto 10px;
+      min-width:500px;
+      max-width:800px;
+    }
+    .codeblock td.de1 {
+      border:1px solid black;
+    }
+    .codeblock td.ln {
+      border:1px solid white;
+    }
+    pre {
+      margin:10px auto 10px;
+      max-width:800px;
+    }
+    .plainpre {
+      border: 1px solid black;
+      padding:2px;
+    }
+    */
+    </style>
+  </head><body><div id="header"><p><a href="files.php%3Ff=gpa.c&amp;downloadcode=yes">Click here</a> to download <code>gpa.c</code>.</p></div><div id="content"><pre class="line-numbers"><code class="language-C">/***************************************************
+Grading
+
+A school tracks grades as A, B, C, D or E (not F).
+A students GPA is a number between 0 and 4, which
+you calculate by averaging the grades - an A is
+given 4 points, down to an E which is given 0 points.
+
+Write a program that reads in 4 letter grades (a 
+student's first semester) and prints out his GPA.
+***************************************************/
+#include &quot;si204.h&quot;
+
+int main() {
+  // Read in four grades
+  fputs(&quot;Enter four letter grades: &quot;, stdout);
+  char g1, g2, g3, g4;
+  g1 = readchar(stdin);
+  g2 = readchar(stdin);
+  g3 = readchar(stdin);
+  g4 = readchar(stdin);
+  
+  // Compute weights for the four grades
+  int w1, w2, w3, w4;
+  w1 = 'E' - g1;
+  w2 = 'E' - g2;
+  w3 = 'E' - g3;
+  w4 = 'E' - g4;
+
+  // Compute GPA
+  double a;
+  a = (double)(w1 + w2 + w3 + w4) / 4.0;
+
+  // Print out GPA
+  fputs(&quot;GPA is &quot;, stdout);
+  writenum(a, stdout);
+  fputs(&quot;\n&quot;, stdout);
+
+  return 0;
+}</code></pre></div><script src="../../scripts/prism.js"></script></body></html>

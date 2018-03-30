@@ -1,0 +1,136 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8"><title>An Introduction to vi</title><meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="stylesheet" type="text/css" href="../style.css"><style>
+@media only screen and (min-width: 600px) {
+  #main>header {background-image: url("../scripts/header.png");}
+}
+</style></head><body><div id="main"><header><nav class="topnav"><div>
+            <a href="../index.php.html">SI 204</a>
+            </div><div>
+            <a href="../calendar.php.html">Calendar</a>
+            </div><div>
+            <a href="../notes/index.html">Notes</a>
+            </div><div>
+            <a href="../hw/index.html">HWs</a>
+            </div><div>
+            <a href="../lab/index.html">Labs</a>
+            </div><div>
+            <a href="../proj/index.html">Projects</a>
+            </div><div>
+            <a href="../exams/index.html">Exams</a>
+            </div><div id="navparent">
+            <a href="index.html">Resources</a>
+            </div><div>
+            <a href="https://www.usna.edu/Users/cs/roche/">Roche</a>
+            </div><div>
+            <a href="https://www.usna.edu/Users/cs/albing/">Albing</a>
+            </div></nav></header><div id="mainbox"><div class="printonly"><h1 class="printtitle">SI 204 Spring 2017 / Resources</h1><hr></div><article id="mainart"><header><h1>An Introduction to vi</h1></header>
+<p>(Thanks to Dr. Taylor for this quick-start guide.)</p>
+
+<p>First, some language: there are three common versions of <code>vi</code>.
+<code>vi</code> is the simplest, and will open directly in your terminal, not
+as a separate window. <code>vim</code> is &quot;vi improved,&quot; and (most
+crucially) has syntax highlighting. <code>gvim</code> is &quot;graphical
+vim,&quot; and will open a new window with clickable buttons that copy, paste,
+save, and all sorts of other things that are helpful when you're first getting
+started. All three are colloquially referred to as &quot;vi&quot; (pronounced
+vee-eye).</p>
+<p>The goal of vi is to <em>never use the mouse or arrow keys</em> - if you
+are, you're not using it right. So, you need keyboard shortcuts for everything
+you might want to do (copy, paste, save, open a new file, move around, etc.).
+As a result, vi has two modes: &quot;insert mode,&quot; which is when you're
+actually typing text into your file, and &quot;normal mode,&quot; which is when
+all your keys get remapped to allow you to do everything else you might want to
+do. As you might guess by the names, when you're good at vi, you spend more
+time in &quot;normal mode&quot; than actually typing!</p>
+<p>vi has a learning curve which can seem steep. However, it will save you a
+LOT of time in the long run. A <em>LOT</em>.</p>
+<p>Below are some of the shortcuts I use most often to help get you started.
+This is a very, very small subset of the things you can do in vi. Start with
+even a subset of these which seem most useful to you, and add more as you get
+better.</p>
+
+<h1>Going from insert mode to normal mode</h1>
+<ul>
+  <li><code>[Esc]</code></li>
+</ul>
+
+<h1>Going from normal mode to insert mode</h1>
+<ul>
+  <li><code>i</code> : insert - enter insert mode just before the cursor</li>
+  <li><code>a</code> : append - enter insert mode just after the cursor</li>
+  <li><code>I</code> : Insert - enter insert mode at the beginning of the
+  line</li>
+  <li><code>A</code> : Append - enter insert mode at the end of the line</li>
+</ul>
+
+<h1>Moving around the file</h1>
+
+<ul>
+  <li><code>h</code> : move left one character</li>
+  <li><code>j</code> : move down one line</li>
+  <li><code>k</code> : move up one line</li>
+  <li><code>l</code> : move right one character</li>
+  <li><code>w</code> : move right one word</li>
+  <li><code>b</code> : move left one word</li>
+  <li><code>0</code> : move to the beginning of the line</li>
+  <li><code>$</code> : move to the end of the line</li>
+  <li><code>G</code> : move to the last line in the file</li>
+  <li>[number]<code>G</code>: move to line [number]. For example, typing
+  <code>19G</code> would take you to line 19.</li>
+  <li><code>/</code> : used to search. <code>/some words</code> followed by an
+  Enter will take you to the next instance of &quot;some words&quot;.
+  <strong>Underrated by beginners, used heavily by experts</strong>.</li>
+  <li><code>n</code> : move to the next instance of what you just searched for</li>
+  <li><code>N</code> : move to the previous instance of what you just searched for</li>
+</ul>
+
+<h1>Making edits</h1>
+
+<ul>
+  <li><code>c</code> followed by a move command : change - performs the move
+  command, deleting everything it passes over, and enters insert mode. For
+  example, <code>cw</code> deletes the word after your cursor, and enters insert
+  mode so you can replace it.</li>
+  <li><code>d</code> followed by a move command : delete - performs the move
+  command, deleting everything it passes over. Stays in normal mode.
+  <strong>delete is the same thing as cutting in vi. The text you deleted is now
+  on your clipboard</strong>.</li>
+  <li><code>y</code> followed by a move command: yank - copies everything the
+  cursor passes over.</li>
+  <li><code>cc</code> : &quot;changes&quot; the current line</li>
+  <li><code>dd</code> : &quot;deletes (cuts)&quot; the current line</li>
+  <li><code>yy</code> : &quot;yanks&quot; the current line</li>
+  <li><code>v</code> : enters &quot;visual mode&quot;, where you can use the move commands
+  to highlight part of the text. Then hit <code>c</code>, <code>d</code>, or
+  <code>y</code> to change, delete (cut), or yank (copy).</li>
+  <li><code>V</code> : same as <code>v</code>, but selects entire lines</li>
+  <li><code>p</code> : pastes after the cursor</li>
+  <li><code>P</code> : pastes before the cursor</li>
+  </ul>
+
+<h1>Saving/opening files</h1>
+<ul>
+  <li><code>:w</code> : write - saves the file under its current name (follow
+  with an Enter)</li>
+  <li><code>:w filename</code> : save as filename (follow with an Enter)</li>
+  <li><code>:q</code> : quit (follow with an Enter)</li>
+  <li><code>:wq</code> : save and quit (follow with an Enter)</li>
+  <li><code>:e filename</code> : exit this file, and open up
+  <code>filename</code> instead (follow with an Enter)</li>
+</ul>
+
+</article></div></div><nav class="stickynav"><div><div class="dropdown"><a href="../index.php.html" class="ddown-btn">SI 204</a><div class="ddown-content"><a href="../calendar.php.html">Calendar</a><a href="../notes/index.html">Notes</a><a href="../hw/index.html">HWs</a><a href="../lab/index.html">Labs</a><a href="../proj/index.html">Projects</a><a href="../exams/index.html">Exams</a><a href="index.html">Resources</a><a href="https://www.usna.edu/Users/cs/roche/">Roche</a><a href="https://www.usna.edu/Users/cs/albing/">Albing</a></div></div><a href="vimintro.php.html#top" class="linkin pagetop">An Introduction to vi</a></nav><footer><div id="foottext">    <p class="disclaimer">Material contained above is made available
+    for the purpose of peer review and discussion and does not
+    necessarily reflect the views of the Department of the Navy or the
+    Department of Defense.
+    Some links above are to sites that are not
+    located at the United States Naval Academy. The USNA is not
+    responsible for the content found on these sites. In addition, the
+    content of these sites does not reflect the opinions, standards,
+    policy or endorsement of the Naval Academy or the United States
+    Government.</p>
+  Page maintained by Daniel S. Roche (<a href="mailto:roche [AT] usna [DOT] edu" id="emaillink1">roche [AT] usna [DOT] edu</a><script type='text/javascript'><!--
+        var b="he@usna.edu";
+        var a="roc";
+        document.getElementById("emaillink1").href='mailto:'+a+b;
+        document.getElementById("emaillink1").innerHTML=a+b;
+        // --></script>). Last updated 15 January 2017 21:11.</div></footer><script type="text/javascript"></script></body></html>

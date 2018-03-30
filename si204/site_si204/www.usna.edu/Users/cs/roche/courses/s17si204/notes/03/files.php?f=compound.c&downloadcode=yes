@@ -1,0 +1,47 @@
+/***************************************************
+Compound Interest
+
+Write a program that reads an annual interest rate
+and a term (number of years) from the user, and
+computes the ammount of money you'd have after that
+number of years at that interest rate, assuming you
+make $100.00 payments into the account at the
+beginning of each year.
+
+The formula for interest is this:  If A is the
+amount of money in your account at the beginning of
+the year, and r is the annual interest rate, the
+amount in your account at the end of the year is:
+
+        A*(1.0 + r/100.0)
+
+***************************************************/
+#include "si204.h"
+
+int main() {
+  // Read interest rate
+  fputs("Enter interest rate: ", stdout);
+  double r = readnum(stdin);
+
+  // Read number of years
+  fputs("Enter number of years: ", stdout);
+  int total_years = readnum(stdin);
+
+  // INITIALIZATION FOR THE LOOP
+  double T = 0.0; // We don't have any money yet
+  int years = 0; // no years gone by yet
+
+  // LOOP: COMPUTE total_years COMPOUNDING STEPS
+  while (years < total_years) {
+    // update T and years for one more year gone by
+    T = (T + 100.0) * (1.0 + r/100.0);
+    years = years + 1;
+  }
+
+  // Write out results
+  fputs("Final amount is: $", stdout);
+  writenum(T, stdout);
+  fputs("\n", stdout);
+
+  return 0;
+}

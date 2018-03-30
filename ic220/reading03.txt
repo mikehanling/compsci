@@ -1,0 +1,26 @@
+Mike Hanling
+R03: 2.7
+
+
+Key Points:
+  Conditional Branches
+    beq reg1, reg2, L1
+      go to instr L1 if value in reg1 == value in reg2
+    bne reg1, reg2, L1
+      same as above but !=
+  Unconditional Branches:
+    called jumps (j)
+  Label pieces of if/then block with Else: and Exit:
+  Label loop with Loop:
+  Test for less than:
+    slt/i destreg, reg1, reg2  # tests for reg1 < reg2
+    sets destreg equal to 1 if true, otherwise 0
+    For unsigned, use sltu and sltiu
+  Jump Address Table / Jump Table:
+    jr
+    unconditional jump to make case or switch happen
+
+
+
+What Confused Me:
+  jr - not sure how to use it

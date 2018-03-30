@@ -1,0 +1,179 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+         "http://www.w3.org/TR/html4/strict.dtd"><html><head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"><title>pickteams.c</title><link href="../../scripts/prism.css" rel="stylesheet" />    <style type="text/css">
+    body {
+      margin: 0;
+      padding:55px 0 0 0;
+    }
+    div#header {
+      position:absolute;
+      top: 0;
+      left: 0;
+      width:100%;
+      height:50px;
+      border-bottom: 5px solid red;
+      text-align: center;
+      background-color: #d0d0d0;
+      z-index: 1000;
+    }
+    @media screen{
+      body>div#header{
+        position:fixed;
+      }
+    }
+    * html body{
+      overflow:hidden;
+    }
+    * html div#content {
+      height: 100%;
+      overflow: auto;
+    }
+    .warning {
+      margin: 3px auto;
+      background-color: black;
+      color: yellow;
+      font-weight: bold;
+      max-width: 600px;
+      font-family: sans-serif;
+      text-align: center;
+    }
+    /*
+    .codeblock {
+      margin:10px auto 10px;
+      min-width:500px;
+      max-width:800px;
+    }
+    .codeblock td.de1 {
+      border:1px solid black;
+    }
+    .codeblock td.ln {
+      border:1px solid white;
+    }
+    pre {
+      margin:10px auto 10px;
+      max-width:800px;
+    }
+    .plainpre {
+      border: 1px solid black;
+      padding:2px;
+    }
+    */
+    </style>
+  </head><body><div id="header"><p><a href="files.php%3Ff=pickteams.c&amp;downloadcode=yes">Click here</a> to download <code>pickteams.c</code>.</p></div><div id="content"><pre class="line-numbers"><code class="language-C">/************************************************
+This program is a simple application of 2D arrays.
+The purpose is to take a list of people, and randomly
+create teams from them.  The names come from a
+file names.txt.
+*************************************************/
+#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;time.h&gt;
+
+/************************************************
+ ** PROTOTYPES
+ ************************************************/
+char** readnames(int* numptr);
+char** makearray(int size);
+void freearray(char** arr, int size);
+
+/************************************************
+ ** MAIN FUNCTION
+ ************************************************/
+int main() {
+  // seed the random number generator differently on each run
+  srand(time(0));
+
+  // Read file of names
+  int np;
+  char** names = readnames(&amp;np);
+
+  // Get number of teams from user
+  int nt;
+  printf(&quot;There are %i people.\n&quot;, np);
+  printf(&quot;How many teams would you like? (make it evenly divide n) &quot;);
+  fflush(stdout);
+  scanf(&quot; %i&quot;, &amp;nt);
+  if (np % nt != 0) {
+    printf(&quot;ERROR: Number of teams must evenly divide number of people\n&quot;);
+    return 1;
+  }
+
+  // Allocate array of teams
+  int teamSize = np / nt;
+  char*** teams = calloc(nt, sizeof(char**));
+  for (int i = 0; i &lt; nt; ++i) {
+    teams[i] = makearray(teamSize);
+  }
+
+  // dole out people to teams
+  int npremaining = np;
+  for(int i = 0; i &lt; teamSize; ++i) {
+    for(int it = 0; it &lt; nt; ++it) {
+      int inext = rand() % npremaining;
+      // copy next name to their team
+      strcpy(teams[it][i], names[inext]);
+      // effectively shrink size of names array by copying the
+      // last remaining name to the place we just copied from
+      --npremaining;
+      if (inext &lt; npremaining) {
+        strcpy(names[inext], names[npremaining]);
+      }
+    }
+  }
+
+  // print teams
+  for(int it = 0; it &lt; nt; ++it) {
+    printf(&quot;Team %i:&quot;, it+1);
+    for (int i=0; i &lt; teamSize; ++i) {
+      printf(&quot; %s&quot;, teams[it][i]);
+    }
+    printf(&quot;\n&quot;);
+  }
+
+  // clean-up
+  freearray(names, np);
+  for (int i=0; i &lt; nt; ++i) {
+    freearray(teams[i], teamSize);
+  }
+  free(teams);
+
+  return 0;
+}
+
+/************************************************
+ ** FUNCTION DEFINITIONS
+ ************************************************/
+
+// reads names from &quot;names.txt&quot; and returns an array of
+// strings for each name. Also assigns the number of names
+// to the int that numptr points to.
+char** readnames(int* numptr) {
+  FILE* fin = fopen(&quot;names.txt&quot;, &quot;r&quot;);
+  fscanf(fin, &quot; N = %i&quot;, numptr);
+  char** result = makearray(*numptr);
+
+  for (int i=0; i &lt; *numptr; ++i) {
+    fscanf(fin, &quot; %s&quot;, result[i]);
+  }
+
+  fclose(fin);
+  return result;
+}
+
+// allocates an array of that many size-128 strings
+char** makearray(int size) {
+  char** result = calloc(size, sizeof(char*));
+  for (int i=0; i &lt; size; ++i) {
+    result[i] = calloc(128, sizeof(char));
+  }
+  return result;
+}
+
+// de-allocates an array of strings
+void freearray(char** arr, int size) {
+  for (int i=0; i &lt; size; ++i) {
+    free(arr[i]);
+  }
+  free(arr);
+}</code></pre></div><script src="../../scripts/prism.js"></script></body></html>

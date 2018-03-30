@@ -1,0 +1,281 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Unix Commands Quick Reference</title><meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="stylesheet" type="text/css" href="../style.css"><style>
+@media only screen and (min-width: 600px) {
+  #main>header {background-image: url("../scripts/header.png");}
+}
+</style></head><body><div id="main"><header><nav class="topnav"><div>
+            <a href="../index.php.html">SI 204</a>
+            </div><div>
+            <a href="../calendar.php.html">Calendar</a>
+            </div><div>
+            <a href="../notes/index.html">Notes</a>
+            </div><div>
+            <a href="../hw/index.html">HWs</a>
+            </div><div>
+            <a href="../lab/index.html">Labs</a>
+            </div><div>
+            <a href="../proj/index.html">Projects</a>
+            </div><div>
+            <a href="../exams/index.html">Exams</a>
+            </div><div id="navparent">
+            <a href="index.html">Resources</a>
+            </div><div>
+            <a href="https://www.usna.edu/Users/cs/roche/">Roche</a>
+            </div><div>
+            <a href="https://www.usna.edu/Users/cs/albing/">Albing</a>
+            </div></nav></header><div id="mainbox"><div class="printonly"><h1 class="printtitle">SI 204 Spring 2017 / Resources</h1><hr></div><article id="mainart"><header><h1>Unix Commands Quick Reference</h1></header>    <table cellpadding="0">
+	<tr>
+	    <td class="subtable"><table class="noborder">
+	<tr>
+	    <td class="topic" colspan="2">File/Directory Basics</td>
+	</tr>
+	<tr>
+	    <td class="cmd">ls</td>
+	    <td class="desc">List files</td>
+	</tr>
+	<tr>
+	    <td class="cmd">pwd</td>
+	    <td class="desc">Print current working directory</td>
+	</tr>
+	<tr>
+	    <td class="cmd">cd</td>
+	    <td class="desc">Change directories</td>
+	</tr>
+	<tr>
+	    <td class="cmd">cp</td>
+	    <td class="desc">Copy files</td>
+	</tr>
+	<tr>
+	    <td class="cmd">mv</td>
+	    <td class="desc">Move/Rename files</td>
+	</tr>
+	<tr>
+	    <td class="cmd">rm</td>
+	    <td class="desc">Delete files</td>
+	</tr>
+	<tr>
+	    <td class="cmd">mkdir</td>
+	    <td class="desc">Create directory</td>
+	</tr>
+	<tr>
+	    <td class="cmd">rmdir</td>
+	    <td class="desc">Delete directory</td>
+	</tr>
+	<tr>
+	    <td class="topic" colspan="2">File Viewing</td>
+	</tr>
+	<tr>
+	    <td class="cmd">cat</td>
+	    <td class="desc">View file contents</td>
+	</tr>
+	<tr>
+	    <td class="cmd">less</td>
+	    <td class="desc">Page through files</td>
+	</tr>
+	<tr>
+	    <td class="cmd">head</td>
+	    <td class="desc">View file beginning</td>
+	</tr>
+	<tr>
+	    <td class="cmd">tail</td>
+	    <td class="desc">View file ending</td>
+	</tr>
+	<tr>
+	    <td class="cmd">nl</td>
+	    <td class="desc">View file with line numbers</td>
+	</tr>
+	<tr>
+	    <td class="topic" colspan="2">File Creation and Editing</td>
+	</tr>
+	<tr>
+	    <td class="cmd">emacs</td>
+	    <td class="desc">Text editor</td>
+	</tr>
+	<tr>
+	    <td class="cmd">vi</td>
+	    <td class="desc">Text editor</td>
+	</tr>
+	<tr>
+	    <td class="cmd">gedit</td>
+	    <td class="desc">Text editor</td>
+	</tr>
+	<tr>
+	    <td class="topic" colspan="2">File Properties</td>
+	</tr>
+	<tr>
+	    <td class="cmd">stat</td>
+	    <td class="desc">Display file attributes</td>
+	</tr>
+	<tr>
+	    <td class="cmd">wc</td>
+	    <td class="desc">Count bytes/words/lines</td>
+	</tr>
+	<tr>
+	    <td class="cmd">file</td>
+	    <td class="desc">Identify file types</td>
+	</tr>
+	<tr>
+	    <td class="cmd">chown</td>
+	    <td class="desc">Change file owner</td>
+	</tr>
+	<tr>
+	    <td class="cmd">chgrp</td>
+	    <td class="desc">Change file group</td>
+	</tr>
+	<tr>
+	    <td class="cmd">chmod</td>
+	    <td class="desc">Change file permissions</td>
+	</tr>
+	<tr>
+	    <td class="topic" colspan="2">Programming</td>
+	</tr>
+	<tr>
+	    <td class="cmd">g++</td>
+	    <td class="desc">Compile a C++ program</td>
+	</tr>
+	<tr>
+	    <td class="cmd">gdb</td>
+	    <td class="desc">Starts the debugger</td>
+	</tr>
+    </table>
+    </td>
+    <td>
+    <table class="noborder">
+	<tr>
+	    <td class="topic" colspan="2">Usage Examples</td>
+	</tr>
+	<tr>
+	    <td class="example">$&nbsp;ls</td>
+	    <td class="desc">lists files of your current working
+		directory.</td>
+	</tr>
+	<tr>
+	    <td class="example">$&nbsp;cd&nbsp;/home/mids/m012345/</td>
+	    <td class="desc">change your working directory to your home
+		directory using a full, or absolute, pathname</td>
+	</tr>
+	<tr>
+	    <td class="example">$&nbsp;cd</td>
+	    <td class="desc">change your working directory to your home
+		directory using a shortcut</td>
+	</tr>
+	<tr>
+	    <td class="example">$&nbsp;mkdir&nbsp;lab</td>
+	    <td class="desc">creates a lab subdirectory in your current
+		working directory</td>
+	</tr>
+	<tr>
+	    <td class="example">$&nbsp;cd&nbsp;lab</td>
+	    <td class="desc">change your working directory to the lab
+		directory in your home directory in this case</td>
+	</tr>
+	<tr>
+	    <td class="example">$&nbsp;cd&nbsp;..</td>
+	    <td class="desc">change your working directory to the parent
+		directory, which is your home directory</td>
+	</tr>
+	<tr>
+	    <td class="example">$&nbsp;gedit&nbsp;main.cpp</td>
+	    <td class="desc">creates the file main.cpp, if it doesn&apos;t
+		already exist, and opens it in the gedit editing window</td>
+	</tr>
+	<tr>
+	    <td colspan="2" class="example">[1. OBSERVE that after this command the 'cursor' is not active, until you quit gedit.]</td>
+	</tr>
+	<tr>
+	    <td colspan="2" class="example">[2. Now, ENTER a simple C++ program inside the gedit window.]</td>
+	</tr>
+	<tr>
+	    <td colspan="2" class="example">[3. Finally, SAVE your program, then QUIT gedit]</td>
+	</tr>
+	<tr>
+	    <td class="example">$&nbsp;gedit&nbsp;main.cpp &</td>
+	    <td class="desc">opens main.cpp for editing, in the "background"</td>
+	</tr>
+	<tr>
+	    <td colspan="2" class="example">[OBSERVE that after this command the 'cursor' *is* active, because of the ampersand at end of command]</td>
+	</tr>
+	<tr>
+	    <td colspan="2" class="example">[After observing this, you can quit gedit again.]</td>
+	</tr>
+	<tr>
+	    <td class="example">$&nbsp;cp&nbsp;main.cpp&nbsp;lab/</td>
+	    <td class="desc">copies the file main.cpp to the lab directory</td>
+	</tr>
+	<tr>
+	    <td class="example">$&nbsp;mv&nbsp;main.cpp&nbsp;test.cpp</td>
+	    <td class="desc">renames main.cpp to test.cpp</td>
+	</tr>
+	<tr>
+	    <td class="example">$&nbsp;mv&nbsp;test.cpp&nbsp;lab/lab1.cpp</td>
+	    <td class="desc">moves main.cpp to the lab directory under the 
+		new name of lab1.cpp</td>
+	</tr>
+	<tr>
+	    <td class="example">$&nbsp;ls -l lab</td>
+	    <td class="desc">lists files in the lab directory in more
+		detail</td>
+	</tr>
+	<tr>
+	    <td class="example">$&nbsp;cat&nbsp;lab/main.cpp</td>
+	    <td class="desc">shows file contents of main.cpp, which is
+		located in the lab directory</td>
+	</tr>
+	<tr>
+	    <td class="example">$&nbsp;cd&nbsp;lab</td>
+	    <td class="desc">change working directory to 'lab'</td>
+	</tr>
+	<tr>
+	    <td class="example">$&nbsp;g++&nbsp;-Wall&nbsp;main.cpp</td>
+	    <td class="desc">compiles and links main.cpp (with warnings enabled) and creates an
+		executable file called a.out</td>
+	</tr>
+	<tr>
+	    <td class="example">$&nbsp;g++&nbsp;-Wall&nbsp;-o proj&nbsp;main.cpp
+	    </td>
+	    <td class="desc">compiles and links main.cpp, and creates executable file called proj</td>
+	</tr>
+	<tr>
+	    <td class="example">$&nbsp;rm&nbsp;main.cpp</td>
+	    <td class="desc">deletes main.cpp from the working directory. You may need to confirm by entering 'y' then [ENTER] </td>
+	</tr>
+	<tr>
+	    <td class="example">$&nbsp;cd&nbsp;..</td>
+	    <td class="desc">change your working directory to the parent
+		directory, which is your home directory in this case</td>
+	</tr>
+	<tr>
+	    <td class="example">$&nbsp;rm&nbsp;lab/lab1.cpp</td>
+	    <td class="desc">deletes lab1.cpp from the lab directory</td>
+	</tr>
+	<tr>
+	    <td class="example">$&nbsp;rm&nbsp;lab/*</td>
+	    <td class="desc">deletes all files from the lab directory. * is a 'wildcard'</td>
+	</tr>
+	<tr>
+	    <td class="example">$&nbsp;rmdir&nbsp;/home/m012345/lab</td>
+	    <td class="desc">deletes the lab directory using its absolute 
+		pathname.</td>
+	</tr>
+	<tr><td>&nbsp;</td></tr>
+    </table>
+    </td></tr>
+    </table>
+
+    <hr />
+    <p>This reference originally created by LT J Schultz, later modified by Assoc Prof Luke McDowell.</p>
+</article></div></div><nav class="stickynav"><div><div class="dropdown"><a href="../index.php.html" class="ddown-btn">SI 204</a><div class="ddown-content"><a href="../calendar.php.html">Calendar</a><a href="../notes/index.html">Notes</a><a href="../hw/index.html">HWs</a><a href="../lab/index.html">Labs</a><a href="../proj/index.html">Projects</a><a href="../exams/index.html">Exams</a><a href="index.html">Resources</a><a href="https://www.usna.edu/Users/cs/roche/">Roche</a><a href="https://www.usna.edu/Users/cs/albing/">Albing</a></div></div><a href="unixref.php.html#top" class="linkin pagetop">Unix Commands Quick Reference</a></nav><footer><div id="foottext">    <p class="disclaimer">Material contained above is made available
+    for the purpose of peer review and discussion and does not
+    necessarily reflect the views of the Department of the Navy or the
+    Department of Defense.
+    Some links above are to sites that are not
+    located at the United States Naval Academy. The USNA is not
+    responsible for the content found on these sites. In addition, the
+    content of these sites does not reflect the opinions, standards,
+    policy or endorsement of the Naval Academy or the United States
+    Government.</p>
+  Page maintained by Daniel S. Roche (<a href="mailto:roche [AT] usna [DOT] edu" id="emaillink1">roche [AT] usna [DOT] edu</a><script type='text/javascript'><!--
+        var b="he@usna.edu";
+        var a="roc";
+        document.getElementById("emaillink1").href='mailto:'+a+b;
+        document.getElementById("emaillink1").innerHTML=a+b;
+        // --></script>). Last updated 09 January 2017 4:49.</div></footer><script type="text/javascript"></script></body></html>

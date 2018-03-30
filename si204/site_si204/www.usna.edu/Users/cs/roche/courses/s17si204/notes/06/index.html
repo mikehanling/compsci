@@ -1,0 +1,646 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Unit 6: Arrays</title><meta name="viewport" content="width=device-width, initial-scale=1.0"><link href="../../scripts/prism.css" rel="stylesheet" /><link rel="stylesheet" type="text/css" href="../../style.css"><script type="text/javascript" src="../../../../mathjax/MathJax.js%3Fconfig=TeX-AMS_HTML"></script><script type="text/javascript" src="../../scripts/jquery-3.1.1.min.js"></script><style>
+@media only screen and (min-width: 600px) {
+  #main>header {background-image: url("../../scripts/header.png");}
+}
+</style><link rel="stylesheet" type="text/css" href="../../notes.css">  <meta name="generator" content="pandoc">
+  <style type="text/css">code{white-space: pre;}</style>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head><body><div id="main"><header><nav class="topnav"><div>
+            <a href="../../index.php.html">SI 204</a>
+            </div><div>
+            <a href="../../calendar.php.html">Calendar</a>
+            </div><div id="navparent">
+            <a href="../index.html">Notes</a>
+            </div><div>
+            <a href="../../hw/index.html">HWs</a>
+            </div><div>
+            <a href="../../lab/index.html">Labs</a>
+            </div><div>
+            <a href="../../proj/index.html">Projects</a>
+            </div><div>
+            <a href="../../exams/index.html">Exams</a>
+            </div><div>
+            <a href="../../admin/index.html">Resources</a>
+            </div><div>
+            <a href="https://www.usna.edu/Users/cs/roche/">Roche</a>
+            </div><div>
+            <a href="https://www.usna.edu/Users/cs/albing/">Albing</a>
+            </div></nav></header><div id="mainbox"><div class="printonly"><h1 class="printtitle">SI 204 Spring 2017 / Notes</h1><hr></div><article id="mainart"><header><h1>Unit 6: Arrays</h1></header><div id="TOC"><ul><li><a class="linkin" href="index.html#stack-based-arrays"><span class="toc-section-number">1</span> Stack-based arrays</a>
+<ul><li><a class="linkin" href="index.html#motivating-example-the-price-is-right"><span class="toc-section-number">1.1</span> Motivating example: The Price is Right</a></li><li><a class="linkin" href="index.html#declaring-and-initializing-at-the-same-time"><span class="toc-section-number">1.2</span> Declaring and initializing at the same time</a></li><li><a class="linkin" href="index.html#how-it-works-pointers-and-memory"><span class="toc-section-number">1.3</span> How it works: pointers and memory</a></li></ul></li>
+<li><a class="linkin" href="index.html#strings-are-arrays"><span class="toc-section-number">2</span> Strings are arrays</a>
+<ul><li><a class="linkin" href="index.html#a-simple-problem-made-difficult"><span class="toc-section-number">2.1</span> A Simple Problem Made Difficult</a></li><li><a class="linkin" href="index.html#length-and-null-bytes"><span class="toc-section-number">2.2</span> Length and null bytes</a></li><li><a class="linkin" href="index.html#declaring-strings"><span class="toc-section-number">2.3</span> Declaring strings</a></li></ul></li>
+<li><a class="linkin" href="index.html#heap-based-arrays"><span class="toc-section-number">3</span> Heap-based arrays</a>
+<ul><li><a class="linkin" href="index.html#allocation"><span class="toc-section-number">3.1</span> Allocation</a></li><li><a class="linkin" href="index.html#deallocation"><span class="toc-section-number">3.2</span> Deallocation</a></li><li><a class="linkin" href="index.html#growing-an-array"><span class="toc-section-number">3.3</span> Growing an array</a></li></ul></li>
+<li><a class="linkin" href="index.html#arrays-amp-functions"><span class="toc-section-number">4</span> Arrays &amp; Functions</a>
+<ul><li><a class="linkin" href="index.html#arrays-as-arguments-to-functions"><span class="toc-section-number">4.1</span> Arrays as arguments to functions</a></li><li><a class="linkin" href="index.html#modifying-arrays-in-functions"><span class="toc-section-number">4.2</span> Modifying arrays in functions</a></li><li><a class="linkin" href="index.html#creating-arrays-in-functions"><span class="toc-section-number">4.3</span> Creating arrays in functions</a></li><li><a class="linkin" href="index.html#common-functions-on-arrays"><span class="toc-section-number">4.4</span> Common functions on arrays</a></li></ul></li>
+<li><a class="linkin" href="index.html#nested-arrays"><span class="toc-section-number">5</span> Nested arrays</a>
+<ul><li><a class="linkin" href="index.html#arrays-of-any-type"><span class="toc-section-number">5.1</span> Arrays of any type</a></li><li><a class="linkin" href="index.html#multi-dimensional-arrays"><span class="toc-section-number">5.2</span> Multi-dimensional Arrays</a></li></ul></li>
+<li><a class="linkin" href="index.html#problems"><span class="toc-section-number">6</span> Problems</a></li></ul></div><div class="panbody"><p>Several weeks ago, the addition of loops to our programs had a huge impact on the power we wielded as programmers. Before loops, the computer never performed more steps than the poor programmer typed in. With loops, a short, simple program could make the computer do an almost limitless amount of work!</p>
+<p>In this unit, we are introducing another game-changing idea: arrays. Until now, a program couldn’t store — couldn’t <em>remember</em> — more data than the number of variables that the poor programmer typed in. Arrays shatter that limitation: an array is a single variable with which a program can store and retrieve a nearly limitless amount of data. With loops and arrays you can, very literally, harness the full potential of the computer.</p>
+<p>(If you take our Theory of Computing class, you’ll learn how there is actually a mathematically rigorous way to <em>prove</em> that, once you have functions and arrays, you can essentially <em>write any possible program</em>.)</p>
+<h1 id="stack-based-arrays"><a class ="linkin" href="index.html#top"><span class="header-section-number">1</span> Stack-based arrays</a></h1><p>C has a number of built-in types such as <code>int</code>, <code>double</code>, and <code>char</code>. These each represent a single piece of information, with a fixed number of bytes (4 bytes, 8 bytes, or 1 byte respectively for <code>int</code>, <code>double</code>, and <code>char</code>).</p>
+<p>Arrays are about storing a whole bunch of objects with the same type, right next to each other in memory, and using <em>just a single variable</em> to refer to all of them.</p>
+<p>The first kind of arrays we’ll learn about are <em>stack-based arrays</em>, which are declared with a line like</p>
+<pre><code class="language-C">int myarrayname[14];</code></pre>
+<p>which declares an array called <code>myarrayname</code> that contains 14 <code>int</code>s.</p>
+<p>To access each element, you write something like</p>
+<pre><code class="language-C">printf(&quot;Here it is: %i\n&quot;, myarrayname[3]);</code></pre>
+<p>The <code>myarrayname[3]</code> says “give me the <code>int</code> from <code>myarrayname</code> at index 3”. Importantly, array indexes <strong>start from zero</strong>, so index 3 is actually the fourth element from the beginning of the array. You can use these as <em>l-values</em> or <em>r-values</em>; in other words, you can assign an array element with a line such as</p>
+<pre><code class="language-C">myarrayname[7] = 7128;</code></pre>
+<h2 id="motivating-example-the-price-is-right"><a class="linkin" href="index.html#top"><span class="header-section-number">1.1</span> Motivating example: The Price is Right</a></h1><p>For example, imagine we are implementing the first part of the TV game show “The Price is Right”. In this, 4 contestants each guess the value of some item like a refrigerator, and then the true price is revealed, and the <em>closest guess without going over</em> is the winner.</p>
+<p>Here’s how you might program that logic:</p>
+<pre><code class="language-C">printf(&quot;Enter 4 guesses: &quot;);
+fflush(stdout);
+double guess1;
+double guess2;
+double guess3;
+double guess4;
+scanf(&quot; %lg %lg %lg %lg&quot;, &amp;guess1, &amp;guess2, &amp;guess3, &amp;guess4);
+
+printf(&quot;True price: &quot;);
+fflush(stdout);
+double actual;
+scanf(&quot; %lg&quot;, &amp;actual);
+
+double diff1 = actual - guess1;
+double diff2 = actual - guess2;
+double diff3 = actual - guess3;
+double diff4 = actual - guess4;
+
+if (diff1 &gt;= 0 &amp;&amp; diff1 &lt;= diff2 &amp;&amp; diff1 &lt;= diff3 &amp;&amp; diff1 &lt;= diff4) {
+  printf(&quot;Contestant 1 wins\n&quot;);
+} else if (diff2 &gt;= 0 &amp;&amp; diff2 &lt;= diff3 &amp;&amp; diff2 &lt;= diff4) {
+  printf(&quot;Contestant 2 wins\n&quot;);
+} else if (diff3 &gt;= 0 &amp;&amp; diff3 &lt;= diff4) {
+  printf(&quot;Contestant 3 wins\n&quot;);
+} else if (diff4 &gt;= 0) {
+  printf(&quot;Contestant 4 wins\n&quot;);
+} else {
+  printf(&quot;Everyone guessed over!\n&quot;);
+}</code></pre>
+<p>I hope you’ll agree that’s just ugly. The solution is not very <em>scalable</em> or flexible if the number of contestants changed, it requires a lot of repeated logic and typing, and there are way too many opportunities to mess something up, like mistyping a 3 for a 4 in one spot.</p>
+<p>Now here’s that same program, using instead an <em>array</em> of 4 doubles to store the 4 guesses:</p>
+<pre><code class="language-C">printf(&quot;Enter 4 guesses: &quot;);
+fflush(stdout);
+double guess[4]; // single variable for all 4 guesses
+scanf(&quot; %lg %lg %lg %lg&quot;, &amp;guess[0], &amp;guess[1], &amp;guess[2], &amp;guess[3]);
+
+printf(&quot;True price: &quot;);
+fflush(stdout);
+double actual;
+scanf(&quot; %lg&quot;, &amp;actual);
+
+double diff[4];
+diff[0] = actual - guess[0];
+diff[1] = actual - guess[1];
+diff[2] = actual - guess[2];
+diff[3] = actual - guess[3];
+
+if (diff[0] &gt;= 0 &amp;&amp; diff[0] &lt;= diff[1] &amp;&amp; diff[0] &lt;= diff[2] &amp;&amp; diff[0] &lt;= diff[3]) {
+  printf(&quot;Contestant 1 wins\n&quot;);
+} else if (diff[1] &gt;= 0 &amp;&amp; diff[1] &lt;= diff[2] &amp;&amp; diff[1] &lt;= diff[3]) {
+  printf(&quot;Contestant 2 wins\n&quot;);
+} else if (diff[2] &gt;= 0 &amp;&amp; diff[2] &lt;= diff[3]) {
+  printf(&quot;Contestant 3 wins\n&quot;);
+} else if (diff[3] &gt;= 0) {
+  printf(&quot;Contestant 4 wins\n&quot;);
+} else {
+  printf(&quot;Everyone guessed over!\n&quot;);
+}</code></pre>
+<p>Before we critique this version, let’s observe what we see:</p>
+<ul>
+<li>Two <em>array declarations</em> <code>double guess[4]</code> and <code>double diff[4]</code>. They are both size-4 arrays of <code>double</code>s.</li>
+<li>In a size-4 array, the valid array <em>indexes</em> are 0 up to 3.</li>
+<li>You can take the address of an array element, like <code>&amp;guess[0]</code> in the <code>scanf</code> above. This works the way it should because the index operator <code>[]</code> has higher precedence than the address-of operator <code>&amp;</code>.</li>
+</ul>
+<p>So great, the above code uses two arrays <code>guess</code> and <code>diff</code>, rather than declaring individual variables. That saves a little bit, but doesn’t really simplify the code at all or make it any less likely to be buggy.</p>
+<p>For that, we have to harness the real power of arrays: <em>the index can be a variable</em>! This means that we can write loops (or functions) to go through the elements of an array, and write a vastly superior version:</p>
+<pre><code class="language-C">int contestants = 4;
+printf(&quot;Enter %i guesses: &quot;, contestants);
+fflush(stdout);
+
+// read in guesses
+double guess[contestants];
+for (int i=0; i &lt; contestants; ++i) {
+  scanf(&quot; %lg&quot;, &amp;guess[i]);
+}
+
+printf(&quot;True price: &quot;);
+fflush(stdout);
+double actual;
+scanf(&quot; %lg&quot;, &amp;actual);
+
+// find the closest guess
+double closest = -1;
+int winner = -1;
+for (int i=0; i &lt; contestants; ++i) {
+  if (guess[i] &lt;= actual &amp;&amp; guess[i] &gt; closest) {
+    closest = guess[i];
+    winner = i + 1; // add one because indexes start at 0
+  }
+}
+
+// print who won
+if (winner &lt; 0) {
+  printf(&quot;Everyone guessed over!\n&quot;);
+} else {
+  printf(&quot;Contestant %i wins\n&quot;, winner);
+}</code></pre>
+<p>Make sure you take a moment to understand this solution! Why is it better? For one, it’s easily scalable and adaptable: changing the number of contestants, just means changing the variable declaration on the first line. But beyond that, this solution is also much easier to debug and less likely to contain hidden errors, because it has just simple loops rather than complicated if/else cases.</p>
+<p><a href="files.php%3Ff=priceisright.c.html">Here is a complete working program</a> if you’d like to play around with it.</p>
+<h2 id="declaring-and-initializing-at-the-same-time"><a class="linkin" href="index.html#top"><span class="header-section-number">1.2</span> Declaring and initializing at the same time</a></h1><p>By default, when you just declare an array by itself, the data inside that array is <em>uninitialized</em>, just like declaring (but not assigning) a variable:</p>
+<pre><code class="language-C">int x;
+printf(&quot;%i\n&quot;, x); // x is uninitialized; could be anything!
+int a[10];
+printf(&quot;%i\n&quot;, a[3]); // a[3] is uninitialized too</code></pre>
+<p>Declaring an array like this is perfectly fine as long as you know that you will assign each data element of the array before you use it, so the problem in the code above is really in the <code>printf</code>s and not in the declarations.</p>
+<p>But there is also a syntax in C to declare <em>and</em> assign an array all in one step:</p>
+<pre><code class="language-C">int a[3] = {10, 20, 30};
+printf(&quot;%i\n&quot;, a[0]); // prints 10
+printf(&quot;%i\n&quot;, a[1]); // prints 20
+printf(&quot;%i\n&quot;, a[2]); // prints 30</code></pre>
+<p>As you can see in the example above, to declare and assign an array all at once, you enclose the initial values in curly braces, separated by commas. That’s called an <em>initializer list</em>.</p>
+<p>Interestingly, the number of elements in the initializer list does <em>not</em> have to match up exactly with the size of the array; if it’s smaller, any extra array elements are assigned to zero. For example:</p>
+<pre><code class="language-C">double a[4] = {3,4,5,6};
+printf(&quot;%g %g\n&quot;, a[0], a[3]); // prints 3 6
+double b[4] = {3};
+printf(&quot;%g %g\n&quot;, b[0], b[3]); // prints 3 0
+double c[4];
+c[0] = 3;
+printf(&quot;%g %g\n&quot;, c[0], c[3]); // prints 3 and then ANYTHING
+// c[3] is uninitialized!</code></pre>
+<p>Unfortunately, this kind of assignment only works with stack-based arrays (not with heap-based arrays which you’ll read about later), and it only works when you declare the array. If you want to change what’s in the array later, you have to just write multiple assignments for the individual elements.</p>
+<h2 id="how-it-works-pointers-and-memory"><a class="linkin" href="index.html#top"><span class="header-section-number">1.3</span> How it works: pointers and memory</a></h1><p>Understanding what’s actually happening with arrays is crucial to being able to use them effectively, so let’s look “under the hood” at what happens in this unbelievably simple program:</p>
+<pre><code class="language-C">int arr[10];
+arr[3] = 8;
+printf(&quot;%i\n&quot;, arr[3] * 2);</code></pre>
+<p>In the initial array declaration, the program gets a “block” of 10 <code>int</code>s, all one after another in memory, alongside any other local variables in the same scope. Remember that each <code>int</code> is 4 bytes, so this array actually takes up 40 bytes total.</p>
+<p>So what exactly is <code>arr</code> itself? We know that <code>arr</code> is an array of 10 ints, but what does that really mean? The most important thing to remember is this: <strong>an array is represented by a pointer to its first element</strong>. There is some distinction between an array of <code>int</code>s and a pointer to an <code>int</code>, but for most purposes you can think of an array as actually <em>being</em> a pointer.</p>
+<p>What this means first of all is that dereferencing an array variable will give you the first element in the array, i.e., the element at index zero:</p>
+<pre><code class="language-C">int arr[10];
+arr[0] = 3;
+printf(&quot;%i\n&quot;, arr[0]); // prints 3
+printf(&quot;%i\n&quot;, *arr); // prints 3 again!</code></pre>
+<p>To be clear, it’s <em>better and clearer</em> to write <code>arr[0]</code>, but this tells you something about how arrays really work.</p>
+<p>You can also use <em>pointer arithmetic</em> to access other elements in the array. The rule is, if you add or subtract from a pointer, it moves forward or backwards the corresponding number of spots in array, and returns that corresponding pointer. So, for example, <code>arr + 5</code> is exactly the same as <code>&amp;arr[5]</code>, a pointer to the 6th element in the array.</p>
+<p>In fact, array indexing is just a shortcut for pointer arithmetic and dereferencing:</p>
+<pre><code class="language-C">int arr[10];
+arr[5] = 123;     // this is how you normally do it
+*(arr + 5) = 123; // equivalent to the previous, but uglier</code></pre>
+<p>When you think of indexing this way, it also explains why array indexes start at 0.</p>
+<p><img src="donald_knuth.png" title="His books were kinda intimidating; rappelling down through his skylight seemed like the best option." /> <a href="http://xkcd.com/163/" class="uri">http://xkcd.com/163/</a></p>
+<!-- from l20 -->
+<h1 id="strings-are-arrays"><a class ="linkin" href="index.html#top"><span class="header-section-number">2</span> Strings are arrays</a></h1><p>Recall that we’re been using the following <code>typedef</code> so far for our <code>cstring</code> type:</p>
+<pre><code class="language-C">typedef char cstring[128];</code></pre>
+<p>That means that a cstring declaration like</p>
+<pre><code class="language-C">cstring mystr;</code></pre>
+<p>is <em>exactly</em> equivalent to</p>
+<pre><code class="language-C">char mystr[128];</code></pre>
+<p>And you now know that this means strings are really just arrays of <code>char</code>s of length 128. Why 128? No really good reason, just that everything we’ve wanted to do with strings so far didn’t require them to be much longer than, say, a single line of text.</p>
+<h2 id="a-simple-problem-made-difficult"><a class="linkin" href="index.html#top"><span class="header-section-number">2.1</span> A Simple Problem Made Difficult</a></h1><p>Let’s start with a simple problem: Write a program that reads <em>firstname lastname</em>, and prints out <em>lastname</em>, <em>firstname</em>. For example, a typical run of the program might look like:</p>
+<pre><code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./prog</code>
+<code class="language-text output"></code><code class="language-text input">Mickey Mouse</code>
+<code class="language-text output">Mouse, Mickey</code></pre><!-- ` -->
+<p>This should be no problem; something like this will do:</p>
+<pre><code class="language-C">char first[128];
+char last[128];
+scanf(&quot; %s %s&quot;, first, last);
+printf(&quot;%s, %s\n&quot;, last, first);</code></pre>
+<p>Notice that we used the actual type for our strings <code>first</code> and <code>last</code> so there would be no need for the <code>cstring</code> typedef here.</p>
+<p>Now let’s make things more difficult: Suppose I also want to capitalize all the letters in the names. No matter how hard you work with what we’ve learned in C before this unit, there’s no way to write this program! You could capitalize, you could switch first and last names, you just couldn’t do both together. The problem is that you need to access the characters <em>within</em> the strings <code>first</code> and <code>last</code>, and you need to know how many characters are in the strings.</p>
+<p>The “how many characters are in the strings” part is easy: we already know that there’s a built-in function <code>strlen</code> that’s part of the [strings.h library][stringsh]. So in the previous example, calling <code>strlen(first)</code> would return the number of letters in <code>&quot;Mickey&quot;</code>, which is 6.</p>
+<p>As you might suspect, it is also possible to reference characters within a string - not by specific names, but by <em>indices</em>. So the initial character of the string <code>first</code>, for example, has index 0. To reference it, say for printing, you write <code>first[0]</code>, which we usually read as “first sub zero”. Characters within a string are thus indexed from zero up to one less than the length of the string, like this:</p>
+<pre><code class="language-.text">--- --- --- --- --- ---
+ M   i   c   k   e   y
+ 0   1   2   3   4   5
+--- --- --- --- --- ---</code></pre>
+<p>Using indices, we can make sure that every character within the string <code>first</code> is printed in capitals:</p>
+<pre><code class="language-C">for (int i=0; i &lt; strlen(first); ++i) {
+  if (&#39;a&#39; &lt;= first[i] &amp;&amp; first[i] &lt;= &#39;z&#39;) {
+    printf(&quot;%c&quot;, first[i] - (&#39;a&#39; - &#39;A&#39;));
+  } else {
+    printf(&quot;%c&quot;, first[i]);
+  }
+}</code></pre>
+<p>In fact, it might be kind of nice to make a function to do the printing in capitals for us, and produce <a href="files.php%3Ff=printname.c.html">a program like this</a>.</p>
+<h2 id="length-and-null-bytes"><a class="linkin" href="index.html#top"><span class="header-section-number">2.2</span> Length and null bytes</a></h1><p>There’s something surprising in the example above: the string <code>&quot;Mickey&quot;</code> has length 6, but you can see that we declared the array <code>first</code> to have size 128. So which is it?</p>
+<p>The answer is <em>both</em>! The <em>size</em> of the string array is 128 <code>char</code>s, but this is actually able to store any string with <em>length</em> from 0 up to 127. The trick is that a special character <code>'\0'</code> is used to indicate the end of the array. This is called a “null” character or “null byte”, and it has ASCII value 0.</p>
+<p>That means that the <em>actual</em> way <code>&quot;Mickey&quot;</code> is stored in the example above is the six letters of the string, followed by a null byte:</p>
+<pre><code class="language-.text">--- --- --- --- --- --- ---- --- --- ---
+ M   i   c   k   e   y   \0   ?   ?  ...
+ 0   1   2   3   4   5    6   7   8  ...
+--- --- --- --- --- --- ---- --- --- ---</code></pre>
+<p>So in any string, the length of the string is really the location of the first null byte. Based on this, we can imagine that the <code>strlen</code> function (which is built-in to the <code>&lt;string.h&gt;</code> standard library) might be written like:</p>
+<pre><code class="language-C">int strlen(char* str) {
+  int i=0;
+  while (str[i] != &#39;\0&#39;) {
+    ++i;
+  }
+  return i;
+}</code></pre>
+<p>We’ll get more into the syntax of this function definition later. For now, just notice that the while loop is searching for the first null byte, and then it returns that position as the length of the string.</p>
+<p>Take a moment to think about what would happen in that loop if a string did <em>not</em> contain any null byte. The <code>while</code> loop would just keep going past the array into some other arbitrary memory, possibly causing a dreaded segfault! So remember kids, <strong>always put null bytes at the end of your strings</strong> or else the program has no way of knowing where the string ends and some other data begins.</p>
+<h2 id="declaring-strings"><a class="linkin" href="index.html#top"><span class="header-section-number">2.3</span> Declaring strings</a></h1><p>Since strings are arrays, we can declare and assign them at the same time just like you learned above in any other stack-based array. Conveniently, C also allows you to declare and assign array using the double-quote syntax that you’re used to.</p>
+<p>Along with the <code>strcpy</code> function provided by <code>&lt;string.h&gt;</code> that you know about already, we really have four different ways to assign strings. Here’s a demonstration of all four.</p>
+<p>One character at a time:</p>
+<pre><code class="language-C">char s[128];
+s[0] = &#39;c&#39;;
+s[1] = &#39;o&#39;;
+s[2] = &#39;o&#39;;
+s[3] = &#39;l&#39;;
+s[4] = &#39;\0&#39;;
+printf(&quot;%s\n&quot;, s);</code></pre>
+<p>Using regular array syntax:</p>
+<pre><code class="language-C">char s[128] = {&#39;c&#39;, &#39;o&#39;, &#39;o&#39;, &#39;l&#39;, &#39;\0&#39;};
+printf(&quot;%s\n&quot;, s);</code></pre>
+<p>Using double-quote string syntax (the most convenient!!):</p>
+<pre><code class="language-C">char s[128] = &quot;cool&quot;;
+printf(&quot;%s\n&quot;, s);</code></pre>
+<p>Using <code>strcpy</code>:</p>
+<pre><code class="language-C">char s[128];
+strcpy(s, &quot;cool&quot;);
+printf(&quot;%s\n&quot;, s);</code></pre>
+<!-- from l21 -->
+<h1 id="heap-based-arrays"><a class ="linkin" href="index.html#top"><span class="header-section-number">3</span> Heap-based arrays</a></h1><p>As you’ll learn in much more detail if you take later courses such as Systems Programming, the memory assigned to a running program is (mostly) assigned into two parts: the <em>stack</em> and the <em>heap</em>. The stack is <em>much</em> smaller (just a few kilobytes generally), and it’s where all regular variables — including the stack-based arrays you’ve just learned about — are stored.</p>
+<p>But this limitation in the size of the stack means that it’s frequently necessary to declare arrays in the <em>heap</em> space of your program. This has much greater power and flexibility, but (as you might expect) also entails more responsibility from the programmer.</p>
+<h2 id="allocation"><a class="linkin" href="index.html#top"><span class="header-section-number">3.1</span> Allocation</a></h1><p>To allocate a heap-based array, you will use the <code>calloc</code> function, which is a built-in function from the <code>&lt;stdlib.h&gt;</code> library.</p>
+<p>The way <code>calloc</code> works is that you give it two integers: the <em>number</em> of elements in your desired array, and the <em>size</em> (in bytes) of each array element. The <code>calloc</code> function then finds that amount of space in heap memory, clears it all to zeros, and returns a pointer to the beginning of the array. So you can use it like so:</p>
+<pre><code class="language-C">int* arr = calloc(10, sizeof(int));
+// now arr is an int array of size 10
+arr[3] = 13; // works
+printf(&quot;%i\n&quot;, arr[1]); // prints 0, since calloc clears the memory
+printf(&quot;%i\n&quot;, arr[3]); // prints 13 of course!</code></pre>
+<p>Something new you should notice in the code above is the <code>sizeof</code> operator. Yes, even though this <em>looks like</em> a function, it’s actually an operator built in to the C language. You give it the name of a type, and it returns the number of bytes that an object of that type takes up.</p>
+<p>So, for example, <code>sizeof(int)</code> is going to equal 4 on any modern computer, and in fact the code above could have just used <code>4</code> in place of calling <code>sizeof(int)</code>. But calling <code>sizeof</code> is <em>much</em> better: it makes it more clear what that value means, and if you found yourself on an unusual computer with different-size integers, well your code using <code>sizeof(int)</code> would still compile and run with no modifications.</p>
+<p>(Note, <code>calloc</code> also has an older brother named <code>malloc</code> that does the same thing, but with only a single argument for the number of bytes, and without clearing the memory to all zeros. This makes <code>malloc</code> a little bit faster, but also more error prone, so I recommend you use <code>calloc</code> unless you have a good reason not to.)</p>
+<h2 id="deallocation"><a class="linkin" href="index.html#top"><span class="header-section-number">3.2</span> Deallocation</a></h1><p>The most important difference between stack-based arrays and heap-based arrays is that of <em>scope</em>. Stack-based arrays go away when the scope they were declared in ends, just like normal variables that you are used to.</p>
+<p>But heap-based arrays are different; they live on forever (or at least until your program terminates). This can be a useful feature at times, but can also lead to <em>memory leaks</em>. That’s where your program allocates more and more memory, without ever giving it back, so that after running your program for a long time it eats up all the memory in your computer and crashes.</p>
+<p>Fortunately, we can give <code>calloc</code>-allocated arrays back to the operating system for recycling using the <code>free</code> function. You just pass <code>free</code> the pointer to the beginning of the array you want to deallocate, like so:</p>
+<pre><code class="language-C">int len;
+printf(&quot;How long is your name? &quot;);
+fflush(stdout);
+scanf(&quot; %i&quot;, &amp;len);
+
+// note: len+1 to account for the null byte!
+char* name = calloc(len+1, sizeof(char);
+printf(&quot;Enter your name: &quot;);
+fflush(stdout);
+scanf(&quot; %s&quot;, name);
+
+// now you might do something with the name...
+
+// deallocate the space for name
+free(name);</code></pre>
+<p>Think of <code>calloc</code> and <code>free</code> the same as <code>fopen</code> and <code>fclose</code>: every call to <code>calloc</code> to create an array should have a corresponding call to <code>free</code> that happens later to deallocate it.</p>
+<h2 id="growing-an-array"><a class="linkin" href="index.html#top"><span class="header-section-number">3.3</span> Growing an array</a></h1><p>Besides living forever and potentially being larger than stack-based arrays, heap-based arrays also have the advantage in that you can <em>resize</em> them after declaration.</p>
+<p>For example, let’s say we want to read in a bunch of prices (<code>double</code>s), but we don’t know how many there will be. How will you decide how large to make the array?</p>
+<p>The answer is, you just make the array bigger when you need to, by <code>calloc</code>ing a new one, copying over the data, and then <code>free</code>ing the old array. Here’s a complete example:</p>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+int main() {
+  int size = 5; // initial size of the array
+  double* arr = calloc(size, sizeof(double));
+
+  int num = 0; // number of prices stored in the array
+  double temp;
+  printf(&quot;Enter prices, followed by a negative number:\n&quot;);
+
+  scanf(&quot; %lg&quot;, &amp;temp);
+  while (temp &gt;= 0) {
+    if (num == size) {
+      // array is full; must resize
+      int oldsize = size;
+      // increase the size
+      size += 5;
+      // declare new array with that size
+      double* newarr = calloc(size, sizeof(double));
+      // copy the old data to the new array
+      for (int i=0; i&lt;oldsize; ++i) {
+        newarr[i] = arr[i];
+      }
+      // deallocate the old array
+      free(arr);
+      // copy the new array pointer
+      arr = newarr;
+      printf(&quot;(array size increased from %i to %i)\n&quot;, oldsize, size);
+    }
+
+    // copy the price that was read to the next slot in the array
+    arr[num] = temp;
+    ++num;
+
+    // read the next value
+    scanf(&quot; %lg&quot;, &amp;temp);
+  }
+
+  printf(&quot;You entered %i prices.\n&quot;, num);
+  printf(&quot;The middle price was %g.\n&quot;, arr[num/2]);
+
+  free(arr);
+  return 0;
+}</code></pre><p>Since this kind of “grow an array” operation is so common, the <code>&lt;stdlib.h&gt;</code> library also provides a convenient <code>realloc</code> function that does the reallocation <em>and</em> copying all for you. The arguments to <code>realloc</code> are the old pointer and the new <em>total size in bytes</em>, and the return is the pointer to the newly-increased array.</p>
+<p>So in the previous example, all of this:</p>
+<pre><code class="language-C">int oldsize = size;
+// increase the size
+size += 5;
+// declare new array with that size
+double* newarr = calloc(size, sizeof(double));
+// copy the old data to the new array
+for (int i=0; i&lt;oldsize; ++i) {
+  newarr[i] = arr[i];
+}
+// deallocate the old array
+free(arr);
+// copy the new array pointer
+arr = newarr;</code></pre>
+<p>could be replaced by just</p>
+<pre><code class="language-C">size += 5;
+arr = realloc(arr, size * sizeof(double));</code></pre>
+<p>Just be careful that you notice that (unlike <code>calloc</code>) the size of the array has to be explicitly multiplied by the <code>sizeof(TYPE)</code> to get your total size in bytes. Also unlike <code>calloc</code>, while the old contents are copied over to the beginning of the new array, the new part is not zeroed out when you call <code>realloc</code>.</p>
+<h1 id="arrays-amp-functions"><a class ="linkin" href="index.html#top"><span class="header-section-number">4</span> Arrays &amp; Functions</a></h1><!-- from l23 -->
+<p>There are many situations in which it’s natural to ask for functions that have arrays as arguments or that return arrays … or both! Technically speaking, there’s nothing really new to teach here, i.e., there’s no special syntax or information that you don’t already know. Arrays are pointers, so functions that deal with arrays take and/or return pointers.</p>
+<p>But actually writing and using functions with arrays can be tricky, so we’ll go through some examples to see how it works.</p>
+<h2 id="arrays-as-arguments-to-functions"><a class="linkin" href="index.html#top"><span class="header-section-number">4.1</span> Arrays as arguments to functions</a></h1><p>Suppose we have an array of <em>game scores</em>, each being either a positive number for how many points you won by, or a negative number for how many you lost by. For example, the Philadelphia Eagles’ 2016 season might be stored as</p>
+<pre><code class="language-C">int games = 16;
+int eagles[games] = {19, 15, 31, -1, -7, 11, -6, -5,
+                     9, -11, -14, -18, -5, -1, 5, 14};</code></pre>
+<p>(Not their best season.)</p>
+<p>Now we may want to compute some information, such as the number of wins they had in the season. For that, we can write a function <code>countpos</code> that takes in an array and returns the number of positive integers in the array.</p>
+<p>What should the prototype for <code>countpos</code> be? You might be tempted to say</p>
+<pre><code class="language-C">int countpos(int scores[16]);</code></pre>
+<p>and that would work in this case, but it would be pretty inflexible. This function will only work if the array you pass in has length exactly 16, and it will only work for stack-based arrays.</p>
+<p>So instead, we would rather pass in a <em>pointer</em> (to the first element in the array), as well as the <em>length</em> of the array as a second argument. It’s easy to forget this, so I’ll say it again: you usually need to pass the array <em>as well as its length</em> to a function, since you can’t tell the length of an array based on its pointer value.</p>
+<p>Once we know what the prototype should be, writing the actual function is similar to what we’ve already been doing:</p>
+<pre><code class="language-C">int countpos(int* scores, int length) {
+  int count = 0;
+  for (int i=0; i &lt; length; ++i) {
+    if (scores[i] &gt; 0) {
+      ++count;
+    }
+  }
+  return count;
+}</code></pre>
+<p>(<strong>Challenge</strong>: How would you write this function using recursion?)</p>
+<h2 id="modifying-arrays-in-functions"><a class="linkin" href="index.html#top"><span class="header-section-number">4.2</span> Modifying arrays in functions</a></h1><p>Remember from the previous unit that, if you want a function to modify a normal variable, you have to pass a <em>pointer</em> to that variable, since otherwise the function would in fact be modifying a copy.</p>
+<p>What about when you want a function to modify the elements of an array? You still just pass a regular pointer! Since we pass arrays to functions by passing a pointer, only the pointer is copied; it still points to the original array. Therefore modifying the array elements in the function will actually modify the original array that was passed in.</p>
+<p>For example, here is a function that replaces the contents of a string (that is, an array of <code>char</code>s) with <code>k</code> copies of the character <code>c</code>, followed by a null byte of course:</p>
+<pre><code class="language-C">void kcopies(char* str, int k, char c) {
+  for (int i=0; i &lt; k; ++i) {
+    str[i] = c;
+  }
+  str[k] = &#39;\0&#39;;
+}</code></pre>
+<p>You could use this in a <code>main</code> like:</p>
+<pre><code class="language-C">int main() {
+  char line[128];
+
+  kcopies(line, 10, &#39;*&#39;);
+  printf(&quot;%s\n&quot;, line); // prints 10 *s
+
+  kcopies(line, 7, &#39;!&#39;);
+  printf(&quot;%s\n&quot;, line); // prints 7 !s
+
+  return 0;
+}</code></pre>
+<p>Really there is only a single <code>char</code> array in this entire program; every time <code>kcopies</code> is called it gets a pointer to the same spot in memory.</p>
+<h2 id="creating-arrays-in-functions"><a class="linkin" href="index.html#top"><span class="header-section-number">4.3</span> Creating arrays in functions</a></h1><p>Make sure you understand how the parameter passing works when we pass an array to a function, as in the examples above. The function gets a <em>copy of the pointer</em> to the original array, and so is able to modify the original contents.</p>
+<p>But what about when we want to create an entirely new array and return it from a function? The typical thing to do here is have the function <em>return a pointer</em> to the new array.</p>
+<p>For example, here’s a function that takes a strings and makes a sentence out of it by capitalizing the first word and adding an exclamation point at the end:</p>
+<pre><code class="language-C">char* makesentence(char* original) {
+  // first compute the new char array&#39;s length
+  // add 1 for the exclamation point and 1 for the null byte
+  int reslength = strlen(original) + 2;
+
+  // allocate space for the new string
+  char* result = calloc(reslength, sizeof(char));
+
+  // capitalize the first letter
+  result[0] = original[0] - (&#39;a&#39; - &#39;A&#39;);
+
+  // copy the remaining letters from the original string
+  int i = 1;
+  while (original[i] != &#39;\0&#39;) {
+    result[i] = original[i];
+    ++i;
+  }
+
+  // add the exclamation point and null byte
+  result[i] = &#39;!&#39;;
+  result[i+1] = &#39;\0&#39;;
+
+  // return the new string
+  return result;
+}</code></pre>
+<p>That could be used in a <code>main</code> like this:</p>
+<pre><code class="language-C">int main() {
+  char word[128];
+  printf(&quot;Enter a lowercase word: &quot;);
+  fflush(stdout);
+  scanf(&quot; %s&quot;, word);
+
+  char* cap = makesentence(word);
+  printf(&quot;%s\n&quot;, cap);
+
+  free(cap);
+  return 0;
+}</code></pre>
+<p>Notice that the array <em>must</em> be a heap-based array declared with <code>calloc</code> or <code>malloc</code>! Otherwise, it would go out of scope when the function returned, which is not what we want here. The flip side is that the allocated array <em>must</em> be <code>free</code>d later on by whoever called the function — you can see this at the end of the <code>main</code> above.</p>
+<h2 id="common-functions-on-arrays"><a class="linkin" href="index.html#top"><span class="header-section-number">4.4</span> Common functions on arrays</a></h1><p>Some kinds of functions are so common that we’ll see the same pattern show up over and over again, so let’s take a few moments to look at these common array problems and their solutions.</p>
+<p>For all these, you can start with the following program:</p>
+<pre><code class="language-C">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+// FUNCTION PROTOTYPE(S) HERE
+
+int main() {
+  // read size n
+  int n;
+  do {
+    printf(&quot;Enter size: &quot;);
+    fflush(stdout);
+  } while(scanf(&quot; %i&quot;, &amp;n) != 1 || n &lt;= 0);
+
+  // allocate array and read in contents
+  int* data = calloc(n, sizeof(int));
+  printf(&quot;Enter %i integers, space separated.\n&quot;, n);
+  for (int i=0; i&lt;n; ++i) {
+    scanf(&quot; %i&quot;, &amp;data[i]);
+  }
+
+  // CALL YOUR FUNCTION(S) HERE
+  // AND PRINT OUT THE RESULTS
+
+  // clean-up time
+  free(data);
+  return 0;
+}
+
+// FUNCTION DEFINITION(S) HERE</code></pre>
+<p>You come up with the prototypes, the definitions, and how to call them in your <code>main</code> to get the problem solved!</p>
+<ol type="1">
+<li><p>Compute the average of the <span class="math inline">\(n\)</span> numbers, which is their sum divided by <span class="math inline">\(n\)</span>. Be sure to do <code>double</code> division and not integer division!</p>
+<p><a href="files.php%3Ff=avg.c.html">Sample solution.</a></p></li>
+<li><p>Find the minimum and maximum values in the array.</p>
+<p>Note, to do this with a single function call, it’s a little challenging because you need to return two numbers from the function. Look back to the notes from last unit if you don’t remember how do do this. (Hint: pointers!)</p>
+<p><a href="files.php%3Ff=minmax.c.html">Sample solution.</a></p></li>
+<li><p>Print out the “partial differences” of consecutive elements in the array. Here’s an example of a sequence of four numbers along with the sequence of partial differences (note that there are only three partial differences).</p>
+<pre><code class="language-C">3  7   8   5
+\_/ \_/ \_/
+ 2   1  -3</code></pre>
+<p><a href="files.php%3Ff=diffs.c.html">Sample solution.</a></p></li>
+<li><p>Create (and return a pointer to) only the positive values in the given array. The print out those positive values.</p>
+<p>Note, the array should be created to have exactly the correct size, and don’t forget to <code>free</code> it in your <code>main</code> to avoid a memory leak!</p>
+<p><a href="files.php%3Ff=pos.c.html">Sample solution.</a></p></li>
+</ol>
+<!-- from l24 -->
+<h1 id="nested-arrays"><a class ="linkin" href="index.html#top"><span class="header-section-number">5</span> Nested arrays</a></h1><h2 id="arrays-of-any-type"><a class="linkin" href="index.html#top"><span class="header-section-number">5.1</span> Arrays of any type</a></h1><p>We can store any type of object we like in an array. We’ve seen <code>int</code>s, <code>double</code>s, and <code>char</code>s so far, but it really could be any type.</p>
+<p>For example, imagine a situation where we’d like a program that reads a list of file names from the user, creates those files, and then takes a sentence typed in and writes it to each of those files. Can we do this?</p>
+<p>What we’ll need is an array of <code>FILE*</code> objects. The type of this array would be a “pointer to a <code>FILE*</code>”, which would be written as <code>FILE**</code> (notice the <em>two</em> asterisks).</p>
+<p>Remember, we create an array of type <code>T</code> and size <code>N</code> like this:</p>
+<pre><code class="language-C">T* array = calloc(N, sizeof(T));</code></pre>
+<p>So we can make an array of <code>FILE*</code> objects like:</p>
+<pre><code class="language-C">FILE** array = calloc(N, sizeof(FILE*));</code></pre>
+<p>Notice that we used <code>sizeof(FILE*)</code> in creating the array of <code>FILE*</code> objects. That is going to be the <em>size of a pointer</em>, which in the modern age means 8 bytes (64 bits).</p>
+<p>With that in mind, here’s how the program might look:</p>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;string.h&gt;
+
+int main() {
+  // get number of files
+  int numfiles;
+  printf(&quot;How many files? &quot;);
+  fflush(stdout);
+  scanf(&quot; %i&quot;, &amp;numfiles);
+
+  // create array of FILE* objects
+  FILE** files = calloc(numfiles, sizeof(FILE*));
+
+  // read in filenames and open files
+  printf(&quot;Enter %i filenames to write to.\n&quot;, numfiles);
+  for (int i=0; i &lt; numfiles; ++i) {
+    char filename[128];
+    scanf(&quot; %s&quot;, filename);
+    files[i] = fopen(filename, &quot;w&quot;);
+  }
+
+  // read in words and write them to each file
+  printf(&quot;Enter words to write, followed by a semicolon ';'\n&quot;);
+  char word[128];
+  scanf(&quot; %s&quot;, word);
+  while (strcmp(word, &quot;;&quot;) != 0) {
+    // loop through each file and write the next word on a line
+    for (int i=0; i &lt; numfiles; ++i) {
+      fprintf(files[i], &quot;%s\n&quot;, word);
+    }
+    // read the next word
+    scanf(&quot; %s&quot;, word);
+  }
+
+  // close all the files
+  for (int i=0; i &lt; numfiles; ++i) {
+    fclose(files[i]);
+  }
+  // deallocate the array
+  free(files);
+
+  return 0;
+}</code></pre><p>Another important thing to notice is how the “clean-up” is done at the end. We have to have a loop to call <code>fclose</code> on each file first, and then <em>afterwards</em> we can de-allocate the array of <code>FILE*</code>s. (If you called <code>free</code> to deallocate the array first, the information needed for all the <code>fclose</code>s would be lost!)</p>
+<h2 id="multi-dimensional-arrays"><a class="linkin" href="index.html#top"><span class="header-section-number">5.2</span> Multi-dimensional Arrays</a></h1><p>Since we can have arrays of any type of object, why not an array of arrays? For example, suppose we have a class of students whose grades are stored in <a href="files.php%3Ff=grades.txt.html">a file like this</a>. I might want to read in the data and store it, so that I can then answer questions for the user - questions like <em>how did student 6 do on homework 3?</em></p>
+<p>In this case, I’d clearly like an array of 8 objects, each one representing all 10 homework grades for that student. But what type of object can I use to store the 10 homework grades that correspond to a given student? An array of 10 <code>int</code>s, of course! So, each object in my array of students is itself an array of <code>int</code>s, i.e. each object is an <code>int*</code>.</p>
+<p>This is called a <em>two-dimensional array</em> because it has two levels of arrays:</p>
+<ul>
+<li>The <em>outer array</em> has type <code>int**</code> and has size 8 (for the number of students). Each element of the outer array is…</li>
+<li>An <em>inner array</em> with type <code>int*</code> and size 10, containing the grades for a single student.</li>
+</ul>
+<p>Notice that there will be just 1 outer array, but multiple inner arrays. We can allocate space for the outer array with a line like</p>
+<pre><code class="language-C">int** grades = calloc(8, sizeof(int*));</code></pre>
+<p>and then <em>each</em> inner array must be separately allocated in a loop like</p>
+<pre><code class="language-C">for (int i=0; i &lt; 8; ++i) {
+  grades[i] = calloc(10, sizeof(int));
+}</code></pre>
+<p>Notice that the 2D array <code>grades</code> has type <code>int**</code>, so each <code>grades[i]</code> has type <code>int*</code>, which helps explain how the loop of inner array allocations works.</p>
+<p>Once the 2D array has been created, accessing an element on row <code>i</code> and column <code>j</code> can be done with a double indexing like</p>
+<pre><code class="language-C">grades[i][j] = 95;</code></pre>
+<p>Remember, this is really just a bunch of arrays stuffed inside one outer array, which explains how the double indexing works: <code>grades</code> has type <code>int**</code>, the outer array, so <code>grades[i]</code> has type <code>int*</code>, a single inner array, and <code>grades[i][j]</code>, or equivalently <code>(grades[i])[j]</code>, has type <code>int</code> and represents a single grade entry.</p>
+<p><a href="files.php%3Ff=getgrade.c.html">Here’s a working solution.</a></p>
+<p>As we’ve mentioned before, arrays allocated with <code>calloc</code> live on until the end of your program, or until deleted with the <code>free</code> command. With multi-dimensional arrays, you have to remember to delete each array you created. That means, if we refer back to the grades problem from above, that all of the arrays pointed to by the elements of the array <code>grades</code> must be deleted before we can delete the array <code>grades</code> itself.</p>
+<pre><code class="language-C">for (int i=0; i &lt; students; ++i) {
+  free(grades[i]);
+}
+free(grades);</code></pre>
+<h1 id="problems"><a class ="linkin" href="index.html#top"><span class="header-section-number">6</span> Problems</a></h1><ol type="1">
+<li><p><a href="files.php%3Ff=histogram.c.html">histograms</a> (arrays of counters)</p></li>
+<li><p><a href="files.php%3Ff=hangman.c.html">masks (i.e. an array of true/false), for example to implement a simple hangman game</a>.</p></li>
+<li><p><a href="files.php%3Ff=stdev.c.html">standard deviation.</a> The sample file <a href="numbers.txt" class="uri">numbers.txt</a> has a standard deviation of <code>14.5756</code>.</p></li>
+<li><p><a href="files.php%3Ff=reverse.c.html">Print in reverse (non-recursive)</a></p></li>
+<li><p><a href="files.php%3Ff=reverse2.c.html">Print in reverse (recursive!)</a></p></li>
+<li><p><a href="files.php%3Ff=palindromes.c.html">palindromes</a></p></li>
+<li><p><a href="https://www.usna.edu/Users/cs/roche/courses/s17si204/notes/06/TE5.html">A predicate that takes a <code>string       s</code> and a <code>char c</code>, and tests whether or not <code>c</code> appears in <code>s</code>.</a></p></li>
+<li><p>Print out the index of the minimum element in the array. So, for example:</p>
+<pre><code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./min</code>
+<code class="language-text output"></code><code class="language-text input">4</code>
+<code class="language-text output"></code><code class="language-text input">34 12 8 29</code>
+<code class="language-text output">minimum element is A[2] = 8.</code></pre><p><a href="files.php%3Ff=min.c.html">solution</a></p></li>
+<li><p>Print elements of the array, separated by commas. So, for example:</p>
+<pre><code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./commasep</code>
+<code class="language-text output">4</code>
+<code class="language-text output">34 12 8 29</code>
+<code class="language-text output">A = [34, 12, 8, 29]</code></pre><p><a href="files.php%3Ff=commasep.c.html">solution</a></p></li>
+<li><p>Write a program to compute dot-products of vectors. If <span class="math display">\[v = [a_1, a_2, \ldots, a_m],\qquad
+w = [b_1, b_2, \ldots, b_m]\]</span> are two vectors of dimension <span class="math inline">\(m\)</span>, the dot product of v and w is <span class="math display">\[v \cdot w = a_1b_1 + a_2b_2 + \cdots + a_mb_m.\]</span> Your program will get a dimension m from the user, read in two vectors of length m, and print out their dot product. Here’s a sample run:</p>
+<pre><code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./dotprod</code>
+<code class="language-text output">Enter dimension: </code><code class="language-text input">4</code>
+<code class="language-text output">Enter two vectors:</code>
+<code class="language-text output"></code><code class="language-text input">[3,-1,0,2]</code>
+<code class="language-text output"></code><code class="language-text input">[5,0,9,-7]</code>
+<code class="language-text output">Dot product = 1</code></pre><p>Try it for yourself and then take a look at <a href="files.php%3Ff=dotprod.c.html">my solution</a>.</p></li>
+<li><p>Write a program that reads a list of banned words from a file, stores them in an array, and then simply reads words from the user and returns “banned” or “not banned” until the word “end” is encountered. The file starts with a number, which is the number of banned words, and then the words themselves are listed. The file <a href="banned.txt" class="uri">banned.txt</a> is a good example. <a href="files.php%3Ff=banned.c.html">Here’s my solution</a>.</p></li>
+<li><p>Picking random teams. The file <a href="names.txt" class="uri">names.txt</a> contains a list of names (the number of names is given on the first line of the file). Read those names in, and get from the user a number of teams to be made from those names. The number of teams must evenly divide the number of names. The program should randomly assign names to teams, and display the result. Here is a sample run of the program.</p>
+<pre><code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./pickteams</code>
+<code class="language-text output">There are 24 people.</code>
+<code class="language-text output">How many teams would you like? (make it evenly divide n) </code><code class="language-text input">3</code>
+<code class="language-text output">Team 1: Mike Dan Chris Joni Christy Seung-Geol Cathy Susan</code>
+<code class="language-text output">Team 2: Gavin Nate Paul Adina Jeff Carl Karen Eric</code>
+<code class="language-text output">Team 3: Phong Betty Madeline Marianne Don Shirley Tim Steve</code></pre><p><a href="files.php%3Ff=pickteams.c.html">Here is one way to solve it.</a></p></li>
+<li><p><a href="files.php%3Ff=tictactoe.c.html">tic-tac-toe</a></p></li>
+</ol>
+</div>
+  </div></article></div></div><nav class="stickynav"><div><div class="dropdown"><a href="../../index.php.html" class="ddown-btn">SI 204</a><div class="ddown-content"><a href="../../calendar.php.html">Calendar</a><a href="../index.html">Notes</a><a href="../../hw/index.html">HWs</a><a href="../../lab/index.html">Labs</a><a href="../../proj/index.html">Projects</a><a href="../../exams/index.html">Exams</a><a href="../../admin/index.html">Resources</a><a href="https://www.usna.edu/Users/cs/roche/">Roche</a><a href="https://www.usna.edu/Users/cs/albing/">Albing</a></div></div><div class="dropdown"><a href="index.html#top" class="linkin pagetop">Unit 6: Arrays</a><div class="ddown-content ddtoc"><ul><li><a class="linkin" href="index.html#stack-based-arrays"><span class="toc-section-number">1</span> Stack-based arrays</a>
+<ul><li><a class="linkin" href="index.html#motivating-example-the-price-is-right"><span class="toc-section-number">1.1</span> Motivating example: The Price is Right</a></li><li><a class="linkin" href="index.html#declaring-and-initializing-at-the-same-time"><span class="toc-section-number">1.2</span> Declaring and initializing at the same time</a></li><li><a class="linkin" href="index.html#how-it-works-pointers-and-memory"><span class="toc-section-number">1.3</span> How it works: pointers and memory</a></li></ul></li>
+<li><a class="linkin" href="index.html#strings-are-arrays"><span class="toc-section-number">2</span> Strings are arrays</a>
+<ul><li><a class="linkin" href="index.html#a-simple-problem-made-difficult"><span class="toc-section-number">2.1</span> A Simple Problem Made Difficult</a></li><li><a class="linkin" href="index.html#length-and-null-bytes"><span class="toc-section-number">2.2</span> Length and null bytes</a></li><li><a class="linkin" href="index.html#declaring-strings"><span class="toc-section-number">2.3</span> Declaring strings</a></li></ul></li>
+<li><a class="linkin" href="index.html#heap-based-arrays"><span class="toc-section-number">3</span> Heap-based arrays</a>
+<ul><li><a class="linkin" href="index.html#allocation"><span class="toc-section-number">3.1</span> Allocation</a></li><li><a class="linkin" href="index.html#deallocation"><span class="toc-section-number">3.2</span> Deallocation</a></li><li><a class="linkin" href="index.html#growing-an-array"><span class="toc-section-number">3.3</span> Growing an array</a></li></ul></li>
+<li><a class="linkin" href="index.html#arrays-amp-functions"><span class="toc-section-number">4</span> Arrays &amp; Functions</a>
+<ul><li><a class="linkin" href="index.html#arrays-as-arguments-to-functions"><span class="toc-section-number">4.1</span> Arrays as arguments to functions</a></li><li><a class="linkin" href="index.html#modifying-arrays-in-functions"><span class="toc-section-number">4.2</span> Modifying arrays in functions</a></li><li><a class="linkin" href="index.html#creating-arrays-in-functions"><span class="toc-section-number">4.3</span> Creating arrays in functions</a></li><li><a class="linkin" href="index.html#common-functions-on-arrays"><span class="toc-section-number">4.4</span> Common functions on arrays</a></li></ul></li>
+<li><a class="linkin" href="index.html#nested-arrays"><span class="toc-section-number">5</span> Nested arrays</a>
+<ul><li><a class="linkin" href="index.html#arrays-of-any-type"><span class="toc-section-number">5.1</span> Arrays of any type</a></li><li><a class="linkin" href="index.html#multi-dimensional-arrays"><span class="toc-section-number">5.2</span> Multi-dimensional Arrays</a></li></ul></li>
+<li><a class="linkin" href="index.html#problems"><span class="toc-section-number">6</span> Problems</a></ul></div></div></nav><footer><div id="foottext">    <p class="disclaimer">Material contained above is made available
+    for the purpose of peer review and discussion and does not
+    necessarily reflect the views of the Department of the Navy or the
+    Department of Defense.
+    Some links above are to sites that are not
+    located at the United States Naval Academy. The USNA is not
+    responsible for the content found on these sites. In addition, the
+    content of these sites does not reflect the opinions, standards,
+    policy or endorsement of the Naval Academy or the United States
+    Government.</p>
+  Page maintained by Daniel S. Roche (<a href="mailto:roche [AT] usna [DOT] edu" id="emaillink1">roche [AT] usna [DOT] edu</a><script type='text/javascript'><!--
+        var b="he@usna.edu";
+        var a="roc";
+        document.getElementById("emaillink1").href='mailto:'+a+b;
+        document.getElementById("emaillink1").innerHTML=a+b;
+        // --></script>). Last updated 21 March 2017 9:19.</div></footer><script src="../../scripts/prism.js"></script><script type="text/javascript">var the_body = $('html, body');
+var sticky_height = $('.stickynav').height();
+$('.linkin').click(function(){
+  var href = $(this).attr('href');
+  var offset;
+  if (href == '#top') offset = 0;
+  else offset = $(href).offset().top - sticky_height;
+  the_body.animate({ scrollTop: offset }, 500);
+  return false;
+});</script></body></html>

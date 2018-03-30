@@ -1,0 +1,110 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+         "http://www.w3.org/TR/html4/strict.dtd"><html><head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"><title>xmlexample.c</title><link href="../../scripts/prism.css" rel="stylesheet" />    <style type="text/css">
+    body {
+      margin: 0;
+      padding:55px 0 0 0;
+    }
+    div#header {
+      position:absolute;
+      top: 0;
+      left: 0;
+      width:100%;
+      height:50px;
+      border-bottom: 5px solid red;
+      text-align: center;
+      background-color: #d0d0d0;
+      z-index: 1000;
+    }
+    @media screen{
+      body>div#header{
+        position:fixed;
+      }
+    }
+    * html body{
+      overflow:hidden;
+    }
+    * html div#content {
+      height: 100%;
+      overflow: auto;
+    }
+    .warning {
+      margin: 3px auto;
+      background-color: black;
+      color: yellow;
+      font-weight: bold;
+      max-width: 600px;
+      font-family: sans-serif;
+      text-align: center;
+    }
+    /*
+    .codeblock {
+      margin:10px auto 10px;
+      min-width:500px;
+      max-width:800px;
+    }
+    .codeblock td.de1 {
+      border:1px solid black;
+    }
+    .codeblock td.ln {
+      border:1px solid white;
+    }
+    pre {
+      margin:10px auto 10px;
+      max-width:800px;
+    }
+    .plainpre {
+      border: 1px solid black;
+      padding:2px;
+    }
+    */
+    </style>
+  </head><body><div id="header"><p><a href="files.php%3Ff=xmlexample.c&amp;downloadcode=yes">Click here</a> to download <code>xmlexample.c</code>.</p></div><div id="content"><pre class="line-numbers"><code class="language-C">/* SI204 Spring 2017
+ * Example program using libxml2 to read in a small XML file.
+ */
+
+#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;libxml/parser.h&gt;
+
+int main() {
+  // get the filename, same as always
+  printf(&quot;Filename: &quot;);
+  char fname[128];
+  scanf(&quot; %s&quot;, fname);
+
+  // read the entire file into a xmlDoc struct
+  xmlDoc* document = xmlReadFile(fname, NULL, 0);
+
+  // get the document root node
+  xmlNode* root = xmlDocGetRootElement(document);
+  printf(&quot;The root node name is %s\n&quot;, (char*)root-&gt;name);
+
+  // go to the root's first child
+  xmlNode* child = root-&gt;children-&gt;next;
+  printf(&quot;The root's child's name is %s\n&quot;, (char*)child-&gt;name);
+
+  // get the child's attributes
+  xmlAttr* attr = child-&gt;properties;
+  while (attr != NULL) {
+    printf(&quot;The child has an attribute named %s\n&quot;, (char*)attr-&gt;name);
+    printf(&quot;The attribute's value is %s\n&quot;, (char*)attr-&gt;children-&gt;content);
+    // move to the next attribute
+    attr = attr-&gt;next;
+  }
+
+  // go through the child's children
+  xmlNode* gchild = child-&gt;children-&gt;next;
+  while (gchild != NULL) {
+    printf(&quot;The child has a child named %s\n&quot;, (char*)gchild-&gt;name);
+    printf(&quot;That grandchild's contents are %s\n&quot;, (char*)gchild-&gt;children-&gt;content);
+    // move to the next grandchild
+    gchild = gchild-&gt;next-&gt;next;
+  }
+
+  // clean up
+  xmlFreeDoc(document);
+
+  return 0;
+}</code></pre></div><script src="../../scripts/prism.js"></script></body></html>

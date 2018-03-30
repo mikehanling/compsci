@@ -1,0 +1,93 @@
+/*********************************************
+Days Past
+
+This program reads a start date and an end date
+from the user, and prints out the number of
+days elapsed between the two.
+
+The key to the problem is to write a function
+"monthdays()" that takes a month name
+and returns the number of days from New Year's
+to the beginning of that month.
+ *********************************************/
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
+typedef char cstring[128];
+
+int monthdays(cstring mname);
+
+/*********************************************
+ ** main() function
+ *********************************************/
+int main() {
+  int dayofmonth;
+  cstring monthname;
+  int daystart;
+  int dayfinish;
+  // Get # of days from New Year's to start
+  printf("Enter start  date (e.g. 27 Mar): ");
+  fflush(stdout);
+  scanf(" %d %s", &dayofmonth, monthname);
+  daystart = dayofmonth + monthdays(monthname);
+
+  // Get # of days from New Year's to finish
+  printf("Enter ending date (e.g. 13 Jul): ");
+  fflush(stdout);
+  scanf(" %d %s", &dayofmonth, monthname);
+  dayfinish = dayofmonth + monthdays(monthname);
+
+  // Print out number of days in between
+  printf("That lasted %i days.\n", dayfinish - daystart + 1);
+
+  return 0;
+}
+
+/*********************************************
+ ** Reads a month and returns the number of
+ ** days from New Year's to that month
+ *********************************************/
+int monthdays(cstring mname) {
+  // Get # of days from month
+  int days = 0;
+
+  if (strcmp(mname, "Jan") == 0) { return days; }
+  days += 31;
+
+  if (strcmp(mname, "Feb") == 0) { return days; }
+  days += 28;
+
+  if (strcmp(mname, "Mar") == 0) { return days; }
+  days += 31;
+
+  if (strcmp(mname, "Apr") == 0) { return days; }
+  days += 30;
+
+  if (strcmp(mname, "May") == 0) { return days; }
+  days += 31;
+
+  if (strcmp(mname, "Jun") == 0) { return days; }
+  days += 30;
+
+  if (strcmp(mname, "Jul") == 0) { return days; }
+  days += 31;
+
+  if (strcmp(mname, "Aug") == 0) { return days; }
+  days += 31;
+
+  if (strcmp(mname, "Sep") == 0) { return days; }
+  days += 30;
+
+  if (strcmp(mname, "Oct") == 0) { return days; }
+  days += 31;
+
+  if (strcmp(mname, "Nov") == 0) { return days; }
+  days += 30;
+
+  if (strcmp(mname, "Dec") == 0) { return days; }
+  days += 31;
+
+  printf("ERROR: invalid month name.");
+  exit(1);
+}

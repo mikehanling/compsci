@@ -1,0 +1,57 @@
+/***************************************************
+Integration of f(x) by simple end-point approximation
+
+Write a program that will approximate the integral of
+
+   f(x) = 2/sqrt(1-x^2)
+
+The bounds of integration should be supplied by the
+user, as well as the number of rectangles used in the
+approximation.
+
+Note:  The integral f(x) from 0 to 1 has a value
+you should recognize!
+
+Note:  You could change the function by changing a
+single line in the code, in case you want to
+approximate a different integral.
+***************************************************/
+#include "si204.h"
+#include <math.h>
+
+int main() {
+  // Read a and b
+  fputs("Enter integration bounds a and b: ", stdout);
+  double a = readnum(stdin);
+  double b = readnum(stdin);
+
+  // Read n
+  fputs("Enter n, the number of steps: ", stdout);
+  int n = readnum(stdin);
+
+  // Compute width of rectangles
+  double w = (b - a) / n;
+
+  // Initialize integral approximation value to zero
+  double approx = 0.0;
+
+  // update approximation from each step
+  for(int i=0; i < n; i++) {
+    // Compute evaluation point x
+    double x = a + i*w;
+
+    // Compute fucntion value at x
+    // XXX: change this line to compute a different integral!
+    double fx = 2.0 / sqrt(1.0 - x*x);
+
+    // Add area of rectangle to approx
+    approx += fx * w;
+  }
+
+  // Write out answer
+  fputs("The integral is approximately ", stdout);
+  writenum(approx, stdout);
+  fputs("\n", stdout);
+
+  return 0;
+}

@@ -1,0 +1,146 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Lab 03: Books</title><meta name="viewport" content="width=device-width, initial-scale=1.0"><link href="../../scripts/prism.css" rel="stylesheet" /><link rel="stylesheet" type="text/css" href="../../style.css"><script type="text/javascript" src="../../../../mathjax/MathJax.js%3Fconfig=TeX-AMS_HTML"></script><script type="text/javascript" src="../../scripts/jquery-3.1.1.min.js"></script><style>
+@media only screen and (min-width: 600px) {
+  #main>header {background-image: url("../../scripts/header.png");}
+}
+</style>  <meta name="generator" content="pandoc">
+  <style type="text/css">code{white-space: pre;}</style>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head><body><div id="main"><header><nav class="topnav"><div>
+            <a href="../../index.php.html">SI 204</a>
+            </div><div>
+            <a href="../../calendar.php.html">Calendar</a>
+            </div><div>
+            <a href="../../notes/index.html">Notes</a>
+            </div><div>
+            <a href="../../hw/index.html">HWs</a>
+            </div><div id="navparent">
+            <a href="../index.html">Labs</a>
+            </div><div>
+            <a href="../../proj/index.html">Projects</a>
+            </div><div>
+            <a href="../../exams/index.html">Exams</a>
+            </div><div>
+            <a href="../../admin/index.html">Resources</a>
+            </div><div>
+            <a href="https://www.usna.edu/Users/cs/roche/">Roche</a>
+            </div><div>
+            <a href="https://www.usna.edu/Users/cs/albing/">Albing</a>
+            </div></nav></header><div id="mainbox"><div class="printonly"><h1 class="printtitle">SI 204 Spring 2017 / Labs</h1><hr></div><article id="mainart"><header><h1>Lab 03: Books</h1></header><div id="TOC"><ul><li><a class="linkin" href="index.html#word-count"><span class="toc-section-number">1</span> Word Count</a></li>
+<li><a class="linkin" href="index.html#average-word-length"><span class="toc-section-number">2</span> Average Word Length</a></li>
+<li><a class="linkin" href="index.html#sentence-length"><span class="toc-section-number">3</span> Sentence Length</a></li>
+<li><a class="linkin" href="index.html#multiple-files"><span class="toc-section-number">4</span> Multiple Files</a></li></ul></div><div class="panbody"><p>This lab will exercise your skill with loops and reading files. Some useful references will be the <a href="../../notes/03/index.html">Unit 3 notes</a> and, as always, the <a href="../../admin/cref.php.html">C functions reference for this class</a>.</p>
+<p>Submit in <a href="../../admin/submit.php.html">the normal way</a>, being sure to put your files in a directory called <code>lab03</code>.</p>
+<p>In this lab, you’re going to do some basic file analysis to some famous books. Download <a href="books.tgz">this tarball</a> to a lab03 directory, and untar it with the command <code>tar xzf books.tgz</code>. That will create a directory <code>books</code> that has five text files in it, all freely available books from <a href="https://www.gutenberg.org/">Project Gutenberg</a>.</p>
+<h1 id="word-count"><a class ="linkin" href="index.html#top"><span class="header-section-number">1</span> Word Count</a></h1><p>Each of the files in the <a href="books.tgz">books tarball</a> you downloaded is in a similar format. Open up one of the text files such as <code>alice.txt</code> in a text editor and check it out; the format is roughly like this:</p>
+<pre><code class="language-.text">(... header information ...)
+
+*** START OF THIS PROJECT GUTENBERG EBOOK ALICE’S ADVENTURES IN WONDERLAND ***
+
+
+ALICE’S ADVENTURES IN WONDERLAND
+
+Lewis Carroll
+
+THE MILLENNIUM FULCRUM EDITION 3.0
+
+
+CHAPTER I. Down the Rabbit-Hole
+
+Alice was beginning to get very tired of sitting by her sister on the
+bank, and of having nothing to do: once or twice she had peeped into the
+
+(..the rest of the book...)
+
+*** END OF THIS PROJECT GUTENBERG EBOOK ALICE’S ADVENTURES IN WONDERLAND ***
+
+(... footer information ...)</code></pre>
+<!-- *** **-->
+<p>Of course, we mostly care about the actual book! The key is that three asterisks <code>***</code> in a row appear twice in the line right before the start of the book, and twice in the line right after the end of the book, and nowhere in between. So, for <em>any</em> of these books, you want to examine the words that appear between the second and third occurrence of the string <code>&quot;***&quot;</code>.</p>
+<p>Write a program called <code>count.c</code> that reads in a filename for a book, and reports the number of words in the book, ignoring the header and footer information.</p>
+<p>Example:</p>
+<pre><code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./count</code>
+<code class="language-text output">Enter a filename: </code><code class="language-text input">books/alice.txt</code>
+<code class="language-text output">Word count: 26460</code></pre><h1 id="average-word-length"><a class ="linkin" href="index.html#top"><span class="header-section-number">2</span> Average Word Length</a></h1><p>Now write a program to report the average number of letters (characters) per word. Copy your program from the previous part to a new file called <code>wlen.c</code>.</p>
+<p>In C, you can get the length of a single word by using the <code>strlen</code> function. For example, to read in a word from the user and print out its length, you would do:</p>
+<pre><code class="language-C">cstring s;
+readstring(s, stdin);
+int length_of_s = strlen(s);
+writenum(length_of_s, stdout);</code></pre>
+<p>Here’s how your program should work for this part:</p>
+<pre><code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./wlen</code>
+<code class="language-text output">Enter a filename: </code><code class="language-text input">books/sherlock.txt</code>
+<code class="language-text output">Average word length: 4.35476</code>
+<code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./wlen</code>
+<code class="language-text output">Enter a filename: </code><code class="language-text input">books/narrative.txt</code>
+<code class="language-text output">Average word length: 4.4941</code></pre><p>Show your instructor your progress at this point and don’t forget to submit to save your work.</p>
+<h1 id="sentence-length"><a class ="linkin" href="index.html#top"><span class="header-section-number">3</span> Sentence Length</a></h1><blockquote>The rest of this lab is <em>optional</em> for your
+enrichment and enjoyment. Be sure to work on this only after getting
+everything else perfect. You should still submit this work, but make
+sure it doesn't break any of the parts you already had working correctly!
+</blockquote>
+  <p>Next, write a program to report the average number of <em>words</em> per sentence. Copy your program from the previous part to a new file called <code>slen.c</code>.</p>
+<p>We’ll assume sentences always end with one of the following characters: <code>.!?</code>, and that only ends of sentences contain those characters (this may not be entirely accurate, but is good enough for our purposes). So basically you are looking for words that contain one of those three characters.</p>
+<p>In C, the command <a href="http://en.cppreference.com/w/c/string/byte/strchr"><code>strchr</code></a> can be used to search for a particular character in a given string. This function returns 0 if the character is <em>not</em> in the string, and otherwise it returns a nonzero value. Remembering that in C <code>0</code> is treated as false and anything nonzero is treated as true, we can use <code>strchr</code> like this:</p>
+<pre><code class="language-C">cstring s;
+readstring(s, stdin);
+if (strchr(s, &#39;!&#39;)) {
+  fputs(&quot;You seem excited...\n&quot;, stdout);
+}</code></pre>
+<p><strong>Important</strong>: The last sentence in the book might not end with a word that has a <code>'</code>, <code>!</code>, or <code>?</code>. Your program should account for this possibility and still compute the correct average sentence length!</p>
+<p>Here are two example runs:</p>
+<pre><code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./slen</code>
+<code class="language-text output">Enter a filename: </code><code class="language-text input">books/metamorphosis.txt</code>
+<code class="language-text output">Average sentence length: 26.5156</code>
+<code class="language-text output">dandesk:~/gits/204/gr/lab/03/sol$ ./slen</code>
+<code class="language-text output">Enter a filename: </code><code class="language-text input">books/huckfinn.txt</code>
+<code class="language-text output">Average sentence length: 17.9725</code></pre><p>Don’t forget to submit and show off your program to your professor if you finish this part during the lab time.</p>
+<h1 id="multiple-files"><a class ="linkin" href="index.html#top"><span class="header-section-number">4</span> Multiple Files</a></h1><p>Now let’s put it all together and write a program to produce all three statistics, looping over multiple files. Copy your program from the previous part to a new file called <code>multiple.c</code>.</p>
+<p>This program will report the word count, average word length, and average sentence length, for a series of files. Your program should keep asking for more file names until the user enters <code>quit</code>.</p>
+<p>(Note that the counts are for that one book only; they are <em>not</em> cumulative over all the books entered so far.)</p>
+<p>Here’s an example run:</p>
+<pre><code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./multiple</code>
+<code class="language-text output">Enter a filename: </code><code class="language-text input">books/sherlock.txt</code>
+<code class="language-text output">Word count: 104519</code>
+<code class="language-text output">Average word length: 4.35476</code>
+<code class="language-text output">Average sentence length: 14.3511</code>
+<code class="language-text output"></code>
+<code class="language-text output">Enter a filename: </code><code class="language-text input">books/metamorphosis.txt</code>
+<code class="language-text output">Word count: 22114</code>
+<code class="language-text output">Average word length: 4.3652</code>
+<code class="language-text output">Average sentence length: 26.5156</code>
+<code class="language-text output"></code>
+<code class="language-text output">Enter a filename: </code><code class="language-text input">books/narrative.txt</code>
+<code class="language-text output">Word count: 40773</code>
+<code class="language-text output">Average word length: 4.4941</code>
+<code class="language-text output">Average sentence length: 18.4077</code>
+<code class="language-text output"></code>
+<code class="language-text output">Enter a filename: </code><code class="language-text input">quit</code></pre>  </div></article></div></div><nav class="stickynav"><div><div class="dropdown"><a href="../../index.php.html" class="ddown-btn">SI 204</a><div class="ddown-content"><a href="../../calendar.php.html">Calendar</a><a href="../../notes/index.html">Notes</a><a href="../../hw/index.html">HWs</a><a href="../index.html">Labs</a><a href="../../proj/index.html">Projects</a><a href="../../exams/index.html">Exams</a><a href="../../admin/index.html">Resources</a><a href="https://www.usna.edu/Users/cs/roche/">Roche</a><a href="https://www.usna.edu/Users/cs/albing/">Albing</a></div></div><div class="dropdown"><a href="index.html#top" class="linkin pagetop">Lab 03: Books</a><div class="ddown-content ddtoc"><ul><li><a class="linkin" href="index.html#word-count"><span class="toc-section-number">1</span> Word Count</a></li>
+<li><a class="linkin" href="index.html#average-word-length"><span class="toc-section-number">2</span> Average Word Length</a></li>
+<li><a class="linkin" href="index.html#sentence-length"><span class="toc-section-number">3</span> Sentence Length</a></li>
+<li><a class="linkin" href="index.html#multiple-files"><span class="toc-section-number">4</span> Multiple Files</a></ul></div></div></nav><footer><div id="foottext">    <p class="disclaimer">Material contained above is made available
+    for the purpose of peer review and discussion and does not
+    necessarily reflect the views of the Department of the Navy or the
+    Department of Defense.
+    Some links above are to sites that are not
+    located at the United States Naval Academy. The USNA is not
+    responsible for the content found on these sites. In addition, the
+    content of these sites does not reflect the opinions, standards,
+    policy or endorsement of the Naval Academy or the United States
+    Government.</p>
+  Page maintained by Daniel S. Roche (<a href="mailto:roche [AT] usna [DOT] edu" id="emaillink1">roche [AT] usna [DOT] edu</a><script type='text/javascript'><!--
+        var b="he@usna.edu";
+        var a="roc";
+        document.getElementById("emaillink1").href='mailto:'+a+b;
+        document.getElementById("emaillink1").innerHTML=a+b;
+        // --></script>). Last updated 01 February 2017 11:47.</div></footer><script src="../../scripts/prism.js"></script><script type="text/javascript">var the_body = $('html, body');
+var sticky_height = $('.stickynav').height();
+$('.linkin').click(function(){
+  var href = $(this).attr('href');
+  var offset;
+  if (href == '#top') offset = 0;
+  else offset = $(href).offset().top - sticky_height;
+  the_body.animate({ scrollTop: offset }, 500);
+  return false;
+});</script></body></html>

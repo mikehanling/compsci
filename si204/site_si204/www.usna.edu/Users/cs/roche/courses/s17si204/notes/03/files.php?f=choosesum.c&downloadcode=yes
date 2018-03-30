@@ -1,0 +1,47 @@
+/***************************************
+ Write a program that reads in a
+ number n and prints out the sum
+ as k goes from 0 to n of "n choose
+ k".
+              n*(n-1)*...*(n - k + 1)
+ n choose k = -----------------------
+                  k*(k-1)*...*2*1
+
+ Note: If k is 0 then n choose k is 1.
+ Note: If k is n then n choose k is 1.
+****************************************/
+#include "si204.h"
+
+int main() {
+  // Get n from user
+  fputs("Please enter n: ", stdout);
+  int n = readnum(stdin);
+
+  // Compute sum
+  int sum = 0;
+  for(int k=0; k <= n; ++k) {
+    // compute numerator of n choose k
+    int numer = 1;
+    for (int m = n; m > n-k; --m) {
+      numer *= m;
+    }
+
+    // compute denominator of n choose k
+    int denom = 1;
+    for(int i=1; i <= k; ++i) {
+      denom *= i;
+    }
+
+    // add value of n choose k to sum
+    sum += numer / denom;
+  }
+
+  // Write value of sum
+  fputs("Sum as k goes from 0 to ", stdout);
+  writenum(n, stdout);
+  fputs(" is ", stdout);
+  writenum(sum, stdout);
+  fputs("\n", stdout);
+
+  return 0;
+}

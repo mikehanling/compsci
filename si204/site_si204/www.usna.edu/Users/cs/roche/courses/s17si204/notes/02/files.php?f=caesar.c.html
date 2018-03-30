@@ -1,0 +1,137 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+         "http://www.w3.org/TR/html4/strict.dtd"><html><head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"><title>caesar.c</title><link href="../../scripts/prism.css" rel="stylesheet" />    <style type="text/css">
+    body {
+      margin: 0;
+      padding:55px 0 0 0;
+    }
+    div#header {
+      position:absolute;
+      top: 0;
+      left: 0;
+      width:100%;
+      height:50px;
+      border-bottom: 5px solid red;
+      text-align: center;
+      background-color: #d0d0d0;
+      z-index: 1000;
+    }
+    @media screen{
+      body>div#header{
+        position:fixed;
+      }
+    }
+    * html body{
+      overflow:hidden;
+    }
+    * html div#content {
+      height: 100%;
+      overflow: auto;
+    }
+    .warning {
+      margin: 3px auto;
+      background-color: black;
+      color: yellow;
+      font-weight: bold;
+      max-width: 600px;
+      font-family: sans-serif;
+      text-align: center;
+    }
+    /*
+    .codeblock {
+      margin:10px auto 10px;
+      min-width:500px;
+      max-width:800px;
+    }
+    .codeblock td.de1 {
+      border:1px solid black;
+    }
+    .codeblock td.ln {
+      border:1px solid white;
+    }
+    pre {
+      margin:10px auto 10px;
+      max-width:800px;
+    }
+    .plainpre {
+      border: 1px solid black;
+      padding:2px;
+    }
+    */
+    </style>
+  </head><body><div id="header"><p><a href="files.php%3Ff=caesar.c&amp;downloadcode=yes">Click here</a> to download <code>caesar.c</code>.</p></div><div id="content"><pre class="line-numbers"><code class="language-C">/***************************************************
+Ceasar-Shift Encryption on 4-Letter Messages
+
+The &quot;Ceasar-Shift&quot; method of encryption scrambles
+a message a letter at a time.  First we view each
+letter as being represented by its distance from
+the letter 'a' when we write the alphabet in a line.
+So, a-&gt;0, b-&gt;1, c-&gt;2, ..., z-&gt;25.  Given a key k,
+which is just an integer between 0 and 25, we map 
+each letter to a new one as follows:
+
+   if the letter is i away from 'a', then it maps
+   to the letter i + k away from 'a'.  If i + k is 
+   greater than 25, we simply wraparound.  The mod
+   operator (%) does this wraparound for us.
+
+So, the rule becomes:  
+
+   If letter L1 is i away from letter 'a', then it 
+   maps to the letter that is (i + k) % 26 away from 
+   the letter 'a'.  
+
+The thing to notice is that (L1 - 'a') tells you 
+precisely how far away letter L1 is from letter 'a',
+and for distance d, char('a' + d) is the letter that
+is d away from the letter 'a'.
+
+Ex: key = 1, message = busy, encrypted message = cvtz
+***************************************************/
+#include &quot;si204.h&quot;
+
+int main() {
+  // Read in key value
+  int k;
+  fputs(&quot;Enter key value: &quot;, stdout);
+  k = readnum(stdin);
+  
+  // Read in 4-letter message
+  fputs(&quot;Enter 4-letter message (lower-case): &quot;, stdout);
+  char c1, c2, c3, c4;
+  c1 = readchar(stdin);
+  c2 = readchar(stdin);
+  c3 = readchar(stdin);
+  c4 = readchar(stdin);
+
+  // Compute distances for original letters
+  int d1,d2,d3,d4;
+  d1 = c1 - 'a';
+  d2 = c2 - 'a';
+  d3 = c3 - 'a';
+  d4 = c4 - 'a';
+  
+  // Compute distances for encrypted letters
+  int ed1,ed2,ed3,ed4;
+  ed1 = (d1 + k) % 26;
+  ed2 = (d2 + k) % 26;
+  ed3 = (d3 + k) % 26;
+  ed4 = (d4 + k) % 26;
+
+  // Compute encrypted letters
+  char e1,e2,e3,e4;
+  e1 = 'a' + ed1;
+  e2 = 'a' + ed2;
+  e3 = 'a' + ed3;
+  e4 = 'a' + ed4;
+
+  // Write out encrypted message
+  fputs(&quot;Encrypted message is: &quot;, stdout);
+  fputc(e1, stdout);
+  fputc(e2, stdout);
+  fputc(e3, stdout);
+  fputc(e4, stdout);
+  fputs(&quot;\n&quot;, stdout);
+
+  return 0;
+}</code></pre></div><script src="../../scripts/prism.js"></script></body></html>

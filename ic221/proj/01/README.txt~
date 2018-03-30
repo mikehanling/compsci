@@ -1,0 +1,31 @@
+----------------------------------------------------------------------------
+Name:  Mike Hanling
+Alpha: 202430
+
+Hours: 04 - 05
+----------------------------------------------------------------------------
+Instructions:
+
+  Replace the X's above with your name and alpha. 
+
+  For "hours" replace the XX with the number of hours you worked on
+  this project. You should use decimal for fractions of an hour. This
+  information is used to track the difficulty and improve the
+  course. Thank you for your help!
+
+  This README will be submitted electronically with your
+  submission. Instructions for submission are found on the project page.
+
+  You should provide any clarifying comments or descriptions of your
+  project below. This will be used to help grade your project. 
+
+----------------------------------------------------------------------------
+
+You were right. The original while loop in a while loop was ugly.  This
+answer looks much cleaner and was easier to implement. 
+
+./wc - dickens.txt    will be interpreted as an option issue and
+therefore will hard stop.
+
+For some reason the script left me with this README and the other one;
+both are filled out if you are looking for other information.

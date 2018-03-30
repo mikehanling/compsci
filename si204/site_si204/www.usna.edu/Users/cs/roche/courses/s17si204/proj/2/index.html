@@ -1,0 +1,454 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Project 2: Blackjack</title><meta name="viewport" content="width=device-width, initial-scale=1.0"><link href="../../scripts/prism.css" rel="stylesheet" /><link rel="stylesheet" type="text/css" href="../../style.css"><script type="text/javascript" src="../../../../mathjax/MathJax.js%3Fconfig=TeX-AMS_HTML"></script><script type="text/javascript" src="../../scripts/jquery-3.1.1.min.js"></script><style>
+@media only screen and (min-width: 600px) {
+  #main>header {background-image: url("../../scripts/header.png");}
+}
+</style>  <meta name="generator" content="pandoc">
+  <style type="text/css">code{white-space: pre;}</style>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head><body><div id="main"><header><nav class="topnav"><div>
+            <a href="../../index.php.html">SI 204</a>
+            </div><div>
+            <a href="../../calendar.php.html">Calendar</a>
+            </div><div>
+            <a href="../../notes/index.html">Notes</a>
+            </div><div>
+            <a href="../../hw/index.html">HWs</a>
+            </div><div>
+            <a href="../../lab/index.html">Labs</a>
+            </div><div id="navparent">
+            <a href="../index.html">Projects</a>
+            </div><div>
+            <a href="../../exams/index.html">Exams</a>
+            </div><div>
+            <a href="../../admin/index.html">Resources</a>
+            </div><div>
+            <a href="https://www.usna.edu/Users/cs/roche/">Roche</a>
+            </div><div>
+            <a href="https://www.usna.edu/Users/cs/albing/">Albing</a>
+            </div></nav></header><div id="mainbox"><div class="printonly"><h1 class="printtitle">SI 204 Spring 2017 / Projects</h1><hr></div><article id="mainart"><header><h1>Project 2: Blackjack</h1></header><div id="TOC"><ul><li><a class="linkin" href="index.html#overview">Overview</a>
+<ul><li><a class="linkin" href="index.html#tips-for-success"> Tips for success</a></li><li><a class="linkin" href="index.html#grading"> Grading</a></li><li><a class="linkin" href="index.html#honor-policy-reminder"> Honor Policy Reminder</a></li></ul></li>
+<li><a class="linkin" href="index.html#part-1-shuffle-up-to-40-points-">Part 1: Shuffle [up to 40 points]</a></li>
+<li><a class="linkin" href="index.html#part-2-deal-up-to-70-points-">Part 2 - Deal [up to 70 points]</a></li>
+<li><a class="linkin" href="index.html#part-3-play-up-to-100-points-">Part 3: Play [up to 100 points]</a></li>
+<li><a class="linkin" href="index.html#part-4-extra-up-to-110-points-">Part 4: Extra [up to 110 points]</a></li></ul></div><div class="panbody"><h1 id="overview"><a class ="linkin" href="index.html#top">Overview</a></h1><p>You will implement a fully functioning game of Blackjack. No prior knowledge of the game is needed. However, you will need to know what cards appear in a <a href="https://deck-of-cards.js.org/">standard deck of playing cards</a>. If you have any questions about how the game itself works you can ask your instructor or a classmate.</p>
+<p>Blackjack (also called “21”) is basically a game between an individual player and a dealer. There’s a gambling side to the game that this project does not address. The project simply plays the game with the user as “Player” and program as “Dealer”, and determines the winner and loser.</p>
+<p>You will implement three successively more complicated programs, first to <code>shuffle</code>, then <code>deal</code>, and finally <code>play</code> a game of Blackjack. And if you want, you might also implement a little <code>extra</code> too!</p>
+<p>As usual, while the topic of the project is a card game, this project is <em>really</em> about functions, program design, and arrays. Be sure to refer to what you learned in <a href="../../notes/05/index.html">Unit 5</a>, <a href="../../notes/06/index.html">Unit 6</a>, and the corresponding <a href="../../lab/index.html">labs</a> and <a href="../../hw/index.html">homeworks</a>.</p>
+<h2 id="tips-for-success"><a class="linkin" href="index.html#top">Tips for success</a></h1><ul>
+<li><p>Make sure you follow the <a href="../../admin/style.php.html">SI204 Style Guide</a>. This means proper indentation, use of whitespace within lines of code, logical organization of chunks of code,</p></li>
+<li><p>Make sure you do a good job of putting things in functions. One monolithic <code>main</code> function is not OK, even if it works!</p></li>
+<li><p>Re-submit frequently, and definitely when you finish each part.</p></li>
+<li><p>Start early! Remember “Hofstadter’s Law”:</p>
+<p><em>It always takes longer than you expect, even when you take into account Hofstadter’s Law.</em></p>
+<p>Not only is that true, it’s also a recrusive joke!</p></li>
+<li><p>A great quote from Brian Kernighan, co-author of “the book” on C programming:</p>
+<p><em>Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are –– by definition –– not smart enough to debug it.</em></p></li>
+</ul>
+<h2 id="grading"><a class="linkin" href="index.html#top">Grading</a></h1><p>70% of your grade will be based on <em>functionality</em> (does your program work perfectly for each part). That includes the test cases that run automatically when you submit, and may include other testing as well. The other 30% will be based on <em>coding style</em>, which includes readability, documentation, and design/organization.</p>
+<p>All of this is factored into your maximum score based on which part you have completed. Partial credit for partially-working parts will be quite stingy; you have time, so we expect your code to work!</p>
+<h2 id="honor-policy-reminder"><a class="linkin" href="index.html#top">Honor Policy Reminder</a></h1><p>Be sure to review the <a href="../../admin/policy.php.html">course policy</a> on collaboration for <em>programming projects</em>, which are more about the work you can do on your own and have different rules compared to homeworks and labs. In particular:</p>
+<ul>
+<li>The only help you may receive on a project is from your instructor MGSP leaders for this class, and that help must be clearly cited. In turn, you cannot provide help to any other students on this project.</li>
+<li>In no circumstance - project, homework or lab - may you copy code and submit it as your own work. That is the definition of plagiarism.</li>
+<li>For projects, you may not look at other people’s project code nor may you show your own code to others.</li>
+<li>You can look at online resources for general purpose C programming, but not for help writing financial simulations or anything else that is specific to the functionality required of your project.</li>
+</ul>
+<p>If you have questions about any of these rules, <strong>email your instructor and ask about it</strong>. We know you want to do what’s right and we are here to help you!</p>
+<h1 id="part-1-shuffle-up-to-40-points-"><a class ="linkin" href="index.html#top">Part 1: Shuffle [up to 40 points]</a></h1><p>Write a program called <code>shuffle.c</code> that creates, shuffles, and prints out a deck of cards. A correct solution <em>must</em> store the integer representations of the 52 cards in an array, and only after that print the output. Otherwise its use in working towards the remaining steps of the project is limited.</p>
+<p>Your program will start by asking the user for a <em>seed value</em> to use for the random number generator. (Look back at the <a href="../../lab/05/index.html">Craps Lab</a> for a refresher on how to use <code>srand</code> and <code>rand</code> from the <code>&lt;stdlib.h&gt;</code> library). The only exception is that <strong>if the user enters 0 as a seed value, do not call srand at all</strong>.</p>
+<p>Your program them creates an array with 52 cards. For us, each card will be represented by a single integer in the following way:</p>
+<ol type="a">
+<li><p>Represent suits by number according to these rules: 1 = ♣, 2 = ♦, 3 = ♥, 4 = ♠</p></li>
+<li><p>Represent face values by number according to these rules: 2 = 2, 3 = 3, …, 10 = 10, 11 = J(jack), 12 = Q(queen), 13 = K(king), 14 = A(ace)</p></li>
+<li><p>The number to represent a card should be</p>
+<pre><code class="language-C">cardvalue = 100 * suitnumber + facevalue</code></pre>
+<p>so for example the jack of diamonds is number 211. You can reverse this and get the suit and face value from a card’s number according to</p>
+<pre><code class="language-C">suitnumber = cardvalue / 100;  // integer division rounds down!
+facevalue = cardvalue % 100;</code></pre></li>
+</ol>
+<p>Initially, the card numbers in your deck should be ordered numerically, which means it will start with the 2 of clubs up to the ace of clubs, then all the diamonds (in the same order), all the hearts, all the spades, and ending with the ace of spades.</p>
+<p>You must use exactly the following method for your shuffling, remembering again <em>not</em> to shuffle at all if the user enters a seed value of 0:</p>
+<pre><code class="language-.text">for i from 0 up to 51 do
+    set j to rand() % 52
+    swap the index i element of the deck with the index j element</code></pre>
+<p>(Note, this is not a good enough shuffling algorithm for “real” applications because it introduces a small amount of bias in the ordering, but this is what we’re going to do to keep in simple.)</p>
+<p>Our Unix terminal program understands “UTF-8” character encodings, which is how we will print card suits to the screen. Each suit symbol is represented by a string. Here are the suits and the corresponding string for printing them in unicode. ♣ ← <code>&quot;\u2663&quot;</code>, ♦ ← <code>&quot;\u2666&quot;</code>, ♥ ← <code>&quot;\u2665&quot;</code>, ♠ ← <code>&quot;\u2660&quot;</code>.</p>
+<p>Also notice that the face values of all cards are one character long, <em>except for</em> 10 which is two characters. So you should always print the card’s face value right-justified to two spaces (meaning, add an extra space in front of every face value except for 10).</p>
+<p>Here are some example runs for this part:</p>
+<pre><code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./shuffle</code>
+<code class="language-text output">Seed: </code><code class="language-text input">0</code>
+<code class="language-text output"> 2♣</code>
+<code class="language-text output"> 3♣</code>
+<code class="language-text output"> 4♣</code>
+<code class="language-text output"> 5♣</code>
+<code class="language-text output"> 6♣</code>
+<code class="language-text output"> 7♣</code>
+<code class="language-text output"> 8♣</code>
+<code class="language-text output"> ⋮</code>
+<code class="language-text output"> J♠</code>
+<code class="language-text output"> Q♠</code>
+<code class="language-text output"> K♠</code>
+<code class="language-text output"> A♠</code></pre><p>(Remember, seed 0 means no shuffling should occur, so the above cards are ordered from 102, the 2 of clubs, up to 414, the ace of spades.)</p>
+<pre><code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./shuffle</code>
+<code class="language-text output">Seed: </code><code class="language-text input">100</code>
+<code class="language-text output"> 9♦</code>
+<code class="language-text output"> 8♣</code>
+<code class="language-text output"> J♥</code>
+<code class="language-text output"> 8♦</code>
+<code class="language-text output"> 9♠</code>
+<code class="language-text output"> 7♣</code>
+<code class="language-text output"> 9♥</code>
+<code class="language-text output"> J♦</code>
+<code class="language-text output"> ⋮</code>
+<code class="language-text output"> 7♥</code>
+<code class="language-text output"> A♣</code>
+<code class="language-text output"> K♦</code>
+<code class="language-text output"> 4♥</code>
+<code class="language-text output"> Q♥</code></pre><pre><code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./shuffle</code>
+<code class="language-text output">Seed: </code><code class="language-text input">2020</code>
+<code class="language-text output"> 8♣</code>
+<code class="language-text output"> 2♣</code>
+<code class="language-text output"> J♣</code>
+<code class="language-text output">10♣</code>
+<code class="language-text output"> A♠</code>
+<code class="language-text output"> Q♣</code>
+<code class="language-text output"> 5♣</code>
+<code class="language-text output"> 3♥</code>
+<code class="language-text output"> 4♦</code>
+<code class="language-text output"> 8♦</code>
+<code class="language-text output"> ⋮</code>
+<code class="language-text output">10♥</code>
+<code class="language-text output"> 6♥</code>
+<code class="language-text output"> 4♥</code>
+<code class="language-text output"> 7♥</code></pre><h1 id="part-2-deal-up-to-70-points-"><a class ="linkin" href="index.html#top">Part 2 - Deal [up to 70 points]</a></h1><p>Start by copying your <code>shuffle.c</code> (which should work perfectly!) to a new file <code>deal.c</code>. You’ll start in the same way, asking for a seed value and shuffling the deck, but then instead of printing out the deck you will deal cards to a Player and a Dealer as follows:</p>
+<ul>
+<li>First each player gets two cards. Deal these cards in this order: first player, then dealer, then player’s second card, then dealer’s second card.</li>
+<li>Next, repeatedly ask the player whether they would like to hit (<code>h</code>) or stand (<code>s</code>). As long as they ask to hit, deal the next card into the player’s hand.</li>
+<li>Next, deal two cards into the dealer’s hand, one at a time. (As in, assume for now that the dealer “hits” two times and then “stands”.)</li>
+<li>You must print out the player’s and dealer’s hands exactly as shown in the examples below, before each “decision” to hit or stand.</li>
+<li>Pause for dramatic effect after each time the dealer makes a decision to “hit” by calling <code>sleep(2)</code> to pause the program for two seconds. This will require <code>#include &lt;unistd.h&gt;</code> at the top of your program.</li>
+</ul>
+<p>Always deal cards from the <em>top</em> of the deck - which in our case means the <em>end</em> of the array. In other words, the last card that would have been printed by your <code>shuffle</code> program should be the first one that goes into the Player’s hand.</p>
+<p>You will probably want to store an array for the player’s hand and for the dealer’s hand, and write some nice functions so your <code>main</code> stays nice and simple…</p>
+<p>Here are some example runs:</p>
+<pre><code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./deal</code>
+<code class="language-text output">Seed: </code><code class="language-text input">0</code>
+<code class="language-text output"></code>
+<code class="language-text output"> Player Dealer</code>
+<code class="language-text output">|  A♠  |  K♠  |</code>
+<code class="language-text output">|  Q♠  |  J♠  |</code>
+<code class="language-text output">Hit or stand? [h/s] </code><code class="language-text input">s</code>
+<code class="language-text output"></code>
+<code class="language-text output"> Player Dealer</code>
+<code class="language-text output">|  A♠  |  K♠  |</code>
+<code class="language-text output">|  Q♠  |  J♠  |</code>
+<code class="language-text output">Dealer hits.</code>
+<code class="language-text output"></code>
+<code class="language-text output"> Player Dealer</code>
+<code class="language-text output">|  A♠  |  K♠  |</code>
+<code class="language-text output">|  Q♠  |  J♠  |</code>
+<code class="language-text output">|      | 10♠  |</code>
+<code class="language-text output">Dealer hits.</code>
+<code class="language-text output"></code>
+<code class="language-text output"> Player Dealer</code>
+<code class="language-text output">|  A♠  |  K♠  |</code>
+<code class="language-text output">|  Q♠  |  J♠  |</code>
+<code class="language-text output">|      | 10♠  |</code>
+<code class="language-text output">|      |  9♠  |</code>
+<code class="language-text output">Dealer stands.</code></pre><pre><code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./deal</code>
+<code class="language-text output">Seed: </code><code class="language-text input">100</code>
+<code class="language-text output"></code>
+<code class="language-text output"> Player Dealer</code>
+<code class="language-text output">|  Q♥  |  4♥  |</code>
+<code class="language-text output">|  K♦  |  A♣  |</code>
+<code class="language-text output">Hit or stand? [h/s] </code><code class="language-text input">h</code>
+<code class="language-text output"></code>
+<code class="language-text output"> Player Dealer</code>
+<code class="language-text output">|  Q♥  |  4♥  |</code>
+<code class="language-text output">|  K♦  |  A♣  |</code>
+<code class="language-text output">|  7♥  |      |</code>
+<code class="language-text output">Hit or stand? [h/s] </code><code class="language-text input">h</code>
+<code class="language-text output"></code>
+<code class="language-text output"> Player Dealer</code>
+<code class="language-text output">|  Q♥  |  4♥  |</code>
+<code class="language-text output">|  K♦  |  A♣  |</code>
+<code class="language-text output">|  7♥  |      |</code>
+<code class="language-text output">|  5♦  |      |</code>
+<code class="language-text output">Hit or stand? [h/s] </code><code class="language-text input">h</code>
+<code class="language-text output"></code>
+<code class="language-text output"> Player Dealer</code>
+<code class="language-text output">|  Q♥  |  4♥  |</code>
+<code class="language-text output">|  K♦  |  A♣  |</code>
+<code class="language-text output">|  7♥  |      |</code>
+<code class="language-text output">|  5♦  |      |</code>
+<code class="language-text output">| 10♣  |      |</code>
+<code class="language-text output">Hit or stand? [h/s] </code><code class="language-text input">s</code>
+<code class="language-text output"></code>
+<code class="language-text output"> Player Dealer</code>
+<code class="language-text output">|  Q♥  |  4♥  |</code>
+<code class="language-text output">|  K♦  |  A♣  |</code>
+<code class="language-text output">|  7♥  |      |</code>
+<code class="language-text output">|  5♦  |      |</code>
+<code class="language-text output">| 10♣  |      |</code>
+<code class="language-text output">Dealer hits.</code>
+<code class="language-text output"></code>
+<code class="language-text output"> Player Dealer</code>
+<code class="language-text output">|  Q♥  |  4♥  |</code>
+<code class="language-text output">|  K♦  |  A♣  |</code>
+<code class="language-text output">|  7♥  |  3♣  |</code>
+<code class="language-text output">|  5♦  |      |</code>
+<code class="language-text output">| 10♣  |      |</code>
+<code class="language-text output">Dealer hits.</code>
+<code class="language-text output"></code>
+<code class="language-text output"> Player Dealer</code>
+<code class="language-text output">|  Q♥  |  4♥  |</code>
+<code class="language-text output">|  K♦  |  A♣  |</code>
+<code class="language-text output">|  7♥  |  3♣  |</code>
+<code class="language-text output">|  5♦  |  A♥  |</code>
+<code class="language-text output">| 10♣  |      |</code>
+<code class="language-text output">Dealer stands.</code></pre><pre><code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./deal</code>
+<code class="language-text output">Seed: </code><code class="language-text input">2020</code>
+<code class="language-text output"></code>
+<code class="language-text output"> Player Dealer</code>
+<code class="language-text output">|  7♥  |  4♥  |</code>
+<code class="language-text output">|  6♥  | 10♥  |</code>
+<code class="language-text output">Hit or stand? [h/s] </code><code class="language-text input">h</code>
+<code class="language-text output"></code>
+<code class="language-text output"> Player Dealer</code>
+<code class="language-text output">|  7♥  |  4♥  |</code>
+<code class="language-text output">|  6♥  | 10♥  |</code>
+<code class="language-text output">|  4♠  |      |</code>
+<code class="language-text output">Hit or stand? [h/s] </code><code class="language-text input">s</code>
+<code class="language-text output"></code>
+<code class="language-text output"> Player Dealer</code>
+<code class="language-text output">|  7♥  |  4♥  |</code>
+<code class="language-text output">|  6♥  | 10♥  |</code>
+<code class="language-text output">|  4♠  |      |</code>
+<code class="language-text output">Dealer hits.</code>
+<code class="language-text output"></code>
+<code class="language-text output"> Player Dealer</code>
+<code class="language-text output">|  7♥  |  4♥  |</code>
+<code class="language-text output">|  6♥  | 10♥  |</code>
+<code class="language-text output">|  4♠  |  3♦  |</code>
+<code class="language-text output">Dealer hits.</code>
+<code class="language-text output"></code>
+<code class="language-text output"> Player Dealer</code>
+<code class="language-text output">|  7♥  |  4♥  |</code>
+<code class="language-text output">|  6♥  | 10♥  |</code>
+<code class="language-text output">|  4♠  |  3♦  |</code>
+<code class="language-text output">|      | 10♠  |</code>
+<code class="language-text output">Dealer stands.</code></pre><!-- ` -->
+<h1 id="part-3-play-up-to-100-points-"><a class ="linkin" href="index.html#top">Part 3: Play [up to 100 points]</a></h1><p>Start by copying your <code>deal.c</code> program (which should work perfectly at this point!) to a new file <code>play.c</code>. You will now complete what’s necessary to play an actual game of Blackjack!</p>
+<p>The scoring for Blackjack mostly involves adding up the points in each player’s hand. Whoever gets closer to 21 without going over wins. Going over 21 is called “going bust” and it means you lose. The points per card are as follows:</p>
+<ul>
+<li>2 through 10 are worth the number of points as their face value says they are.</li>
+<li>Jack, Queen, and King are always worth exactly 10 points.</li>
+<li>Ace can be either “high” for 11 points, or “low” for 1 point. When calculating a hand’s score, you first try making the first Ace count as 11, unless that would cause the total to go over 21 and “bust”. If so, count the Aces as 1.</li>
+</ul>
+<p>So for example the points for the hand <code>Q♠ 9♥</code> would be 19, pretty good. The points for <code>7♥ A♥</code> would be 18, since counting the Ace as 11 doesn’t make it go over 21. But the points for <code>8♥ A♥ J♠ A♣</code> is 20, counting both aces as 1’s.</p>
+<p>Now that you understand the scoring rules, here’s how your game should work:</p>
+<ul>
+<li>Start by getting the seed value, shuffling, and dealing the first two cards to the player and the dealer just like before. <strong>Except</strong>, don’t print out the dealer’s second card, to keep the player guessing, until after the player’s turn is over. You should still add it to the dealer’s hand, but print it out as <code>**</code> until the player’s turn is over.</li>
+<li>Before asking the player whether they want to hit or stand, first calculate the total points in their hand. If it’s over 21, then print the message <code>Player busts!</code> and move on to the dealer. Otherwise let them keep hitting or standing until they go bust or decide to stand.</li>
+<li>The dealer isn’t allowed to make their own decisions. Instead, they follow three rules:
+<ol type="1">
+<li>If the player busted, the dealer should just stand.</li>
+<li>If the dealer has 17 or more points, the dealer stands.</li>
+<li>Otherwise, the dealer will take a hit.</li>
+</ol></li>
+<li>Continue with the dealer’s rules until the dealer busts or stands, each time pausing for dramatic effect with <code>sleep(2)</code> as before.</li>
+<li>When both turns are over, print out the player’s and the dealer’s final score, and then print out who won. Remember, winning means that your opponent busted, or you got closer to 21 than they did.</li>
+<li>In case of a tie game with neither player nor dealer busting, print the message <code>&quot;Push! Play again.&quot;</code> and start a new game, continuing until either Player or Dealer wins.</li>
+</ul>
+<p>Here are some example runs of this version:</p>
+<pre><code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./play</code>
+<code class="language-text output">Seed: </code><code class="language-text input">100</code>
+<code class="language-text output"></code>
+<code class="language-text output"> Player Dealer</code>
+<code class="language-text output">|  Q♥  |  4♥  |</code>
+<code class="language-text output">|  K♦  |  **  |</code>
+<code class="language-text output">Hit or stand? [h/s] </code><code class="language-text input">s</code>
+<code class="language-text output"></code>
+<code class="language-text output"> Player Dealer</code>
+<code class="language-text output">|  Q♥  |  4♥  |</code>
+<code class="language-text output">|  K♦  |  A♣  |</code>
+<code class="language-text output">Dealer hits.</code>
+<code class="language-text output"></code>
+<code class="language-text output"> Player Dealer</code>
+<code class="language-text output">|  Q♥  |  4♥  |</code>
+<code class="language-text output">|  K♦  |  A♣  |</code>
+<code class="language-text output">|      |  7♥  |</code>
+<code class="language-text output">Dealer hits.</code>
+<code class="language-text output"></code>
+<code class="language-text output"> Player Dealer</code>
+<code class="language-text output">|  Q♥  |  4♥  |</code>
+<code class="language-text output">|  K♦  |  A♣  |</code>
+<code class="language-text output">|      |  7♥  |</code>
+<code class="language-text output">|      |  5♦  |</code>
+<code class="language-text output">Dealer stands.</code>
+<code class="language-text output"></code>
+<code class="language-text output">Final scores: Player 20, Dealer 17.</code>
+<code class="language-text output">Player wins!</code></pre><pre><code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./play</code>
+<code class="language-text output">Seed: </code><code class="language-text input">107</code>
+<code class="language-text output"></code>
+<code class="language-text output"> Player Dealer</code>
+<code class="language-text output">|  K♠  |  6♥  |</code>
+<code class="language-text output">|  6♣  |  **  |</code>
+<code class="language-text output">Hit or stand? [h/s] </code><code class="language-text input">h</code>
+<code class="language-text output"></code>
+<code class="language-text output"> Player Dealer</code>
+<code class="language-text output">|  K♠  |  6♥  |</code>
+<code class="language-text output">|  6♣  |  **  |</code>
+<code class="language-text output">| 10♥  |      |</code>
+<code class="language-text output">Player busts!</code>
+<code class="language-text output"></code>
+<code class="language-text output"> Player Dealer</code>
+<code class="language-text output">|  K♠  |  6♥  |</code>
+<code class="language-text output">|  6♣  |  9♣  |</code>
+<code class="language-text output">| 10♥  |      |</code>
+<code class="language-text output">Dealer stands.</code>
+<code class="language-text output"></code>
+<code class="language-text output">Final scores: Player 26, Dealer 15.</code>
+<code class="language-text output">Dealer wins!</code></pre><pre><code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./play</code>
+<code class="language-text output">Seed: </code><code class="language-text input">110</code>
+<code class="language-text output"></code>
+<code class="language-text output"> Player Dealer</code>
+<code class="language-text output">|  K♥  |  3♦  |</code>
+<code class="language-text output">|  J♣  |  **  |</code>
+<code class="language-text output">Hit or stand? [h/s] </code><code class="language-text input">s</code>
+<code class="language-text output"></code>
+<code class="language-text output"> Player Dealer</code>
+<code class="language-text output">|  K♥  |  3♦  |</code>
+<code class="language-text output">|  J♣  |  A♠  |</code>
+<code class="language-text output">Dealer hits.</code>
+<code class="language-text output"></code>
+<code class="language-text output"> Player Dealer</code>
+<code class="language-text output">|  K♥  |  3♦  |</code>
+<code class="language-text output">|  J♣  |  A♠  |</code>
+<code class="language-text output">|      |  2♥  |</code>
+<code class="language-text output">Dealer hits.</code>
+<code class="language-text output"></code>
+<code class="language-text output"> Player Dealer</code>
+<code class="language-text output">|  K♥  |  3♦  |</code>
+<code class="language-text output">|  J♣  |  A♠  |</code>
+<code class="language-text output">|      |  2♥  |</code>
+<code class="language-text output">|      |  4♣  |</code>
+<code class="language-text output">Dealer stands.</code>
+<code class="language-text output"></code>
+<code class="language-text output">Final scores: Player 20, Dealer 20.</code>
+<code class="language-text output">Push! Play again.</code>
+<code class="language-text output"></code>
+<code class="language-text output"> Player Dealer</code>
+<code class="language-text output">|  K♠  |  K♥  |</code>
+<code class="language-text output">|  9♠  |  **  |</code>
+<code class="language-text output">Hit or stand? [h/s] </code><code class="language-text input">s</code>
+<code class="language-text output"></code>
+<code class="language-text output"> Player Dealer</code>
+<code class="language-text output">|  K♠  |  K♥  |</code>
+<code class="language-text output">|  9♠  |  7♥  |</code>
+<code class="language-text output">Dealer stands.</code>
+<code class="language-text output"></code>
+<code class="language-text output">Final scores: Player 19, Dealer 17.</code>
+<code class="language-text output">Player wins!</code></pre><pre><code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./play</code>
+<code class="language-text output">Seed: </code><code class="language-text input">600</code>
+<code class="language-text output"></code>
+<code class="language-text output"> Player Dealer</code>
+<code class="language-text output">|  A♦  |  9♥  |</code>
+<code class="language-text output">|  8♥  |  **  |</code>
+<code class="language-text output">Hit or stand? [h/s] </code><code class="language-text input">s</code>
+<code class="language-text output"></code>
+<code class="language-text output"> Player Dealer</code>
+<code class="language-text output">|  A♦  |  9♥  |</code>
+<code class="language-text output">|  8♥  |  2♦  |</code>
+<code class="language-text output">Dealer hits.</code>
+<code class="language-text output"></code>
+<code class="language-text output"> Player Dealer</code>
+<code class="language-text output">|  A♦  |  9♥  |</code>
+<code class="language-text output">|  8♥  |  2♦  |</code>
+<code class="language-text output">|      |  3♠  |</code>
+<code class="language-text output">Dealer hits.</code>
+<code class="language-text output"></code>
+<code class="language-text output"> Player Dealer</code>
+<code class="language-text output">|  A♦  |  9♥  |</code>
+<code class="language-text output">|  8♥  |  2♦  |</code>
+<code class="language-text output">|      |  3♠  |</code>
+<code class="language-text output">|      |  5♣  |</code>
+<code class="language-text output">Dealer stands.</code>
+<code class="language-text output"></code>
+<code class="language-text output">Final scores: Player 19, Dealer 19.</code>
+<code class="language-text output">Push! Play again.</code>
+<code class="language-text output"></code>
+<code class="language-text output"> Player Dealer</code>
+<code class="language-text output">|  9♥  |  8♣  |</code>
+<code class="language-text output">|  8♦  |  **  |</code>
+<code class="language-text output">Hit or stand? [h/s] </code><code class="language-text input">s</code>
+<code class="language-text output"></code>
+<code class="language-text output"> Player Dealer</code>
+<code class="language-text output">|  9♥  |  8♣  |</code>
+<code class="language-text output">|  8♦  |  9♦  |</code>
+<code class="language-text output">Dealer stands.</code>
+<code class="language-text output"></code>
+<code class="language-text output">Final scores: Player 17, Dealer 17.</code>
+<code class="language-text output">Push! Play again.</code>
+<code class="language-text output"></code>
+<code class="language-text output"> Player Dealer</code>
+<code class="language-text output">|  K♣  |  5♠  |</code>
+<code class="language-text output">|  4♥  |  **  |</code>
+<code class="language-text output">Hit or stand? [h/s] </code><code class="language-text input">h</code>
+<code class="language-text output"></code>
+<code class="language-text output"> Player Dealer</code>
+<code class="language-text output">|  K♣  |  5♠  |</code>
+<code class="language-text output">|  4♥  |  **  |</code>
+<code class="language-text output">|  K♥  |      |</code>
+<code class="language-text output">Player busts!</code>
+<code class="language-text output"></code>
+<code class="language-text output"> Player Dealer</code>
+<code class="language-text output">|  K♣  |  5♠  |</code>
+<code class="language-text output">|  4♥  |  J♠  |</code>
+<code class="language-text output">|  K♥  |      |</code>
+<code class="language-text output">Dealer stands.</code>
+<code class="language-text output"></code>
+<code class="language-text output">Final scores: Player 24, Dealer 15.</code>
+<code class="language-text output">Dealer wins!</code></pre><h1 id="part-4-extra-up-to-110-points-"><a class ="linkin" href="index.html#top">Part 4: Extra [up to 110 points]</a></h1><p><strong>No credit will be given for this part until the rest works perfectly.</strong> Copy your program to a new file <code>extra.c</code>.</p>
+<p>Believe it or not, there are still a number of aspects of the game of Blackjack as it’s truly played, that we have failed to incorporate, such as:</p>
+<ul>
+<li>Casinos usually combine 7 decks to deal from, to thwart card counters.</li>
+<li>Each game should involve some <em>betting</em>. First, you have to <em>ante</em> a certain amount, say $5. After seeing thier two cards and the dealer’s 1, the player can <em>fold</em> and lose their $5, or <em>play</em> at the cost of another $5. After playing normally, the player either loses all $10 to the dealer, or wins back their $10 plus an additional $10 if they win that hand. (In the case of a push, you get your money back.)</li>
+<li>You might keep playing multiple games in a row, keeping track of your total winnings or losings.</li>
+<li>Perhaps there could be multiple players?</li>
+<li>Or some other feature I haven’t thought of?</li>
+</ul>
+<p>This part is open-ended! Improve your game by adding some of the functionality described above, or something else that you think of. (If it’s not listed above, you probably want to run the idea by your instructor first.)</p>
+<p>If you complete this part, be sure to document clearly in comments at the top of your <code>extra.c</code> program what your extra functionality is and how it works!</p>
+  </div></article></div></div><nav class="stickynav"><div><div class="dropdown"><a href="../../index.php.html" class="ddown-btn">SI 204</a><div class="ddown-content"><a href="../../calendar.php.html">Calendar</a><a href="../../notes/index.html">Notes</a><a href="../../hw/index.html">HWs</a><a href="../../lab/index.html">Labs</a><a href="../index.html">Projects</a><a href="../../exams/index.html">Exams</a><a href="../../admin/index.html">Resources</a><a href="https://www.usna.edu/Users/cs/roche/">Roche</a><a href="https://www.usna.edu/Users/cs/albing/">Albing</a></div></div><div class="dropdown"><a href="index.html#top" class="linkin pagetop">Project 2: Blackjack</a><div class="ddown-content ddtoc"><ul><li><a class="linkin" href="index.html#overview">Overview</a>
+<ul><li><a class="linkin" href="index.html#tips-for-success"> Tips for success</a></li><li><a class="linkin" href="index.html#grading"> Grading</a></li><li><a class="linkin" href="index.html#honor-policy-reminder"> Honor Policy Reminder</a></li></ul></li>
+<li><a class="linkin" href="index.html#part-1-shuffle-up-to-40-points-">Part 1: Shuffle [up to 40 points]</a></li>
+<li><a class="linkin" href="index.html#part-2-deal-up-to-70-points-">Part 2 - Deal [up to 70 points]</a></li>
+<li><a class="linkin" href="index.html#part-3-play-up-to-100-points-">Part 3: Play [up to 100 points]</a></li>
+<li><a class="linkin" href="index.html#part-4-extra-up-to-110-points-">Part 4: Extra [up to 110 points]</a></ul></div></div></nav><footer><div id="foottext">    <p class="disclaimer">Material contained above is made available
+    for the purpose of peer review and discussion and does not
+    necessarily reflect the views of the Department of the Navy or the
+    Department of Defense.
+    Some links above are to sites that are not
+    located at the United States Naval Academy. The USNA is not
+    responsible for the content found on these sites. In addition, the
+    content of these sites does not reflect the opinions, standards,
+    policy or endorsement of the Naval Academy or the United States
+    Government.</p>
+  Page maintained by Daniel S. Roche (<a href="mailto:roche [AT] usna [DOT] edu" id="emaillink1">roche [AT] usna [DOT] edu</a><script type='text/javascript'><!--
+        var b="he@usna.edu";
+        var a="roc";
+        document.getElementById("emaillink1").href='mailto:'+a+b;
+        document.getElementById("emaillink1").innerHTML=a+b;
+        // --></script>). Last updated 09 March 2017 20:55.</div></footer><script src="../../scripts/prism.js"></script><script type="text/javascript">var the_body = $('html, body');
+var sticky_height = $('.stickynav').height();
+$('.linkin').click(function(){
+  var href = $(this).attr('href');
+  var offset;
+  if (href == '#top') offset = 0;
+  else offset = $(href).offset().top - sticky_height;
+  the_body.animate({ scrollTop: offset }, 500);
+  return false;
+});</script></body></html>

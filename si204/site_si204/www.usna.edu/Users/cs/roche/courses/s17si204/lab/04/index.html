@@ -1,0 +1,87 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Lab 04: Sports Stats</title><meta name="viewport" content="width=device-width, initial-scale=1.0"><link href="../../scripts/prism.css" rel="stylesheet" /><link rel="stylesheet" type="text/css" href="../../style.css"><script type="text/javascript" src="../../../../mathjax/MathJax.js%3Fconfig=TeX-AMS_HTML"></script><script type="text/javascript" src="../../scripts/jquery-3.1.1.min.js"></script><style>
+@media only screen and (min-width: 600px) {
+  #main>header {background-image: url("../../scripts/header.png");}
+}
+</style>  <meta name="generator" content="pandoc">
+  <style type="text/css">code{white-space: pre;}</style>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head><body><div id="main"><header><nav class="topnav"><div>
+            <a href="../../index.php.html">SI 204</a>
+            </div><div>
+            <a href="../../calendar.php.html">Calendar</a>
+            </div><div>
+            <a href="../../notes/index.html">Notes</a>
+            </div><div>
+            <a href="../../hw/index.html">HWs</a>
+            </div><div id="navparent">
+            <a href="../index.html">Labs</a>
+            </div><div>
+            <a href="../../proj/index.html">Projects</a>
+            </div><div>
+            <a href="../../exams/index.html">Exams</a>
+            </div><div>
+            <a href="../../admin/index.html">Resources</a>
+            </div><div>
+            <a href="https://www.usna.edu/Users/cs/roche/">Roche</a>
+            </div><div>
+            <a href="https://www.usna.edu/Users/cs/albing/">Albing</a>
+            </div></nav></header><div id="mainbox"><div class="printonly"><h1 class="printtitle">SI 204 Spring 2017 / Labs</h1><hr></div><article id="mainart"><header><h1>Lab 04: Sports Stats</h1></header><div id="TOC"><ul><li><a class="linkin" href="index.html#the-best-stat"><span class="toc-section-number">1</span> The best stat</a></li>
+<li><a class="linkin" href="index.html#going-further-spaces-in-team-names"><span class="toc-section-number">2</span> Going further: Spaces in team names</a></li></ul></div><div class="panbody"><p>This lab will exercise your skill with nested loops and iterative refinement. Some useful references will be the <a href="../../notes/03/index.html">Unit 3 notes</a>, <a href="../../notes/04/index.html">Unit 4 notes</a>, and, as always, the <a href="../../admin/cref.php.html">C functions reference for this class</a>.</p>
+<p>Submit in <a href="../../admin/submit.php.html">the normal way</a>, being sure to put your files in a directory called <code>lab04</code>.</p>
+<p>In this lab, you’re going to analyze some sports statistics that I copied from <a href="http://stats.nba.com/teams/traditional/#!?sort=W_PCT&amp;dir=-1">here</a> and <a href="http://www.espn.com/mlb/stats/team/_/stat/batting/year/2015/seasontype/2">here</a>. The files you want are <a href="files.php%3Ff=basketball.txt.html">basketball.txt</a> and <a href="files.php%3Ff=baseball.txt.html">baseball.txt</a>. Download them now and save them to your lab directory.</p>
+<h1 id="the-best-stat"><a class ="linkin" href="index.html#top"><span class="header-section-number">1</span> The best stat</a></h1><p>Have a look at the two files you just downloaded. Something we clearly should be able to do with these files is write a program where the user enters a heading (like 3P%), and get back which team had the highest number for that column, and the value in that column:</p>
+<pre><code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./stats</code>
+<code class="language-text output">Filename: </code><code class="language-text input">basketball.txt</code>
+<code class="language-text output">Column heading: </code><code class="language-text input">3P%</code>
+<code class="language-text output">San_Antonio_Spurs 40.8</code></pre><p>We’re going to write this program, in such a way that it will work for either file. By working on solving smaller problems along the way, we can build up gradually to a full solution.</p>
+<p>Here are the steps we’re going to follow in a file called <code>stats.c</code>:</p>
+<pre><code class="language-C">// get a filename and column heading from the user
+// figure out which column has that header
+//for each line
+  // get that team&#39;s name
+  // get that team&#39;s value at that column
+  // track the largest value seen so far
+// print out the team name and value which was the largest</code></pre>
+<p>For this problem, pick small chunks to work on at a time, then combine those chunks to make a full program.</p>
+<p><strong>Important Notes</strong>:</p>
+<ul>
+<li>In case of a tie value in the selected field, your program should output the name of the <em>first team in the file with the maximum value</em> for that field.</li>
+<li>You can assume that the <em>second</em> line of the file always starts with the number 1.</li>
+<li>You can assume that the file always has 30 teams in it.</li>
+</ul>
+<h1 id="going-further-spaces-in-team-names"><a class ="linkin" href="index.html#top"><span class="header-section-number">2</span> Going further: Spaces in team names</a></h1><blockquote>The rest of this lab is <em>optional</em> for your
+enrichment and enjoyment. Be sure to work on this only after getting
+everything else perfect. You should still submit this work, but make
+sure it doesn't break any of the parts you already had working correctly!
+</blockquote>
+  <p>Actually, there is one way in which I modified the files above: I replaced space characters in the team names with underscores <code>_</code>.</p>
+<p>For this part, download the actual copy/pasted files <a href="files.php%3Ff=baseraw.txt.html">baseraw.txt</a> and <a href="files.php%3Ff=basketraw.txt.html">basketraw.txt</a> and improve your <code>stats.c</code> program to be able to handle multiple space-separated words in the team names.</p>
+<p>Hint: you may have to read ahead a bit in the <a href="../../notes/04/index.html">Unit 4 notes</a> in order to complete this part.</p>
+  </div></article></div></div><nav class="stickynav"><div><div class="dropdown"><a href="../../index.php.html" class="ddown-btn">SI 204</a><div class="ddown-content"><a href="../../calendar.php.html">Calendar</a><a href="../../notes/index.html">Notes</a><a href="../../hw/index.html">HWs</a><a href="../index.html">Labs</a><a href="../../proj/index.html">Projects</a><a href="../../exams/index.html">Exams</a><a href="../../admin/index.html">Resources</a><a href="https://www.usna.edu/Users/cs/roche/">Roche</a><a href="https://www.usna.edu/Users/cs/albing/">Albing</a></div></div><div class="dropdown"><a href="index.html#top" class="linkin pagetop">Lab 04: Sports Stats</a><div class="ddown-content ddtoc"><ul><li><a class="linkin" href="index.html#the-best-stat"><span class="toc-section-number">1</span> The best stat</a></li>
+<li><a class="linkin" href="index.html#going-further-spaces-in-team-names"><span class="toc-section-number">2</span> Going further: Spaces in team names</a></ul></div></div></nav><footer><div id="foottext">    <p class="disclaimer">Material contained above is made available
+    for the purpose of peer review and discussion and does not
+    necessarily reflect the views of the Department of the Navy or the
+    Department of Defense.
+    Some links above are to sites that are not
+    located at the United States Naval Academy. The USNA is not
+    responsible for the content found on these sites. In addition, the
+    content of these sites does not reflect the opinions, standards,
+    policy or endorsement of the Naval Academy or the United States
+    Government.</p>
+  Page maintained by Daniel S. Roche (<a href="mailto:roche [AT] usna [DOT] edu" id="emaillink1">roche [AT] usna [DOT] edu</a><script type='text/javascript'><!--
+        var b="he@usna.edu";
+        var a="roc";
+        document.getElementById("emaillink1").href='mailto:'+a+b;
+        document.getElementById("emaillink1").innerHTML=a+b;
+        // --></script>). Last updated 07 February 2017 10:13.</div></footer><script src="../../scripts/prism.js"></script><script type="text/javascript">var the_body = $('html, body');
+var sticky_height = $('.stickynav').height();
+$('.linkin').click(function(){
+  var href = $(this).attr('href');
+  var offset;
+  if (href == '#top') offset = 0;
+  else offset = $(href).offset().top - sticky_height;
+  the_body.animate({ scrollTop: offset }, 500);
+  return false;
+});</script></body></html>

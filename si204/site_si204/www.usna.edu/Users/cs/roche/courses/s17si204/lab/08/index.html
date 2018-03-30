@@ -1,0 +1,92 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Lab 08: Sorting PCAPs</title><meta name="viewport" content="width=device-width, initial-scale=1.0"><link href="../../scripts/prism.css" rel="stylesheet" /><link rel="stylesheet" type="text/css" href="../../style.css"><script type="text/javascript" src="../../../../mathjax/MathJax.js%3Fconfig=TeX-AMS_HTML"></script><script type="text/javascript" src="../../scripts/jquery-3.1.1.min.js"></script><style>
+@media only screen and (min-width: 600px) {
+  #main>header {background-image: url("../../scripts/header.png");}
+}
+</style>  <meta name="generator" content="pandoc">
+  <style type="text/css">code{white-space: pre;}</style>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head><body><div id="main"><header><nav class="topnav"><div>
+            <a href="../../index.php.html">SI 204</a>
+            </div><div>
+            <a href="../../calendar.php.html">Calendar</a>
+            </div><div>
+            <a href="../../notes/index.html">Notes</a>
+            </div><div>
+            <a href="../../hw/index.html">HWs</a>
+            </div><div id="navparent">
+            <a href="../index.html">Labs</a>
+            </div><div>
+            <a href="../../proj/index.html">Projects</a>
+            </div><div>
+            <a href="../../exams/index.html">Exams</a>
+            </div><div>
+            <a href="../../admin/index.html">Resources</a>
+            </div><div>
+            <a href="https://www.usna.edu/Users/cs/roche/">Roche</a>
+            </div><div>
+            <a href="https://www.usna.edu/Users/cs/albing/">Albing</a>
+            </div></nav></header><div id="mainbox"><div class="printonly"><h1 class="printtitle">SI 204 Spring 2017 / Labs</h1><hr></div><article id="mainart"><header><h1>Lab 08: Sorting PCAPs</h1></header><div id="TOC"><ul><li><a class="linkin" href="index.html#packet-capture"><span class="toc-section-number">1</span> Packet Capture</a></li>
+<li><a class="linkin" href="index.html#part-1"><span class="toc-section-number">2</span> Part 1</a></li>
+<li><a class="linkin" href="index.html#part-2"><span class="toc-section-number">3</span> Part 2</a></li>
+<li><a class="linkin" href="index.html#part-3-going-further-"><span class="toc-section-number">4</span> Part 3 (going further)</a></li></ul></div><div class="panbody"><p>(Credit to <a href="https://www.usna.edu/Users/cs/taylor/">Gavin Taylor</a> for the original version of this lab.)</p>
+<h1 id="packet-capture"><a class ="linkin" href="index.html#top"><span class="header-section-number">1</span> Packet Capture</a></h1><p>You may or may not be familiar with the concept of <em>packet capture</em>, in which a network analyst collects data on the packets being transmitted across a network, so that he or she can analyze this dataset for interesting or alarming features.</p>
+<p>First download <a href="pcaps.tgz">these files</a>, which contain simulated packet capture sessions. (You can uncompress by running <code>tar xzvf pcaps.tgz</code> after downloading.)</p>
+<p>Each file starts with an integer giving the number of connections logged in that file.</p>
+<p>Each connection observed is given a unique numerical ID, a time in seconds after the capture began that the connection began, the IP of the source, the IP of the destination, the type of protocol used, and the size, in bytes, of the communication. These values, in that order, correspond to the columns in the file.</p>
+<p>This is a sorting lab. Get out that selection sort code (or your <a href="https://www.youtube.com/watch?v=Ns4TPTC8whw">favorite illustrative video</a>).</p>
+<h1 id="part-1"><a class ="linkin" href="index.html#top"><span class="header-section-number">2</span> Part 1</a></h1><p>Write a program called <code>large.c</code> which asks the user for the filename of a packet capture file like the ones given to you, and then prints out the sizes of the ten largest connections in the file, in bytes.</p>
+<pre><code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./large</code>
+<code class="language-text output">What file? </code><code class="language-text input">pcap.txt</code>
+<code class="language-text output">49997</code>
+<code class="language-text output">49986</code>
+<code class="language-text output">49985</code>
+<code class="language-text output">49980</code>
+<code class="language-text output">49977</code>
+<code class="language-text output">49973</code>
+<code class="language-text output">49970</code>
+<code class="language-text output">49968</code>
+<code class="language-text output">49965</code>
+<code class="language-text output">49959</code></pre><p>You should do this by creating an array of all of the connection sizes (last column of each row), and then sorting it, largest to smallest, before printing out the first ten elements of the now-sorted array.</p>
+<p>Then write a program called <code>small.c</code> which prints out the sizes of the ten smallest connections in the file.</p>
+<p><strong>You must use selection sort as we have implemented it in class, with a <code>before</code> function. <code>large.c</code> and <code>small.c</code> may differ by only one character!</strong></p>
+<h1 id="part-2"><a class ="linkin" href="index.html#top"><span class="header-section-number">3</span> Part 2</a></h1><p>Write a program called <code>distinct.c</code> that prompts the user for a file, reads in this file, and outputs the number of distinct protocols observed in the PCAP session. To do this, make an array of the protocols (strings), sort them, and then iterate through, counting the number of different ones seen (see how the fact that they’re sorted is helpful?).</p>
+<pre><code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./distinct</code>
+<code class="language-text output">Which file? </code><code class="language-text input">smallPcap.txt</code>
+<code class="language-text output">10</code></pre><h1 id="part-3-going-further-"><a class ="linkin" href="index.html#top"><span class="header-section-number">4</span> Part 3 (going further)</a></h1><p>Now, we want to know which source IPs are transferring the most total data. Write a program called <code>hogs.c</code> that prompts for a pcap file and reports the 10 IP addresses that used the most <em>total</em> data in all of their connections.</p>
+<p>The best way to do this is in multiple steps:</p>
+<ol type="1">
+<li><p>Store the source IP addresses and connection sizes from each row. You could either store these as two separate arrays (easier to setup, but makes sorting them together more challenging), or store them as as a single array of <code>struct</code>s if you’ve looked ahead to <a href="../../notes/08/index.html">Unit 8</a>.</p></li>
+<li><p>Sort by IP addresses first, so you get all the same IP addresses together in the list. Now make a new array (or pair of arrays) where you add up all the connection sizes for a single IP address.</p></li>
+<li><p>Once you have the array(s) with the total sizes for each IP, now sort that according to the connection sizes, largest first.</p></li>
+</ol>
+<p>Your program should print out the 10 IP addresses with the largest combined connection size.</p>
+  </div></article></div></div><nav class="stickynav"><div><div class="dropdown"><a href="../../index.php.html" class="ddown-btn">SI 204</a><div class="ddown-content"><a href="../../calendar.php.html">Calendar</a><a href="../../notes/index.html">Notes</a><a href="../../hw/index.html">HWs</a><a href="../index.html">Labs</a><a href="../../proj/index.html">Projects</a><a href="../../exams/index.html">Exams</a><a href="../../admin/index.html">Resources</a><a href="https://www.usna.edu/Users/cs/roche/">Roche</a><a href="https://www.usna.edu/Users/cs/albing/">Albing</a></div></div><div class="dropdown"><a href="index.html#top" class="linkin pagetop">Lab 08: Sorting PCAPs</a><div class="ddown-content ddtoc"><ul><li><a class="linkin" href="index.html#packet-capture"><span class="toc-section-number">1</span> Packet Capture</a></li>
+<li><a class="linkin" href="index.html#part-1"><span class="toc-section-number">2</span> Part 1</a></li>
+<li><a class="linkin" href="index.html#part-2"><span class="toc-section-number">3</span> Part 2</a></li>
+<li><a class="linkin" href="index.html#part-3-going-further-"><span class="toc-section-number">4</span> Part 3 (going further)</a></ul></div></div></nav><footer><div id="foottext">    <p class="disclaimer">Material contained above is made available
+    for the purpose of peer review and discussion and does not
+    necessarily reflect the views of the Department of the Navy or the
+    Department of Defense.
+    Some links above are to sites that are not
+    located at the United States Naval Academy. The USNA is not
+    responsible for the content found on these sites. In addition, the
+    content of these sites does not reflect the opinions, standards,
+    policy or endorsement of the Naval Academy or the United States
+    Government.</p>
+  Page maintained by Daniel S. Roche (<a href="mailto:roche [AT] usna [DOT] edu" id="emaillink1">roche [AT] usna [DOT] edu</a><script type='text/javascript'><!--
+        var b="he@usna.edu";
+        var a="roc";
+        document.getElementById("emaillink1").href='mailto:'+a+b;
+        document.getElementById("emaillink1").innerHTML=a+b;
+        // --></script>). Last updated 27 March 2017 23:59.</div></footer><script src="../../scripts/prism.js"></script><script type="text/javascript">var the_body = $('html, body');
+var sticky_height = $('.stickynav').height();
+$('.linkin').click(function(){
+  var href = $(this).attr('href');
+  var offset;
+  if (href == '#top') offset = 0;
+  else offset = $(href).offset().top - sticky_height;
+  the_body.animate({ scrollTop: offset }, 500);
+  return false;
+});</script></body></html>

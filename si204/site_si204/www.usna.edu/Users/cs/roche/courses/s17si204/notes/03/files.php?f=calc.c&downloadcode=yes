@@ -1,0 +1,42 @@
+/***************************************************
+A Very Simple Calculator
+
+Write a program that reads from the user a simple
+arithmetic expression using + and -, like
+
+     3 + 4 - 7 + 2 - 4 =
+
+and prints out the value of the expression.
+***************************************************/
+#include "si204.h"
+
+int main() {
+  fputs("Enter an expression: ", stdout);
+
+  // declare variables and do the loop initialization
+  int total;
+  int nextnum;
+  char nextop;
+  total = 0;
+  nextop = '+';
+
+  // keep adding/subtracting until we see an = sign
+  while (nextop != '=') {
+    nextnum = readnum(stdin);
+
+    if (nextop == '+') {
+      total = total + nextnum;
+    } else {
+      total = total - nextnum;
+    }
+
+    nextop = readchar(stdin);
+  }
+
+  // Write result
+  fputs("The total is: ", stdout);
+  writenum(total, stdout);
+  fputs("\n", stdout);
+
+  return 0;
+}

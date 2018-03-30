@@ -1,0 +1,172 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Unit 1: Intro</title><meta name="viewport" content="width=device-width, initial-scale=1.0"><link href="../../scripts/prism.css" rel="stylesheet" /><link rel="stylesheet" type="text/css" href="../../style.css"><script type="text/javascript" src="../../../../mathjax/MathJax.js%3Fconfig=TeX-AMS_HTML"></script><script type="text/javascript" src="../../scripts/jquery-3.1.1.min.js"></script><style>
+@media only screen and (min-width: 600px) {
+  #main>header {background-image: url("../../scripts/header.png");}
+}
+</style><link rel="stylesheet" type="text/css" href="../../notes.css">  <meta name="generator" content="pandoc">
+  <style type="text/css">code{white-space: pre;}</style>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head><body><div id="main"><header><nav class="topnav"><div>
+            <a href="../../index.php.html">SI 204</a>
+            </div><div>
+            <a href="../../calendar.php.html">Calendar</a>
+            </div><div id="navparent">
+            <a href="../index.html">Notes</a>
+            </div><div>
+            <a href="../../hw/index.html">HWs</a>
+            </div><div>
+            <a href="../../lab/index.html">Labs</a>
+            </div><div>
+            <a href="../../proj/index.html">Projects</a>
+            </div><div>
+            <a href="../../exams/index.html">Exams</a>
+            </div><div>
+            <a href="../../admin/index.html">Resources</a>
+            </div><div>
+            <a href="https://www.usna.edu/Users/cs/roche/">Roche</a>
+            </div><div>
+            <a href="https://www.usna.edu/Users/cs/albing/">Albing</a>
+            </div></nav></header><div id="mainbox"><div class="printonly"><h1 class="printtitle">SI 204 Spring 2017 / Notes</h1><hr></div><article id="mainart"><header><h1>Unit 1: Intro</h1></header><div id="TOC"><ul><li><a class="linkin" href="index.html#introduction"><span class="toc-section-number">1</span> Introduction</a>
+<ul><li><a class="linkin" href="index.html#course-logistics"><span class="toc-section-number">1.1</span> Course Logistics</a></li><li><a class="linkin" href="index.html#what-is-this-course-about-"><span class="toc-section-number">1.2</span> What is this course about?</a></li><li><a class="linkin" href="index.html#compiled-vs-interpreted-and-why-c-is-different-than-javascript"><span class="toc-section-number">1.3</span> Compiled vs interpreted, and why C is different than Javascript</a></li></ul></li>
+<li><a class="linkin" href="index.html#vm-s-and-unix"><span class="toc-section-number">2</span> VM’s and Unix</a>
+<ul><li><a class="linkin" href="index.html#the-vm-and-your-cs-department-home-directory"><span class="toc-section-number">2.1</span> The VM and your CS Department Home Directory</a></li></ul></li>
+<li><a class="linkin" href="index.html#creating-programs"><span class="toc-section-number">3</span> Creating Programs</a>
+<ul><li><a class="linkin" href="index.html#the-si204-library"><span class="toc-section-number">3.1</span> The SI204 library</a></li><li><a class="linkin" href="index.html#hello-world-"><span class="toc-section-number">3.2</span> Hello, World!</a></li></ul></li>
+<li><a class="linkin" href="index.html#more-on-remote-access-and-vms"><span class="toc-section-number">4</span> More on remote access and VMs</a>
+<ul><li><a class="linkin" href="index.html#moving-files-between-the-vm-and-cs-dept"><span class="toc-section-number">4.1</span> Moving files between the VM and CS dept</a></li><li><a class="linkin" href="index.html#ssh"><span class="toc-section-number">4.2</span> ssh</a></li></ul></li>
+<li><a class="linkin" href="index.html#problems"><span class="toc-section-number">5</span> Problems</a></li></ul></div><div class="panbody"><p>(Credit to <a href="https://www.usna.edu/Users/cs/wcbrown/">Chris Brown</a> for the original version of these notes.)</p>
+<!-- from l01 -->
+<h1 id="introduction"><a class ="linkin" href="index.html#top"><span class="header-section-number">1</span> Introduction</a></h1><h2 id="course-logistics"><a class="linkin" href="index.html#top"><span class="header-section-number">1.1</span> Course Logistics</a></h1><ul>
+<li>Who is your instructor?</li>
+<li>Who is your section leader?</li>
+<li>Role of the website.</li>
+<li>Course Policy and CS department honor policy.</li>
+<li>Computing resources and course VM</li>
+</ul>
+<h2 id="what-is-this-course-about-"><a class="linkin" href="index.html#top"><span class="header-section-number">1.2</span> What is this course about?</a></h1><p>This course is an <em>introduction to programming</em>. C is the language we use, but this course is not about learning C. It is about learning to program! “How to program” is bigger than “C” or any other language.</p>
+<p>Programming is a creative process, in which you construct a model world inside the computer that interacts with the real world via keyboards, mice, monitors, speakers network connections, and so forth. It’s very rewarding, exciting and - very often - frustrating. We are going to start slow and focus on solid understanding of foundational concepts, so please be patient with the fact that your programs will usually be reading and writing text and not interacting with all the fancy peripherals mentioned above. You’ll apply your programming skilz to fun graphicsy stuff in later semesters: this semester we focus on programming itself.</p>
+<h2 id="compiled-vs-interpreted-and-why-c-is-different-than-javascript"><a class="linkin" href="index.html#top"><span class="header-section-number">1.3</span> Compiled vs interpreted, and why C is different than Javascript</a></h1><div class="annotation">
+<p>You really should review the computer architecture section of Cyber 1. Here’s a link to <a href="https://www.usna.edu/Users/cs/wcbrown/courses/si110AY13S/">an archived SI110 site</a>.</p>
+</div>
+<p>In SY110 last year all of you got exposed to Javascript programs. You’ll notice that what we do here feels a lot more low-level, and requires a lot more discipline. The main reason is that Javascript programs are executed by the browser, whereas C programs are actually executed by the physical machine. That fundamental fact leads to a lot of the differences you’ll observe. Javascript is an <em>interpreted</em> language. This means that the code you write is read and processed by the browser, which then executes the steps demanded by that code. C is a <em>compiled</em> language. This means that the code you write is read and processed by a special-purpose program called a <em>compiler</em>, which translates it into the zeros and ones that the CPU speaks, and stores it in an executable file. At some later point, the OS is told to start the program stored in the executable file running, and the CPU initiates its fetch-decode-execute cycle on the code contained in that file.</p>
+<p>Here’s what all of these steps look like:</p>
+<ol type="1">
+<li><p>Use an <em>editor</em> to create the file <code>hello.c</code> containing the <em>source code</em> for the program.</p>
+<figure>
+<img src="edit-hello.png" alt="Opening hello.c in GVim" width="700" /><figcaption>Opening hello.c in GVim</figcaption>
+</figure></li>
+<li><p>Use a <em>compiler</em> (gcc in this case) to translate the human-readable C source code into an executable program <code>hello</code>.</p>
+<figure>
+<img src="compile.png" alt="Compiling hello.c" /><figcaption>Compiling hello.c</figcaption>
+</figure>
+<p>(Actually, there are two steps here, <em>compilation</em> and <em>linking</em>, but gcc does both of them for us and we won’t worry about the distinction for a while.)</p></li>
+<li><p>Use the OS to initiate execution of (i.e. start te fetch-decode-execute cycle on) the program <code>hello</code>.</p>
+<figure>
+<img src="run-hello.png" alt="Running hello.c" /><figcaption>Running hello.c</figcaption>
+</figure></li>
+</ol>
+<div class="bareannotation">
+<p><img src="http://imgs.xkcd.com/comics/compiling.png" title="&#39;Are you stealing those LCDs?&#39; &#39;Yeah, but I&#39;m doing it while my code compiles.&#39;" alt="Compiling" /><br />
+<a href="http://xkcd.com/303/" class="uri">http://xkcd.com/303/</a></p>
+</div>
+<p>All these steps are kind of a pain in the neck, but remember: we’re writing a program that is executing on “bare metal”, i.e. directly on the CPU.</p>
+<!-- from l02 -->
+<h1 id="vm-s-and-unix"><a class ="linkin" href="index.html#top"><span class="header-section-number">2</span> VM’s and Unix</a></h1><h2 id="the-vm-and-your-cs-department-home-directory"><a class="linkin" href="index.html#top"><span class="header-section-number">2.1</span> The VM and your CS Department Home Directory</a></h1><p>You’re going to be writing and running a lot of programs this semester, so the question of where to do this work is important, as is the question of where to store it. We’ll take some time in class to address that question.</p>
+<ul>
+<li><strong>Where to work.</strong> You will be writing and running your programs either on the CS Department Unix lab machines, or on the VM you’ve installed on your laptop. You will probably want to bounce back and forth - work on something in the lab, continue work on your laptop VM later.</li>
+<li><p><strong>Where to store your work.</strong> You have three basic places to store files</p>
+<ol type="1">
+<li>your laptop’s filesystem,</li>
+<li>your VM’s filesystem, or</li>
+<li>your CS Department home directory.</li>
+</ol>
+<p>Storing stuff on your laptop’s Windows filesystem is not a very convenient option because the writing, compiling and running will be happening either on the CS Department Unix lab machines or on your VM. Anything on your laptop’s Windows filesystem would have to be constantly copied back and forth.</p>
+<p>Storing stuff on your VM’s filesystem is nice in some ways - you can work regardless of whether or not you have network access, for example. On the other hand, it’s got some serious negatives. If your laptop dies you lose all your work. If the file on your laptop that contains the VM’s state gets corrupted, you lose all your work. Finally, the work you do in the lab is not available on your VM and vice versa, undless you go back to constantly copying files back and forth. So …</p>
+<p>… storing stuff in your CS Department home directory is the best option. It’s backed up nightly, accessible from the computer lab and, thanks to the “csmount” script that’s preloaded on your VMs, it’s accessible from your VM - as long as you have a network connection.</p></li>
+<li><div class="annotation">
+<p>Warning! If you “pause” your VM before exiting VMPlayer (as opposed to shutting the VM down), we recommend you run the <code>csunmount</code> script first.</p>
+</div>
+<p><strong>Our recommendation.</strong> Use the <code>csmount</code> script and keep everything in your CS Department home directory.</p></li>
+</ul>
+<figure>
+<img src="diagram.png" alt="Overview of laptop, VM and CS dept filesystems" width="400" /><figcaption>Overview of laptop, VM and CS dept filesystems</figcaption>
+</figure>
+<p>A quick activity your instructor will guide you through and explain:</p>
+<ol type="1">
+<li><p>In your VM home directory, give the <code>ls</code> command. Note the directory “csunix”. Give the command <code>cd csunix</code>, then <code>ls</code>. Note: it’s inaccessible.<br />
+Run <code>cd ..</code> to go back to your home directory</p></li>
+<li><p>Run <code>csmount</code>.</p>
+<p>Then <code>cd</code> to <code>csunix</code> again and do an <code>ls</code>. Now there’s a file <code>README</code>.<br />
+Give the command <code>cat README</code> NOTE: you instructor will explain what’s happened and why and recall: <code>cd</code>, <code>ls</code> and <code>cat</code></p></li>
+<li><p>Run command <code>cd ~</code> (takes you back to your VM home directory) <br/> Run command <code>csunmount</code> <br/> Do <code>ls csunix</code> (now it’s empty again) <br/> Do <code>csmount</code> (files are back!)</p></li>
+</ol>
+<h1 id="creating-programs"><a class ="linkin" href="index.html#top"><span class="header-section-number">3</span> Creating Programs</a></h1><p>Now you’re going to write your first C program. Hooray! For now, it’s mostly about following the directions to compile and run your program, but we’ll see very soon what all of this means.</p>
+<h2 id="the-si204-library"><a class="linkin" href="index.html#top"><span class="header-section-number">3.1</span> The SI204 library</a></h1><p>One unique feature of the C language is that there are no input/output capabilities built in to the language. That’s important if you’re writing the code for, say, a wireless router, but for us we’d like to be able to see what’s going on!</p>
+<p>The solution is to use standard <em>libraries</em>, which are sort of like pre-built collections of helper programs that let your C code do more interesting things. For the first part of this class, we’re going to use just one library called <a href="files.php%3Ff=si204.h.html">si204.h</a>.</p>
+<p>Go ahead and click on that link and check it out! You won’t understand what’s in there now, since we’re just getting started. In fact, <em>that’s a big benefit of using a library</em> — you get to use code that you don’t understand yet. For now, you should just download this file and remember to <strong>copy it into every directory where you’re going to write code</strong>. It has to be in the same directory as any code you compile.</p>
+<h2 id="hello-world-"><a class="linkin" href="index.html#top"><span class="header-section-number">3.2</span> Hello, World!</a></h1><p>Another quick activity your instructor will guide you through and explain:</p>
+<div class="bareannotation">
+
+<pre><code class="language-c">#include &quot;si204.h&quot;
+
+int main() {
+  fputs(&quot;Hello, world!\n&quot;, stdout);
+  return 0;
+}</code></pre></div>
+<ol type="1">
+<li><p>cd to csunix home directory</p></li>
+<li><p>open README with gvim, change text to “This is my CS Department home directory.” close. cat again and see what you’ve got.</p></li>
+<li><p>do ‘gvim hello.c’ and create the hello world program (as shown on the right) Save it!</p></li>
+<li><p>compile (gcc -o hello hello.c) and run (./hello) NOTE: the files are on CSDept fileserver, but the program runs in your VM!</p></li>
+<li><p>run codeprint and drag resulting file out.pdf over to Windows desktop (good for printing)</p></li>
+</ol>
+<h1 id="more-on-remote-access-and-vms"><a class ="linkin" href="index.html#top"><span class="header-section-number">4</span> More on remote access and VMs</a></h1><h2 id="moving-files-between-the-vm-and-cs-dept"><a class="linkin" href="index.html#top"><span class="header-section-number">4.1</span> Moving files between the VM and CS dept</a></h1><p>Another quick activity your instructor will guide you through and explain:</p>
+<ol type="1">
+<li><p>Give commands:</p>
+<pre><code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">cd ~</code>
+<code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">cp csunix/hello.* .</code>
+<code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./hello</code>
+<code class="language-text output">Hello, world!</code></pre><p><!-- *x --></p>
+<p>Note: now the files are both on your VM and in your CSDept home directory</p></li>
+<li><p>Use cd and ls to verify they’re also in your CSDept home directory</p></li>
+<li><p>Make sure you’re in your CSDept home directory and give command <code>rm hello.*</code></p></li>
+<li><p>Verify hello.c and hello are still in your home directory on your VM</p></li>
+</ol>
+<h2 id="ssh"><a class="linkin" href="index.html#top"><span class="header-section-number">4.2</span> ssh</a></h1><p>The csmount script makes the files and directories in your CS Department home directory accessible from your VM, as if they were stored on your VM. You can edit, compile, run, etc. and all the computing is done on your VM (ultimately by your laptop’s CPU), even though the files are stored on a CS Department fileserver. Another option is to “ssh” to a CS Department lab machine in order to bring up a shell whose input and output come from / go to your VM, but whose commands are executed on the lab machine, not your VM/laptop.</p>
+<p>Ssh is not the recommended approach for this course, but it is an important tool that you’ll see over and over during the course of your time here.</p>
+<hr />
+<h1 id="problems"><a class ="linkin" href="index.html#top"><span class="header-section-number">5</span> Problems</a></h1><p>At the end of the notes for almost every lecture will be a couple of example problems with solutions. Everyone likes to see examples of code, so that’s what we give you!</p>
+  </div></article></div></div><nav class="stickynav"><div><div class="dropdown"><a href="../../index.php.html" class="ddown-btn">SI 204</a><div class="ddown-content"><a href="../../calendar.php.html">Calendar</a><a href="../index.html">Notes</a><a href="../../hw/index.html">HWs</a><a href="../../lab/index.html">Labs</a><a href="../../proj/index.html">Projects</a><a href="../../exams/index.html">Exams</a><a href="../../admin/index.html">Resources</a><a href="https://www.usna.edu/Users/cs/roche/">Roche</a><a href="https://www.usna.edu/Users/cs/albing/">Albing</a></div></div><div class="dropdown"><a href="index.html#top" class="linkin pagetop">Unit 1: Intro</a><div class="ddown-content ddtoc"><ul><li><a class="linkin" href="index.html#introduction"><span class="toc-section-number">1</span> Introduction</a>
+<ul><li><a class="linkin" href="index.html#course-logistics"><span class="toc-section-number">1.1</span> Course Logistics</a></li><li><a class="linkin" href="index.html#what-is-this-course-about-"><span class="toc-section-number">1.2</span> What is this course about?</a></li><li><a class="linkin" href="index.html#compiled-vs-interpreted-and-why-c-is-different-than-javascript"><span class="toc-section-number">1.3</span> Compiled vs interpreted, and why C is different than Javascript</a></li></ul></li>
+<li><a class="linkin" href="index.html#vm-s-and-unix"><span class="toc-section-number">2</span> VM’s and Unix</a>
+<ul><li><a class="linkin" href="index.html#the-vm-and-your-cs-department-home-directory"><span class="toc-section-number">2.1</span> The VM and your CS Department Home Directory</a></li></ul></li>
+<li><a class="linkin" href="index.html#creating-programs"><span class="toc-section-number">3</span> Creating Programs</a>
+<ul><li><a class="linkin" href="index.html#the-si204-library"><span class="toc-section-number">3.1</span> The SI204 library</a></li><li><a class="linkin" href="index.html#hello-world-"><span class="toc-section-number">3.2</span> Hello, World!</a></li></ul></li>
+<li><a class="linkin" href="index.html#more-on-remote-access-and-vms"><span class="toc-section-number">4</span> More on remote access and VMs</a>
+<ul><li><a class="linkin" href="index.html#moving-files-between-the-vm-and-cs-dept"><span class="toc-section-number">4.1</span> Moving files between the VM and CS dept</a></li><li><a class="linkin" href="index.html#ssh"><span class="toc-section-number">4.2</span> ssh</a></li></ul></li>
+<li><a class="linkin" href="index.html#problems"><span class="toc-section-number">5</span> Problems</a></ul></div></div></nav><footer><div id="foottext">    <p class="disclaimer">Material contained above is made available
+    for the purpose of peer review and discussion and does not
+    necessarily reflect the views of the Department of the Navy or the
+    Department of Defense.
+    Some links above are to sites that are not
+    located at the United States Naval Academy. The USNA is not
+    responsible for the content found on these sites. In addition, the
+    content of these sites does not reflect the opinions, standards,
+    policy or endorsement of the Naval Academy or the United States
+    Government.</p>
+  Page maintained by Daniel S. Roche (<a href="mailto:roche [AT] usna [DOT] edu" id="emaillink1">roche [AT] usna [DOT] edu</a><script type='text/javascript'><!--
+        var b="he@usna.edu";
+        var a="roc";
+        document.getElementById("emaillink1").href='mailto:'+a+b;
+        document.getElementById("emaillink1").innerHTML=a+b;
+        // --></script>). Last updated 03 February 2017 11:10.</div></footer><script src="../../scripts/prism.js"></script><script type="text/javascript">var the_body = $('html, body');
+var sticky_height = $('.stickynav').height();
+$('.linkin').click(function(){
+  var href = $(this).attr('href');
+  var offset;
+  if (href == '#top') offset = 0;
+  else offset = $(href).offset().top - sticky_height;
+  the_body.animate({ scrollTop: offset }, 500);
+  return false;
+});</script></body></html>

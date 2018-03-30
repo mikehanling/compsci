@@ -1,0 +1,54 @@
+/******************************************
+ This Program gets two positive integers
+ from the user and computes their GCD.
+ ******************************************/
+#include <stdio.h>
+
+int getposint();
+int gcd(int a, int b);
+
+int main() {
+  int a = getposint();
+  int b = getposint();
+
+  // Compute the gcd
+  int g = gcd(a, b);
+
+  // Write out gcd
+  printf("The gcd is %i\n", g);
+
+  return 0;
+}
+
+/******************************************
+ This function gets a positive integer
+ from the user
+ ******************************************/
+int getposint() {
+  int k;
+
+  printf("Enter a positive integer: ");
+  fflush(stdout);
+  int check = scanf(" %i", &k);
+
+  while(check < 1 || k <= 0) {
+    printf("I said *positive*, try again: ");
+    fflush(stdout);
+    check = scanf(" %i", &k);
+  }
+
+  return k;
+}
+
+/******************************************
+ This function computes the gcd of two
+ integers.
+ ******************************************/
+int gcd(int a, int b) {
+  while(b != 0) {
+    int r = a % b;
+    a = b;
+    b = r;
+  }
+  return a;
+}

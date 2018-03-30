@@ -1,0 +1,149 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+         "http://www.w3.org/TR/html4/strict.dtd"><html><head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"><title>stsort.c</title><link href="../../scripts/prism.css" rel="stylesheet" />    <style type="text/css">
+    body {
+      margin: 0;
+      padding:55px 0 0 0;
+    }
+    div#header {
+      position:absolute;
+      top: 0;
+      left: 0;
+      width:100%;
+      height:50px;
+      border-bottom: 5px solid red;
+      text-align: center;
+      background-color: #d0d0d0;
+      z-index: 1000;
+    }
+    @media screen{
+      body>div#header{
+        position:fixed;
+      }
+    }
+    * html body{
+      overflow:hidden;
+    }
+    * html div#content {
+      height: 100%;
+      overflow: auto;
+    }
+    .warning {
+      margin: 3px auto;
+      background-color: black;
+      color: yellow;
+      font-weight: bold;
+      max-width: 600px;
+      font-family: sans-serif;
+      text-align: center;
+    }
+    /*
+    .codeblock {
+      margin:10px auto 10px;
+      min-width:500px;
+      max-width:800px;
+    }
+    .codeblock td.de1 {
+      border:1px solid black;
+    }
+    .codeblock td.ln {
+      border:1px solid white;
+    }
+    pre {
+      margin:10px auto 10px;
+      max-width:800px;
+    }
+    .plainpre {
+      border: 1px solid black;
+      padding:2px;
+    }
+    */
+    </style>
+  </head><body><div id="header"><p><a href="files.php%3Ff=stsort.c&amp;downloadcode=yes">Click here</a> to download <code>stsort.c</code>.</p></div><div id="content"><pre class="line-numbers"><code class="language-C">/*********************************************
+This program reads in student/grade data from
+namedgrades.txt, and prints out student names
+and HW#4 scores in order from lowest to highest
+score on HW#4.
+**********************************************/
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;string.h&gt;
+
+/*********************************************
+ ** PROTOTYPES &amp; STRUCT DEFINITIONS
+ *********************************************/
+struct student {
+  int* hw;
+  char name[128];
+};
+
+void sort(struct student* data, int size);
+int before(struct student a, struct student b);
+
+
+/*********************************************
+ ** MAIN FUNCTION
+ *********************************************/
+int main() {
+  // Open file and read header info
+  int numstu, numhw;
+  FILE* fin = fopen(&quot;namedgrades.txt&quot;, &quot;r&quot;);
+  fscanf(fin, &quot; %i students %i homeworks&quot;, &amp;numstu, &amp;numhw);
+
+  // Create array of numstu students with numhw grades each
+  struct student* stu = calloc(numstu, sizeof(struct student));
+  for(int i = 0; i &lt; numstu; i++) {
+    stu[i].hw = calloc(numhw, sizeof(int));
+  }
+
+  // Read and store student names and grades
+  for(int i = 0; i &lt; numstu; i++) {
+    fscanf(fin, &quot; %s&quot;, stu[i].name);
+    for(int j = 0; j &lt; numhw; j++) {
+      fscanf(fin, &quot; %i&quot;, &amp;stu[i].hw[j]);
+    }
+  }
+
+  // SORT!
+  sort(stu, numstu);
+
+  // Write out student records
+  for(int i = 0; i &lt; numstu; ++i) {
+    printf(&quot;%s got a %i on HW #4\n&quot;, stu[i].name, stu[i].hw[4]);
+  }
+
+  // clean up
+  fclose(fin);
+  for (int i=0; i &lt; numstu; ++i) {
+    free(stu[i].hw);
+  }
+  free(stu);
+
+  return 0;
+}
+
+/*********************************************
+ ** FUNCTION DEFINITIONS
+ *********************************************/
+// Determines whether student a comes before b
+// when ordered by increasing score on HW #4.
+int before(struct student a, struct student b) {
+  return a.hw[4] &lt; b.hw[4];
+}
+
+// THE USUAL SORTING STUFF!!
+void sort(struct student* data, int size) {
+  for(int length = size; length &gt; 1; --length) {
+    // Find imax, the index of the largest
+    int imax = 0;
+    for(int i = 1; i &lt; length; ++i) {
+      if (before(data[imax], data[i])) {
+        imax = i;
+      }
+    }
+    // Swap data[imax] &amp; the last element
+    struct student temp = data[imax];
+    data[imax] = data[length - 1];
+    data[length - 1] = temp;
+  }
+}</code></pre></div><script src="../../scripts/prism.js"></script></body></html>

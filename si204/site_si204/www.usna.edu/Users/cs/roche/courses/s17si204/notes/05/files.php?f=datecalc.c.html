@@ -1,0 +1,154 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+         "http://www.w3.org/TR/html4/strict.dtd"><html><head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"><title>datecalc.c</title><link href="../../scripts/prism.css" rel="stylesheet" />    <style type="text/css">
+    body {
+      margin: 0;
+      padding:55px 0 0 0;
+    }
+    div#header {
+      position:absolute;
+      top: 0;
+      left: 0;
+      width:100%;
+      height:50px;
+      border-bottom: 5px solid red;
+      text-align: center;
+      background-color: #d0d0d0;
+      z-index: 1000;
+    }
+    @media screen{
+      body>div#header{
+        position:fixed;
+      }
+    }
+    * html body{
+      overflow:hidden;
+    }
+    * html div#content {
+      height: 100%;
+      overflow: auto;
+    }
+    .warning {
+      margin: 3px auto;
+      background-color: black;
+      color: yellow;
+      font-weight: bold;
+      max-width: 600px;
+      font-family: sans-serif;
+      text-align: center;
+    }
+    /*
+    .codeblock {
+      margin:10px auto 10px;
+      min-width:500px;
+      max-width:800px;
+    }
+    .codeblock td.de1 {
+      border:1px solid black;
+    }
+    .codeblock td.ln {
+      border:1px solid white;
+    }
+    pre {
+      margin:10px auto 10px;
+      max-width:800px;
+    }
+    .plainpre {
+      border: 1px solid black;
+      padding:2px;
+    }
+    */
+    </style>
+  </head><body><div id="header"><p><a href="files.php%3Ff=datecalc.c&amp;downloadcode=yes">Click here</a> to download <code>datecalc.c</code>.</p></div><div id="content"><pre class="line-numbers"><code class="language-C">/*********************************************
+Days Past
+
+This program reads a start date and an end date
+from the user, and prints out the number of
+days elapsed between the two.
+
+The key to the problem is to write a function
+&quot;monthdays()&quot; that takes a month name
+and returns the number of days from New Year's
+to the beginning of that month.
+ *********************************************/
+#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+#include &lt;stdlib.h&gt;
+
+typedef char cstring[128];
+
+int monthdays(cstring mname);
+
+/*********************************************
+ ** main() function
+ *********************************************/
+int main() {
+  int dayofmonth;
+  cstring monthname;
+  int daystart;
+  int dayfinish;
+  // Get # of days from New Year's to start
+  printf(&quot;Enter start  date (e.g. 27 Mar): &quot;);
+  fflush(stdout);
+  scanf(&quot; %d %s&quot;, &amp;dayofmonth, monthname);
+  daystart = dayofmonth + monthdays(monthname);
+
+  // Get # of days from New Year's to finish
+  printf(&quot;Enter ending date (e.g. 13 Jul): &quot;);
+  fflush(stdout);
+  scanf(&quot; %d %s&quot;, &amp;dayofmonth, monthname);
+  dayfinish = dayofmonth + monthdays(monthname);
+
+  // Print out number of days in between
+  printf(&quot;That lasted %i days.\n&quot;, dayfinish - daystart + 1);
+
+  return 0;
+}
+
+/*********************************************
+ ** Reads a month and returns the number of
+ ** days from New Year's to that month
+ *********************************************/
+int monthdays(cstring mname) {
+  // Get # of days from month
+  int days = 0;
+
+  if (strcmp(mname, &quot;Jan&quot;) == 0) { return days; }
+  days += 31;
+
+  if (strcmp(mname, &quot;Feb&quot;) == 0) { return days; }
+  days += 28;
+
+  if (strcmp(mname, &quot;Mar&quot;) == 0) { return days; }
+  days += 31;
+
+  if (strcmp(mname, &quot;Apr&quot;) == 0) { return days; }
+  days += 30;
+
+  if (strcmp(mname, &quot;May&quot;) == 0) { return days; }
+  days += 31;
+
+  if (strcmp(mname, &quot;Jun&quot;) == 0) { return days; }
+  days += 30;
+
+  if (strcmp(mname, &quot;Jul&quot;) == 0) { return days; }
+  days += 31;
+
+  if (strcmp(mname, &quot;Aug&quot;) == 0) { return days; }
+  days += 31;
+
+  if (strcmp(mname, &quot;Sep&quot;) == 0) { return days; }
+  days += 30;
+
+  if (strcmp(mname, &quot;Oct&quot;) == 0) { return days; }
+  days += 31;
+
+  if (strcmp(mname, &quot;Nov&quot;) == 0) { return days; }
+  days += 30;
+
+  if (strcmp(mname, &quot;Dec&quot;) == 0) { return days; }
+  days += 31;
+
+  printf(&quot;ERROR: invalid month name.&quot;);
+  exit(1);
+}</code></pre></div><script src="../../scripts/prism.js"></script></body></html>

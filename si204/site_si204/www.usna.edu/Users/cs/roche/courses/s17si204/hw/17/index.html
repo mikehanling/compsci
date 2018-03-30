@@ -1,0 +1,100 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Homework 17: Pointer arguments</title><meta name="viewport" content="width=device-width, initial-scale=1.0"><link href="../../scripts/prism.css" rel="stylesheet" /><link rel="stylesheet" type="text/css" href="../../style.css"><script type="text/javascript" src="../../../../mathjax/MathJax.js%3Fconfig=TeX-AMS_HTML"></script><style>
+@media only screen and (min-width: 600px) {
+  #main>header {background-image: url("../../scripts/header.png");}
+}
+</style></head><body><div id="main"><header><nav class="topnav"><div>
+            <a href="../../index.php.html">SI 204</a>
+            </div><div>
+            <a href="../../calendar.php.html">Calendar</a>
+            </div><div>
+            <a href="../../notes/index.html">Notes</a>
+            </div><div id="navparent">
+            <a href="../index.html">HWs</a>
+            </div><div>
+            <a href="../../lab/index.html">Labs</a>
+            </div><div>
+            <a href="../../proj/index.html">Projects</a>
+            </div><div>
+            <a href="../../exams/index.html">Exams</a>
+            </div><div>
+            <a href="../../admin/index.html">Resources</a>
+            </div><div>
+            <a href="https://www.usna.edu/Users/cs/roche/">Roche</a>
+            </div><div>
+            <a href="https://www.usna.edu/Users/cs/albing/">Albing</a>
+            </div></nav></header><div id="mainbox"><div class="printonly"><h1 class="printtitle">SI 204 Spring 2017 / HWs</h1><hr></div><article id="mainart"><header><h1>Homework 17: Pointer arguments</h1></header><div class="printonly">
+  <div class="blanks">
+  <p>
+  Name: _____________________________________________   Alpha: ___________________
+  </p>
+  <p>
+  Describe help received: ________________________________________________________
+  </p>
+  </div>
+</div>
+  <ul>
+    <li><strong>Due before class on Monday, February 27</strong>
+    </li><li>This homework contains code to be submitted electronically.
+      Put your code in a folder called <code>hw17</code> and submit
+      using the <code>204sub</code> command.</li><li>This is an <em>electronic homework</em> and you do not need to
+      print out anything to turn in during class.</li></ul><h1>Assignment</h1><ol class="ass"><li><b>Required reading</b>:
+  Section 3 (passing pointers to functions)
+  from the <a href="../../notes/05/index.html">Unit 5 notes</a>,
+</li>
+<li>
+  Below is a `main` function for a program that reads in a dollar
+  amount like `$3.50` and converts it into dollars and cents:
+<pre><code class="language-c">int main() {
+  printf(&quot;Enter amount: &quot;);
+  fflush(stdout);
+
+  double amt;
+  if (scanf(&quot; $%lg&quot;, &amp;amt) != 1) {
+    printf(&quot;ERROR: must enter something like $3.50\n&quot;);
+    return 1;
+  }
+
+  // FUNCTION CALL HERE!
+  int dollars;
+  int cents;
+  split(amt, &amp;dollars, &amp;cents);
+
+  printf(&quot;That's %i dollars and %i cents.\n&quot;, dollars, cents);
+
+  return 0;
+}</code></pre>  What's missing from this program is the prototype and definition
+  for the function <code>split</code> which takes in a total amount
+  as a double and splits it into two <code>int</code>s for dollars
+  and cents.
+  <br>
+  Complete the program by providing a prototype and definition for
+  <code>split</code> and submit your code in a file called
+  <code>cents.c</code>.
+  <p>Examples:</p>
+<pre><code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./cents</code>
+<code class="language-text output">Enter amount: </code><code class="language-text input">$3.50</code>
+<code class="language-text output">That's 3 dollars and 50 cents.</code>
+<code class="language-text output"></code>
+<code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./cents</code>
+<code class="language-text output">Enter amount: </code><code class="language-text input">$2</code>
+<code class="language-text output">That's 2 dollars and 0 cents.</code>
+<code class="language-text output"></code>
+<code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./cents</code>
+<code class="language-text output">Enter amount: </code><code class="language-text input">$81.67</code>
+<code class="language-text output">That's 81 dollars and 67 cents.</code></pre></li>
+</ol></article></div></div><nav class="stickynav"><div><div class="dropdown"><a href="../../index.php.html" class="ddown-btn">SI 204</a><div class="ddown-content"><a href="../../calendar.php.html">Calendar</a><a href="../../notes/index.html">Notes</a><a href="../index.html">HWs</a><a href="../../lab/index.html">Labs</a><a href="../../proj/index.html">Projects</a><a href="../../exams/index.html">Exams</a><a href="../../admin/index.html">Resources</a><a href="https://www.usna.edu/Users/cs/roche/">Roche</a><a href="https://www.usna.edu/Users/cs/albing/">Albing</a></div></div><a href="index.html#top" class="linkin pagetop">Homework 17: Pointer arguments</a></nav><footer><div id="foottext">    <p class="disclaimer">Material contained above is made available
+    for the purpose of peer review and discussion and does not
+    necessarily reflect the views of the Department of the Navy or the
+    Department of Defense.
+    Some links above are to sites that are not
+    located at the United States Naval Academy. The USNA is not
+    responsible for the content found on these sites. In addition, the
+    content of these sites does not reflect the opinions, standards,
+    policy or endorsement of the Naval Academy or the United States
+    Government.</p>
+  Page maintained by Daniel S. Roche (<a href="mailto:roche [AT] usna [DOT] edu" id="emaillink1">roche [AT] usna [DOT] edu</a><script type='text/javascript'><!--
+        var b="he@usna.edu";
+        var a="roc";
+        document.getElementById("emaillink1").href='mailto:'+a+b;
+        document.getElementById("emaillink1").innerHTML=a+b;
+        // --></script>). Last updated 24 February 2017 1:25.</div></footer><script src="../../scripts/prism.js"></script><script type="text/javascript"></script></body></html>

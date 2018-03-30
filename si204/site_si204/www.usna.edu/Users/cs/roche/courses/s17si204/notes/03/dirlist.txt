@@ -1,0 +1,15 @@
+-rw-r--r-- 1 roche scs  14509 Jan  8 04:31 compile.png
+-rw-r--r-- 1 roche scs 492923 Jan  7 17:56 diagram.png
+-rw-r--r-- 1 roche scs  31045 Jan  8 04:27 edit-hello.png
+-rw-r--r-- 1 roche scs   3561 Jan 10 06:15 files.php
+-rwxr-xr-x 1 roche scs   9899 Jan  8 05:20 header
+-rw-r--r-- 1 roche scs    217 Jan  8 03:32 header.c
+-rwxr-xr-x 1 roche scs  11854 Jan  8 05:20 hello
+-rw-r--r-- 1 roche scs     83 Jan  8 01:55 hello.c
+-rw-r--r-- 1 roche scs  12404 Jan 21 11:35 index.php
+-rw-r--r-- 1 roche scs    908 Jan 15 11:27 Makefile
+-rw-r--r-- 1 roche scs  10167 Jan 15 11:27 notes.mdown
+-rw-r--r-- 1 roche scs      1 Jan  7 21:57 readings.html
+-rw-r--r-- 1 roche scs      0 Jan  7 21:57 readings.mdown
+-rw-r--r-- 1 roche scs  13686 Jan  8 04:33 run-hello.png
+roche@ubuntu $

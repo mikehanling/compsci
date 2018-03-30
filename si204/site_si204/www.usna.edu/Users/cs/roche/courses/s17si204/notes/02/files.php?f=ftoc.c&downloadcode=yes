@@ -1,0 +1,31 @@
+/***************************************************
+Fahrenheit to Celsius Conversion
+
+Write a program that reads in a temperature in
+Fahrenheit from the user, and prints out the
+equivalent in Celsius.  If Tf is the Fahrenheit
+value and Tc is the Celsius value, here's the
+conversion rule: Tc = (Tf - 32.0)*(5.0/9.0)
+Note: There's a tricky point in C++ that makes it
+important to use the ".0" for your doubles.  It
+all comes down to the idea of types!
+***************************************************/
+#include "si204.h"
+
+int main() {
+  // Read temperature in Fahrenheit
+  double Tf;
+  fputs("Enter temperature in Fahrenheit: ", stdout);
+  Tf = readnum(stdin);
+
+  // Compute temperature in Celsius
+  double Tc;
+  Tc = (Tf - 32.0) * (5.0/9.0);
+
+  // Write temperature in Celsius
+  fputs("That is ", stdout);
+  writenum(Tc, stdout);
+  fputs(" degrees Celsius.\n", stdout);
+
+  return 0;
+}

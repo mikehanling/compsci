@@ -1,0 +1,118 @@
+/************************************************
+This program is a simple application of 2D arrays.
+The purpose is to take a list of people, and randomly
+create teams from them.  The names come from a
+file names.txt.
+*************************************************/
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <time.h>
+
+/************************************************
+ ** PROTOTYPES
+ ************************************************/
+char** readnames(int* numptr);
+char** makearray(int size);
+void freearray(char** arr, int size);
+
+/************************************************
+ ** MAIN FUNCTION
+ ************************************************/
+int main() {
+  // seed the random number generator differently on each run
+  srand(time(0));
+
+  // Read file of names
+  int np;
+  char** names = readnames(&np);
+
+  // Get number of teams from user
+  int nt;
+  printf("There are %i people.\n", np);
+  printf("How many teams would you like? (make it evenly divide n) ");
+  fflush(stdout);
+  scanf(" %i", &nt);
+  if (np % nt != 0) {
+    printf("ERROR: Number of teams must evenly divide number of people\n");
+    return 1;
+  }
+
+  // Allocate array of teams
+  int teamSize = np / nt;
+  char*** teams = calloc(nt, sizeof(char**));
+  for (int i = 0; i < nt; ++i) {
+    teams[i] = makearray(teamSize);
+  }
+
+  // dole out people to teams
+  int npremaining = np;
+  for(int i = 0; i < teamSize; ++i) {
+    for(int it = 0; it < nt; ++it) {
+      int inext = rand() % npremaining;
+      // copy next name to their team
+      strcpy(teams[it][i], names[inext]);
+      // effectively shrink size of names array by copying the
+      // last remaining name to the place we just copied from
+      --npremaining;
+      if (inext < npremaining) {
+        strcpy(names[inext], names[npremaining]);
+      }
+    }
+  }
+
+  // print teams
+  for(int it = 0; it < nt; ++it) {
+    printf("Team %i:", it+1);
+    for (int i=0; i < teamSize; ++i) {
+      printf(" %s", teams[it][i]);
+    }
+    printf("\n");
+  }
+
+  // clean-up
+  freearray(names, np);
+  for (int i=0; i < nt; ++i) {
+    freearray(teams[i], teamSize);
+  }
+  free(teams);
+
+  return 0;
+}
+
+/************************************************
+ ** FUNCTION DEFINITIONS
+ ************************************************/
+
+// reads names from "names.txt" and returns an array of
+// strings for each name. Also assigns the number of names
+// to the int that numptr points to.
+char** readnames(int* numptr) {
+  FILE* fin = fopen("names.txt", "r");
+  fscanf(fin, " N = %i", numptr);
+  char** result = makearray(*numptr);
+
+  for (int i=0; i < *numptr; ++i) {
+    fscanf(fin, " %s", result[i]);
+  }
+
+  fclose(fin);
+  return result;
+}
+
+// allocates an array of that many size-128 strings
+char** makearray(int size) {
+  char** result = calloc(size, sizeof(char*));
+  for (int i=0; i < size; ++i) {
+    result[i] = calloc(128, sizeof(char));
+  }
+  return result;
+}
+
+// de-allocates an array of strings
+void freearray(char** arr, int size) {
+  for (int i=0; i < size; ++i) {
+    free(arr[i]);
+  }
+  free(arr);
+}

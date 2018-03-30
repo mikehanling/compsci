@@ -1,0 +1,30 @@
+Mike Hanling
+R10: 1.6 , 1.9-1.11
+
+
+Key Points:
+  Performance
+    response time == execution time : time to complete a task
+    throughput == bandwidth : # tasks completed / unit time
+    CPU time : actual time the CPU spends computing for a task
+    user CPU time : CPU time spent in a program itself
+    system CPU time : CPU time spent in the operating system performing
+                          tasks on behalf of the program
+    clock cycle : constant rate at which processor clock goes through
+                           one period
+    clock period : the length of each clock cycle
+    CPI : clock cycles per instruction (average)
+  Benchmarking
+    program of standard workload to measure computers against each other
+  Fallacies and Pitfalls
+    Amdahl's Law : the performance enhancement possible with a given
+                      improvement is limited by the amount that the
+                      improved feature is used. it is a quantitative
+                      version of the law of diminishing returns
+    MIPS : million instructions per second
+            (instruction count / (execution time * 10^6))
+    
+
+
+What Confuses Me:
+  None

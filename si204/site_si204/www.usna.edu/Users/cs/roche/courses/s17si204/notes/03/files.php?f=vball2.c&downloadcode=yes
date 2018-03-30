@@ -1,0 +1,83 @@
+/*****************************************************************
+ Volleyball version 2
+
+ This is the current "rally rules" scoring of volleyball that is
+ used in the Olympics.
+
+ A game is a series of rallies. Each rally has a winning team,
+ and the winning team scores one point. The first team to 25
+ points who ALSO has 2 points more than their opponent, wins the
+ game.
+
+ In other words, in order to win, you have to have at least 25
+ points and you have to have at least 2 points more than the other
+ team.
+*****************************************************************/
+#include "si204.h"
+
+int main() {
+  // read in team names
+  cstring name1;
+  fputs("Team 1 name: ", stdout);
+  readstring(name1, stdin);
+  cstring name2;
+  fputs("Team 2 name: ", stdout);
+  readstring(name2, stdin);
+  fputs("\n", stdout);
+
+  // set up scores
+  int score1 = 0; // current score of team 1
+  int score2 = 0; // current score of team 2
+  int winat = 25; // how many points needed to win
+  int winby = 2;
+
+  // The winning condition is more complicated now, so we use a
+  // true/false variable to store whether the game is over.
+  int gameover = 0;
+
+  // Stores who wins each rally
+  // It's at the outer scope so we can announce the winner at the end!
+  cstring winname;
+
+  // play the game until it's over
+  while (! gameover) {
+    // get winner of next rally
+    fputs("Winner of next rally: ", stdout);
+    readstring(winname, stdin);
+
+    // update the appropriate score
+    if (strcmp(winname, name1) == 0) {
+      ++score1;
+      // check if team 1 has won
+      if (score1 >= winat && score2 <= score1 - winby) {
+        gameover = 1;
+      }
+    } else if (strcmp(winname, name2) == 0) {
+      ++score2;
+      // check if team 2 has won
+      if (score2 >= winat && score1 <= score2 - winby) {
+        gameover = 1;
+      }
+    } else {
+      fputs("Invalid team name; please try again.\n", stdout);
+    }
+
+    // print out current scores
+    fputs(name1, stdout);
+    fputs(": ", stdout);
+    writenum(score1, stdout);
+    fputs(", ", stdout);
+    fputs(name2, stdout);
+    fputs(": ", stdout);
+    writenum(score2, stdout);
+    fputs("\n\n", stdout);
+  }
+
+  // print out who won
+  // Notice: the winname is whoever won the last rally, which must be the
+  // same as the overall game winner.
+  fputs(winname, stdout);
+  fputs(" is the winner!\n", stdout);
+
+  return 0;
+}

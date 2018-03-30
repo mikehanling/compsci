@@ -1,0 +1,22 @@
+Mike Hanling
+R22: 259-262, 3.9
+
+Key Points:
+  Truth Table: From logic, a representation of a logical operation by
+  listing all the values of the inputs and then in each case showing
+  what the resulting outputs should be
+
+  Don't-care term: an element of a logical function in which the
+  output does not depend on the values of all the inputs.
+
+  Opcode: the field that denotes the operation and format of an
+  instruction
+
+  Floating point addition is not associative
+
+  Execution strategies for int operations will not always work with
+  other types
+
+  addiu does not sign-extend 
+
+What Confused Me:

@@ -1,0 +1,93 @@
+/*****************************************************************
+ Volleyball version 3
+
+ This is the "old rules" of volleyball prior to the adoption of
+ the current rally system.
+
+ Every rally has a serving team (initially team 1), and the
+ serving team is the only one that can score. So if the serving
+ team wins the rally, they get one point, but if the other team
+ wins the rally, the don't get any points. However, whoever
+ wins each rally gets to serve the next rally.
+
+ Because games are lower-scoring, you only play to 15 points.
+ However, you still have to win by 2 points. So the winner is
+ the first team to have at least 15 points and at least 2 points
+ more than their opponent.
+*****************************************************************/
+#include "si204.h"
+
+int main() {
+  // read in team names
+  cstring name1;
+  fputs("Team 1 name: ", stdout);
+  readstring(name1, stdin);
+  cstring name2;
+  fputs("Team 2 name: ", stdout);
+  readstring(name2, stdin);
+  fputs("\n", stdout);
+
+  // set up scores
+  int score1 = 0; // current score of team 1
+  int score2 = 0; // current score of team 2
+  int winat = 15; // how many points needed to win
+  int winby = 2;  // how many points you have to win over your opponent
+
+  // which team is serving
+  cstring serving;
+  strcpy(serving, name1);
+
+  // The winning condition is more complicated now, so we use a
+  // true/false variable to store whether the game is over.
+  int gameover = 0;
+
+  // Stores who wins each rally
+  // It's at the outer scope so we can announce the winner at the end!
+  cstring winname;
+
+  // play the game until it's over
+  while (! gameover) {
+    // get winner of next rally
+    fputs(serving, stdout);
+    fputs(" is serving.  Winner of next rally: ", stdout);
+    readstring(winname, stdin);
+
+    // only score a point if you were serving
+    if (strcmp(winname, serving) == 0) {
+      if (strcmp(winname, name1) == 0) {
+        ++score1;
+        // check if team 1 has won
+        if (score1 >= winat && score2 <= score1 - winby) {
+          gameover = 1;
+        }
+      } else if (strcmp(winname, name2) == 0) {
+        ++score2;
+        // check if team 2 has won
+        if (score2 >= winat && score1 <= score2 - winby) {
+          gameover = 1;
+        }
+      }
+    }
+
+    // whoever wins the rally serves the next one
+    strcpy(serving, winname);
+
+    // print out current scores
+    fputs(name1, stdout);
+    fputs(": ", stdout);
+    writenum(score1, stdout);
+    fputs(", ", stdout);
+    fputs(name2, stdout);
+    fputs(": ", stdout);
+    writenum(score2, stdout);
+    fputs("\n\n", stdout);
+  }
+
+  // print out who won
+  // Notice: the winname is whoever won the last rally, which must be the
+  // same as the overall game winner.
+  fputs(winname, stdout);
+  fputs(" is the winner!\n", stdout);
+
+  return 0;
+}

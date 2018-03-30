@@ -1,0 +1,20 @@
+Mike Hanling
+R20: 3.5
+
+Key Points:
+  Floating point allows the decimal point position to not be fixed
+  Fraction is called a mantissa
+  (-1)^sight X mantissa X 2^exponent
+  Double precision: float stored as TWO 32-bit (4-byte) words
+  Single precision: float stored as ONE 32-bit (4-byte) word
+  After computation, always normalize mantissa and update exp
+  add.s / add.d -> add for (s) single or (d)double precision
+  same for sub. mul. div.
+  c.x.s / c.x.d for compare where x is eq/neq/lt/le/gt/ge
+  bclt or bclf for branch if true and branch if false
+  Guard: the first of two buts kept of the right during intermediate
+    calculations of floating-point numbers; used to improve rounding
+    accuracy
+
+
+What Confuses Me:

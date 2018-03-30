@@ -1,0 +1,436 @@
+
+\documentclass{article}[9pt]
+
+\usepackage{listings}
+\usepackage{fullpage}
+\usepackage{textcomp}
+\usepackage{mdframed}
+
+\lstset{ %
+  basicstyle=\ttfamily\small,
+  commentstyle=\ttfamily\small\emph,
+  upquote=true,
+  framerule=1.25pt,
+  breaklines=true,
+  showstringspaces=false,
+  escapeinside={(*@}{@*)},
+  belowskip=2em,
+  aboveskip=1em,
+}
+
+
+\newenvironment{answerfont}{\fontfamily{qhv}\selectfont}{\par}
+\newenvironment{myanswer}{\begin{mdframed}\begin{answerfont}}{\end{answerfont}\end{mdframed}}
+
+%\newcommand{\myanswer}[1]{\begin{mdframed}{\parbox{.85\linewidth}{\fontfamily{qhv}\selectfont{#1}}}\end{mdframed}}
+
+\title{HW 3}
+
+\author{Mike Hanling}
+
+\date{30 JAN 2016}
+\begin{document}
+
+\maketitle
+
+\begin{enumerate}
+\item (5 points) Write a small C program that uses \texttt{sizeof()} to report
+the size in byte of each the types listed below. (You don't need
+to submit the program, just the sizes.) 
+
+\begin{enumerate}
+\item \texttt{int}
+
+\begin{myanswer}
+4
+\end{myanswer}
+
+
+\item \texttt{char}
+
+\begin{myanswer}
+1
+\end{myanswer}
+
+
+\item \texttt{int *}
+
+
+\begin{myanswer}
+8
+\end{myanswer}
+
+\item \texttt{float *}
+
+\begin{myanswer}
+8
+\end{myanswer}
+
+\item \texttt{char *}
+
+\begin{myanswer}
+8
+\end{myanswer}
+
+\item \texttt{short}
+
+\begin{myanswer}
+2
+\end{myanswer}
+
+\item \texttt{int **}
+
+\begin{myanswer}
+8
+\end{myanswer}
+
+
+\item \texttt{float}
+
+\begin{myanswer}
+4
+\end{myanswer}
+
+\item \texttt{double}
+
+\begin{myanswer}
+8
+\end{myanswer}
+
+
+\end{enumerate}
+
+\item (5 Points) For the sizes above, why is it that all the pointer types, even
+the double pointer, have the same size in bytes?
+
+
+\begin{myanswer}
+Each of them are pointers, therefore they are the same size.  What each
+\textit{points to} may be different in length, but the actual pointer
+size is constant.
+\end{myanswer}
+
+
+\item (10 points) Rewrite the following C++ code in C:
+
+\begin{lstlisting}[language=c]
+#include <stdio>
+using namespace std;
+
+int main(int argc, char *argv[]){
+
+ int j=10;
+ int k;
+
+ cout << "Enter a number" << endl;
+ cin >> k;
+
+ cout << "Num+10: " << k + 10 << endl;
+}
+\end{lstlisting}
+
+\begin{myanswer}
+\begin{lstlisting}[language=c]
+#include <stdio.h>
+
+int main(int argc, char *argv[]){
+
+ int j = 10;
+ int k;
+
+ printf("Enter a number\n");
+ scanf("\%g", &k);|
+
+ printf("Num+10: \%f", k+10);
+
+}
+\end{lstlisting}
+\end{myanswer}
+
+
+
+\item (10 points) Complete the program below to print "Go Navy" to a new file
+called \texttt{gonavy.txt}, "Beat Army" to a \texttt{beatarmy.txt}, and "Crash
+Airforce" to standard error. 
+
+\begin{lstlisting}[language=c]
+#include <stdio.h>
+#include <stdlib.h>
+
+int main(int argc, char * argv[]){
+
+   FILE * gonavy, *beatarmy;
+   
+   //WRITE THE REST!
+
+}
+\end{lstlisting}
+
+\begin{myanswer}
+\begin{lstlisting}[language=c]
+#include <stdio.h>
+#include <stdlib.h>
+
+int main(int argc, char * argv[]){
+
+   FILE * gonavy, *beatarmy;
+
+   gonavy = fopen("gonavy.txt", "w");
+   beatarmy = fopen("beatarmy.txt", "w");
+
+   fprintf(gonavy, "Go Navy");
+   fprintf(beatarmy, "Beat Army");
+   fprintf(stderr, "Crash Airforce");
+
+   fclose(gonavy);
+   fclose(beatarmy);
+   return 0;
+}
+\end{lstlisting}
+
+\end{myanswer}
+
+\item (10 points) For the following program snippet below, there are at least
+\textbf{five} errors. Enumerate them.
+
+\begin{lstlisting}[language=c]
+for( int i=0 ; i<5 , i--){
+   printf(i)
+}
+\end{lstlisting}
+
+\begin{myanswer}
+\begin{enumerate}
+  \item ; instead of , after \texttt{i<5}
+
+  \item \textbf{INFINITE LOOP}, maybe change to \texttt{i++}
+
+  \item missing first arg to \texttt{printf}: "\%d"
+
+  \item missing , to separate args of \texttt{printf}
+
+  \item missing ; after \texttt{printf}
+\end{enumerate}
+\end{myanswer}
+
+\item (10 points) For the following code snippets, what is the output and explain
+that output? (Yes, you should program and run these program to
+determine the output!)
+
+\begin{enumerate}
+\item 
+
+\begin{lstlisting}[language=c]
+unsigned int i = 4294967295;
+printf("%d\n",i);
+\end{lstlisting}
+
+
+\begin{myanswer}
+Output: -1\\
+Explanation: unsigned ints go from 0 to 65535.  Since this is out of
+range it yields -1.
+\end{myanswer}
+
+\item 
+
+\begin{lstlisting}[language=c]
+int i = 3.1519;
+printf("%d\n", i);
+\end{lstlisting}
+
+
+\begin{myanswer}
+Output: 3\\
+Explanation: forcing int will simply chop the decimal piece.
+\end{myanswer}
+
+
+\item 
+\begin{lstlisting}[language=c]
+int i = (int) 1.5 + 2.5 + 3.5 + 4.5
+printf("%d\n",i);
+\end{lstlisting}
+
+\begin{myanswer}
+Output: 11\\
+Explanation: the \texttt{(int) 1.5 + ...} evaluates to \texttt{1 + ...} ; adding
+the remaining floats, the result is 11.5; forcing it to be an int chops
+the .5, leaving 11.
+\end{myanswer}
+
+\end{enumerate}
+
+\item (10 points) Consider the program snippet below and the memory diagram representing
+that programs state at MARK 0. Complete a stack diagram for each
+of the remaining MARKS 1-4. 
+
+\begin{lstlisting}[language=c]
+int a=0,b=0,*p;
+p = &b; /* (0) */
+
+*p = 15; /* (1) */
+
+a = b;
+
+b = 25; /* (2) */
+
+p = &a; /* (3) */
+
+(*p)++; /* (4) */
+\end{lstlisting}
+
+Mark 0 Diagram
+\begin{verbatim}
+.----.----.
+| a  |  0 | 
+|----|----| 
+| b  |  0 | <-.
+|----|----|   |
+| p  |  .-+---'
+'----'----'
+\end{verbatim}
+
+\begin{myanswer}
+Mark 1 Diagram
+\begin{verbatim}
+.----.----.
+| a  |  0 | 
+|----|----| 
+| b  |15  | <-.
+|----|----|   |
+| p  |  .-+---'
+'----'----'
+\end{verbatim}
+
+Mark 2 Diagram
+\begin{verbatim}
+.----.----.
+| a  | 15 | 
+|----|----| 
+| b  | 25 | <-.
+|----|----|   |
+| p  |  .-+---'
+'----'----'
+\end{verbatim}
+
+Mark 3 Diagram
+\begin{verbatim}
+.----.----.
+| a  | 15 | <-.
+|----|----|   |
+| b  | 25 |   |
+|----|----|   |
+| p  |  .-+---'
+'----'----'
+\end{verbatim}
+
+Mark 4 Diagram
+\begin{verbatim}
+.----.----.
+| a  | 16 | <-.
+|----|----|   |
+| b  | 15 |   |
+|----|----|   |
+| p  |  .-+---'
+'----'----'
+\end{verbatim}
+\end{myanswer}
+
+\item (10 points) What is the values of the array after this code completes?
+
+\begin{lstlisting}[language=c]
+//statically declaring an array
+int array[10] = {0,1,2,3,4,5,6,7,8,9};
+int * p = array+3;
+
+p[0]=2018;
+
+//<--- Value of array here?
+\end{lstlisting}
+
+\begin{myanswer}
+\{0,1,2,2018,4,5,6,7,8,9\}
+\end{myanswer}
+
+\item (10 points) You are trying to copy an array from to another, and you write the following code:
+
+\begin{lstlisting}[language=c]
+int a[10] = {0,1,2,3,4,5,6,7,8,9};
+int b[10];
+
+//copy from a to b
+a=b;
+\end{lstlisting}
+
+
+\begin{enumerate}
+\item Why is this code incorrect?
+
+
+\begin{myanswer}
+First, it would say b=a to copy a into b. Second, you cannot set array
+types equal to each other.
+\end{myanswer}
+
+
+\item Write a corrected code segment by replacing the offensive part
+of the code above to copy the values in \texttt{b} to \texttt{a}.
+
+\begin{myanswer}
+\begin{lstlisting}[language=c]
+// THIS WILL GIVE RANDOM VALUES TO a because b is uninitialized!!!
+for (int i = 0; i < 10; i++){
+  a[i] = b[i];
+}
+\end{lstlisting}
+\end{myanswer}
+
+\end{enumerate}
+
+\item (10 points) The program below has at least three things wrong
+with them. Enumerate them and write the corrected code.
+
+\begin{lstlisting}[language=c]
+#include <stdlib.h>
+int main( int argc, char * argv[]){
+  file * stream;
+
+  stream = open("file.txt", "r");
+
+  fprintf(stream, "Hello World");
+
+  return 0;
+}
+\end{lstlisting}
+
+\begin{mdframed}
+\begin{enumerate}
+  \item \texttt{<stdio.h>} not \texttt{<stdlib.h>}
+  \item \texttt{FILE} not \texttt{file}
+  \item \texttt{fopen} not \texttt{open}
+  \item \texttt{"w"} not \texttt{"r"} to be able to print to the stream
+\end{enumerate}
+
+\begin{lstlisting}[language=c]
+#include <stdio.h>
+int main( int argc, char * argv[]){
+  FILE * stream;
+
+  stream = fopen("file.txt", "w");
+
+  fprintf(stream, "Hello World");
+
+  return 0;
+}
+\end{lstlisting}
+
+\end{mdframed}
+
+\end{enumerate}
+
+\end{document}
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:

@@ -1,0 +1,28 @@
+/***************************************************
+Class Year From E-Mail Address
+
+Write a program that reads in a midshipman's e-mail
+address and prints out his class year. For example,
+if you read in m031220@usna.edu you would print out
+"Class of 2003".  You may assume that the class year
+is 2000 or later.
+***************************************************/
+#include "si204.h"
+
+int main() {
+  // read alpha code
+  char c = readchar(stdin); // read "m" character
+  int alpha = readnum(stdin); // read number, we ignore the rest
+
+  // compute class number
+  int d, y;
+  d = alpha / 10000;
+  y = d + 2000;
+
+  // write out result
+  fputs("Class of ", stdout);
+  writenum(y, stdout);
+  fputs("\n", stdout);
+
+  return 0;
+}

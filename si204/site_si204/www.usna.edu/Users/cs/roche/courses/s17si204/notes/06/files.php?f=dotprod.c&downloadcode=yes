@@ -1,0 +1,53 @@
+/**************************************************
+Write a program to compute dot-products of vectors.  If
+v = [a1,a2,...,am] and w = [b1,b2,...,bm] are two vectors of
+dimension m, the dot product of v and w is
+a1*b1 + a2*b2 + ... + am*bm.  Your program will get a
+dimension m from the user, read in two vectors of length m,
+and print out their dot product.
+**************************************************/
+#include <stdio.h>
+#include <stdlib.h>
+
+double* readvec(int m);
+
+int main() {
+  // Get dimension m
+  int m;
+  printf("Enter dimension: ");
+  fflush(stdout);
+  scanf(" %i", &m);
+
+  // Read vector v
+  double* v = readvec(m);
+
+  // Read vector w
+  double* w = readvec(m);
+
+  // Compute dot product
+  double dp = 0;
+  for(int i = 0; i < m; ++i) {
+    dp += v[i] * w[i];
+  }
+
+  // Print result
+  printf("Dot product = %g\n", dp);
+
+  // clean-up
+  free(v);
+  free(w);
+
+  return 0;
+}
+
+// reads in a vector of the given dimension and returns
+// a pointer to the newly allocated vector
+double* readvec(int m) {
+  double* result = calloc(m, sizeof(double));
+  scanf(" [");
+  for (int i=0; i < m; ++i) {
+    scanf(" %lg ,", &result[i]);
+  }
+  scanf(" ]");
+  return result;
+}

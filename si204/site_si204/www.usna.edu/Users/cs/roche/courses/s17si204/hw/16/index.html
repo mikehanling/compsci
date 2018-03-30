@@ -1,0 +1,164 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Homework 16: Writing and using functions</title><meta name="viewport" content="width=device-width, initial-scale=1.0"><link href="../../scripts/prism.css" rel="stylesheet" /><link rel="stylesheet" type="text/css" href="../../style.css"><script type="text/javascript" src="../../../../mathjax/MathJax.js%3Fconfig=TeX-AMS_HTML"></script><style>
+@media only screen and (min-width: 600px) {
+  #main>header {background-image: url("../../scripts/header.png");}
+}
+</style></head><body><div id="main"><header><nav class="topnav"><div>
+            <a href="../../index.php.html">SI 204</a>
+            </div><div>
+            <a href="../../calendar.php.html">Calendar</a>
+            </div><div>
+            <a href="../../notes/index.html">Notes</a>
+            </div><div id="navparent">
+            <a href="../index.html">HWs</a>
+            </div><div>
+            <a href="../../lab/index.html">Labs</a>
+            </div><div>
+            <a href="../../proj/index.html">Projects</a>
+            </div><div>
+            <a href="../../exams/index.html">Exams</a>
+            </div><div>
+            <a href="../../admin/index.html">Resources</a>
+            </div><div>
+            <a href="https://www.usna.edu/Users/cs/roche/">Roche</a>
+            </div><div>
+            <a href="https://www.usna.edu/Users/cs/albing/">Albing</a>
+            </div></nav></header><div id="mainbox"><div class="printonly"><h1 class="printtitle">SI 204 Spring 2017 / HWs</h1><hr></div><article id="mainart"><header><h1>Homework 16: Writing and using functions</h1></header><div class="printonly">
+  <div class="blanks">
+  <p>
+  Name: _____________________________________________   Alpha: ___________________
+  </p>
+  <p>
+  Describe help received: ________________________________________________________
+  </p>
+  </div>
+</div>
+  <div class="noprint">
+  <a href="javascript:window.print();">Print this page</a>
+</div>
+  <ul>
+    <li><strong>Due before class on Friday, February 24</strong>
+    </li><li>This homework contains code to be submitted electronically.
+      Put your code in a folder called <code>hw16</code> and submit
+      using the <code>204sub</code> command.</li><li>This is a <em>written homework</em> - be sure to turn in a hard-copy
+      of your completed assignment before the deadline. Use the <code>codeprint</code> command to print out your code
+        and turn that in as well.</li></ul><h1>Assignment</h1><ol class="ass"><li>
+  Circle one to indicate how you did for the reading assignment from
+  <a href="../15/index.html">Homework 15</a> <em>before class on Wednesday</em>:
+  <p>How carefully did you complete the reading? (Circle one)</p>
+<div class="blanks">
+<div class="option">Not at all</div>
+<div class="option">Skimmed it</div>
+<div class="option">Read some</div>
+<div class="option">Read all</div>
+</div>
+  </li>
+
+<li>Given the following prototypes:
+  <pre><code class="language-c">int abs(int j); // returns the absolute value of j
+int round(double x); // rounds to the nearest integer
+double str2num(cstring str); // converts a string to a number</code></pre>  and the following variable definitions:
+  <pre><code class="language-c">int a = 10;
+double b = 3.3;
+cstring c = &quot;12.8&quot;;</code></pre>  Assuming the functions actually work the way they say they do,
+  fill in the following table with the type and value of each expression.
+  Write ERROR for both if the expression would be a compiler error.
+  <table class="RM blanks">
+    <tr><td>expression</td><td style="width:1.5in;">type</td><td style="width:1.5in;">value</td></tr>
+    <tr><td><code>c</code></td><td></td><td></td></tr>
+    <tr><td><code>str2num(c)</code></td><td></td><td></td></tr>
+    <tr><td><code>a + abs(-2)</code></td><td></td><td></td></tr>
+    <tr><td><code>b + abs(-2)</code></td><td></td><td></td></tr>
+    <tr><td><code>round(b) + 2.4</code></td><td></td><td></td></tr>
+    <tr><td><code>round(b + 2.4)</code></td><td></td><td></td></tr>
+    <tr><td><code>round(round(b) + 2.4)</code></td><td></td><td></td></tr>
+    <tr><td><code>round(c) + 2.4</code></td><td></td><td></td></tr>
+    <tr><td><code>str2num(abs("-4"))</code></td><td></td><td></td></tr>
+    <tr><td><code>round(str2num("1.2"))</code></td><td></td><td></td></tr>
+  </table>
+</li>
+<li>In the program below, circle and identify all function prototypes, function definitions,
+  function calls, function parameters, and function arguments.
+  <pre><code class="language-c">#include &lt;stdio.h&gt;
+
+int readRow(int len);
+
+int main() {
+  int rows;
+  int cols;
+  scanf(&quot; %i , %i&quot;, &amp;rows, &amp;cols);
+
+  int count = 0;
+  for(int r = 0; r &lt; rows; r++) {
+    if (readRow(cols)) {
+      count++;
+    }
+  }
+
+  printf(&quot;%i\n&quot;, count);
+  return 0;
+}
+
+int readRow(int len) {
+  int n = 0;
+  for(int i = 0; i &lt; len; i++) {
+    char c;
+    scanf(&quot; %c&quot;, &amp;c);
+    if (c == 'Y') {
+      n++;
+    }
+  }
+  return (n &gt; 0);
+}</code></pre></li>
+<li>
+  Download the partially-completed program <a href="files.php%3Ff=conv.c.html">conv.c</a>
+  and complete it by writing the <code>main()</code> function. You should make use of
+  the functions I've defined for you! When you're finished, the program should work like this:
+  <pre><code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./conv</code>
+<code class="language-text output"></code><code class="language-text input">convert 45 miles to kilometers</code>
+<code class="language-text output">72.4205 kilometers</code>
+<code class="language-text output"></code>
+<code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./conv</code>
+<code class="language-text output"></code><code class="language-text input">convert 3.3 inches to light-years</code>
+<code class="language-text output">8.85997e-18 light-years</code>
+<code class="language-text output"></code>
+<code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./conv</code>
+<code class="language-text output"></code><code class="language-text input">convert 378.1 nautical-miles to millimeters</code>
+<code class="language-text output">7.00242e+08 millimeters</code></pre></li>
+<li>
+  Download the partially-completed program <a href="files.php%3Ff=harm.c.html">harm.c</a>
+  and complete it by writing a prototype and definition for a function
+  <code>harm(n)</code> which computes the sum of the first \(n\) terms in the harmonic
+  series:
+  \[\frac{1}{1} + \frac{1}{2} + \frac{1}{3} + \frac{1}{4} + \cdots + \frac{1}{n}\]
+  When you're finished, the program should work like this:
+  <pre><code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./harm</code>
+<code class="language-text output">Enter target: </code><code class="language-text input">2.5</code>
+<code class="language-text output">The 7th harmonic number is 2.59286, which is the first greater than 2.5.</code>
+<code class="language-text output"></code>
+<code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./harm</code>
+<code class="language-text output">Enter target: </code><code class="language-text input">3.25</code>
+<code class="language-text output">The 14th harmonic number is 3.25156, which is the first greater than 3.25.</code>
+<code class="language-text output"></code>
+<code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./harm</code>
+<code class="language-text output">Enter target: </code><code class="language-text input">3.5</code>
+<code class="language-text output">The 19th harmonic number is 3.54774, which is the first greater than 3.5.</code>
+<code class="language-text output"></code>
+<code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./harm</code>
+<code class="language-text output">Enter target: </code><code class="language-text input">9.75</code>
+<code class="language-text output">The 9631th harmonic number is 9.75001, which is the first greater than 9.75.</code></pre></li>
+</ol></article></div></div><nav class="stickynav"><div><div class="dropdown"><a href="../../index.php.html" class="ddown-btn">SI 204</a><div class="ddown-content"><a href="../../calendar.php.html">Calendar</a><a href="../../notes/index.html">Notes</a><a href="../index.html">HWs</a><a href="../../lab/index.html">Labs</a><a href="../../proj/index.html">Projects</a><a href="../../exams/index.html">Exams</a><a href="../../admin/index.html">Resources</a><a href="https://www.usna.edu/Users/cs/roche/">Roche</a><a href="https://www.usna.edu/Users/cs/albing/">Albing</a></div></div><a href="index.html#top" class="linkin pagetop">Homework 16: Writing and using functions</a></nav><footer><div id="foottext">    <p class="disclaimer">Material contained above is made available
+    for the purpose of peer review and discussion and does not
+    necessarily reflect the views of the Department of the Navy or the
+    Department of Defense.
+    Some links above are to sites that are not
+    located at the United States Naval Academy. The USNA is not
+    responsible for the content found on these sites. In addition, the
+    content of these sites does not reflect the opinions, standards,
+    policy or endorsement of the Naval Academy or the United States
+    Government.</p>
+  Page maintained by Daniel S. Roche (<a href="mailto:roche [AT] usna [DOT] edu" id="emaillink1">roche [AT] usna [DOT] edu</a><script type='text/javascript'><!--
+        var b="he@usna.edu";
+        var a="roc";
+        document.getElementById("emaillink1").href='mailto:'+a+b;
+        document.getElementById("emaillink1").innerHTML=a+b;
+        // --></script>). Last updated 21 February 2017 15:10.</div></footer><script src="../../scripts/prism.js"></script><script type="text/javascript"></script></body></html>

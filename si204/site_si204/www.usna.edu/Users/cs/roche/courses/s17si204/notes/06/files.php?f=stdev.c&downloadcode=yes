@@ -1,0 +1,61 @@
+/****************************************************
+Write a program that reads in the file numbers.txt
+and prints out the standard deviation of the numbers
+there.  The file numbers .txt looks like this:
+
+N = 3
+DATA:
+67
+61
+82
+
+I.e. there's a header that tells you how many numbers
+are in the file, and then you get all the numbers.
+Recall that the standard deviation is
+
+      ______________________
+     / -- n
+    /  \     (xi - ave)^2
+   /    |    ------------
+  /    /        n - 1
+\/     -- i = 1
+
+ ****************************************************/
+#include <stdio.h>
+#include <math.h>
+
+int main() {
+  // Open input file, read header, get N = # of int's
+  FILE* fin = fopen("numbers.txt", "r");
+  int N;
+  fscanf(fin, " N = %i DATA:", &N);
+
+  // Create array data and read N int's from input
+  int data[N];
+  for(int i = 0; i < N; ++i) {
+    fscanf(fin, " %i", &data[i]);
+  }
+
+  // we can close the file now
+  fclose(fin);
+
+  // Cycle through array summing all the elements
+  int sum = 0;
+  for(int j = 0; j < N; ++j) {
+    sum += data[j];
+  }
+  double average = sum / (double)N;
+
+  // Cycle through the array summing the squares of
+  // the elements minus the average
+  double sqsum = 0;
+  for(int j = 0; j < N; ++j) {
+    sqsum += (data[j] - average) * (data[j] - average);
+  }
+  double stddev = sqrt(sqsum / (N-1));
+
+  // Print out standard deviation
+  printf("The standard deviation is %g\n", stddev);
+
+  return 0;
+}

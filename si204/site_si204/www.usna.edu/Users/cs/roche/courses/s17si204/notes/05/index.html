@@ -1,0 +1,852 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Unit 5: Functions</title><meta name="viewport" content="width=device-width, initial-scale=1.0"><link href="../../scripts/prism.css" rel="stylesheet" /><link rel="stylesheet" type="text/css" href="../../style.css"><script type="text/javascript" src="../../../../mathjax/MathJax.js%3Fconfig=TeX-AMS_HTML"></script><script type="text/javascript" src="../../scripts/jquery-3.1.1.min.js"></script><style>
+@media only screen and (min-width: 600px) {
+  #main>header {background-image: url("../../scripts/header.png");}
+}
+</style><link rel="stylesheet" type="text/css" href="../../notes.css">  <meta name="generator" content="pandoc">
+  <style type="text/css">code{white-space: pre;}</style>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head><body><div id="main"><header><nav class="topnav"><div>
+            <a href="../../index.php.html">SI 204</a>
+            </div><div>
+            <a href="../../calendar.php.html">Calendar</a>
+            </div><div id="navparent">
+            <a href="../index.html">Notes</a>
+            </div><div>
+            <a href="../../hw/index.html">HWs</a>
+            </div><div>
+            <a href="../../lab/index.html">Labs</a>
+            </div><div>
+            <a href="../../proj/index.html">Projects</a>
+            </div><div>
+            <a href="../../exams/index.html">Exams</a>
+            </div><div>
+            <a href="../../admin/index.html">Resources</a>
+            </div><div>
+            <a href="https://www.usna.edu/Users/cs/roche/">Roche</a>
+            </div><div>
+            <a href="https://www.usna.edu/Users/cs/albing/">Albing</a>
+            </div></nav></header><div id="mainbox"><div class="printonly"><h1 class="printtitle">SI 204 Spring 2017 / Notes</h1><hr></div><article id="mainart"><header><h1>Unit 5: Functions</h1></header><div id="TOC"><ul><li><a class="linkin" href="index.html#writing-our-own-functions"><span class="toc-section-number">1</span> Writing our own functions</a>
+<ul><li><a class="linkin" href="index.html#motivating-example"><span class="toc-section-number">1.1</span> Motivating Example</a></li><li><a class="linkin" href="index.html#prototypes"><span class="toc-section-number">1.2</span> Prototypes</a></li><li><a class="linkin" href="index.html#function-definitions"><span class="toc-section-number">1.3</span> Function Definitions</a></li><li><a class="linkin" href="index.html#functions-with-an-argument"><span class="toc-section-number">1.4</span> Functions with an argument</a></li><li><a class="linkin" href="index.html#functions-that-return-nothing"><span class="toc-section-number">1.5</span> Functions that return nothing</a></li><li><a class="linkin" href="index.html#multi-parameter-functions"><span class="toc-section-number">1.6</span> Multi-Parameter Functions</a></li><li><a class="linkin" href="index.html#vocabulary"><span class="toc-section-number">1.7</span> Vocabulary</a></li></ul></li>
+<li><a class="linkin" href="index.html#designing-functions"><span class="toc-section-number">2</span> Designing Functions</a>
+<ul><li><a class="linkin" href="index.html#functions-and-top-down-design"><span class="toc-section-number">2.1</span> Functions and Top-Down design</a></li><li><a class="linkin" href="index.html#scope-and-functions"><span class="toc-section-number">2.2</span> Scope and Functions</a></li><li><a class="linkin" href="index.html#predicates"><span class="toc-section-number">2.3</span> Predicates</a></li><li><a class="linkin" href="index.html#composing-functions"><span class="toc-section-number">2.4</span> Composing Functions</a></li></ul></li>
+<li><a class="linkin" href="index.html#passing-pointers-to-functions"><span class="toc-section-number">3</span> Passing pointers to functions</a>
+<ul><li><a class="linkin" href="index.html#using-pointers-to-modify-the-original-value"><span class="toc-section-number">3.1</span> Using pointers to modify the original value</a></li><li><a class="linkin" href="index.html#the-famous-swap-"><span class="toc-section-number">3.2</span> The Famous swap!</a></li><li><a class="linkin" href="index.html#using-pointers-to-return-multiple-values"><span class="toc-section-number">3.3</span> Using pointers to return multiple values</a></li><li><a class="linkin" href="index.html#using-pointers-when-copying-an-object-doesn-t-make-sense"><span class="toc-section-number">3.4</span> Using pointers when copying an object doesn’t make sense</a></li></ul></li>
+<li><a class="linkin" href="index.html#recursion"><span class="toc-section-number">4</span> Recursion</a>
+<ul><li><a class="linkin" href="index.html#introduction-printing-a-starry-triangle"><span class="toc-section-number">4.1</span> Introduction: Printing a starry triangle</a></li><li><a class="linkin" href="index.html#how-recursion-works"><span class="toc-section-number">4.2</span> How recursion works</a></li><li><a class="linkin" href="index.html#base-cases"><span class="toc-section-number">4.3</span> Base cases</a></li><li><a class="linkin" href="index.html#solving-problems-recursively"><span class="toc-section-number">4.4</span> Solving problems recursively</a></li></ul></li>
+<li><a class="linkin" href="index.html#the-structure-of-multi-file-programs"><span class="toc-section-number">5</span> The structure of multi-file programs</a>
+<ul><li><a class="linkin" href="index.html#header-files"><span class="toc-section-number">5.1</span> Header files</a></li><li><a class="linkin" href="index.html#definitions-file"><span class="toc-section-number">5.2</span> Definitions file</a></li><li><a class="linkin" href="index.html#main-program-and-linking-together"><span class="toc-section-number">5.3</span> Main program and linking together</a></li></ul></li>
+<li><a class="linkin" href="index.html#problems"><span class="toc-section-number">6</span> Problems</a></li></ul></div><div class="panbody"><p>(Credit to <a href="https://www.usna.edu/Users/cs/wcbrown/">Chris Brown</a> for the original version of these notes.)</p>
+<p>This unit will teach us how to write our very own <em>functions</em> in C. This is a very powerful concept that is central both to understanding how C works, but also to discovering how to write larger and more easily maintainable programs.</p>
+<!-- from l16 -->
+<h1 id="writing-our-own-functions"><a class ="linkin" href="index.html#top"><span class="header-section-number">1</span> Writing our own functions</a></h1><h2 id="motivating-example"><a class="linkin" href="index.html#top"><span class="header-section-number">1.1</span> Motivating Example</a></h1><p>Sometimes there is a particular chunk of code that appears over and over again in a program. For example, if we’re writing a program to compute gcd’s, we’d ask the user twice to enter in a positive number. <a href="files.php%3Ff=gcdnofun.c.html">This program</a> illustrates how we’d have to do it. Now, there are plenty of nice functions in standard libraries, like <code>sqrt</code> and <code>cos</code> that do all sorts of nice things for us. If only there were a function <code>getposint</code> that would get a positive int from the user and return it to our program, we could rewrite our program as:</p>
+<pre><code class="language-C">int main() {
+  int a = getposint();
+  int b = getposint();
+
+  // Compute gcd
+  while(b != 0) {
+    int r = a % b;
+    a = b;
+    b = r;
+  }
+
+  // Write out gcd
+  printf(&quot;The gcd is %i\n&quot;, a);
+
+  return 0;
+}</code></pre>
+<p>This is a tremendous improvement! The code is not only less repetitive, but it’s also clearer what’s going on. Unfortunately, such a function is not a part of any of the standard libraries. Therefore, it’s up to us to make it!</p>
+<h2 id="prototypes"><a class="linkin" href="index.html#top"><span class="header-section-number">1.2</span> Prototypes</a></h1><p>You should have noticed when looking at documentation for the <a href="http://en.creference.com/w/c/numeric/math">math.h library</a> that they give a description of the function like:</p>
+<pre><code class="language-C">double cos(double x);</code></pre>
+<p>This is called a <em>prototype</em>. It tells you (and it tells the compiler) that <code>cos</code> takes an object of type <code>double</code> (that’s the <code>x</code>) and returns or evaluates to an object of type <code>double</code>. It doesn’t tell you how or what it’s doing, but it does tell you that something like</p>
+<pre><code class="language-C">cos(&quot;Brown&quot;)</code></pre>
+<p>is not going to make sense, since <code>&quot;Brown&quot;</code> has type <code>cstring</code>, not type <code>double</code>. Similarly, something like</p>
+<pre><code class="language-C">if (cos(3*z) &amp;&amp; k &lt; 0)</code></pre>
+<div class="annotation">
+<p>You need to understand prototypes to understand how expressions that involve function calls are evaluated. For example: cos(45)/2</p>
+<p>What happens here? Either we’ll do int division and the answer will be zero, or we’ll do double division and we’ll get some answer in the range [-0.5,0.5]. So which is it? Well, evaluating <code>cos(45)</code> results in a double, so as in any operation in which int’s and double’s are mixed, the int is promoted to a double and we get double division and a double result.</p>
+</div>
+<p>isn’t going to make sense, since the <code>&amp;&amp;</code> operator expects to see two true/false boolean values (which will really be <code>int</code>s), but the <code>cos(3*z)</code> evaluates to an object of type <code>double</code>.</p>
+<p>When you define functions of your own, you need to define a prototype as well. It must be defined outside of the <code>main</code> block, and it must appear before you ever use the function. Now, in the <code>getposint</code> function we’d envisioned earlier, there’s nothing that the function takes as input from the program, and it should evaluate to or return the positive integer it’s read in from the user, so the right prototype would be:</p>
+<pre><code class="language-C">int getposint();</code></pre>
+<h2 id="function-definitions"><a class="linkin" href="index.html#top"><span class="header-section-number">1.3</span> Function Definitions</a></h1><p>In addition to giving the function prototype, you have to provide a function <em>definition</em>, which is what tells the computer what the function is supposed to do. The function’s definition can appear anywhere after the prototype. You repeat the prototype (without the ‘;’) and then give a block of code that comprises the function. Just as the <code>return</code> statement in main leaves the program, a <code>return</code> statement in your function body leaves the function. Instead of <code>return</code>ing 0 however, we’ll return whatever value the function’s supposed to give. So our <code>getposint</code> function might have the following definition:</p>
+<pre><code class="language-C">int getposint() {
+  int k;
+  printf(&quot;Enter a positive integer: &quot;);
+  fflush(stdout);
+  int check = scanf(&quot; %i&quot;, &amp;k);
+
+  while(check &lt; 1 || k &lt;= 0) {
+    printf(&quot;I said *positive integer*; try again: &quot;);
+    fflush(stdout);
+    check = scanf(&quot; %i&quot;, &amp;k);
+  }
+
+  return k;
+}</code></pre>
+<p>The function definition also has to appear outside of the <code>main</code> block. <a href="files.php%3Ff=gcdfun.c.html">This program</a> gives a complete picture of how to rewrite our GCD calculator to make use of a <code>getposint</code> function.</p>
+<h2 id="functions-with-an-argument"><a class="linkin" href="index.html#top"><span class="header-section-number">1.4</span> Functions with an argument</a></h1><p>More interesting are functions which take an argument, i.e. some kind of input object. For example, we may often be in the situation of having to compute something like the factorial of a number. Especially if this crops up more than once in a program, it’d be really nice to have a function like the pow or sqrt functions from math.h to do the factorial for us. First, we need a prototype that specifies that our function (we’ll call it <code>factorial</code>) takes an integer value and returns an integer value:</p>
+<pre><code class="language-C">int factorial(int x);</code></pre>
+<p>From this point on in our program we can use the <code>factorial</code> function. However, somewhere along the way we’ll actually have to <em>define</em> the function — something like this:</p>
+<pre><code class="language-C">int factorial(int x) {
+  int f = 1;
+  while (x &gt; 0) {
+    f = f*x;
+    x--;
+  }
+  return f;
+}</code></pre>
+<p>Notice that here we give a name to the <code>int</code> value that gets passed into the function, so that we can reference it within the body of the function definition. Values that get passed in to a function in C are called function <em>arguments</em>. It’s important to note that the arguments are <em>passed by value</em>, meaning that you get a copy of the value of the variable <code>function</code> is called with, not the variable itself. So, for example, if our <code>main</code> function looked like</p>
+<pre><code class="language-C">main() {
+  int y = 4;
+  printf(&quot;%i\n&quot;, factorial(y));
+  printf(&quot;%i\n&quot;, y);
+
+  return 0;
+}</code></pre>
+<p>The result would be 24 followed by a 4. Although the argument <code>x</code> in the function definition does get modified, the variable <code>y</code> does not, because <code>y</code>’s value (i.e. 4) got passed to <code>factorial</code>, not the variable <code>y</code> itself. So <em>pass by value</em> means that a copy of the object appearing in the function call is what gets passed along to the function, not the object itself.</p>
+<p>Remember also that scoping rules show us that any variable named <code>x</code> or <code>f</code> in <code>main</code> have no relation to the <code>x</code> and <code>f</code> in the <code>factorial</code> function. To reiterate, pass-by-value means that you get a copy of the argument. By analogy, calling the “haircut function” with argument “MIDN Jones” would 1) cause a clone to be made of MIDN Jones, 2) cause the clone’s hair to get cut, and 3) cause the clone to get destroyed after the haircut. Thus, when MIDN Jones showed up in class the next day, his hair would still be shaggy.</p>
+<h2 id="functions-that-return-nothing"><a class="linkin" href="index.html#top"><span class="header-section-number">1.5</span> Functions that return nothing</a></h1><p>Sometimes we’re interested in functions that return nothing at all. These functions are called for their <em>side effects</em> such as printing something to the screen. This is an issue for our prototype, however, since we need to specify something for return type. In this case, we use <code>void</code> in place of a return type. Here’s a small example:</p>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+
+void greetings();
+
+int main() {
+  greetings();
+
+  // probably you would do something else here,
+  // but this is just a small, simple example.
+
+  return 0;
+}
+
+void greetings() {
+  printf(&quot;Well hello there.\n&quot;);
+  printf(&quot;Welcome to my exciting program.\n&quot;);
+  printf(&quot;Notice this function has no return statement!\n&quot;);
+}</code></pre><p>This function is only used for the side effect of writing something on the screen, not for any value it would return.</p>
+<h2 id="multi-parameter-functions"><a class="linkin" href="index.html#top"><span class="header-section-number">1.6</span> Multi-Parameter Functions</a></h1><p>Functions get infinitely more interesting when they have more than one argument or parameter. We’ve been using many examples of multi-parameter functions already with things like <code>readstring</code>, <code>fputs</code>, <code>fopen</code>, and many more.</p>
+<p>Specifying multiple parameters for a function is just like specifying several single parameters in a comma-separated list. For example, suppose you wanted to define a function <code>max</code> that looked at two <code>int</code>s and returned the larger of the two. Its prototype would be</p>
+<pre><code class="language-C">int max(int a, int b);</code></pre>
+<p>The definition would look like this:</p>
+<pre><code class="language-C">int max(int a, int b) {
+  if (a &lt; b) {
+    return b;
+  }
+  else {
+    return a;
+  }
+}</code></pre>
+<p>Note that this example shows you that you can return from anywhere within a function, just like you can return from anywhere within <code>main</code>.</p>
+<p>It’s important to note that the order of arguments is matters. For example, suppose you had a function</p>
+<pre><code class="language-C">void rep(int times, char c);</code></pre>
+<p>that printed the <code>char</code> argument to the screen the number of times given by the <code>int</code>. If I want to print a <code>#</code> symbol 42 times, I need to be sure to say <code>rep(42,'#')</code>, because the function expects the <code>int</code> object first. If I said <code>rep('#',42)</code> instead, do you know what’d happen? I’d print 35 <code>*</code>s! Why? Because the same kind of implicit type conversions that go on inside expressions go on with function arguments! The <code>rep</code> function expects an <code>int</code> as its first argument, and when it gets <code>'#'</code> instead, it simply converts it to an <code>int</code> … and the ASCII value of <code>'#'</code> is 35, so that’s the <code>int</code> you get. Likewise, a <code>char</code> is expected as the second argument, and when <code>rep</code> gets the number 42 instead, it converts it to a character, and ASCII value 42 gives you the <code>char</code> <code>'*'</code>.</p>
+<p>When implicit conversions aren’t possible, the compiler gives you an error message. For example, if you tried to call <code>rep(&quot;#&quot;,42)</code> the compiler would give you an error saying that the first argument of <code>rep</code> was supposed to be an <code>int</code>, but you gave it a string, and there’s no way to do that conversion. You’ll likely see lots of these messages in your life!</p>
+<p>Armed with the ability to make multi-parameter functions, we can now fully function-ize our gcd program from earlier: <a href="files.php%3Ff=gcdfun2.c.html">this program</a> uses a <code>getposint</code> function to read each input integer, as well as a <code>gcd</code> function to do the actual computation.</p>
+<h2 id="vocabulary"><a class="linkin" href="index.html#top"><span class="header-section-number">1.7</span> Vocabulary</a></h1><ul>
+<li>function <strong>prototype</strong> - The prototype tells us what we need to know to use the function … everything except what the function actually does! If you are presented with only a prototype there is usually some documentation that describes what task the function accomplishes. These should show up at the <em>beginning</em> of your program, before <code>main</code>.</li>
+<li>function <strong>definition</strong> - This is where we provide the code that determines how the function operates, i.e. how it does whatever it does. These will usually be at the <em>end</em> of your program, after <code>main</code>.</li>
+<li><strong>argument</strong> to a function - when we use a function (“call” a function) and we provide an expression whose value will be passed into the function, that expression is called an <em>argument</em> to the function.</li>
+<li>function <strong>parameter</strong> - a function gives a name (and a type) for the value that is going to be passed into the function. That name is called a <em>parameter</em>. It’s what is used inside the function definition to refer to the value that was passed into the function when the function was called.</li>
+<li><strong>pass-by-value</strong> - describes the basic function calling mechanism for C, in which the function receives a copy of whatever argument object appears where the function is called, not the actual argument object itself.</li>
+<li>function <strong>call</strong> - also called application - the point in the execution of a program at which the function expression is evaluated and, as a result, the function body executed.</li>
+<li>function <strong>call site</strong> - the location in the source code of the expression that uses the function.</li>
+<li>function’s <strong>return value</strong> - also called result - the object that results from evaluating the function call expression.</li>
+</ul>
+<!-- from l17 -->
+<h1 id="designing-functions"><a class ="linkin" href="index.html#top"><span class="header-section-number">2</span> Designing Functions</a></h1><!-- TODO
+![](anno.jpg){width="400pt"}
+-->
+<h2 id="functions-and-top-down-design"><a class="linkin" href="index.html#top"><span class="header-section-number">2.1</span> Functions and Top-Down design</a></h1><p>The essence of programming is breaking down a single, large, complex problem into many simple pieces that can be attacked independently. Functions help us to do this, and that is one of their most important features. They help us write programs in a <em>top down</em> manner, essentially be letting us write our program using a “wish-list” of functions that we can actually go back and implement later. An example should make this clearer.</p>
+<p><strong>Problem:</strong> You have a bank account whose annual interest rate depends on the amount of money you have in your account at the beginning of each year. Your annual rate starts at 3%, and grows by an additional half a percent for each thousand dollars in your account up to, but not exceeding 8%. So, for example, if you have $3,358.02 in your account at the beginning of the year, your rate is 4.5%. Interest in this account is compounded monthly at the annual rate (i.e. the monthly compounding rate is the annual rate divided by 12). Each year you also make a transaction (deposit or withdrawal) before the bank figures out what your rate is (fortunately!). Write a program that simulates 5 years under this system, interactively querying the user for transactions at the beginning of each year, and returning the balance at the end of the 5th year.</p>
+<p>There’s a lot to this problem. However, imagine how much easier it would be to solve if the following functions were available:</p>
+<ul>
+<li><code>double transaction(double bal);</code> - which would do the interactive part for you - taking the initial balance <code>bal</code> and returning the balance after the transaction.</li>
+<li><code>double rate(double bal);</code> - which would return the interest rate based on the account balance.</li>
+<li><code>double compound(double rate);</code> - which would give you the value of a single dollar after a year’s monthly compounding with annual interest rate <code>r</code>. If your blance is <code>bal</code> and your rate is <code>r</code> at the beginning of the year, the new balance is <code>bal*compound(r)</code>.</li>
+</ul>
+<p>With this “wish list” of functions, we could write the program quite easily:</p>
+<pre><code class="language-C">double bal = 0.0;
+
+// Simulate 5 years
+for(int i = 0; i &lt; 5; i++) {
+  bal = transaction(bal);
+  double rate = intrate(bal);
+  bal = bal*compound(rate);
+}
+
+// Print out final balance
+printf(&quot;Balance = $%.2f\n&quot;, bal);</code></pre>
+<p>This is a pretty easy program! Of course, the 3 functions in our wish list do not exist, so we’ll have to implement them for ourselves.</p>
+<pre><code class="language-C">double transaction(double bal) {
+  // Get type of transaction
+  printf(&quot;Enter w:withdrawl or d:deposit &quot;);
+  fflush(stdout);
+  char act;
+  scanf(&quot; %c&quot;, &amp;act);
+
+  // Get amount of transaction
+  printf(&quot;Enter amount: &quot;);
+  fflush(stdout);
+  double amount;
+  scanf(&quot; %lg&quot;, &amp;amount);
+
+  // Get new Balance figure
+  if (act == &#39;w&#39;) {
+    bal = bal - amount;
+  }
+  else {
+    bal = bal + amount;
+  }
+
+  return bal;
+}
+
+double intrate(double bal) {
+  // Get # of thousands
+  int thous = bal/1000;
+
+  // Calc rate
+  double rate = 3 + thous*0.5;
+  if (rate &gt; 8) {
+    rate = 8;
+  }
+
+  return rate;
+}
+
+double compound(double rate) {
+  // Simulate year with monthly compounding
+  double scalerate = rate/100;
+  double total = 1.0;
+  for(int i = 0; i &lt; 12; i++) {
+    total = total*(1 + scalerate/12);
+  }
+
+  return total;
+}</code></pre>
+<p>The key here is that each of these functions can be implemented independently. When I implement <code>transaction</code>, I don’t need to worry about any other aspect of the program - it’s like <code>transaction</code> is its own little (easy!) program to write. Take a look at <a href="files.php%3Ff=account.c.html">the complete program</a>.</p>
+<h2 id="scope-and-functions"><a class="linkin" href="index.html#top"><span class="header-section-number">2.2</span> Scope and Functions</a></h1><p>There’s some room for confusion with functions when the same name pops up in different places. For example, consider this program:</p>
+<pre><code class="language-C">int f();
+
+int main() {
+  int a = 0;
+  int b = f();
+
+  printf(&quot;a = %i\n&quot;, a);
+
+  return 0;
+}
+
+int f() {
+  int a = 2;
+  return -1;
+}</code></pre>
+<p>What gets printed out? On the one hand, I’d say “0”, since a just got assigned that value. On the other hand, the function <code>f</code> is called in between, and there I see a being given the value 2. So which is it?</p>
+<p>The answer is that “0” gets printed out. It all goes back to scope. The <code>a</code> in main does not exist outside of main, and likewise the <code>a</code> in the function <code>f</code> does not exist outside of <code>f</code>. These variables are two different objects that happen to have the same name. Since they are in different scopes, however, there is no confusion or conflict. We say that variables like this are local to the functions in which they are defined, i.e. they don’t exist outside of the functions in which they are defined.</p>
+<p>The way that you want to think of this is that each function call is like a piece of paper with boxes for each of the function’s local variables. When a function is called a new piece of paper is stacked on the others. The computer only actually works on the function call represented by the top paper on the stack. This image helps you think about how variable scope works with function calls.</p>
+<h2 id="predicates"><a class="linkin" href="index.html#top"><span class="header-section-number">2.3</span> Predicates</a></h1><p>Functions which return the true/false values (1 or 0 in C) are traditionally referred to as predicates.</p>
+<p>For example, it’s considered a “bad idea” to compare two <code>double</code>s directly using <code>==</code>, because round-off errors could mean that the numbers are very, very close but not exactly identical to each other.</p>
+<p>So let’s make a function to do what we want:</p>
+<pre><code class="language-C">// predicate function to test whether two numbers are
+// equal up to the specified number of digits
+int approxequal(double x, double y, int digits) {
+  // get the positive difference between them
+  double diff;
+  if (x &gt; y) {
+    diff = x - y;
+  } else {
+    diff = y - x;
+  }
+
+  // compute the smallest allowable difference
+  double precision = 1.0;
+  for (int i=0; i&lt;digits; ++i) {
+    precision = precision / 10.0;
+  }
+
+  if (diff &lt;= precision) {
+    return 1; // the two numbers are close
+  } else {
+    return 0; // the numbers are far apart
+  }
+}</code></pre>
+<div class="annotation">
+<p>In fact, we could be even more clever and write that last if/else statement as just</p>
+<pre><code class="language-C">return (diff &lt;= precision);</code></pre>
+<p>since the expression <code>diff &lt;= precision</code> evaluates to the <code>int</code> that we want to return!</p>
+</div>
+<p>Really there’s no need to bring predicates up as a special subject, since functions that return true/false are not any more special than functions that return anything else. However, you might not have thought much about the use of having such functions.</p>
+<h2 id="composing-functions"><a class="linkin" href="index.html#top"><span class="header-section-number">2.4</span> Composing Functions</a></h1><p>Let’s suppose that I had the function <code>max</code> defined as</p>
+<pre><code class="language-C">int max(int a, int b) {
+  if (b &gt; a) {
+    return b;
+  }
+  else {
+    return a;
+  }
+}</code></pre>
+<p>but that my program had three <code>int</code>s, <code>x</code>, <code>y</code> and <code>z</code>, amongst which I need the largest. Were I to write</p>
+<pre><code class="language-C">max(x,y,z)</code></pre>
+<p>the compiler would complain … the only <code>max</code> function it knows about only takes two arguments! However, I could say the following:</p>
+<pre><code class="language-C">max(max(x,y),z)</code></pre>
+<p>This is our first example of <em>composition</em> of functions. When the function <code>max</code> gets called, its two argument expressions are evaluated. The first is <code>max(x,y)</code>, which evaluates to the larger of the two values, and the second is simply <code>z</code>. So, what we get out of this is the maximum of all three values.</p>
+<p>The most important thing I can tell you about composing functions, is that there is really nothing to talk about. Function arguments are given in your code by expressions, right? And those expressions are evaluated before calling the function to produce the argument objects that are passed to the function. So, whether or not the argument expressions themselves contain function calls is immaterial — the system works the same.</p>
+<!-- from l18 -->
+<h1 id="passing-pointers-to-functions"><a class ="linkin" href="index.html#top"><span class="header-section-number">3</span> Passing pointers to functions</a></h1><p>Recall that arguments to our functions have been passed <em>by value</em>, meaning that inside the function we get a <em>copy</em> of the argument object given in the function call. Sometimes, however, we’d like to get the actual object from the function call rather than a copy. There are three basic reasons for this:</p>
+<ol type="1">
+<li>We may want to modify the object.</li>
+<li>A <em>copy</em> may not make sense for some objects.</li>
+<li>If an object is really big, copying may be expensive in terms of time or memory space.</li>
+</ol>
+<h2 id="using-pointers-to-modify-the-original-value"><a class="linkin" href="index.html#top"><span class="header-section-number">3.1</span> Using pointers to modify the original value</a></h1><p>As an example of the first reason: Suppose we have two variables <code>hour</code> and <code>minute</code> for a 24-hour clock, and we want to update the time in fifteen minute increments. We’d like a function that adds 15 minutes to the total time. Here’s a first attempt (that doesn’t work!):</p>
+<pre><code class="language-C">void tick(int h, int m);
+
+int main() {
+  int hour = 9;
+  int minute = 55;
+  for (int i=0; i&lt;10; ++i) {
+    tick(hour, minute); // doesn&#39;t work!
+    printf(&quot;current time: %02i;%02i\n&quot;, hour, minute);
+  }
+  return 0;
+}
+
+void tick(int h, int m) {
+  if (m &lt; 45) {
+    m += 15;
+  } else {
+    ++h;
+    m -= 45;
+  }
+}</code></pre>
+<p>But remember, the normal mode of passing arguments to functions is called <em>pass by value</em>, and it means the function gets a <em>copy</em> of the original value. So the arguments, such as <code>hour</code> and <code>minute</code> in this example, can’t possibly be changed by the function <code>tick</code>. The program above just prints the same time over and over again.</p>
+<p>Instead, to give the function the ability to change the original values, we have to pass <em>pointers</em> to the function, like so:</p>
+<pre><code class="language-C">void tick(int* hptr, int* mptr);
+
+int main() {
+  int hour = 9;
+  int minute = 55;
+  for (int i=0; i&lt;10; ++i) {
+    tick(&amp;hour, &amp;minute);
+    printf(&quot;current time: %02i:%02i\n&quot;, hour, minute);
+  }
+  return 0;
+}
+
+void tick(int* hptr, int* mptr) {
+  if (*mptr &lt; 45) {
+    *mptr += 15;
+  } else {
+    ++(*hptr);
+    *mptr -= 45;
+  }
+}</code></pre>
+<p>Notice what changed: The <em>parameters</em> in the function changed from type <code>int</code> to type <code>int*</code>, a pointer to an integer. This means that the <em>arguments</em> in the function call changed from the integer variables <code>hour</code> and <code>minute</code> to the addresses of those variables, <code>&amp;hour</code> and <code>&amp;minute</code>.</p>
+<p>Note that the parameter passing method in C is still pass-by-value; the function gets a copy of the arguments passed into it. But since those values are pointers, they still point to the same original variables (in this case, the <code>hour</code> and <code>minute</code> variables in <code>main()</code>). So the function <code>tick</code> actually has the ability to change them!</p>
+<h2 id="the-famous-swap-"><a class="linkin" href="index.html#top"><span class="header-section-number">3.2</span> The Famous swap!</a></h1><p>With multi-parameter functions, we really start to see some interesting reasons to use pass-by-reference. For example, one of the most common operations in computing is the <code>swap</code>. For example, suppose we read two numbers from the user and want to print out all the integers between them, comma-separated. Here’s how that might look:</p>
+<pre><code class="language-C">int a;
+int b;
+scanf(&quot; %i %i&quot;, &amp;a, &amp;b);
+if (a &lt; b) {
+  for (int i = a+1; i &lt; b; ++i) {
+    printf(&quot;%i\n&quot;, i);
+  }
+} else {
+  for (int i = b+1; i &lt; a; ++i) {
+    printf(&quot;%i\n&quot;, i);
+  }
+}</code></pre>
+<p>Hmm, that if/else is pretty ugly looking. If we had a <code>swap</code> function that too two <em>pointers to</em> integers and swapped their values, we could do the following instead:</p>
+<pre><code class="language-C">int a;
+int b;
+scanf(&quot; %i %i&quot;, &amp;a, &amp;b);
+if (b &lt; a) {
+  swap(&amp;a, &amp;b);
+}
+for (int i = a+1; i &lt; b; ++i) {
+  printf(&quot;%i\n&quot;, i);
+}</code></pre>
+<p>Notice, our <code>swap</code> function <em>has to</em> take addresses as its arguments, because otherwise it would have no hope of modifying the original values! Here’s a definition of the <code>swap</code> function that would complete the program above:</p>
+<pre><code class="language-C">void swap(int* aptr, int* bptr) {
+  int temp = *aptr;
+  *aptr = *bptr;
+  *bptr = temp;
+}</code></pre>
+<h2 id="using-pointers-to-return-multiple-values"><a class="linkin" href="index.html#top"><span class="header-section-number">3.3</span> Using pointers to return multiple values</a></h1><p>Sometimes there are several things we’d like to return with a function. For example, if you have a program that works with vectors, you might want to convert back and forth from the ((r,)) and ((x,y)) representation. It’d be nice to have a function that would do this, so I’d give it <code>r</code> and <code>theta</code> and it’d give back the appropriate <code>x</code> and <code>y</code>.</p>
+<p>Unfortunately, there are two values we’d need to return from our function, and a function in C <em>always</em> returns just one thing (or nothing, if the return type is <code>void</code>). What we can do is pass <em>pointers</em> to the variables we want the function to change, and then the function can dereference those pointers and assign the values as needed.</p>
+<pre><code class="language-C">void polar2rect(double* x, double* y, double r, double theta);
+...
+void polar2rect(double* x, double* y, double r, double theta) {
+  *x = r * cos(theta);
+  *y = r * sin(theta);
+}</code></pre>
+<p>With this definition, if I had a vector represented by <code>double</code>s <code>radius</code> and <code>angle</code>, I could convert it to rectangular coordinates stored in variables <code>xcor</code> and <code>ycor</code> by writing:</p>
+<pre><code class="language-C">polar2rect(&amp;xcor, &amp;ycor, radius, angle);</code></pre>
+<h2 id="using-pointers-when-copying-an-object-doesn-t-make-sense"><a class="linkin" href="index.html#top"><span class="header-section-number">3.4</span> Using pointers when copying an object doesn’t make sense</a></h1><p>Reason 2 from my list of reasons to pass by value is that copying doesn’t make sense for some type of objects. The best example of this is something you already know about - file streams.</p>
+<p>Recall that the old <code>stream</code> type from si204.h is actually type <code>FILE*</code>, a pointer to a <code>FILE</code> object. Now we don’t know exactly what a <code>FILE</code> object entails (it’s built in to the C standard library), but you can imagine it stores things like the operating system “handle” to connect to that open file as well as the current <em>position</em> of reading or writing in the file.</p>
+<p>So why is it pointers, <code>FILE*</code>, rather than just a <code>FILE</code> object directly, that get passed to all the reading and writing functions like <code>fputs</code> or <code>fscanf</code>? The key is that <strong>it doesn’t make sense to copy a stream object</strong>. If you read some values from the copy of the stream, would the original one stay in the same place? What if you closed the copy - would the original stream still be open?</p>
+<p>With this in mind, we can of course write functions that take streams as arguments - which means they will have <code>FILE*</code> parameter types. For example, here’s a function that reads a time in a format like “8:30pm” and returns a 24-hour time as a single integer such as <code>1335</code>:</p>
+<pre><code class="language-C">int readtime(FILE* instream) {
+  int hrs;
+  int mins;
+  char ap;
+  fscanf(instream, &quot; %d:%d%cm&quot;, &amp;hrs, &amp;mins, &amp;ap);
+  int res = hrs * 100 + mins;
+  if (hrs == 12) {
+    res -= 1200
+  }
+  if (ap == &#39;p&#39;) {
+    res += 1200
+  }
+  return res;
+}</code></pre>
+<p>Now we could call <code>readtime</code> after opening a file, like:</p>
+<pre><code class="language-C">cstring file = &quot;time.txt&quot;;
+FILE* fin = fopen(file);
+if (readtime(fin) &gt;= 1530) {
+  printf(&quot;Time to relax.\n&quot;);
+}
+fclose(fin);</code></pre>
+<p>And we could also use the same function to read from the terminal, by just passing <code>stdin</code> to the function instead of a <code>FILE*</code> variable that we created:</p>
+<pre><code class="language-C">printf(&quot;Enter time like 8:30pm: &quot;);
+fflush(stdout);
+int time = readtime(stdin);
+printf(&quot;Current time is %04i\n&quot;, time);</code></pre>
+<!-- from l19 -->
+<h1 id="recursion"><a class ="linkin" href="index.html#top"><span class="header-section-number">4</span> Recursion</a></h1><h2 id="introduction-printing-a-starry-triangle"><a class="linkin" href="index.html#top"><span class="header-section-number">4.1</span> Introduction: Printing a starry triangle</a></h1><p>Let’s consider the following function, which is a variation a now-familiar example: A function <code>void line(int k)</code> that prints a line of <code>k</code> asterisks. And just to be on the safe side, we’ll print out a helpful error message if a negative value of <code>k</code> is passed in, since that doesn’t make sense.</p>
+<pre><code class="language-C">void line(int k) {
+  // Check for invalid argument
+  if (k &lt; 0) {
+    printf(&quot;ERROR: negative value for k\n&quot;);
+    return;
+  }
+
+  // Now take care of the usual case
+  for(int i=0; i &lt; k; i++) {
+    printf(&quot;*&quot;);
+  }
+  printf(&quot;\n&quot;);
+}</code></pre>
+<p>If you call this function with an argument like 35, you get:</p>
+<pre><code class="language-.text">***********************************</code></pre>
+<!-- ***. -->
+<p>Now, suppose I want to modify this so that it prints a second line below of length <code>k-1</code>, so that calling this function with an argument like 35 would give me</p>
+<pre><code class="language-.text">***********************************
+**********************************</code></pre>
+<!-- *. -->
+<p>Well, I might decide to try the following idea. Since <code>line</code> already does all the work of printing out a line for me, why don’t I just add a <code>line(k-1)</code> at the end of my function definition? In other words, how about:</p>
+<pre><code class="language-C">void line(int k) {
+  // Check for invalid argument
+  if (k &lt; 0) {
+    printf(&quot;ERROR: negative value for k\n&quot;);
+    return;
+  }
+
+  // Now take care of the usual case
+  for(int i=0; i &lt; k; i++) {
+    printf(&quot;*&quot;);
+  }
+  printf(&quot;\n&quot;);
+
+  // Print next line?
+  line(k-1);
+}</code></pre>
+<p>Well, if I compile and run this with something like <code>line(10)</code>, here’s what I get:</p>
+<pre><code class="language-.text">**********
+*********
+********
+*******
+******
+*****
+****
+***
+**
+*
+
+ERROR: negative value for k</code></pre>
+<!-- *. -->
+<p>So what happened? A function that “calls itself” as this one does is called <em>recursive</em>, and the best way to understand what’s going on here is to step through it showing what happens step by step. See if you can write out the “stack” of recursive calls that go on and follow the execution step by step.</p>
+<p>Of course, we’d like to avoid that error message at the end. What’s really needed is called a <em>base case</em> for the recursion — what condition should stop any further recursive calls? In the case of the starry triangle, it should probably stop when it reaches zero. Actually, all that’s needed to fix the program is to just take out the printing of the error message and have it simply <code>return;</code> in that situation!</p>
+<p>Oh, and just for fun, let’s also have the program print out a line of <code>+</code>s <em>after the recursive call</em>, with the same length as the line of <code>*</code>s. Here’s the complete function:</p>
+<pre><code class="language-C">void line(int k) {
+  // Base case
+  if (k &lt;= 0) {
+    return;
+  }
+
+  // Now take care of the usual case
+
+  // Step 1: print stars
+  for(int i=0; i &lt; k; i++) {
+    printf(&quot;*&quot;);
+  }
+  printf(&quot;\n&quot;);
+
+  // Step 2: recursive call
+  line(k-1);
+
+  // Step 3: print plusses
+  for(int i=0; i &lt; k; i++) {
+    printf(&quot;+&quot;);
+  }
+  printf(&quot;\n&quot;);
+}</code></pre>
+<p>And here’s what happens when we run <code>line(5)</code> now:</p>
+<pre><code class="language-.text">*****
+****
+***
+**
+*
++
+++
++++
+++++
++++++</code></pre>
+<!-- **. -->
+<p>Yes, that’s really what you’ll get! Notice that the first <em>and</em> last lines come from the “top-level” call to <code>line(5)</code>, then the second and second-to-last lines come from the next recursive call <code>line(4)</code>, and so on. If you don’t believe me, <a href="files.php%3Ff=lines.c.html">download the complete program</a> and try for yourself!</p>
+<!-- from l26 -->
+<h2 id="how-recursion-works"><a class="linkin" href="index.html#top"><span class="header-section-number">4.2</span> How recursion works</a></h1><p>The <code>line</code> function above was our first “sneak peek” at recursion. A function is <em>recursive</em> if the function, in order to compute its result, ends up “calling itself” in some cases.</p>
+<p>This idea can seem paradoxical when you’re started, but like most things it will make more sense as time goes on. We will talk about this and look in more detail during class, but the upshot is that we have the same function, yes, but it is one <em>call of the function</em> that in turn makes a separate <em>call</em> to the same function, with different arguments. So each of the recursive calls has its own scope and own variables, all executing the same lines of code but on different values.</p>
+<p>Here’s another (classic) example, computing the factorial of <em>n</em> defined by</p>
+<p><span class="math display">\[n! = n \cdot (n-1) \cdot (n-2) \cdot (n-3) \cdots 3 \cdot 2 \cdot 1\]</span></p>
+<pre><code class="language-C">int factorial(int n);
+
+int main() {
+  int f = factorial(4);
+  cout &lt;&lt; f &lt;&lt; endl;
+  return 0;
+}
+
+int factorial(int n) {
+  if (n &lt;= 1) {
+    return 1;
+  } else {
+    return n * factorial(n-1);
+  }
+}</code></pre>
+<p>The key take-away from this is that there is not contradiction in having multiple active calls to a function (like <code>factorial</code>) because each function call is essentially its own copy of the function variables. So we end up with a “stack” of function calls that includes many copies of the factorial function, but they’re all called with different argument values.</p>
+<h2 id="base-cases"><a class="linkin" href="index.html#top"><span class="header-section-number">4.3</span> Base cases</a></h1><p>Now that we’ve seen a few examples of recursive functions, it’s time to think about how you might design such a function yourself. But before we start looking at how one devises a recursive function that accomplishes a given task, let’s look at a recursive function that <em>doesn’t</em> work. Consider this function:</p>
+<pre><code class="language-C">int f(int k) {
+  int a = k*k;
+  int b = f(k + 1);
+  return a + b;
+}</code></pre>
+<p>Now, let us suppose that we start off by calling <code>f(3)</code>. The following table shows what happens as time evolves a few steps:</p>
+<table>
+<thead>
+<tr class="header">
+<th>call to…</th>
+<th>awaiting return…</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>main()</code></td>
+<td></td>
+</tr>
+<tr class="even">
+<td><code>f(3)</code></td>
+<td><code>main()</code></td>
+</tr>
+<tr class="odd">
+<td><code>f(4)</code></td>
+<td><code>f(3) main()</code></td>
+</tr>
+<tr class="even">
+<td><code>f(5)</code></td>
+<td><code>f(4) f(3) main()</code></td>
+</tr>
+<tr class="odd">
+<td><code>f(6)</code></td>
+<td><code>f(5) f(4) f(3) main()</code></td>
+</tr>
+</tbody>
+</table>
+<div class="bareannotation">
+<p><img src="fixing_problems.png" /><br />
+<a href="http://xkcd.com/1739/" class="uri">http://xkcd.com/1739/</a></p>
+</div>
+<p>You can see that the stack of functions awaiting the return of the most recently called function simply keeps growing and growing, with nothing but the limits of time and space to stop it from growing forever!</p>
+<p>This function has an <em>infinite recursion</em>, meaning that recursive calls are made over and over again, without any mechanism to stop the process. A proper recursive function must always have a <em>base case</em>, meaning a way to return without making a recursive call, which is the mechanism that stops this process of ever more recursive calls and an ever growing stack of function calls waiting on the return of other function calls. Moreover, this <em>base case</em>, i.e. this way of returning without making a recursive call, must be something which we’ll eventually hit. Once we hit it, we can start taking function calls off the top of the stack and returning from them.</p>
+<div style="clear:both;">
+
+</div>
+<p>Whether or not we are in the <em>base case</em> is determined by the parameters we’re passed. Consider this function</p>
+<pre><code class="language-C">// adds up the numbers from 0 up to k
+int sum(int k) {
+  int part = 0;
+  int ans = 0;
+
+  // Base case
+  if (k == 0) {
+    return 0;
+  }
+
+  // Recursive case
+  int part = sum(k-1);
+  int ans = part + k;
+  return ans;
+}</code></pre>
+<p>The <em>base case</em> here is reached when <code>k</code> is zero. Moreover, no matter how big the number in our initial call to <code>sum</code>, we must eventually reach our base case, because the argument to our recursive calls keep getting smaller and smaller, until they finally reach zero. If we call <code>sum(3)</code> from the <code>main</code> function, the following table shows how the computation evolves over time:</p>
+<table>
+<thead>
+<tr class="header">
+<th>call to/return value</th>
+<th>awaiting return…</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>main()</code></td>
+<td></td>
+</tr>
+<tr class="even">
+<td><code>sum(3)</code></td>
+<td><code>main()</code></td>
+</tr>
+<tr class="odd">
+<td><code>sum(2)</code></td>
+<td><code>sum(3) main()</code></td>
+</tr>
+<tr class="even">
+<td><code>sum(1)</code></td>
+<td><code>sum(2) sum(3) main()</code></td>
+</tr>
+<tr class="odd">
+<td><code>sum(0)</code></td>
+<td><code>sum(1) sum(2) sum(3) main()</code></td>
+</tr>
+<tr class="even">
+<td>returns <code>0</code></td>
+<td><code>sum(1) sum(2) sum(3) main()</code></td>
+</tr>
+<tr class="odd">
+<td>returns <code>1</code></td>
+<td><code>sum(2) sum(3) main()</code></td>
+</tr>
+<tr class="even">
+<td>returns <code>3</code></td>
+<td><code>sum(3) main()</code></td>
+</tr>
+<tr class="odd">
+<td>returns <code>6</code></td>
+<td><code>main()</code></td>
+</tr>
+</tbody>
+</table>
+<p>So, to be a properly defined recursive function you must have a base case, i.e. a way for the function to return without making a recursive call, and your recursive calls must work towards the base case.</p>
+<h2 id="solving-problems-recursively"><a class="linkin" href="index.html#top"><span class="header-section-number">4.4</span> Solving problems recursively</a></h1><p>Let’s develop a methodology for writing recursive functions. We’ll illustrate it as we go along with the following problem: Write a function that takes a positive integer <code>n</code> as input and returns the value of <span class="math display">\[1^2 + 2^2 + 3^2 + \cdots + n^2.\]</span> Not a very interesting problem, but so simple that we can concentrate on problem solving using recursion.</p>
+<p>When you’re setting out to write a recursive function, you at least have a prototype in mind. In this case that’ll be</p>
+<pre><code class="language-C">int sumsquare(int k);</code></pre>
+<p>That part is easy, and no recursion is involved. If we’re going to solve this recursively, we have two big questions:</p>
+<ol type="1">
+<li><p>What is the <em>base case</em>? In other words, for what inputs can we automatically just spit out the answer without having to do any real work? In particular, without needing a recursive call?</p>
+<p>For this problem, I’m asking what values of <code>k</code> are particularly easy to give the answer to? Of course, since we’re assuming that <code>k</code> is positive, the easiest value for <code>k</code> is 1. If <code>k</code> is one we can just immediately return 1. So that gives us our base case.</p>
+<pre><code class="language-C">// Base case
+if (k == 1) {
+  return 1;
+}</code></pre></li>
+</ol>
+<div class="annotation">
+<p>Sometimes it’s helpful to think about recursion this way: “if I had a function that solved my problem, but only for arguments of value less than n, how could I solve the problem for n? For example, suppose I had a function <code>factorialSmall</code> that computed the factorial of its argument, but only for numbers less than 10. How could I use it to solve factorial 10? Easy:</p>
+<pre><code class="language-C">10*factorialSmall(9)</code></pre>
+<p>Now: suppose <code>factorialSmall</code> worked for any number less than some value n, but I’m not telling you exactly what n is. How could I compute factorial(n)? Easy:</p>
+<pre><code class="language-C">n*factorialSmall(n-1)</code></pre>
+<p>Great! Now I’ve got my recursive case!</p>
+</div>
+<ol start="2" type="1">
+<li><p>What is the <em>recursive case</em>? How would the answer to a “smaller” problem of the same kind help get the answer to the original problem. In other words, if I just assume that the function (which I already have the prototype for) just “works” for smaller inputs, how will that help me get the answer?</p>
+<p>For this problem, what I’m asking is this: How would the answer to <code>sumsquare(k-1)</code> help me figure out the answer to <code>sumsquare(k)</code>? Well, all I’d need to add to the result of <code>sumsquare(k-1)</code> is a <code>k</code><sup>2</sup>, and I’d have the answer to <code>sumsquare(k)</code>. This then gives us our recursive case:</p>
+<pre><code class="language-C">// Recursive case
+int part = sumsquare(k - 1);
+int ans = part + k*k;
+return ans;</code></pre></li>
+</ol>
+<p>If you put the answer to these questions together, you’ll have a recursive function that solves the problem. Really the two keys are to find a base case, and to assume your function already works as you go about using recursive calls to define it. In the above we just assumed that <code>sumsquare</code> would work right when we called <code>sumsquare(k - 1)</code>. So, here’s the complete function:</p>
+<pre><code class="language-C">int sumsquare(int k) {
+  // Base case
+  if (k == 1) {
+    return 1;
+  }
+
+  // Recursive case
+  int part = sumsquare(k - 1);
+  int ans = part + k*k;
+  return ans;
+}</code></pre>
+<!-- from l35 -->
+<h1 id="the-structure-of-multi-file-programs"><a class ="linkin" href="index.html#top"><span class="header-section-number">5</span> The structure of multi-file programs</a></h1><p>As our programs get more complicated with more and more functions, it can be useful to put some of those functions <em>in their own files</em> that are separate from our main program.</p>
+<p>Going back to our familiar example, let’s say we have a program to draw some ASCII shapes. Granted this isn’t the most life-changing program, but it will be useful to understand what’s going on:</p>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+
+void rep(int times, char c);
+void triangle(int k);
+void rectangle(int len, int wid);
+
+int main() {
+  int k = 10;
+  // print an interesting shape
+  rectangle(k/2, k);
+  triangle(k);
+  return 0;
+}
+
+void rep(int times, char c) {
+  for (int i=0; i&lt;times; ++i) {
+    printf(&quot;%c&quot;, c);
+  }
+  printf(&quot;\n&quot;);
+}
+
+void triangle(int k) {
+  for (int wid=k; wid &gt;= 1; --wid) {
+    rep(wid, 'T');
+  }
+}
+
+void rectangle(int len, int wid) {
+  for (int row=0; row &lt; len; ++row) {
+    rep(wid, 'R');
+  }
+}</code></pre><p>Now suppose this is just too “crowded” with three functions, and we’d like to split this into multiple files. Specifically, we’ll make a separate <strong>header file</strong> for the function prototypes, and a <strong>definitions file</strong> that contains the actual function definitions.</p>
+<h2 id="header-files"><a class="linkin" href="index.html#top"><span class="header-section-number">5.1</span> Header files</a></h1><p>First, the header file, which we might call <code>draw.h</code>:</p>
+<pre><code class="language-c">// prototypes for drawing functions
+
+// note: these lines &quot;protect&quot; us against someone #including this file twice.
+#ifndef DRAW_H
+#define DRAW_H
+
+void rep(int times, char c);
+void triangle(int k);
+void rectangle(int len, int wid);
+
+#endif // DRAW_H</code></pre><p>Something to notice there is the lines with <code>#ifndef</code>. This is code that you see in just about any header file, and it tells the compiler to skip re-including this code if it’s already been included some other way! That protects you from accidentally having duplicate definitions, which would be a bad thing.</p>
+<p>Specifically, the <code>#ifndef</code> is a sort of if statement that says “only include the rest of this if <code>DRAW_H</code> hasn’t been defined yet”. Then of course the next line goes ahead and defines <code>DRAW_H</code> so that if this comes back again, it won’t get included again. And you can’t forget the <code>#endif</code> at the end!</p>
+<p>Note that <code>DRAW_H</code> really could be any name you want, but it’s a useful <em>convention</em> to use the name of the header file itself, in all caps, with <code>_H</code> at the end. That’s mostly to make sure you don’t accidentally use the same in two different header files (what would happen?) or - worse - as a variable in your program.</p>
+<p>In this example we have only one header file, but of course you could also use multiple header files if you like, each with their own function prototypes. You always want to end your header files with a <code>.h</code> filename extension, and remember that <em>header files don’t get compiled directly</em>. Instead, they will be <code>#include</code>d into other <code>.c</code> programs that do get compiled!</p>
+<h2 id="definitions-file"><a class="linkin" href="index.html#top"><span class="header-section-number">5.2</span> Definitions file</a></h1><p>Since the header file only has the function prototypes, we put the definitions in their own file, which for this example we might call <code>draw.c</code>:</p>
+<pre><code class="language-c">// Definitions for drawing functions
+
+#include &lt;stdio.h&gt;
+#include &quot;draw.h&quot;
+
+void rep(int times, char c) {
+  for (int i=0; i&lt;times; ++i) {
+    printf(&quot;%c&quot;, c);
+  }
+  printf(&quot;\n&quot;);
+}
+
+void triangle(int k) {
+  for (int wid=k; wid &gt;= 1; --wid) {
+    rep(wid, 'T');
+  }
+}
+
+void rectangle(int len, int wid) {
+  for (int row=0; row &lt; len; ++row) {
+    rep(wid, 'R');
+  }
+}</code></pre><p>Notice that this looks <em>very</em> similar to any other program we’re written, except that there’s no <code>main</code> method! Also see that we <code>#included</code> the header file <code>draw.h</code>, using double-quotes since that’s not a standard header file; it’s one that we wrote ourselves!</p>
+<p>Now this file <em>is not going to be included anywhere else</em>. It’s not a header file! So we don’t have to do the <code>#ifndef</code> thing to protect from multiple includes, but we <em>do</em> have to compile this piece. If you try to compile like normal, you’ll get an error message like</p>
+<pre><code class="language-.text">/usr/lib/gcc/x86_64-linux-gnu/4.9/../../../x86_64-linux-gnu/crt1.o: In function &#39;_start&#39;:
+/build/glibc-Wb9zo9/glibc-2.19/csu/../sysdeps/x86_64/start.S:118: undefined reference to &#39;main&#39;
+collect2: error: ld returned 1 exit status</code></pre>
+<p>The important part of that is this: <code>undefined reference to 'main'</code>. It’s saying, I don’t know how to make a program out of this, since there’s no <code>main</code> function!</p>
+<p>Instead, you have to give the <code>-c</code> flag to the compiler to tell it that you just want to create <em>object code</em>. Think of that as <em>part</em> of a program; it’s machine code without a defined starting point (because there’s no <code>main</code>). Object code files should always have the same name as the corresponding <code>.c</code> file, but they end in <code>.o</code> instead.</p>
+<p>So you could compile with:</p>
+<pre><code class="language-.bash">gcc -c draw.c -o draw.o</code></pre>
+<p>(And actually the <code>-o draw.o</code> part is unnecessary, since <code>gcc</code> will automatically give the object file that name by default.)</p>
+<h2 id="main-program-and-linking-together"><a class="linkin" href="index.html#top"><span class="header-section-number">5.3</span> Main program and linking together</a></h1><p>What’s left is just our <code>main</code> function, which could go in its own file that we might call <code>shapes.c</code>:</p>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+#include &quot;draw.h&quot;
+
+int main() {
+  int k = 10;
+  // print an interesting shape
+  rectangle(k/2, k);
+  triangle(k);
+  return 0;
+}</code></pre><p>You should notice that there is a <code>#include</code> for the header file <code>&quot;draw.h&quot;</code>, but <em>no include for the definitions file</em>! That’s because, again, header files get included (at the beginning, hence the name “header”), and definition files get <em>compiled separately</em>. We could also do a separate compilation of our main program <code>shapes.c</code> into object code with the following command:</p>
+<pre><code class="language-.bash">gcc -c shapes.c -o shapes.o</code></pre>
+<p>Now after doing the two separate compilations of <code>draw.c</code> and <code>shapes.c</code>, using the <code>-c</code> flag so gcc produces object code, you will have two object code files in your directory, <code>draw.o</code> and <code>shapes.o</code>. Those are <em>not</em> programs; they’re just compiled bits of machine code.</p>
+<p>The process of stitching together our object code into an actual complete program is called <em>linking</em>, and <code>gcc</code> can do that for us too! Here’s the command you would use to link together <code>draw.o</code> and <code>shapes.o</code> and create an executable program <code>shapes</code>:</p>
+<pre><code class="language-.bash">gcc draw.o shapes.o -o shapes</code></pre>
+<p>Putting this all together, the compilation and linking steps for this program are as follows:</p>
+<pre><code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">ls</code>
+<code class="language-text output">draw.c  shapes.c</code>
+<code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash"># COMPILATION STEPS</code>
+<code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">gcc -c draw.c -o draw.o</code>
+<code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">gcc -c shapes.c -o shapes.o</code>
+<code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">ls</code>
+<code class="language-text output">draw.c  draw.o  shapes.c  shapes.o</code>
+<code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash"># LINKING STEP</code>
+<code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">gcc draw.o shapes.o -o shapes</code>
+<code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">ls</code>
+<code class="language-text output">draw.c  draw.o  shapes  shapes.c  shapes.o</code></pre><p>It’s very important to understand those steps! I can’t stress that enough — if you’re fuzzy on the difference between compilation and linking, you’ll be mightily confused by the errors that you see and how to fix them.</p>
+<p>But… it’s not so important to follow all the steps above, because gcc is kind enough to do it all for us in one step if we just give it all of the source code <code>.c</code> files (but not the header files!!!) in a single command like</p>
+<pre><code class="language-.bash">gcc draw.c shapes.c -o shapes</code></pre>
+<p>This <em>actually</em> does the separate compilation and linking steps we saw above, and roughly in that same order, but you can get it all to happen with that single command.</p>
+<h1 id="problems"><a class ="linkin" href="index.html#top"><span class="header-section-number">6</span> Problems</a></h1><ol type="1">
+<li><a href="files.php%3Ff=marathon.c.html">Marathon Times</a></li>
+<li><a href="files.php%3Ff=datecalc.c.html">Date Calculator</a></li>
+<li><a href="files.php%3Ff=approxe.c.html">Approximating e</a></li>
+<li><a href="files.php%3Ff=surveying.c.html">Surveying Problem</a> This gives you another simple example of top-down design.</li>
+<li><a href="files.php%3Ff=dist.c.html">Distance between points</a> This is a small multi-parameter function problem.</li>
+<li><a href="files.php%3Ff=primecount.c.html">What percentage of numbers are prime?</a> This is an example using a predicate.</li>
+</ol>
+<div style="display:none">
+<ol type="1">
+<li><a href="https://www.usna.edu/Users/cs/roche/courses/s17si204/notes/05/TE2.html">Incrementing a Military Clock</a> (You might prefer <a href="https://www.usna.edu/Users/cs/roche/courses/s17si204/notes/05/TE3.html">this solution</a>.) This is a simple pass-by-reference example that modifies its argument.</li>
+<li><p><a href="https://www.usna.edu/Users/cs/roche/courses/s17si204/notes/05/TE4.html">Reading Binary Numbers</a> Here’s a simple example in which we use pass-by-reference to avoid making a copy of an istream object.</p></li>
+<li>Look at <a href="https://www.usna.edu/Users/cs/roche/courses/s17si204/notes/05/QE1.html">this program</a> and explain what happens, i.e. answer the question posed up in the comment block.</li>
+<li>Look at <a href="https://www.usna.edu/Users/cs/roche/courses/s17si204/notes/05/QE2.html">this program</a>, similar to the one above, and explain what happens, i.e. answer the question posed up in the comment block. <strong>Hint:</strong> recall that char + int produces an int value!</li>
+<li><p>Step through <a href="https://www.usna.edu/Users/cs/roche/courses/s17si204/notes/05/TE2.html">this program</a> with the debugger and figure out what useful work (if any) the mystery function accoplishes.</p></li>
+<li>Revisiting the GCD. The way Euclid would’ve phrased his GCD algorithm would be more like this: If <code>A</code> and <code>B</code> (okay, he was greek, so it probably would’ve been α and β …) are two integers with <code>A &gt;= B &gt;=          0</code> then the GCD of <code>A</code> and <code>B</code> is given by:
+<ul>
+<li>if <code>B = 0</code> then the GCD is <code>A</code></li>
+<li>if <code>B &gt; 0</code> then the GCD is the same as the GCD of <code>B</code> and <code>A%B</code>.</li>
+</ul>
+Using this phrasing of the algorithm, implement the GCD as a recursive function. <a href="https://www.usna.edu/Users/cs/roche/courses/s17si204/notes/05/TE1.html">Here’s a solution</a>. (Think, what’s the base case? What’s the recursive case? Does the recursive case work towards the base case?)</li>
+<li><a href="https://www.usna.edu/Users/cs/roche/courses/s17si204/notes/05/TE2.html">Making Change</a> My solution prints out the coins in decreasing value. Any thoughts on how you could modify it to print out coins in <em>increasing</em> value?</li>
+<li><p>Factorization … Again. Using the function <code>int firstfactor(int);</code> that you guys defined for me in <a href="https://www.usna.edu/Users/cs/roche/courses/s17si204/notes/l15/hw.html">Class 15 homework</a>, write a recursive function <code>void factor(int n,         ostream&amp; OUT);</code> that prints out the factorization of <code>n</code> to the output stream <code>OUT</code>. What’s the base case? How could a recursive call call to <code>factor</code> with a smaller <code>n</code>-value help solve the problem? Take a look at <a href="https://www.usna.edu/Users/cs/roche/courses/s17si204/notes/05/TE3.html">my solution</a>.</p></li>
+</ol>
+</div>
+  </div></article></div></div><nav class="stickynav"><div><div class="dropdown"><a href="../../index.php.html" class="ddown-btn">SI 204</a><div class="ddown-content"><a href="../../calendar.php.html">Calendar</a><a href="../index.html">Notes</a><a href="../../hw/index.html">HWs</a><a href="../../lab/index.html">Labs</a><a href="../../proj/index.html">Projects</a><a href="../../exams/index.html">Exams</a><a href="../../admin/index.html">Resources</a><a href="https://www.usna.edu/Users/cs/roche/">Roche</a><a href="https://www.usna.edu/Users/cs/albing/">Albing</a></div></div><div class="dropdown"><a href="index.html#top" class="linkin pagetop">Unit 5: Functions</a><div class="ddown-content ddtoc"><ul><li><a class="linkin" href="index.html#writing-our-own-functions"><span class="toc-section-number">1</span> Writing our own functions</a>
+<ul><li><a class="linkin" href="index.html#motivating-example"><span class="toc-section-number">1.1</span> Motivating Example</a></li><li><a class="linkin" href="index.html#prototypes"><span class="toc-section-number">1.2</span> Prototypes</a></li><li><a class="linkin" href="index.html#function-definitions"><span class="toc-section-number">1.3</span> Function Definitions</a></li><li><a class="linkin" href="index.html#functions-with-an-argument"><span class="toc-section-number">1.4</span> Functions with an argument</a></li><li><a class="linkin" href="index.html#functions-that-return-nothing"><span class="toc-section-number">1.5</span> Functions that return nothing</a></li><li><a class="linkin" href="index.html#multi-parameter-functions"><span class="toc-section-number">1.6</span> Multi-Parameter Functions</a></li><li><a class="linkin" href="index.html#vocabulary"><span class="toc-section-number">1.7</span> Vocabulary</a></li></ul></li>
+<li><a class="linkin" href="index.html#designing-functions"><span class="toc-section-number">2</span> Designing Functions</a>
+<ul><li><a class="linkin" href="index.html#functions-and-top-down-design"><span class="toc-section-number">2.1</span> Functions and Top-Down design</a></li><li><a class="linkin" href="index.html#scope-and-functions"><span class="toc-section-number">2.2</span> Scope and Functions</a></li><li><a class="linkin" href="index.html#predicates"><span class="toc-section-number">2.3</span> Predicates</a></li><li><a class="linkin" href="index.html#composing-functions"><span class="toc-section-number">2.4</span> Composing Functions</a></li></ul></li>
+<li><a class="linkin" href="index.html#passing-pointers-to-functions"><span class="toc-section-number">3</span> Passing pointers to functions</a>
+<ul><li><a class="linkin" href="index.html#using-pointers-to-modify-the-original-value"><span class="toc-section-number">3.1</span> Using pointers to modify the original value</a></li><li><a class="linkin" href="index.html#the-famous-swap-"><span class="toc-section-number">3.2</span> The Famous swap!</a></li><li><a class="linkin" href="index.html#using-pointers-to-return-multiple-values"><span class="toc-section-number">3.3</span> Using pointers to return multiple values</a></li><li><a class="linkin" href="index.html#using-pointers-when-copying-an-object-doesn-t-make-sense"><span class="toc-section-number">3.4</span> Using pointers when copying an object doesn’t make sense</a></li></ul></li>
+<li><a class="linkin" href="index.html#recursion"><span class="toc-section-number">4</span> Recursion</a>
+<ul><li><a class="linkin" href="index.html#introduction-printing-a-starry-triangle"><span class="toc-section-number">4.1</span> Introduction: Printing a starry triangle</a></li><li><a class="linkin" href="index.html#how-recursion-works"><span class="toc-section-number">4.2</span> How recursion works</a></li><li><a class="linkin" href="index.html#base-cases"><span class="toc-section-number">4.3</span> Base cases</a></li><li><a class="linkin" href="index.html#solving-problems-recursively"><span class="toc-section-number">4.4</span> Solving problems recursively</a></li></ul></li>
+<li><a class="linkin" href="index.html#the-structure-of-multi-file-programs"><span class="toc-section-number">5</span> The structure of multi-file programs</a>
+<ul><li><a class="linkin" href="index.html#header-files"><span class="toc-section-number">5.1</span> Header files</a></li><li><a class="linkin" href="index.html#definitions-file"><span class="toc-section-number">5.2</span> Definitions file</a></li><li><a class="linkin" href="index.html#main-program-and-linking-together"><span class="toc-section-number">5.3</span> Main program and linking together</a></li></ul></li>
+<li><a class="linkin" href="index.html#problems"><span class="toc-section-number">6</span> Problems</a></ul></div></div></nav><footer><div id="foottext">    <p class="disclaimer">Material contained above is made available
+    for the purpose of peer review and discussion and does not
+    necessarily reflect the views of the Department of the Navy or the
+    Department of Defense.
+    Some links above are to sites that are not
+    located at the United States Naval Academy. The USNA is not
+    responsible for the content found on these sites. In addition, the
+    content of these sites does not reflect the opinions, standards,
+    policy or endorsement of the Naval Academy or the United States
+    Government.</p>
+  Page maintained by Daniel S. Roche (<a href="mailto:roche [AT] usna [DOT] edu" id="emaillink1">roche [AT] usna [DOT] edu</a><script type='text/javascript'><!--
+        var b="he@usna.edu";
+        var a="roc";
+        document.getElementById("emaillink1").href='mailto:'+a+b;
+        document.getElementById("emaillink1").innerHTML=a+b;
+        // --></script>). Last updated 06 March 2017 12:34.</div></footer><script src="../../scripts/prism.js"></script><script type="text/javascript">var the_body = $('html, body');
+var sticky_height = $('.stickynav').height();
+$('.linkin').click(function(){
+  var href = $(this).attr('href');
+  var offset;
+  if (href == '#top') offset = 0;
+  else offset = $(href).offset().top - sticky_height;
+  the_body.animate({ scrollTop: offset }, 500);
+  return false;
+});</script></body></html>

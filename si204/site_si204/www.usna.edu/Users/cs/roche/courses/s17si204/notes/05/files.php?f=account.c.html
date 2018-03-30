@@ -1,0 +1,162 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+         "http://www.w3.org/TR/html4/strict.dtd"><html><head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"><title>account.c</title><link href="../../scripts/prism.css" rel="stylesheet" />    <style type="text/css">
+    body {
+      margin: 0;
+      padding:55px 0 0 0;
+    }
+    div#header {
+      position:absolute;
+      top: 0;
+      left: 0;
+      width:100%;
+      height:50px;
+      border-bottom: 5px solid red;
+      text-align: center;
+      background-color: #d0d0d0;
+      z-index: 1000;
+    }
+    @media screen{
+      body>div#header{
+        position:fixed;
+      }
+    }
+    * html body{
+      overflow:hidden;
+    }
+    * html div#content {
+      height: 100%;
+      overflow: auto;
+    }
+    .warning {
+      margin: 3px auto;
+      background-color: black;
+      color: yellow;
+      font-weight: bold;
+      max-width: 600px;
+      font-family: sans-serif;
+      text-align: center;
+    }
+    /*
+    .codeblock {
+      margin:10px auto 10px;
+      min-width:500px;
+      max-width:800px;
+    }
+    .codeblock td.de1 {
+      border:1px solid black;
+    }
+    .codeblock td.ln {
+      border:1px solid white;
+    }
+    pre {
+      margin:10px auto 10px;
+      max-width:800px;
+    }
+    .plainpre {
+      border: 1px solid black;
+      padding:2px;
+    }
+    */
+    </style>
+  </head><body><div id="header"><p><a href="files.php%3Ff=account.c&amp;downloadcode=yes">Click here</a> to download <code>account.c</code>.</p></div><div id="content"><pre class="line-numbers"><code class="language-C">/*************************************************
+FINANCIAL SIMULATION
+
+You have a bank account whose annual interest
+rate depends on the amount of money you have
+in your account at the beginning of each year.
+Your annual rate starts at 3%, and grows by an
+additional half a percent for each thousand
+dollars in your account up to, but not exceeding
+8%. Interest in this account is compounded monthly
+at the annual rate.  Each year you also make a
+transaction (before the bank figures out what
+your rate is).  Write a program that simulates
+these financial interactions for 5 years.  At
+the beginning of each year it should ask the
+user whether he wants to make a deposit or
+withdrawl and for how much.  At the end, it
+should print out the balance at the end of the
+5th year.
+*************************************************/
+#include &lt;stdio.h&gt;
+
+double transaction(double bal);
+double intrate(double bal);
+double compound(double rate);
+
+int main() {
+  double bal = 0.0;
+
+  // Simulate 5 years
+  for(int i = 0; i &lt; 5; i++) {
+    bal = transaction(bal);
+    double rate = intrate(bal);
+    bal = bal*compound(rate);
+  }
+
+  // Print out final balance
+  printf(&quot;Balance = $%.2f\n&quot;, bal);
+
+  return 0;
+}
+
+/*******************************************
+ ** Interacts with user to perform transaction
+ ** and returns new balance.
+ *******************************************/
+double transaction(double bal) {
+  // Get type of transaction
+  printf(&quot;Enter w:withdrawl or d:deposit &quot;);
+  fflush(stdout);
+  char act;
+  scanf(&quot; %c&quot;, &amp;act);
+
+  // Get amount of transaction
+  printf(&quot;Enter amount: &quot;);
+  fflush(stdout);
+  double amount;
+  scanf(&quot; %lg&quot;, &amp;amount);
+
+  // Get new Balance figure
+  if (act == 'w') {
+    bal = bal - amount;
+  }
+  else {
+    bal = bal + amount;
+  }
+
+  return bal;
+}
+
+/*******************************************
+ ** Computes interest rate based on Balance.
+ *******************************************/
+double intrate(double bal) {
+  // Get # of thousands
+  int thous = bal/1000;
+
+  // Calc rate
+  double rate = 3 + thous*0.5;
+  if (rate &gt; 8) {
+    rate = 8;
+  }
+
+  return rate;
+}
+
+/*******************************************
+ ** Gives the value of one dollar after a
+ ** year of monthly compounded interest at
+ ** annual rate rate.
+ *******************************************/
+double compound(double rate) {
+  // Simulate year with monthly compounding
+  double scalerate = rate/100;
+  double total = 1.0;
+  for(int i = 0; i &lt; 12; i++) {
+    total = total*(1 + scalerate/12);
+  }
+
+  return total;
+}</code></pre></div><script src="../../scripts/prism.js"></script></body></html>

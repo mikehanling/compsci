@@ -1,0 +1,38 @@
+#include <stdio.h>
+
+void line(int k);
+
+int main() {
+  int k;
+  printf("Enter k: ");
+  fflush(stdout);
+  scanf(" %i", &k);
+
+  line(k);
+
+  return 0;
+}
+
+void line(int k) {
+  // Base case
+  if (k <= 0) {
+    return;
+  }
+
+  // Now take care of the usual case
+
+  // Step 1: print stars
+  for(int i=0; i < k; i++) {
+    printf("*");
+  }
+  printf("\n");
+
+  // Step 2: recursive call
+  line(k-1);
+
+  // Step 3: print plusses
+  for(int i=0; i < k; i++) {
+    printf("+");
+  }
+  printf("\n");
+}

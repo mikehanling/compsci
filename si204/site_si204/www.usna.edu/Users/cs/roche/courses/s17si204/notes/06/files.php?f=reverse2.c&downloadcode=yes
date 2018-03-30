@@ -1,0 +1,39 @@
+/***********************************************************************
+The function reverse(string s) prints the string s in reverse order.
+This implementation uses recursion.  Note that we make a helper function
+print_reverse_helper to allow it to be called without the length
+argument.
+ ***********************************************************************/
+#include <stdio.h>
+#include <string.h>
+
+void print_reverse(char* str);
+void print_reverse_helper(char* str, int len);
+
+int main() {
+  char s[128];
+  printf("Enter a string: ");
+  fflush(stdout);
+  scanf(" %s", s);
+
+  printf("The reverse of %s is \"", s);
+  print_reverse(s);
+  printf("\".\n");
+
+  return 0;
+}
+
+// print input string reversed
+void print_reverse(char* str) {
+  print_reverse_helper(str, strlen(str));
+}
+
+// print string reversed, up to the given length
+void print_reverse_helper(char* str, int len) {
+  if (len > 0) {
+    // print the last character
+    putchar(str[len-1]);
+    // not recurse on the first part of the string
+    print_reverse_helper(str, len-1);
+  }
+}

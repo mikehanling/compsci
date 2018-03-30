@@ -1,0 +1,74 @@
+/*************************************************
+ ** This program reads in points from the user and
+ ** prints them back out in sorted order from
+ ** closest to the origin to farthest.
+ *************************************************/
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+
+/*************************************************
+ ** PROTOTYPES
+ *************************************************/
+void selectionSort(double** data, int size);
+
+/*************************************************
+ ** MAIN
+ *************************************************/
+int main() {
+  // Get number of points and create & read array
+  int n;
+  printf("How many points? ");
+  fflush(stdout);
+  scanf(" %d", &n);
+  printf("Enter points (x,y,z): ");
+  fflush(stdout);
+
+  double** points = calloc(n, sizeof(double*));
+  for(int i = 0; i < n; i++) {
+    points[i] = calloc(3, sizeof(double));
+    scanf(" ( %lg , %lg , %lg )", &points[i][0], &points[i][1], &points[i][2]);
+  }
+
+  // Sort points!
+  selectionSort(points, n);
+
+  // Print out points
+  for(int i = 0; i < n; i++) {
+    printf("(%g,%g,%g) ", points[i][0], points[i][1], points[i][2]);
+  }
+  printf("\n");
+
+  // clean up
+  for (int i=0; i < n; ++i) {
+    free(points[i]);
+  }
+  free(points);
+
+  return 0;
+}
+
+/*************************************************
+ ** DEFINITIONS
+ *************************************************/
+int before(double* a, double* b) {
+  return sqrt(a[0]*a[0] + a[1]*a[1] + a[2]*a[2])
+         <
+         sqrt(b[0]*b[0] + b[1]*b[1] + b[2]*b[2]);
+}
+
+void selectionSort(double** data, int size) {
+  for(int length = size; length > 1; length--) {
+    // Find imax, the index of the largest
+    int imax = 0;
+    for(int i = 1; i < length; i++) {
+      if (before(data[imax], data[i])) {
+        imax = i;
+      }
+    }
+    // Swap data[imax] & the last element
+    double* temp = data[imax];
+    data[imax] = data[length - 1];
+    data[length - 1] = temp;
+  }
+}

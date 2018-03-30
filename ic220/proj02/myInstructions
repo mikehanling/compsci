@@ -1,0 +1,12 @@
+<!DOCTYPE html
+	PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-US" xml:lang="en-US">
+<head>
+<title>M.B.&#39;s Project-o-Matic</title>
+<link rel="stylesheet" type="text/css" href="varstyle.css" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+</head>
+<body>
+
+<h1>M.B.'s Project-o-Matic</h1><h2>Your alpha: 202430</h2><h2>Your name:  Mike Hanling</h2><p>NOTE: print these directions now.  You will need to turn in with your final project.</p><p>Your machine must generate numbers in the following way: </p><ol><li>It should display all numbers in binary (using 4 bits).  For simplicity, the numbers below are shown in decimal.</li> <li>After a 'Reset', your machine should show value 0 (zero, <tt>0000</tt> in binary) for one clock cycle. </li><li>After that, it should display the following sequence:</li><ul><li>5</li><li>4</li><li>7</li><li>9</li><li>10</li><li>1</li><li>8</li><li>2</li><li>3</li><li>12</li><li>6</li><li>11</li></ul> </li><li>After the last value in your sequence (11), go back to the first number in your list above (5) and continue from there. Repeat indefinitely.</li><li>Do NOT repeat the original 0 (zero).  Your machine will only display a zero right after a 'Reset'. Please note that your truth table and K-map will need to specify what number to go to AFTER a zero (for you, this will be 5), but will NOT have to do anything to handle the "go back to zero when Reset is pressed" behavior -- the 'Reset' input of the flip-flops will automatically handle this.</li><li>These instructions are specific to YOU -- do not use instructions for other students, or discuss the project with them. </li></ol><br/>These instructions generated Wed Mar 21 20:23:30 2018.

@@ -1,0 +1,71 @@
+/*******************************************
+ ** Reads in the date in mm/dd/yyyy format
+ ** and converts to dd monthname, yyyy.
+ *******************************************/
+#include "si204.h"
+
+int main() {
+  // Read day in mm/dd/yyyy format
+  int month;
+  int day;
+  int year;
+  month = readnum(stdin);
+  readchar(stdin); // '/'
+  day = readnum(stdin);
+  readchar(stdin); // '/'
+  year = readnum(stdin);
+
+  // Set moname to the name of the month
+  cstring moname;
+  switch(month) {
+  case 1:
+    strcpy(moname, "January");
+    break;
+  case 2:
+    strcpy(moname, "February");
+    break;
+  case 3:
+    strcpy(moname, "March");
+    break;
+  case 4:
+    strcpy(moname, "April");
+    break;
+  case 5:
+    strcpy(moname, "May");
+    break;
+  case 6:
+    strcpy(moname, "June");
+    break;
+  case 7:
+    strcpy(moname, "July");
+    break;
+  case 8:
+    strcpy(moname, "August");
+    break;
+  case 9:
+    strcpy(moname, "September");
+    break;
+  case 10:
+    strcpy(moname, "October");
+    break;
+  case 11:
+    strcpy(moname, "November");
+    break;
+  case 12:
+    strcpy(moname, "December");
+    break;
+  default:
+    strcpy(moname, "ERROR");
+    break;
+  }
+
+  // Print date in dd month_name, yyyy format
+  writenum(day, stdout);
+  fputs(" ", stdout);
+  fputs(moname, stdout);
+  fputs(", ", stdout);
+  writenum(year, stdout);
+  fputs("\n", stdout);
+
+  return 0;
+}

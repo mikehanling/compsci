@@ -1,0 +1,72 @@
+/***************************************************
+Write a program that allows the user to enter a
+sequence of "moves" and prints out their position
+after the moves.  Moves are:
+
+left  - means a 90 deg counter clockwise turn (in place)
+right - means a 90 deg clockwise turn (in place)
+step  - means step forward 1 unit
+stop  - terminates the sequence of moves.
+
+The initial position is (0,0) facing North (up).
+So the sequence "left step step left step right stop"
+would leave you at (-2,-1).
+***************************************************/
+#include "si204.h"
+
+int main() {
+  // The direction is 0, 1, 2, or 3.
+  // 0 indicates east, 1 is north, 2 is west, and 3 is south.
+
+  // Initialize
+  int x = 0;
+  int y = 0;
+  int direction = 1;
+  cstring nextmove;
+
+  // read in the first move
+  fputs("Enter moves: ", stdout);
+  readstring(nextmove, stdin);
+
+  // Keep processing moves until "stop"
+  while (strcmp(nextmove, "stop") != 0) {
+    if (strcmp(nextmove, "left") == 0) {
+      // turn left
+      if (direction < 3) {
+        direction = direction + 1;
+      } else {
+        direction = 0;
+      }
+    } else if (strcmp(nextmove, "right") == 0) {
+      // turn right
+      if (direction > 0) {
+        direction = direction - 1;
+      } else {
+        direction = 3;
+      }
+    } else {
+      // take a step in the current direction
+      if (direction == 0) {
+        x = x + 1;
+      } else if (direction == 1) {
+        y = y + 1;
+      } else if (direction == 2) {
+        x = x - 1;
+      } else {
+        y = y - 1;
+      }
+    }
+
+    // Read next command
+    readstring(nextmove, stdin);
+  }
+
+  // Print final position
+  fputs("Final position is (", stdout);
+  writenum(x, stdout);
+  fputs(", ", stdout);
+  writenum(y, stdout);
+  fputs(")\n", stdout);
+
+  return 0;
+}

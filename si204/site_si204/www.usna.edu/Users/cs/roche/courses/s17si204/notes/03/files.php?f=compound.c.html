@@ -1,0 +1,108 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+         "http://www.w3.org/TR/html4/strict.dtd"><html><head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"><title>compound.c</title><link href="../../scripts/prism.css" rel="stylesheet" />    <style type="text/css">
+    body {
+      margin: 0;
+      padding:55px 0 0 0;
+    }
+    div#header {
+      position:absolute;
+      top: 0;
+      left: 0;
+      width:100%;
+      height:50px;
+      border-bottom: 5px solid red;
+      text-align: center;
+      background-color: #d0d0d0;
+      z-index: 1000;
+    }
+    @media screen{
+      body>div#header{
+        position:fixed;
+      }
+    }
+    * html body{
+      overflow:hidden;
+    }
+    * html div#content {
+      height: 100%;
+      overflow: auto;
+    }
+    .warning {
+      margin: 3px auto;
+      background-color: black;
+      color: yellow;
+      font-weight: bold;
+      max-width: 600px;
+      font-family: sans-serif;
+      text-align: center;
+    }
+    /*
+    .codeblock {
+      margin:10px auto 10px;
+      min-width:500px;
+      max-width:800px;
+    }
+    .codeblock td.de1 {
+      border:1px solid black;
+    }
+    .codeblock td.ln {
+      border:1px solid white;
+    }
+    pre {
+      margin:10px auto 10px;
+      max-width:800px;
+    }
+    .plainpre {
+      border: 1px solid black;
+      padding:2px;
+    }
+    */
+    </style>
+  </head><body><div id="header"><p><a href="files.php%3Ff=compound.c&amp;downloadcode=yes">Click here</a> to download <code>compound.c</code>.</p></div><div id="content"><pre class="line-numbers"><code class="language-C">/***************************************************
+Compound Interest
+
+Write a program that reads an annual interest rate
+and a term (number of years) from the user, and
+computes the ammount of money you'd have after that
+number of years at that interest rate, assuming you
+make $100.00 payments into the account at the
+beginning of each year.
+
+The formula for interest is this:  If A is the
+amount of money in your account at the beginning of
+the year, and r is the annual interest rate, the
+amount in your account at the end of the year is:
+
+        A*(1.0 + r/100.0)
+
+***************************************************/
+#include &quot;si204.h&quot;
+
+int main() {
+  // Read interest rate
+  fputs(&quot;Enter interest rate: &quot;, stdout);
+  double r = readnum(stdin);
+
+  // Read number of years
+  fputs(&quot;Enter number of years: &quot;, stdout);
+  int total_years = readnum(stdin);
+
+  // INITIALIZATION FOR THE LOOP
+  double T = 0.0; // We don't have any money yet
+  int years = 0; // no years gone by yet
+
+  // LOOP: COMPUTE total_years COMPOUNDING STEPS
+  while (years &lt; total_years) {
+    // update T and years for one more year gone by
+    T = (T + 100.0) * (1.0 + r/100.0);
+    years = years + 1;
+  }
+
+  // Write out results
+  fputs(&quot;Final amount is: $&quot;, stdout);
+  writenum(T, stdout);
+  fputs(&quot;\n&quot;, stdout);
+
+  return 0;
+}</code></pre></div><script src="../../scripts/prism.js"></script></body></html>

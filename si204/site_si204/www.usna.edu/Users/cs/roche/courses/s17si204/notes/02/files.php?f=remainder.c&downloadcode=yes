@@ -1,0 +1,36 @@
+/***************************************************
+Special Remainder
+
+Write a program that reads in two integers from the
+user, and prints out the remainder when the larger
+is divided by the smaller.
+
+This requires the famous swap!  This technique will
+be well-used by any programmer!
+***************************************************/
+#include "si204.h"
+
+int main() {
+  // read numbers
+  fputs("Enter two integers: ", stdout);
+  int a = readnum(stdin);
+  int b = readnum(stdin);
+
+  // make sure a is the larger, b is the smaller
+  if (a < b) {
+    int t = a;
+    a = b;
+    b = t;
+  }
+
+  // print remainder
+  fputs("The remainder when ", stdout);
+  writenum(a, stdout);
+  fputs(" is divided by ", stdout);
+  writenum(b, stdout);
+  fputs(" is ", stdout);
+  writenum(a % b, stdout);
+  fputs(".\n", stdout);
+
+  return 0;
+}

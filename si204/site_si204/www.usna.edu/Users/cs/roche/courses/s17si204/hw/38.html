@@ -1,0 +1,224 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Homework 38: C++ practice</title><meta name="viewport" content="width=device-width, initial-scale=1.0"><link href="../scripts/prism.css" rel="stylesheet" /><link rel="stylesheet" type="text/css" href="../style.css"><script type="text/javascript" src="../../../mathjax/MathJax.js%3Fconfig=TeX-AMS_HTML"></script><style>
+@media only screen and (min-width: 600px) {
+  #main>header {background-image: url("../scripts/header.png");}
+}
+</style></head><body><div id="main"><header><nav class="topnav"><div>
+            <a href="../index.php.html">SI 204</a>
+            </div><div>
+            <a href="../calendar.php.html">Calendar</a>
+            </div><div>
+            <a href="../notes/index.html">Notes</a>
+            </div><div id="navparent">
+            <a href="index.html">HWs</a>
+            </div><div>
+            <a href="../lab/index.html">Labs</a>
+            </div><div>
+            <a href="../proj/index.html">Projects</a>
+            </div><div>
+            <a href="../exams/index.html">Exams</a>
+            </div><div>
+            <a href="../admin/index.html">Resources</a>
+            </div><div>
+            <a href="https://www.usna.edu/Users/cs/roche/">Roche</a>
+            </div><div>
+            <a href="https://www.usna.edu/Users/cs/albing/">Albing</a>
+            </div></nav></header><div id="mainbox"><div class="printonly"><h1 class="printtitle">SI 204 Spring 2017 / HWs</h1><hr></div><article id="mainart"><header><h1>Homework 38: C++ practice</h1></header><div class="printonly">
+  <div class="blanks">
+  <p>
+  Name: _____________________________________________   Alpha: ___________________
+  </p>
+  <p>
+  Describe help received: ________________________________________________________
+  </p>
+  </div>
+</div>
+  <div class="noprint">
+  <a href="javascript:window.print();">Print this page</a>
+</div>
+  <ul>
+    <li><strong>Due before class on Friday, April 28</strong>
+    </li><li>This homework contains code to be submitted electronically.
+      Put your code in a folder called <code>hw38</code> and submit
+      using the <code>204sub</code> command.</li><li>This is a <em>written homework</em> - be sure to turn in a hard-copy
+      of your completed assignment before the deadline. Use the <code>codeprint</code> command to print out your code
+        and turn that in as well.</li></ul><h1>Assignment</h1><ol class="ass"><li>
+  Circle one to indicate how you did for the reading assignment from
+  <a href="36/index.html">Homework 36</a> <em>before class on Monday</em>:
+  <p>How carefully did you complete the reading? (Circle one)</p>
+<div class="blanks">
+<div class="option">Not at all</div>
+<div class="option">Skimmed it</div>
+<div class="option">Read some</div>
+<div class="option">Read all</div>
+</div>
+  </li>
+<li>Tell me about <b>two</b> separate capstone or research projects you
+  attended on Wednesday (see <a href="37/index.html">HW37</a> for details).
+  <ul>
+    <li style="page-break-after:always">
+    (1) List the name of the capstone, (2) summarize what the project is
+    about in two or three sentences of your own, and (3) provide some judgment
+    (what did you like, what seemed most challenging, what impressed you, etc.).
+
+    <div class="answerbox" style="min-height:4in"></div>
+    </li>
+
+    <li>(1) List the name of the capstone, (2) summarize what the project is
+    about in two or three sentences of your own, and (3) provide some judgment
+    (what did you like, what seemed most challenging, what impressed you, etc.).
+
+    <div class="answerbox" style="min-height:4in"></div>
+    </li>
+  </ul>
+
+<li>Given the following C++ declarations:
+  <pre><code class="language-c">ifstream fin(&quot;myfile.txt&quot;);
+string a;
+vector&lt;string&gt; v1;
+vector&lt; vector&lt;int&gt; &gt; v2;</code></pre>  fill in the following table with the type (only) of each expression.
+  Write ERROR for if the expression would be a compiler or run-time error.
+  Use the types <code>istream</code> and <code>ostream</code> for input
+  and output streams (respectively).
+  <table class="RM blanks">
+    <tr><td>expression</td><td style="width:1.5in;">type (or ERROR)</td>
+        </tr>
+    <tr><td><code>fin</code></td><td></td></tr>
+    <tr><td><code>cout</code></td><td></td></tr>
+    <tr><td><code>1 == 2</code></td><td></td></tr>
+    <tr><td><code>"hello"</code></td><td></td></tr>
+    <tr><td><code>a = "hello"</code></td><td></td></tr>
+    <tr><td><code>fin &gt;&gt; a</code></td><td></td></tr>
+    <tr><td><code>cout &lt;&lt; 13 &lt;&lt; endl</code></td><td></td></tr>
+    <tr><td><code>v1</code></td><td></td></tr>
+    <tr><td><code>v1[0]</code></td><td></td></tr>
+    <tr><td><code>v1[0][0]</code></td><td></td></tr>
+    <tr><td><code>v1.size()</code></td><td></td></tr>
+    <tr><td><code>v2.size()</code></td><td></td></tr>
+    <tr><td><code>v2[0]</code></td><td></td></tr>
+    <tr><td><code>v2[0][0]</code></td><td></td></tr>
+    <!--
+    <tr><td><code>XXX</code></td><td></td></tr>
+    -->
+  </table>
+</li>
+<li>Below is a <em>partial</em> program <code>hiscore.cpp</code> that reads in
+names and scores and reports who had the hightest score. The struct definition
+for <code>result</code> and the <code>main</code> function are already written for you
+and <b>you may not change the struct definition or the main</b>.
+<pre><code class="language-c">struct result {
+  string name;
+  int score;
+};
+
+int main() {
+  int n = 5;
+  cout &lt;&lt; &quot;Enter &quot; &lt;&lt; n &lt;&lt; &quot; results:&quot; &lt;&lt; endl;
+  vector&lt;result&gt; res;
+
+  for (int i=0; i &lt; n; ++i) {
+    result temp;
+    cin &gt;&gt; temp;
+    res.push_back(temp);
+  }
+
+  // find highest score
+  result best = res[0];
+  for (int i=1; i &lt; res.size(); ++i) {
+    if (best &lt; res[i]) {
+      best = res[i];
+    }
+  }
+
+  // print highest score
+  cout &lt;&lt; &quot;The best result is &quot; &lt;&lt; best &lt;&lt; endl;
+
+  return 0;
+}</code></pre><p>Your job is to add any overloaded operator definitions and <code>#include</code>s
+so that the program works as shown in the following example:</p>
+<pre><code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./hiscore</code>
+<code class="language-text output">Enter 5 results:</code>
+<code class="language-text output"></code><code class="language-text input">Bob 100</code>
+<code class="language-text output"></code><code class="language-text input">Mary 150</code>
+<code class="language-text output"></code><code class="language-text input">Susan 80</code>
+<code class="language-text output"></code><code class="language-text input">Jane 200</code>
+<code class="language-text output"></code><code class="language-text input">Robby 150</code>
+<code class="language-text output">The best result is Jane (200 points)</code></pre><li>Write a program <code>sched.cpp</code>
+that reads in the file <a href="38/hwin.txt">hwin.txt</a>
+that contains course section data in typical USNA format, then goes into a loop
+allowing the user to enter queries like "meets M2" that it responds to by
+printing out all the sections that meet during that day/period.
+<p>The period
+entered is one of the regular periods 1,2,3,4,5,6, but half-period overlaps
+should count. I.e. if the query is "meets T2", and section that meets TR8
+should be printed out, even if technically there is only half a period of
+overlap.</p>
+<p>A run of the program might look like this:
+<pre><code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./sched</code>
+<code class="language-text output">file: </code><code class="language-text input">hwin.txt</code>
+<code class="language-text output">command: </code><code class="language-text input">meets W4</code>
+<code class="language-text output">HE112 4001 MWF4</code>
+<code class="language-text output">HE112 9001 WF9</code>
+<code class="language-text output">SC112 4000 TRF4,W34</code>
+<code class="language-text output">SC112 4040 M4,WF4,T56</code>
+<code class="language-text output">SC112 5534 MTR5,W34</code>
+<code class="language-text output">command: </code><code class="language-text input">meets F6</code>
+<code class="language-text output">command: </code><code class="language-text input">meets T1</code>
+<code class="language-text output">EE301 1111 M1,TR12</code>
+<code class="language-text output">SC112 8812 TR8,W12</code>
+<code class="language-text output">SC112 8012 TR8,F12</code>
+<code class="language-text output">command: </code><code class="language-text input">quit</code></pre>
+<p>Of course your program should also handle other input files (that are similarly
+formatted), and should use all of the great C++ features such as <code>&lt;string&gt;</code>.
+</p>
+<p>To make your like easier, I am gifting you the following function (read the
+documentation about what the function does for you very carefully but don't
+bother trying to understand how the function works!):
+</p>
+<pre><code class="language-c">/****************************************************************************
+ Input: pat - a string representing a meeting time,
+              e.g. &quot;MWF2,R34&quot; or &quot;TR9&quot; or &quot;MF5,T65&quot;
+        day - a char, one of M,T,W,R,F
+        per - an int, one of the regular periods, i.e. 1,2,3,4,5,6
+ Output:true if the meeting time in pattern pat overlaps with period day,per,
+        false otherwise
+        Ex1 - overlaps(&quot;MWF2,R12&quot;,'M',8) -&gt; true
+        Ex2 - overlaps(&quot;TR10&quot;,'T',4) -&gt; false
+****************************************************************************/
+bool overlaps(string pat, char day, int per) {
+  bool dflag = false; // day match flag
+  for(int i = 0; i &lt; pat.length(); ++i) {
+    if (pat[i] == ',') {
+      dflag = false;
+    } else if ('A' &lt;= pat[i] &amp;&amp; pat[i] &lt;= 'Z') {
+      dflag = dflag || pat[i] == day;
+    } else {
+      int q;
+      if (pat[i] == '1' &amp;&amp; i+1 &lt; pat.length() &amp;&amp; pat[i+1] == '0') {
+        q = 10;
+      } else {
+        q = (pat[i] - '0');
+      }
+      if (dflag &amp;&amp; (per == q || (per-1)/2 + 8 == q)) {
+        return true;
+      }
+    }
+  }
+  return false;
+}</code></pre>
+</li>
+</ol></article></div></div><nav class="stickynav"><div><div class="dropdown"><a href="../index.php.html" class="ddown-btn">SI 204</a><div class="ddown-content"><a href="../calendar.php.html">Calendar</a><a href="../notes/index.html">Notes</a><a href="index.html">HWs</a><a href="../lab/index.html">Labs</a><a href="../proj/index.html">Projects</a><a href="../exams/index.html">Exams</a><a href="../admin/index.html">Resources</a><a href="https://www.usna.edu/Users/cs/roche/">Roche</a><a href="https://www.usna.edu/Users/cs/albing/">Albing</a></div></div><a href="38.html#top" class="linkin pagetop">Homework 38: C++ practice</a></nav><footer><div id="foottext">    <p class="disclaimer">Material contained above is made available
+    for the purpose of peer review and discussion and does not
+    necessarily reflect the views of the Department of the Navy or the
+    Department of Defense.
+    Some links above are to sites that are not
+    located at the United States Naval Academy. The USNA is not
+    responsible for the content found on these sites. In addition, the
+    content of these sites does not reflect the opinions, standards,
+    policy or endorsement of the Naval Academy or the United States
+    Government.</p>
+  Page maintained by Daniel S. Roche (<a href="mailto:roche [AT] usna [DOT] edu" id="emaillink1">roche [AT] usna [DOT] edu</a><script type='text/javascript'><!--
+        var b="he@usna.edu";
+        var a="roc";
+        document.getElementById("emaillink1").href='mailto:'+a+b;
+        document.getElementById("emaillink1").innerHTML=a+b;
+        // --></script>). Last updated 25 April 2017 6:58.</div></footer><script src="../scripts/prism.js"></script><script type="text/javascript"></script></body></html>

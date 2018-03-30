@@ -1,0 +1,41 @@
+/***************************************************
+Minutes and Seconds
+
+Read in a time in seconds which will be input in
+the form:  
+
+     Time Elapsed 3112 Seconds
+
+The number of seconds will always be a whole number.
+Your program should write out the elapsed time in
+minutes and seconds.
+
+1) Remember that the "%" operator computes the 
+   remainder
+2) If s is a cstring, readstring(s,stdin) skips 
+   leading whitespace, then reads into the string all
+   characters up to the next whitespace character.
+***************************************************/
+#include "si204.h"
+
+int main() {
+  // read input
+  cstring junk;
+  readstring(junk, stdin); // reads the word "Time"
+  readstring(junk, stdin); // reads the word "Elapsed"
+  int t = readnum(stdin); // t is the total seconds
+  
+  // compute minutes and seconds
+  int m, s;
+  s = t % 60;
+  m = t / 60;
+
+  // write out result
+  fputs("Time Elapsed ", stdout);
+  writenum(m, stdout);
+  fputs(" minutes and ", stdout);
+  writenum(s, stdout);
+  fputs(" seconds\n", stdout);
+
+  return 0;
+}

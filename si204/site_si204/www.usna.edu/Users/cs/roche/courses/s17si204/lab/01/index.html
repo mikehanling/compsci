@@ -1,0 +1,225 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Lab 01: Linux intro and binary numbers</title><meta name="viewport" content="width=device-width, initial-scale=1.0"><link href="../../scripts/prism.css" rel="stylesheet" /><link rel="stylesheet" type="text/css" href="../../style.css"><script type="text/javascript" src="../../../../mathjax/MathJax.js%3Fconfig=TeX-AMS_HTML"></script><script type="text/javascript" src="../../scripts/jquery-3.1.1.min.js"></script><style>
+@media only screen and (min-width: 600px) {
+  #main>header {background-image: url("../../scripts/header.png");}
+}
+</style>  <meta name="generator" content="pandoc">
+  <style type="text/css">code{white-space: pre;}</style>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head><body><div id="main"><header><nav class="topnav"><div>
+            <a href="../../index.php.html">SI 204</a>
+            </div><div>
+            <a href="../../calendar.php.html">Calendar</a>
+            </div><div>
+            <a href="../../notes/index.html">Notes</a>
+            </div><div>
+            <a href="../../hw/index.html">HWs</a>
+            </div><div id="navparent">
+            <a href="../index.html">Labs</a>
+            </div><div>
+            <a href="../../proj/index.html">Projects</a>
+            </div><div>
+            <a href="../../exams/index.html">Exams</a>
+            </div><div>
+            <a href="../../admin/index.html">Resources</a>
+            </div><div>
+            <a href="https://www.usna.edu/Users/cs/roche/">Roche</a>
+            </div><div>
+            <a href="https://www.usna.edu/Users/cs/albing/">Albing</a>
+            </div></nav></header><div id="mainbox"><div class="printonly"><h1 class="printtitle">SI 204 Spring 2017 / Labs</h1><hr></div><article id="mainart"><header><h1>Lab 01: Linux intro and binary numbers</h1></header><div id="TOC"><ul><li><a class="linkin" href="index.html#labs-in-this-class"><span class="toc-section-number">1</span> Labs in this class</a></li>
+<li><a class="linkin" href="index.html#coding-compiling-and-submitting"><span class="toc-section-number">2</span> Coding, compiling, and submitting</a>
+<ul><li><a class="linkin" href="index.html#the-computing-environment"><span class="toc-section-number">2.1</span> The computing environment</a></li><li><a class="linkin" href="index.html#opening-the-text-editor"><span class="toc-section-number">2.2</span> Opening the text editor</a></li><li><a class="linkin" href="index.html#creating-a-program"><span class="toc-section-number">2.3</span> Creating a program</a></li></ul></li>
+<li><a class="linkin" href="index.html#editing-your-program"><span class="toc-section-number">3</span> Editing your program</a>
+<ul><li><a class="linkin" href="index.html#the-error-of-your-ways"><span class="toc-section-number">3.1</span> The “error” of your ways</a></li><li><a class="linkin" href="index.html#changing-the-program"><span class="toc-section-number">3.2</span> Changing the program</a></li><li><a class="linkin" href="index.html#submitting-your-code"><span class="toc-section-number">3.3</span> Submitting your code</a></li></ul></li>
+<li><a class="linkin" href="index.html#reading-binary-numbers"><span class="toc-section-number">4</span> Reading Binary Numbers</a></li>
+<li><a class="linkin" href="index.html#converting-back-to-binary-going-further-"><span class="toc-section-number">5</span> Converting Back to Binary (going further)</a></li></ul></div><div class="panbody"><h1 id="labs-in-this-class"><a class ="linkin" href="index.html#top"><span class="header-section-number">1</span> Labs in this class</a></h1><p>Labs in this class are your best opportunity to practice programming in a setting where you can get lots of help. Plan to have multiple conversations with your instructor and with your classmates throughout the lab time, discussing how to write, debug, format, and understand great C code.</p>
+<p>Sometimes you might finish the assignment during the lab time itself, and other times you will have to finish outside of the lab time. The completed lab is generally due to be submitted electronically by the day before the next lab (so roughly 6 days later).</p>
+<p>A few notes about the lab rooms (Michelson 302 and 316):</p>
+<ul>
+<li>Our labs are available for your use many hours during the day, as well as after hours.</li>
+<li>No eating is allowed in the lab. Drinks are allowed only in closeable containers (so soda cans are not permitted).</li>
+<li>Be courteous and log off the computer when you leave the lab.</li>
+<li>Do not attempt to physically alter any equipment in the lab.</li>
+<li>Do NOT reboot the machines. If you really think a reboot is needed, talk to your instructor or to the sysadmin, Ms. Alex Nordman.</li>
+</ul>
+<h1 id="coding-compiling-and-submitting"><a class ="linkin" href="index.html#top"><span class="header-section-number">2</span> Coding, compiling, and submitting</a></h1><h2 id="the-computing-environment"><a class="linkin" href="index.html#top"><span class="header-section-number">2.1</span> The computing environment</a></h1><ul>
+<li>To login to one of the computers in the labs, your username and password are the same as those of your USNA account.</li>
+<li>You already have an account on the CS Department’s Unix machines, which are actually running GNU/Linux.</li>
+<li>The Unix environment is quite different than Windows and will take some getting used to. A quick reference guide to common Unix commands is provided on the <a href="../../admin/index.html">Resources</a> page.</li>
+<li>You are always welcome to work in the Unix labs throughout the semester. You should also be able to work just as well from your <a href="../../vm/index.html">Virtual Machine</a>.</li>
+<li><strong>Make sure you understand and confirm</strong>: Your <em>home directory</em> on the lab computers is the same as your <code>csunix</code> directory on your virtual machine (after running <code>csmount</code> from inside your VM).</li>
+</ul>
+<p>The <a href="../../admin/index.html">resources page</a> is your starting point for help on how to use the computing environment and get things done for this class.</p>
+<p><strong>Remember this</strong>: when you leave the lab computer, log off but do <em>not</em> power down the machine. (That way, whoever comes in next can just sit down and login.) Specifically, you will:</p>
+<ul>
+<li>Click the Power button in the top right corner and…</li>
+<li>Choose the Log Out option. In general, you should never shutdown or restart the lab computers.</li>
+</ul>
+<h2 id="opening-the-text-editor"><a class="linkin" href="index.html#top"><span class="header-section-number">2.2</span> Opening the text editor</a></h1><p>We will be using the Unix environment to create, compile, and execute C++ programs. First you want to get your terminal and folder set up and ready to go.</p>
+<p><strong>I recommend you get used to these steps on both your virtual machine and the lab computer.</strong></p>
+<ol type="1">
+<li><p>Open a terminal window. You can find the terminal window in the application menus, or just hit Ctrl-Alt-T like a wizard.</p></li>
+<li><p><em>If you’re on the virtual machine</em>: mount and go into your <code>csunix</code> directory:</p>
+<ol type="a">
+<li>Run <code>csmount</code></li>
+<li>Type <code>cd csunix</code></li>
+</ol>
+<p>(On the lab machines, your home directory <em>is</em> your <code>csunix</code> directory, so you don’t have to do anything here.)</p></li>
+<li><p>Make a directory for this class called <code>si204</code> (if you haven’t already), by running the command</p>
+<pre><code class="language-.bash">mkdir si204</code></pre>
+<p>Now set the permissions on your class directory so that no one else can access it other than you:</p>
+<pre><code class="language-.bash">chmod og-rwx si204</code></pre>
+<p>All of your work for this class should go in this directory.</p>
+<p>Finally, do <code>cd si204</code> to go into that directory.</p></li>
+<li><p>Make a directory for this assignment, and copy the <code>si204.h</code> header file to that directory:</p>
+<pre><code class="language-.bash">mkdir lab01
+cd lab01
+cp ~/si204.h .    # note: a dot . means the current directory</code></pre>
+<p>For every assignment you work on (homeworks, labs, and projects), you should always start by making a new directory to hold your work for that assignment.</p>
+<p>At this point, the current directory (which is shown at the end of your prompt) should be either “<code>~/si204/lab01</code>” if you’re on a lab computer, or “<code>~/csunix/si204/lab01</code>” on your virtual machine.</p></li>
+</ol>
+<p>Now you’re just about ready to get programming, but there’s an important, momentous decision to make first: what text editor will you use? The following are all available on your VM and on the lab computers. Choose wisely!</p>
+<ul>
+<li><strong>vi</strong>/<strong>vim</strong>/<strong>gvim</strong> - lightweight and powerful text editor. <span class="red">← Drs. Albing and Roche’s recommended choice!</span></li>
+<li><strong>emacs</strong> - feature-rich text editor. <span class="red">← Richard Stallman’s favorite!</span></li>
+<li><strong>atom</strong> - a new pretty-to-look-at editor (written in Javascript) <span class="red">← Favorite of those distracted by pretty lights.</span></li>
+<li><strong>gedit</strong> - similar to Windows Notepad. <span class="red">← Feels nice and comfortable, like an old sweatshirt. Do you want to program with a sweatshirt?</span></li>
+</ul>
+<figure>
+<img src="http://imgs.xkcd.com/comics/real_programmers.png" title="Real programmers set the universal constants at the start such that the universe evolves to contain the disk with the data they want." alt="Real Programmers" /><figcaption>Real Programmers</figcaption>
+</figure>
+<p>If you’re using VI, start with this <a href="../../admin/vimintro.php.html">quick intro and list of useful commands</a>. If you’re using emacs, check out this <a href="../../admin/emacsintro.php.html">getting started guide</a>. The <a href="../../admin/index.html">resources page</a> also has further references to help you learn the powerful features of these text editors. (You should be able to get started in atom or gedit without any extra help.)</p>
+<p>Now, open your text editor in the <code>lab01</code> directory and create a new file called <code>printing.c</code>. You can open the text editor using the application menus, or directly in the terminal window by typing:</p>
+<pre><code class="language-.bash">gvim printing.c &amp;</code></pre>
+<p>The ampersand <code>&amp;</code> at the end of the line ensures that you can keep using the terminal even after the editor opens up. (Of course, you can substitute <code>emacs</code>, <code>atom</code>, or <code>gedit</code> in the command above for your editor of choice.)</p>
+<h2 id="creating-a-program"><a class="linkin" href="index.html#top"><span class="header-section-number">2.3</span> Creating a program</a></h1><p>At this point, you should have a terminal window open, inside your <code>lab01</code> directory. You should also have a text editor open for a file called <code>printing.c</code> in that directory. If you save the file and then do <code>ls</code> on the terminal, you should see <code>printing.c</code> as well as the <code>si204.h</code> file that we copied to the directory already.</p>
+<p>Now use your text editor to copy in the following source code into the <code>printing.c</code> file:</p>
+<pre><code class="language-c">#include &quot;si204.h&quot;
+
+int main() {
+  fputs(&quot;And then my heart with pleasure fills,\n&quot;, stdout);
+  fputs(&quot;And dances with the daffodils.\n&quot;, stdout);
+
+  return 0;
+}</code></pre><p>The following sequence of steps will become very familiar to you!</p>
+<ol type="1">
+<li><p><strong>Save</strong> your file. (Most text editors have a little + mark or something in the title bar to show you whether the file has any unsaved changes, which can be a very useful check!)</p></li>
+<li><p>Return to the terminal and <strong>compile</strong> using the command:</p>
+<pre><code class="language-.bash">gcc printing.c -o printing</code></pre></li>
+<li><p>If you copied the file correctly, there should be no errors at this point. <strong>Run</strong> your compiled program with the command:</p>
+<pre><code class="language-.bash">./printing</code></pre>
+<p>Note the <code>./</code> part indicates that you want to run the program called <code>printing</code> in the current directory. A single dot <code>.</code> is a shortcut to indicate the curent directory.</p></li>
+<li><p><strong>Program Output:</strong> Your program will output to the same terminal from where it was executed. You should see two lines of text, followed by a return to your prompt.</p>
+<p>Now, let’s view the executable file you just executed. Type <code>ls -l</code> to list details of the contents of your current working directory. There is are now three files: <code>si204.h</code>, <code>printing.c</code>, and <code>printing</code>. That last file is the executable program that you made from the compilation command.</p>
+<p>The numbers to the left of the dates in the <code>ls -l</code> output tell you how large (in bytes) each file is. Notice that the executable file <code>printing</code> is much larger than either source code file <code>si204.h</code> or <code>printing.c</code>. The increase in size is due to all the code that was “included” or linked into your program to make it run on its own.</p></li>
+</ol>
+<h1 id="editing-your-program"><a class ="linkin" href="index.html#top"><span class="header-section-number">3</span> Editing your program</a></h1><h2 id="the-error-of-your-ways"><a class="linkin" href="index.html#top"><span class="header-section-number">3.1</span> The “error” of your ways</a></h1><p>Inevitably when programming, you will make some mistakes. <em>Some</em> of these mistakes will be noticed by the compiler, which will print out a message that tries to indicate exactly what caused the error.</p>
+<p>Each error message includes a number, which represents the line number of the error. Go to that line number to see where the problem is. Once you’ve tried a fix, compile again (and again…) until all the errors are fixed. Only then will you be able to run your program.</p>
+<p>Here are a few simple rules and hints:</p>
+<ul>
+<li>Save program files before compiling.</li>
+<li>If an error is flagged on a line that looks perfectly fine, sometimes it is the preceding line that is messed up. Check it too!</li>
+<li>Check for missing or extra <code>;</code>, <code>{</code>, or <code>}</code> characters.</li>
+<li>Compile your program in small chunks. That way you can focus on errors in a small section of code. Waiting to compile until the entire program is completed can lead to large numbers of errors.</li>
+<li>Messages that say “Cannot convert from … to …” usually mean you are trying to assign the wrong type to a variable.</li>
+<li>Check your names. A common mistake is to name a variable one thing but spell it wrong or use some other name later.</li>
+<li>It’s almost always best to solve <em>one error at a time, starting with the first one</em>. Frequently, one small mistake can lead to what the compiler sees as many errors, so start by fixing the first one and re-compiling.</li>
+<li>If you can’t figure out what’s wrong - ASK! Your instructors and MGSP leaders have lots of experience and are here to help you decode what the compiler is telling you.</li>
+</ul>
+<p>Experience and practice help a lot here. So for each of the below, purposefully make the syntax error in your current program and try to compile to see what the error message is. Correct the error before introducing the next error into your program (e.g., only add ONE ERROR at a time). Go slowly and pay attention, this will save you time later!</p>
+<ul>
+<li>remove a semi-colon.</li>
+<li>change a comma <code>,</code> to a period <code>.</code></li>
+<li>change change one of the <code>stdout</code>s to <code>stdOut</code></li>
+<li>change one of the <code>stdout</code>s to <code>stdin</code>.</li>
+<li>remove the ending <code>}</code>.</li>
+<li>remove the <code>#include &quot;si204.h&quot;</code> line.</li>
+</ul>
+<h2 id="changing-the-program"><a class="linkin" href="index.html#top"><span class="header-section-number">3.2</span> Changing the program</a></h1><p>You should be getting a little more comfortable now with your text editor and compiler, which are the most important tools for programming. Now try modifying your <code>printing.c</code> program so that its output matches exactly what’s shown below. Try to use the features of your text editor like copy/paste, moving around, and so on, rather than just tying in more code “by hand” to make these changes.</p>
+<pre><code class="language-.text">And then my heart with pleasure fills,
+And dances with the daffodils.
+
+And then my heart with pleasure fills,
+And whistles with the daffodils.
+
+And then my heart with pleasure fills,
+And sits down with the daffodils.
+
+And then my heart with pleasure fills,
+And listens to the daffodils.
+
+I like 1 flower.
+I like 2 flowers.
+I like 3 flowers.
+I like 4 flowers.
+I like 5 flowers.
+
+And then my heart with pleasure fills, and dances with the daffodils.</code></pre>
+<p><strong>Important:</strong> Your focus is on using the editor to make these changes as efficiently as possible! In other words, of course you can do it, I want you to concentrate on doing it smart! It’s almost a puzzle to use as few keystrokes as possible.</p>
+<h2 id="submitting-your-code"><a class="linkin" href="index.html#top"><span class="header-section-number">3.3</span> Submitting your code</a></h1><p>Follow the <a href="../../admin/submit.php.html">instructions here</a> to submit your <code>printing.c</code> file for lab01 to the online submission system.</p>
+<p>After running the <code>204sub</code> command to submit, the resulting output should include “The submission may be reviewed online at” followed by a URL. Copy that URL and paste it into your browser. The resulting page should tell you how you did. If you did not get the output 100% correct, the page should give you an indication of what’s wrong with your output. Keep fixing your program and resubmitting until it works perfectly.</p>
+<h1 id="reading-binary-numbers"><a class ="linkin" href="index.html#top"><span class="header-section-number">4</span> Reading Binary Numbers</a></h1><p>Now you will write another program from scratch. Call this program <code>readbin.c</code> in the same <code>lab01</code> directory.</p>
+<p>As you may recall, numbers can be represented in various <em>bases</em>. A base describes how many unique digits are used is representing the number. For example, we mostly represent numbers in base 10; there are 10 different digits used to represent the numbers: 0,1,2,3,4,5,6,7,8,9. Numbers can be represented in many (infinite!) other bases, such as base 8. In base 8 the numbers are represented with only 8 digits: 0,1,2,3,4,5,6,7. The actual value of a number depends on both what digits are used, and the location of the digits. Obviously, the number 123 is smaller than the number 321. In particular the farther left a digit is, the more contribution it makes to the size of the number. If we number the columns from right to left, starting with 0, then when the base is <em>b</em> and the digit <em>d</em> is in column <em>c</em>, the the contribution of that digit to the value of the number is <em>d*b<sup>c</sup></em>. For example the number 123 base 10 (written 123<sub>10</sub>) is 1*10<sup>2</sup> + 2*10<sup>1</sup> + 3*10<sup>0</sup>, which totals 123. For a less obvious example, 123<sub>8</sub> is 1*8<sup>2</sup> + 2*8<sup>1</sup> + 3*8<sup>0</sup>, which totals 83.</p>
+<p>The reason you’re reading all this is because computers don’t store their numbers in base 10, but rather in base 2 (the only digits are 0 and 1). As computer programmers, we need to be able to convert numbers from the <em>binary</em> (base 2) format to the <em>decimal</em> (base 10) format. That is what you will do for the lab.</p>
+<p>You will write a program (use filename <code>readbin.c</code>) that converts a number from binary to decimal format and prints out the decimal value of that number. In particular your program will:</p>
+<ol type="1">
+<li>Prompt the user to enter a 4-bit binary number (Recall that binary digits are also called bits). You may assume that the number the user enters really is a binary number.</li>
+<li>Read the number in as four separate characters.</li>
+<li>Convert each character to an integer (either 0 or 1).</li>
+<li>Compute the single number according to the formula <span class="math inline">\(n = 8*d_1 + 4*d_2 + 2*d_3 + 1*d_4\)</span></li>
+<li>Print out the decimal value of the number.</li>
+</ol>
+<p>Here is a sample run of the program. The program output is shown in blue, and the user input is shown in green.</p>
+<pre><code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./readbin</code>
+<code class="language-text output">Enter a 4-bit binary number: </code><code class="language-text input">1101</code>
+<code class="language-text output">In decimal 1101 = 13</code></pre><h1 id="converting-back-to-binary-going-further-"><a class ="linkin" href="index.html#top"><span class="header-section-number">5</span> Converting Back to Binary (going further)</a></h1><blockquote>The rest of this lab is <em>optional</em> for your
+enrichment and enjoyment. Be sure to work on this only after getting
+everything else perfect. You should still submit this work, but make
+sure it doesn't break any of the parts you already had working correctly!
+</blockquote>
+  <div class="annotation">
+<p>A few questions to ask yourself: If x = b<sub>3</sub>b<sub>2</sub>b<sub>1</sub>b<sub>0</sub> is a 4-bit binary number, what is x/2? (Remember, this is int division!) What is x%2? What is x*2? What is x/4? What is x%4? What is x*4? Why 2 and 4? What’s interesting about those?</p>
+</div>
+<p>Just as one might want to convert from binary to decimal, one might want to perform the conversion the other direction (decimal to binary). The basic principle is the same, except instead of multiplying by powers of two, we need to divide (and mod) by the powers of two. For example, if the decimal number is 11 and we want to convert to a 4 bit binary number, then the leftmost bit (column 3) is 11/(2<sup>3</sup>), or 1.</p>
+<p>You will write a program (use filename <code>writebin.c</code>) that converts a number from decimal to binary format. You will then print out the binary value of that number. You need to figure out how to perform the conversion. You know the first step.</p>
+<ol type="1">
+<li>Prompt the user to enter a decimal number between 0 and 15, inclusive. You may assume that the user really does enter a number in that range.</li>
+<li>Read in the number as an integer.</li>
+<li>Convert the number into four binary digits.</li>
+<li>Print out the four digits.</li>
+</ol>
+<pre><code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./writebin</code>
+<code class="language-text output">Enter a number between 0 and 15: </code><code class="language-text input">13</code>
+<code class="language-text output">13 in binary is 1101</code></pre><p><strong>Hint:</strong> If you’re having trouble thinking about this, try doing a base 10 version first - i.e. write a program that reads a 4-digit decimal number into an <code>int</code> variable and then picks apart the <code>int</code> to figure out what the original decimal digits were - perhaps printing each digit out separated by a space. This should give a good analogy to what you’re trying to do with the binary version.</p>
+  </div></article></div></div><nav class="stickynav"><div><div class="dropdown"><a href="../../index.php.html" class="ddown-btn">SI 204</a><div class="ddown-content"><a href="../../calendar.php.html">Calendar</a><a href="../../notes/index.html">Notes</a><a href="../../hw/index.html">HWs</a><a href="../index.html">Labs</a><a href="../../proj/index.html">Projects</a><a href="../../exams/index.html">Exams</a><a href="../../admin/index.html">Resources</a><a href="https://www.usna.edu/Users/cs/roche/">Roche</a><a href="https://www.usna.edu/Users/cs/albing/">Albing</a></div></div><div class="dropdown"><a href="index.html#top" class="linkin pagetop">Lab 01: Linux intro and binary numbers</a><div class="ddown-content ddtoc"><ul><li><a class="linkin" href="index.html#labs-in-this-class"><span class="toc-section-number">1</span> Labs in this class</a></li>
+<li><a class="linkin" href="index.html#coding-compiling-and-submitting"><span class="toc-section-number">2</span> Coding, compiling, and submitting</a>
+<ul><li><a class="linkin" href="index.html#the-computing-environment"><span class="toc-section-number">2.1</span> The computing environment</a></li><li><a class="linkin" href="index.html#opening-the-text-editor"><span class="toc-section-number">2.2</span> Opening the text editor</a></li><li><a class="linkin" href="index.html#creating-a-program"><span class="toc-section-number">2.3</span> Creating a program</a></li></ul></li>
+<li><a class="linkin" href="index.html#editing-your-program"><span class="toc-section-number">3</span> Editing your program</a>
+<ul><li><a class="linkin" href="index.html#the-error-of-your-ways"><span class="toc-section-number">3.1</span> The “error” of your ways</a></li><li><a class="linkin" href="index.html#changing-the-program"><span class="toc-section-number">3.2</span> Changing the program</a></li><li><a class="linkin" href="index.html#submitting-your-code"><span class="toc-section-number">3.3</span> Submitting your code</a></li></ul></li>
+<li><a class="linkin" href="index.html#reading-binary-numbers"><span class="toc-section-number">4</span> Reading Binary Numbers</a></li>
+<li><a class="linkin" href="index.html#converting-back-to-binary-going-further-"><span class="toc-section-number">5</span> Converting Back to Binary (going further)</a></ul></div></div></nav><footer><div id="foottext">    <p class="disclaimer">Material contained above is made available
+    for the purpose of peer review and discussion and does not
+    necessarily reflect the views of the Department of the Navy or the
+    Department of Defense.
+    Some links above are to sites that are not
+    located at the United States Naval Academy. The USNA is not
+    responsible for the content found on these sites. In addition, the
+    content of these sites does not reflect the opinions, standards,
+    policy or endorsement of the Naval Academy or the United States
+    Government.</p>
+  Page maintained by Daniel S. Roche (<a href="mailto:roche [AT] usna [DOT] edu" id="emaillink1">roche [AT] usna [DOT] edu</a><script type='text/javascript'><!--
+        var b="he@usna.edu";
+        var a="roc";
+        document.getElementById("emaillink1").href='mailto:'+a+b;
+        document.getElementById("emaillink1").innerHTML=a+b;
+        // --></script>). Last updated 21 January 2017 13:28.</div></footer><script src="../../scripts/prism.js"></script><script type="text/javascript">var the_body = $('html, body');
+var sticky_height = $('.stickynav').height();
+$('.linkin').click(function(){
+  var href = $(this).attr('href');
+  var offset;
+  if (href == '#top') offset = 0;
+  else offset = $(href).offset().top - sticky_height;
+  the_body.animate({ scrollTop: offset }, 500);
+  return false;
+});</script></body></html>

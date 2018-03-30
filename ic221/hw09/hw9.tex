@@ -1,0 +1,341 @@
+\documentclass{article}[9pt]
+\usepackage{listings}
+\usepackage{fullpage}
+\usepackage{textcomp}
+\usepackage{mdframed}
+\lstset{ %
+basicstyle=\ttfamily\scriptsize,
+commentstyle=\ttfamily\scriptsize\emph,
+upquote=true,
+framerule=1.25pt,
+breaklines=true,
+showstringspaces=false,
+escapeinside={(*@}{@*)},
+belowskip=2em,
+aboveskip=1em,
+}\newenvironment{answerfont}{\fontfamily{qhv}\selectfont}{\par}
+
+\newenvironment{myanswer}{\begin{mdframed}\begin{answerfont}}{\end{answerfont}\end{mdframed}}
+\title{HW 9}
+\author{Mike Hanling}
+\date{02 APR 18}
+\begin{document}\maketitle
+\section*{Questions}
+\label{sec:orgfce6862}
+\begin{enumerate}
+
+
+\item (5 points) What does it mean that signals arrive
+asynchronously?
+\begin{myanswer}
+They can come from different processes, things do not run one after
+another, signals can come from anywhere at anytime.
+\end{myanswer}
+
+\item (10 points) What signal is generated from the following keyboard-shortcut/command?
+
+\begin{enumerate}
+\item Ctrl-c
+\begin{myanswer}
+SIGINT
+\end{myanswer}
+
+\item Ctrl-z
+\begin{myanswer}
+SIGSTOP
+\end{myanswer}
+
+\item fg/bg
+\begin{myanswer}
+SIGCONT
+\end{myanswer}
+
+\item Ctrl-\
+\begin{myanswer}
+SIGQUIT
+\end{myanswer}
+
+\end{enumerate}
+\item (5 points) Run the command kill -l to list all the signals and their
+signal numbers. Find either the matching
+signal-number/signal-name for the following values
+below. Additionally, for each signal, use man 7 signal to
+describe the default action of each.
+
+
+\begin{enumerate}
+\item SIGKILL
+\begin{myanswer}
+9: Terminate
+\end{myanswer}
+
+\item 14
+\begin{myanswer}
+SIGALRM: Terminate
+\end{myanswer}
+
+\item SIGALRM
+\begin{myanswer}
+14: Terminate
+\end{myanswer}
+
+\item SIGABRT
+\begin{myanswer}
+6: Terminate and core dump
+\end{myanswer}
+
+\item 21
+\begin{myanswer}
+SIGTTIN: Stop
+\end{myanswer}
+
+\item 1
+\begin{myanswer}
+SIGHUP: Terminate
+\end{myanswer}
+
+\item SIGCHLD
+\begin{myanswer}
+17: Ignore
+\end{myanswer}
+
+\item SIGTTOU
+\begin{myanswer}
+22: Stop
+\end{myanswer}
+
+\end{enumerate}
+\item (15 points) Provide a brief plain-English explanation, e.g., reference which
+signal is sent and to which process(es), for each the
+kill/killall commands. (hint: You should look in the man
+pages…)
+
+
+\begin{enumerate}
+\item killall -17 sleep
+\begin{myanswer}
+SIGCHLD signal sent to all sleep processes running
+\end{myanswer}
+
+\item kill -9 2237
+\begin{myanswer}
+SIGKILL sent to process 2237
+\end{myanswer}
+
+\item killall -SIGUSR1 a.out
+\begin{myanswer}
+Signal 10 is sent to all a.out processes
+\end{myanswer}
+
+\item kill -SIGABRT -1
+\begin{myanswer}
+Signal 6 sent to all process excluding kill and init
+\end{myanswer}
+
+\item killall sleep
+\begin{myanswer}
+SIGTERM sent to all sleep processes
+\end{myanswer}
+
+\item killall -u
+\begin{myanswer}
+Kill only processes owned by this user
+\end{myanswer}
+
+\end{enumerate}
+\item 
+On a lab machine, run the following program in the background
+
+
+~aviv/ic221-hw/hw09/ic221-signaler \&
+
+
+From the same (or another) terminal on the same machine, send
+the program the following two signals below and describe the
+results.
+
+
+
+
+
+\begin{enumerate}
+\item (3 points) SIGUSR1
+\begin{myanswer}
+"Ha Ha, missed me!"\\
+An ASCII art cat.
+\end{myanswer}
+
+\item (3 points) SIGUSR2
+\begin{myanswer}
+"You shot me!"\\
+ASCII art skull and crossed bones.
+\end{myanswer}
+
+\end{enumerate}
+\item 
+Consider the program below and answer the associated questions:
+
+
+
+\begin{lstlisting}
+int count = 0;
+
+void handler(int signum){
+
+  printf("You Shot Me!\n");
+  count++;
+
+  if(count > 3){
+    printf("I'm dead!\n");
+    exit(1);
+  }
+
+}
+
+int main(){
+
+  //establish signal hander for SIGTINT and SIGSTOP
+  signal(SIGTINT,handler);
+  signal(SIGTSTP,handler);
+
+  //loop forever
+  while(1);
+
+}
+
+\end{lstlisting}
+
+
+
+
+
+
+
+\begin{enumerate}
+\item (3 points) What is the output of the program if the user hits Ctrl-c only once? Explain.
+\begin{myanswer}
+You Shot Me!\\
+SIGINT is handler and count is less than 4, so it prints the above once.
+\end{myanswer}
+
+\item (3 points) What is the output of the program if the user hits Ctrl-c four times? Explain.
+\begin{myanswer}
+You Shot Me!\\
+You Shot Me!\\
+You Shot Me!\\
+You Shot Me!\\
+I'm dead!\\
+SIGINT is handled four times, and then count is greater than 3, so the
+last line is printed and the program exits.
+\end{myanswer}
+
+\item (3 points) What is the output of the program if the user hits Ctrl-c three times and Ctrl-Z once? Explain.
+\begin{myanswer}
+You Shot Me!\\
+You Shot Me!\\
+You Shot Me!\\
+You Shot Me!\\
+I'm dead!\\
+SIGINT and SIGSTOP are handled with the same function, so the
+explanation from the quesion above still applies.
+\end{myanswer}
+
+\end{enumerate}
+\item (5 points) What does the system call pause() do? Yes, it pauses
+the program, of course, but until when does the program stay
+paused and why is it a useful command?
+\begin{myanswer}
+It says paused until there is a signal received to terminate, stop, or
+one that has a way to be handled.  It is useful with alarms, as it will
+ahve the program sleep until the alarm has gone off, sending the SIGALRM
+so that it can be handled.
+\end{myanswer}
+
+\item 
+(10 points) How many times does the program below print alarm? Explain
+
+
+
+\begin{lstlisting}
+int count = 10;
+
+void handler(int sugnum){
+
+  printf("Alarm!\n");
+  count /= 2;
+  alarm(count);
+
+}
+
+int main(){
+
+  signal(SIGALRM, handler);
+  alarm(count);
+
+  while(1) pause();
+}
+
+\end{lstlisting}
+
+
+\begin{myanswer}
+4 because it will print after 10 seconds, then 5, seconds, then 2,
+seconds, then 1 second, and then the alarm is for zero seconds, so it
+will never go off again.
+\end{myanswer}
+
+\item 
+(10 points) Convert the following use of signal() below to a
+sigaction() call.
+
+
+
+\begin{lstlisting}
+signal(SIGUSR1, handler);
+
+\end{lstlisting}
+
+
+\begin{myanswer}
+\begin{lstlisting}[language=c]
+struct sigaction action;
+action.sa_handler = handler;
+sigaction( SIGUSR1, &action, NULL);
+\end{lstlisting}
+\end{myanswer}
+
+\item (5 points) What sigaction flag is used to ensure that system
+calls will be restarted when interrupted?
+\begin{myanswer}
+SA\textunderscore RESTART
+\end{myanswer}
+
+\item (5 point) Provide an example of why the read() system call
+would need to be restarted due to a signal delivery.
+\begin{myanswer}
+If the siganl comes from alarm, like making sure the user is not taking
+too long to put in an input, then the read() will not restart, so the
+user will never be able to input text even if it appears that way in a
+program.
+\end{myanswer}
+
+\item (5 points) Look in man 7 signal and kill -l and draw a
+picture of your favorite signal. Be sure to clearly identify
+it. (You will not use LaTex bonus points for hand drawing your
+picture.)
+\begin{myanswer}
+\begin{verbatim}
+
+______________________________________________________||_._._._._._._._.
+\_____________________________________________________||_#_K_I_L_L_9_#_|
+                                                      11
+
+\end{verbatim}
+\end{myanswer}
+
+\end{enumerate}
+\end{document}
+
+%%% mode: latex
+% TeX-master: t
+%%% End:

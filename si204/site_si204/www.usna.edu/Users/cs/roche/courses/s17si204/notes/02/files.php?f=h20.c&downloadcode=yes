@@ -1,0 +1,47 @@
+/***************************************************
+H 0 State Program
+ 2
+
+Write a program that reads in a temperature in the
+form of NUMBER UNITS (e.g "123.02 Fahrenheit" or
+"-75.0 Celsius") and returns "Gas", "Liquid", or
+"Solid" depending on the state of H20 at that
+temperature. Note: We'll assume standard pressure.
+
+At standard pressure, we have ice at or below
+32 Fahrenheit (0 Celsius), steam above 212 
+Fahrenheit (100 Celsius), and water in between.
+***************************************************/
+#include "si204.h"
+
+int main() {
+  // Read user input temperature
+  fputs("Enter temperature (NUMBER UNITS): ", stdout);
+  double T = readnum(stdin);
+  cstring units;
+  readstring(units, stdin);
+
+  // Get boiling and freezing temps depending on units
+  double freeze = -1.0;
+  double boil = -1.0;
+  if (strcmp(units, "Fahrenheit") == 0) {
+    freeze = 32.0;
+    boil = 212.0;
+  } else if (strcmp(units, "Celsius") == 0) {
+    freeze = 0.0;
+    boil = 100.0;
+  } else {
+    fputs("Please enter Fahrenheit or Celsius.\n", stdout);
+    return 1; // indicates an error occured
+  }
+
+  if (T <= freeze) {
+    fputs("Solid\n", stdout);
+  } else if (T < boil) {
+    fputs("Liquid\n", stdout);
+  } else {
+    fputs("Gas\n", stdout);
+  }
+
+  return 0;
+}

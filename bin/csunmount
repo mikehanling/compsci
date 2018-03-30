@@ -1,0 +1,29 @@
+#!/bin/bash
+
+set -e
+set -u
+
+##################################################################
+# csunmount - This script unmounts your CS Department Unix account
+# home directory in your local machine home directory at ~/csunix. 
+##################################################################
+
+MOUNTDIR="$HOME/csunix"
+
+function is_mounted {
+  grep -q "$MOUNTDIR" /etc/mtab
+}
+
+if is_mounted; then
+  if fusermount -u "$MOUNTDIR"; then
+    echo "Successfully unmounted $MOUNTDIR"
+  else
+    echo "ERROR: Couldn't unmount. You might have a file or terminal open"
+    echo "       somewhere in the csunix/ directory. Close that and try again."
+    exit 1
+  fi
+else
+  echo "Already unmounted!"
+fi
+chmod -rwx "$MOUNTDIR"
+exit 0

@@ -1,0 +1,116 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+         "http://www.w3.org/TR/html4/strict.dtd"><html><head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"><title>marathon.c</title><link href="../../scripts/prism.css" rel="stylesheet" />    <style type="text/css">
+    body {
+      margin: 0;
+      padding:55px 0 0 0;
+    }
+    div#header {
+      position:absolute;
+      top: 0;
+      left: 0;
+      width:100%;
+      height:50px;
+      border-bottom: 5px solid red;
+      text-align: center;
+      background-color: #d0d0d0;
+      z-index: 1000;
+    }
+    @media screen{
+      body>div#header{
+        position:fixed;
+      }
+    }
+    * html body{
+      overflow:hidden;
+    }
+    * html div#content {
+      height: 100%;
+      overflow: auto;
+    }
+    .warning {
+      margin: 3px auto;
+      background-color: black;
+      color: yellow;
+      font-weight: bold;
+      max-width: 600px;
+      font-family: sans-serif;
+      text-align: center;
+    }
+    /*
+    .codeblock {
+      margin:10px auto 10px;
+      min-width:500px;
+      max-width:800px;
+    }
+    .codeblock td.de1 {
+      border:1px solid black;
+    }
+    .codeblock td.ln {
+      border:1px solid white;
+    }
+    pre {
+      margin:10px auto 10px;
+      max-width:800px;
+    }
+    .plainpre {
+      border: 1px solid black;
+      padding:2px;
+    }
+    */
+    </style>
+  </head><body><div id="header"><p><a href="files.php%3Ff=marathon.c&amp;downloadcode=yes">Click here</a> to download <code>marathon.c</code>.</p></div><div id="content"><pre class="line-numbers"><code class="language-C">/*********************************************
+Get Time in Seconds
+
+Times for marathon runners are kept the following
+format: h:mm:ss.  So for example, my time might be
+8:34:08.  Write a program that reads in a list of
+one or more such times, separated by commas and
+terminated by a semicolon, and prints out the
+average time in seconds.  typical input might
+look like:
+
+   3:22:01, 2:58:27, 2:59:23, 3:05:00, 3:08:33;
+
+And your program should print out 11200.8.
+*********************************************/
+#include &lt;stdio.h&gt;
+
+int readtime();
+
+/*********************************************
+ ** main() function
+ *********************************************/
+int main() {
+  // Initialization before loop
+  printf(&quot;Enter lists of times in hh:mm:ss form,\n&quot;
+         &quot;using , to separate and ; to terminate:\n&quot;);
+  int totsecs = 0; // total sum of times read in (in seconds)
+  int n = 0; // number of times read in
+  char c;
+
+  // Loop over each time entered by user
+  do {
+    totsecs += readtime();
+    scanf(&quot;%c&quot;, &amp;c); // reads in space or ;
+    n++;
+  } while(c != ';');
+
+  // Write average time in seconds
+  printf(&quot;Average in seconds: %g\n&quot;, totsecs / (double)n);
+
+  return 0;
+}
+
+/*********************************************
+ ** readtime() - this function reads a time
+ ** in hh:mm:ss format from cin, and returns
+ ** the time in seconds.
+ *********************************************/
+int readtime() {
+  int h;
+  int m;
+  int s;
+  scanf(&quot;%d:%d:%d&quot;, &amp;h, &amp;m, &amp;s);
+  return (h*60 + m)*60 + s;
+}</code></pre></div><script src="../../scripts/prism.js"></script></body></html>

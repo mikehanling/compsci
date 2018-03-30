@@ -1,0 +1,55 @@
+/*********************************************
+Get Time in Seconds
+
+Times for marathon runners are kept the following
+format: h:mm:ss.  So for example, my time might be
+8:34:08.  Write a program that reads in a list of
+one or more such times, separated by commas and
+terminated by a semicolon, and prints out the
+average time in seconds.  typical input might
+look like:
+
+   3:22:01, 2:58:27, 2:59:23, 3:05:00, 3:08:33;
+
+And your program should print out 11200.8.
+*********************************************/
+#include <stdio.h>
+
+int readtime();
+
+/*********************************************
+ ** main() function
+ *********************************************/
+int main() {
+  // Initialization before loop
+  printf("Enter lists of times in hh:mm:ss form,\n"
+         "using , to separate and ; to terminate:\n");
+  int totsecs = 0; // total sum of times read in (in seconds)
+  int n = 0; // number of times read in
+  char c;
+
+  // Loop over each time entered by user
+  do {
+    totsecs += readtime();
+    scanf("%c", &c); // reads in space or ;
+    n++;
+  } while(c != ';');
+
+  // Write average time in seconds
+  printf("Average in seconds: %g\n", totsecs / (double)n);
+
+  return 0;
+}
+
+/*********************************************
+ ** readtime() - this function reads a time
+ ** in hh:mm:ss format from cin, and returns
+ ** the time in seconds.
+ *********************************************/
+int readtime() {
+  int h;
+  int m;
+  int s;
+  scanf("%d:%d:%d", &h, &m, &s);
+  return (h*60 + m)*60 + s;
+}

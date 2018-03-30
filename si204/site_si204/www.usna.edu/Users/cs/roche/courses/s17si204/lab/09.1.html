@@ -1,0 +1,164 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Lab 09: 2D Arrays and Images</title><meta name="viewport" content="width=device-width, initial-scale=1.0"><link href="../scripts/prism.css" rel="stylesheet" /><link rel="stylesheet" type="text/css" href="../style.css"><script type="text/javascript" src="../../../mathjax/MathJax.js%3Fconfig=TeX-AMS_HTML"></script><script type="text/javascript" src="../scripts/jquery-3.1.1.min.js"></script><style>
+@media only screen and (min-width: 600px) {
+  #main>header {background-image: url("../scripts/header.png");}
+}
+</style>  <meta name="generator" content="pandoc">
+  <style type="text/css">code{white-space: pre;}</style>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head><body><div id="main"><header><nav class="topnav"><div>
+            <a href="../index.php.html">SI 204</a>
+            </div><div>
+            <a href="../calendar.php.html">Calendar</a>
+            </div><div>
+            <a href="../notes/index.html">Notes</a>
+            </div><div>
+            <a href="../hw/index.html">HWs</a>
+            </div><div id="navparent">
+            <a href="index.html">Labs</a>
+            </div><div>
+            <a href="../proj/index.html">Projects</a>
+            </div><div>
+            <a href="../exams/index.html">Exams</a>
+            </div><div>
+            <a href="../admin/index.html">Resources</a>
+            </div><div>
+            <a href="https://www.usna.edu/Users/cs/roche/">Roche</a>
+            </div><div>
+            <a href="https://www.usna.edu/Users/cs/albing/">Albing</a>
+            </div></nav></header><div id="mainbox"><div class="printonly"><h1 class="printtitle">SI 204 Spring 2017 / Labs</h1><hr></div><article id="mainart"><header><h1>Lab 09: 2D Arrays and Images</h1></header><div id="TOC"><ul><li><a class="linkin" href="09.1.html#revisiting-images"><span class="toc-section-number">1</span> Revisiting images</a></li>
+<li><a class="linkin" href="09.1.html#read-into-array-of-structs-and-write"><span class="toc-section-number">2</span> Read into array of structs, and write</a></li>
+<li><a class="linkin" href="09.1.html#flip"><span class="toc-section-number">3</span> Flip</a></li>
+<li><a class="linkin" href="09.1.html#blood-mode"><span class="toc-section-number">4</span> Blood mode</a></li>
+<li><a class="linkin" href="09.1.html#mirror"><span class="toc-section-number">5</span> Mirror</a></li>
+<li><a class="linkin" href="09.1.html#blur-going-further-"><span class="toc-section-number">6</span> Blur (going further)</a></li>
+<li><a class="linkin" href="09.1.html#who-needs-a-prof-"><span class="toc-section-number">7</span> Who needs a prof?</a></li></ul></div><div class="panbody"><h1 id="revisiting-images"><a class ="linkin" href="09.1.html#top"><span class="header-section-number">1</span> Revisiting images</a></h1><p>A few weeks ago in <a href="06/index.html">Lab 6</a>, we learned how to create bmp images in a program with “green screening”, but were limited to tasks that didn’t require us to store any pixel values. Now that we know arrays and structs, we can do better.</p>
+<p>In this lab, we will create a program <code>imgmod</code> that works something like this:</p>
+<pre><code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./imgmod</code>
+<code class="language-text output">Input file:</code><code class="language-text input"> cat.bmp</code>
+<code class="language-text output">command:</code><code class="language-text input"> flip</code>
+<code class="language-text output">command:</code><code class="language-text input"> blood</code>
+<code class="language-text output">command:</code><code class="language-text input"> mirror</code>
+<code class="language-text output">command:</code><code class="language-text input"> flip</code>
+<code class="language-text output">command:</code><code class="language-text input"> blur</code>
+<code class="language-text output">command:</code><code class="language-text input"> blur</code>
+<code class="language-text output">command:</code><code class="language-text input"> blur</code>
+<code class="language-text output">command:</code><code class="language-text input"> write messedup.bmp</code>
+<code class="language-text output">command:</code><code class="language-text input"> quit</code></pre><p>You will want to start by either looking up your own solution from lab 6 or <a href="09/lab6sol.php%3Ff=replace.c.html">download my sample solution for replace.c here</a>.</p>
+<p>So we will be reading, storing and writing files in the bmp format. I want you to use your own pictures for testing this stuff. Hopefully you already know how to download and save image files. What you need to know, however, is how to convert them to bmp files. Fortunately, the lab machines have a suite of tools called “Imagemagick” installed. One of these, <code>convert</code>, can do this conversion for you. Suppose <code>foo.jpg</code> is a file of yours (could be <code>.png</code>, <code>.gif</code>, whatever). To convert it to <code>foo.bmp</code> do the following:</p>
+<pre><code class="language-.text">convert foo.jpg -type truecolor bmp3:foo.bmp</code></pre>
+<p>The only small issue is that the <em>width</em> of your image has to be a multiple of 4, because of the way our programs to read bmp files work. So if you download an image whose width is not a multiple of 4, you want to use the <code>resize</code> option to fix that. For example, the following command resizes <code>foo.jpg</code> to width 80 and height 100 before converting it to <code>foo.bmp</code>:</p>
+<pre><code class="language-.text">convert foo.jpg -resize 80x100 -type truecolor bmp3:foo.bmp</code></pre>
+<p>You can use the <code>identify</code> command, like <code>identify foo.jpg</code> or <code>identify foo.bmp</code>, to check the current dimensions of any image.</p>
+<p>Of course, you can convert back to .jpg with the following:</p>
+<pre><code class="language-.text">convert foo.bmp foo.jpg</code></pre>
+<p>With these simple commands in hand, you should be able to prepare your own images for this lab. To view an image, use the <code>eog</code> program. For example:</p>
+<pre><code class="language-.text">eog foo.bmp &amp;</code></pre>
+<p>I really prefer you find some images of your own. If you want, however, here is one for you to play with: <a href="09/gremlins.bmp" class="uri">gremlins.bmp</a>.</p>
+<h1 id="read-into-array-of-structs-and-write"><a class ="linkin" href="09.1.html#top"><span class="header-section-number">2</span> Read into array of structs, and write</a></h1><p>For the first part of the lab, you will just implement the <code>write</code> command to write out the same image that you read in, possibly to a different filename. You should also have a <code>quit</code> command to stop the loop and exit the program.</p>
+<pre><code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./imgmod</code>
+<code class="language-text output">Input file:</code><code class="language-text input"> gremlins.bmp</code>
+<code class="language-text output">command:</code><code class="language-text input"> write g2.bmp</code>
+<code class="language-text output">command:</code><code class="language-text input"> write g3.bmp</code>
+<code class="language-text output">command:</code><code class="language-text input"> quit</code></pre><p>After running the above program, files <code>g2.bmp</code> and <code>g3.bmp</code> should both be exact copies of <a href="09/gremlins.bmp" class="uri">gremlins.bmp</a>:</p>
+<figure>
+<img src="09/gremlins.bmp" />
+</figure>
+<p><strong>Important</strong>: You can get started by just copying one of your programs from <a href="06/index.html">Lab 6</a> or looking at my sample solution for <a href="09/lab6sol.php%3Ff=replace.c.html">replace.c</a>. But you will have to <strong>change that program to use structs and arrays</strong>!</p>
+<p>Instead of reading and writing simultaneously in the same loop, your program should read the entire image into a 2D array at the beginning, and then write out that stored image whenever it sees a <code>write</code> command.</p>
+<p>I strongly suggest making use of a <code>pixel</code> struct such as</p>
+<pre><code class="language-C">struct pixel {
+  int red;
+  int green;
+  int blue;
+};</code></pre>
+<p>You may also want a <code>struct image</code> that stores the width and height of the image as well as a 2D array for the pixels.</p>
+<h1 id="flip"><a class ="linkin" href="09.1.html#top"><span class="header-section-number">3</span> Flip</a></h1><p>Add the functionality for a command <code>flip</code> that flips the image upside-down by <em>rotating</em> it 180 degrees. So the <em>reverse of</em> the last row in the original becomes the first row in the new image, and so on for all the rows.</p>
+<p>This example run:</p>
+<pre><code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./imgmod</code>
+<code class="language-text output">Input file:</code><code class="language-text input"> gremlins.bmp</code>
+<code class="language-text output">command:</code><code class="language-text input"> flip</code>
+<code class="language-text output">command:</code><code class="language-text input"> write gf.bmp</code>
+<code class="language-text output">command:</code><code class="language-text input"> quit</code></pre><p>would produce a file called <code>gf.bmp</code> that would look like:</p>
+<figure>
+<img src="09/gf.bmp" />
+</figure>
+<p><strong>Hint</strong>: The size of the “flipped” image is the same as the original one. It’s probably easiest to start by making a new 2D array of pixels for the new image, and then copying them one at a time. But if you’re clever you can do it without having to make a new array at all!</p>
+<h1 id="blood-mode"><a class ="linkin" href="09.1.html#top"><span class="header-section-number">4</span> Blood mode</a></h1><p>Add the functionality for a command <code>blood</code> that turns your image into “blood mode” according to the following rules:</p>
+<ul>
+<li>Any pixel where the sum of (red + green + black) values is at least 256, turns to pure red (R=255, B=0, G=0).</li>
+<li>Any other pixel turns to pure black (R=0, B=0, G=0).</li>
+</ul>
+<p>For example, running:</p>
+<pre><code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./imgmod</code>
+<code class="language-text output">Input file:</code><code class="language-text input"> gremlins.bmp</code>
+<code class="language-text output">command:</code><code class="language-text input"> blood</code>
+<code class="language-text output">command:</code><code class="language-text input"> write gb.bmp</code>
+<code class="language-text output">command:</code><code class="language-text input"> quit</code></pre><p>Should produce a file <code>gb.bmp</code> that looks like</p>
+<figure>
+<img src="09/gb.bmp" />
+</figure>
+<p>This is probably a good time to emphasize that any of these commands can be run independently from each other. So you can do <code>blood</code>, <code>flip</code>, or do them multiple times. (Although, running <code>blood</code> more than once will turn the whole image black!)</p>
+<h1 id="mirror"><a class ="linkin" href="09.1.html#top"><span class="header-section-number">5</span> Mirror</a></h1><p>Add the functionality for a command <code>mirror</code> that doubles the height of your image, by making a “mirror image” just below the original.</p>
+<p><strong>Note</strong>: In a BMP image row number 0 is the <em>last</em> row in the image — think of the row and column like (y,x) coordinates in a graph. So that means that when you mirror the image, you really move the original rows <em>up</em> and then make the mirror below it.</p>
+<p>Example:</p>
+<pre><code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./imgmod</code>
+<code class="language-text output">Input file:</code><code class="language-text input"> gremlins.bmp</code>
+<code class="language-text output">command:</code><code class="language-text input"> mirror</code>
+<code class="language-text output">command:</code><code class="language-text input"> write gm.bmp</code>
+<code class="language-text output">command:</code><code class="language-text input"> quit</code></pre><p>would produce <code>gm.bmp</code>:</p>
+<figure>
+<img src="09/gm.bmp" />
+</figure>
+<h1 id="blur-going-further-"><a class ="linkin" href="09.1.html#top"><span class="header-section-number">6</span> Blur (going further)</a></h1><blockquote>The rest of this lab is <em>optional</em> for your
+enrichment and enjoyment. Be sure to work on this only after getting
+everything else perfect. You should still submit this work, but make
+sure it doesn't break any of the parts you already had working correctly!
+</blockquote>
+  <p>Add a <code>blur X</code> command to your program that replaces each pixel’s color with the <em>average</em> of the surrounding 5x5 grid of pixel colors. What that means is, for each pixel, you look at the pixels 2 rows above, down to 2 rows below, and 2 columns to the left, over to 2 columns to the right. “Averaging” is on a per-color basis, with a separate red, green, and blue average that goes into the resulting pixel.</p>
+<p>Of course, you have to be careful not to go “off the edge” for the pixels that are close to the boundaries of the image. For example, the bottom-left pixel should get the result of the bottom-left 3x3 grid of pixels averaged together.</p>
+<p>You almost certainly need to create a new 2D array for this one, because otherwise you would be overwriting each pixel before you use it to compute the blurred average for the next pixel!</p>
+<p>It can be interesting to do the blurring multiple times in a row to make the image look extra blurry. For example:</p>
+<pre><code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./imgmod</code>
+<code class="language-text output">Input file:</code><code class="language-text input"> gremlins.bmp</code>
+<code class="language-text output">command:</code><code class="language-text input"> blur</code>
+<code class="language-text output">command:</code><code class="language-text input"> blur</code>
+<code class="language-text output">command:</code><code class="language-text input"> blur</code>
+<code class="language-text output">command:</code><code class="language-text input"> write gblur.bmp</code>
+<code class="language-text output">command:</code><code class="language-text input"> quit</code></pre><p>creates the following in <code>gblur.bmp</code>:</p>
+<figure>
+<img src="09/gblur.bmp" />
+</figure>
+<h1 id="who-needs-a-prof-"><a class ="linkin" href="09.1.html#top"><span class="header-section-number">7</span> Who needs a prof?</a></h1><p>From here, the sky’s the limit. What do you want to do? You could draw pictures in pixels, fade to black as you move horizontally across an image, merge two images so that the top is image 1, the bottom is image 2, and the transition between is smooth. You could do that thing where you create a big picture that’s made up of little pictures. Get creative and have fun!</p>
+  </div></article></div></div><nav class="stickynav"><div><div class="dropdown"><a href="../index.php.html" class="ddown-btn">SI 204</a><div class="ddown-content"><a href="../calendar.php.html">Calendar</a><a href="../notes/index.html">Notes</a><a href="../hw/index.html">HWs</a><a href="index.html">Labs</a><a href="../proj/index.html">Projects</a><a href="../exams/index.html">Exams</a><a href="../admin/index.html">Resources</a><a href="https://www.usna.edu/Users/cs/roche/">Roche</a><a href="https://www.usna.edu/Users/cs/albing/">Albing</a></div></div><div class="dropdown"><a href="09.1.html#top" class="linkin pagetop">Lab 09: 2D Arrays and Images</a><div class="ddown-content ddtoc"><ul><li><a class="linkin" href="09.1.html#revisiting-images"><span class="toc-section-number">1</span> Revisiting images</a></li>
+<li><a class="linkin" href="09.1.html#read-into-array-of-structs-and-write"><span class="toc-section-number">2</span> Read into array of structs, and write</a></li>
+<li><a class="linkin" href="09.1.html#flip"><span class="toc-section-number">3</span> Flip</a></li>
+<li><a class="linkin" href="09.1.html#blood-mode"><span class="toc-section-number">4</span> Blood mode</a></li>
+<li><a class="linkin" href="09.1.html#mirror"><span class="toc-section-number">5</span> Mirror</a></li>
+<li><a class="linkin" href="09.1.html#blur-going-further-"><span class="toc-section-number">6</span> Blur (going further)</a></li>
+<li><a class="linkin" href="09.1.html#who-needs-a-prof-"><span class="toc-section-number">7</span> Who needs a prof?</a></ul></div></div></nav><footer><div id="foottext">    <p class="disclaimer">Material contained above is made available
+    for the purpose of peer review and discussion and does not
+    necessarily reflect the views of the Department of the Navy or the
+    Department of Defense.
+    Some links above are to sites that are not
+    located at the United States Naval Academy. The USNA is not
+    responsible for the content found on these sites. In addition, the
+    content of these sites does not reflect the opinions, standards,
+    policy or endorsement of the Naval Academy or the United States
+    Government.</p>
+  Page maintained by Daniel S. Roche (<a href="mailto:roche [AT] usna [DOT] edu" id="emaillink1">roche [AT] usna [DOT] edu</a><script type='text/javascript'><!--
+        var b="he@usna.edu";
+        var a="roc";
+        document.getElementById("emaillink1").href='mailto:'+a+b;
+        document.getElementById("emaillink1").innerHTML=a+b;
+        // --></script>). Last updated 11 April 2017 0:53.</div></footer><script src="../scripts/prism.js"></script><script type="text/javascript">var the_body = $('html, body');
+var sticky_height = $('.stickynav').height();
+$('.linkin').click(function(){
+  var href = $(this).attr('href');
+  var offset;
+  if (href == '#top') offset = 0;
+  else offset = $(href).offset().top - sticky_height;
+  the_body.animate({ scrollTop: offset }, 500);
+  return false;
+});</script></body></html>

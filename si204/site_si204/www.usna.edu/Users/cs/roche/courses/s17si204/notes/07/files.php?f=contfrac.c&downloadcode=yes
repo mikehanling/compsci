@@ -1,0 +1,42 @@
+/**********************************************
+For integer a, we have the following continued
+fraction:
+
+a + 1/(a + 1/(a + 1/(a + ...
+
+Of course this is an infinite continued fraction,
+so we could also define f(a,n) to be the first n
+terms, so that:
+f(a,0) = a
+f(a,1) = a + 1/a
+f(a,2) = a + 1/(a + 1/a)
+...
+Implement f(a,n) recursively.
+ **********************************************/
+#include <stdio.h>
+
+double f(int a, int n);
+
+int main() {
+  // Get integer n, n >= 0
+  int n, a;
+  printf("Enter non-negative integer: ");
+  fflush(stdout);
+  scanf(" %i", &n);
+  printf("Enter value a: ");
+  fflush(stdout);
+  scanf(" %i", &a);
+
+  printf("f(%i, %i) = %.20g\n", a, n, f(a,n));
+
+  return 0;
+}
+
+double f(int a, int n) {
+  if (n == 0) {
+    return a;
+  }
+  else {
+    return a + 1/f(a,n-1);
+  }
+}

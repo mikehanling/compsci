@@ -1,0 +1,193 @@
+
+\documentclass{article}[9pt]
+
+\usepackage{listings}
+\usepackage{fullpage}
+\usepackage{textcomp}
+
+\lstset{ %
+  basicstyle=\ttfamily\small,
+  commentstyle=\ttfamily\small\emph,
+  upquote=true,
+  framerule=1.25pt,
+  breaklines=true,
+  showstringspaces=false,
+  escapeinside={(*@}{@*)},
+  belowskip=2em,
+  aboveskip=1em,
+}
+
+
+\newcommand{\myanswer}[1]{\framebox[.9\linewidth]{\parbox{.9\linewidth}{\fontfamily{qhv}\selectfont{#1}}}}
+
+\title{HW 1}
+
+\date{17 JAN 2018}
+
+\author{Mike Hanling}
+
+\begin{document}
+
+\maketitle
+
+\begin{enumerate}
+
+\item (10 points) What are the three components of a Unix system?
+  Provide an example of the interaction from a user perspective down
+  to the hardware and back up.
+
+      \myanswer{User Space, Kernel Space, Hardware.  Ex: The user can
+      use the {\tt whoami} command in the Shell.  The kernel will then
+      interpret the command to find a certain memory address that holds
+      the user's name.  The kernel will have to tell the hardware to do
+      this lookup.  The hardware will do this and send back the answer
+      (in binary of course) to the kernel.  The kernel can than
+      interpret the machine language to produce the user's name back.}
+
+\item (15 points) Consider the {\tt ls -l} output below, label the
+  output appropriately:
+
+\begin{lstlisting}
+drwxr-xr-x 2 aviv scs 4096 2013-12-22 10:57 demo/
+-rw-r--r-- 1 aviv scs 13454 2013-12-22 10:56 text.dat
+\end{lstlisting}
+
+      \myanswer{The first line of output: 
+        \begin{description}
+          \item Directory
+          \item Read permissions for user, group, and global
+          \item Write permissions for user only
+          \item Execute permissions for user, group, and global
+          \item Owned by aviv
+          \item In group scs
+          \item 4096 bits in size
+          \item Last modified 12DEC2013 at 1057
+          \item Named demo
+        \end{description}
+        
+        The second line of output:
+        \begin{description}
+          \item File
+          \item Read permissions for user, group, and global
+          \item Write permissions for user only
+          \item No execute permissions
+          \item Owned by aviv
+          \item In group scs
+          \item 13454 bits in size
+          \item Last modified 12DEC2013 at 1056
+          \item Named text.dat
+        \end{description}
+        }
+\item (15 points) For the following commands, determine in which bin directory they live by using which command on a lab machine
+
+  \begin{enumerate}
+    \item {\tt ls} 
+
+      \myanswer{/bin/ls}
+
+    \item {\tt which} 
+
+      \myanswer{/usr/bin/which}
+
+    \item {\tt tac} 
+
+      \myanswer{/usr/bin/tac}
+
+    \item {\tt grep} 
+
+      \myanswer{/bin/grep}
+
+    \item {\tt cut} 
+
+      \myanswer{/usr/bin/cut}
+
+    \item {\tt chmod} 
+
+      \myanswer{/bin/chmod}
+
+    \item {\tt head} 
+
+      \myanswer{/usr/bin/head}
+
+    \item {\tt mv} 
+
+      \myanswer{/bin/mv}
+
+  \end{enumerate}
+
+
+\item (10 points) Look up the {\tt tac} command in the man
+  pages. Describe its operations, and give an example usage.
+
+      \myanswer{{\tt tac} concatenates and prints files in reverse.  It
+      does the reverse of {\tt cat}.  Ex:\\
+      {\tt cat nums.txt\\
+      1\\
+      2\\
+      3\\
+      tac nums.txt\\
+      3\\
+      2\\
+      1\\}}
+
+\item (15 points) What are the three guiding principles of the Unix
+  design philosophy?
+
+      \myanswer{\begin{itemize}
+      \item Write programs to do \textit{one thing} \& do it well.
+      \item Write programs to \textit{work together}.
+      \item Write programs tho handle \textit{text streams}, because that
+      is a universal interface.
+      \end{itemize}}
+
+\item (10 points) What are the primary purposes of standard input, output, and error for different programs?
+
+      \myanswer{\begin{tabular}{cl}
+      stdin & Input stream for reading anything typed in the terminal\\
+      stdout & Output stream for printing anything to the terminal\\
+      stderr & Separate output stream for errors in programs (not
+      program output)
+      \end{tabular}}
+
+\item (15 points) Consider the following command line with redirects:
+
+\begin{lstlisting}
+grep PA < sample-db.csv 2> oops > sample-db.PA.csv
+\end{lstlisting}
+
+\begin{enumerate}
+
+\item What is the output file?
+
+      \myanswer{sample-db.PA.scv}
+
+\item What is the input file?
+
+      \myanswer{sample.db.scv}
+
+\item What is the error file?
+
+      \myanswer{oops}
+
+
+\end{enumerate}
+
+\item (10 points) Using a pipeline as an example, why is it necessary to have standard error and standard output?
+
+
+      \myanswer{{\tt tac FILE\_YOU\_DO\_NOT\_HAVE\_READ\_PERMISSIONS\_FOR | cat
+      something.txt - else.txt}\\
+      Since you do not have the permissions to perform {\tt tac}, there
+      will be an error message.  In order to not have {\tt cat} print
+      out the error message in the middle of its output to standard
+      output, there must be a standard error stream to keep error
+      messages and program output separate.}
+
+\end{enumerate}
+
+\end{document}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:

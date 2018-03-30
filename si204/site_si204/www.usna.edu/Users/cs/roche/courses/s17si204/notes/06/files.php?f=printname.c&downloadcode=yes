@@ -1,0 +1,33 @@
+#include <stdio.h>
+#include <string.h>
+
+typedef char cstring[128];
+
+void printcaps(cstring s);
+
+int main() {
+  // read "first last"
+  cstring first;
+  cstring last;
+  scanf(" %s %s", first, last);
+
+  // print out "LAST, FIRST"
+  printcaps(last);
+  printf(", ");
+  printcaps(first);
+  printf("\n");
+
+  return 0;
+}
+
+
+// prints the given string in all capital letters
+void printcaps(cstring s) {
+  for (int i=0; i < strlen(s); ++i) {
+    if ('a' <= s[i] && s[i]  <= 'z') {
+      printf("%c", s[i] - ('a' - 'A'));
+    } else {
+      printf("%c", s[i]);
+    }
+  }
+}

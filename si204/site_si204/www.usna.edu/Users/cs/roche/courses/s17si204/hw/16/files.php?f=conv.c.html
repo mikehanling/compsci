@@ -1,0 +1,111 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+         "http://www.w3.org/TR/html4/strict.dtd"><html><head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"><title>conv.c</title><link href="../../scripts/prism.css" rel="stylesheet" />    <style type="text/css">
+    body {
+      margin: 0;
+      padding:55px 0 0 0;
+    }
+    div#header {
+      position:absolute;
+      top: 0;
+      left: 0;
+      width:100%;
+      height:50px;
+      border-bottom: 5px solid red;
+      text-align: center;
+      background-color: #d0d0d0;
+      z-index: 1000;
+    }
+    @media screen{
+      body>div#header{
+        position:fixed;
+      }
+    }
+    * html body{
+      overflow:hidden;
+    }
+    * html div#content {
+      height: 100%;
+      overflow: auto;
+    }
+    .warning {
+      margin: 3px auto;
+      background-color: black;
+      color: yellow;
+      font-weight: bold;
+      max-width: 600px;
+      font-family: sans-serif;
+      text-align: center;
+    }
+    /*
+    .codeblock {
+      margin:10px auto 10px;
+      min-width:500px;
+      max-width:800px;
+    }
+    .codeblock td.de1 {
+      border:1px solid black;
+    }
+    .codeblock td.ln {
+      border:1px solid white;
+    }
+    pre {
+      margin:10px auto 10px;
+      max-width:800px;
+    }
+    .plainpre {
+      border: 1px solid black;
+      padding:2px;
+    }
+    */
+    </style>
+  </head><body><div id="header"><p><a href="files.php%3Ff=conv.c&amp;downloadcode=yes">Click here</a> to download <code>conv.c</code>.</p></div><div id="content"><pre class="line-numbers"><code class="language-C">#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+
+typedef char cstring[128];
+
+// lenUnitCF(fromUnit,toUnit) - this function returns
+// conversion factors between different units of length
+// for units it understands, and returns 0.0 for units
+// it does not understand.
+// It understands: feet, inches, yards, miles, millimeters,
+// centimeters, meters, kilometers, nautical-miles and light-years.
+double lenUnitCF(cstring fromUnit, cstring toUnit);
+
+double toFeet(cstring fromUnit); // This just helps with lenUnitCF
+
+int main()
+{
+  //---- YOUR CODE GOES HERE ---------------//
+  return 0;
+}
+
+double lenUnitCF(cstring fromUnit, cstring toUnit) {
+  return toFeet(fromUnit)/toFeet(toUnit);
+}
+
+double toFeet(cstring fromUnit) {
+  if (strcmp(fromUnit, &quot;feet&quot;) == 0) {
+    return 1.0;
+  } else if (strcmp(fromUnit, &quot;inches&quot;) == 0) {
+    return 1.0/12.0;
+  } else if (strcmp(fromUnit, &quot;yards&quot;) == 0) {
+    return 3.0;
+  } else if (strcmp(fromUnit, &quot;miles&quot;) == 0) {
+    return 5280;
+  } else if (strcmp(fromUnit, &quot;millimeters&quot;) == 0) {
+    return 0.00328084;
+  } else if (strcmp(fromUnit, &quot;centimeters&quot;) == 0) {
+    return 0.0328084;
+  } else if (strcmp(fromUnit, &quot;meters&quot;) == 0) {
+    return 3.28084;
+  } else if (strcmp(fromUnit, &quot;kilometers&quot;) == 0) {
+    return 3280.84;
+  } else if (strcmp(fromUnit, &quot;nautical-miles&quot;) == 0) {
+    return 6076.12;
+  } else if (strcmp(fromUnit, &quot;light-years&quot;) == 0) {
+    return 3.1038479e16;
+  } else {
+    return 0.0;
+  }
+}</code></pre></div><script src="../../scripts/prism.js"></script></body></html>

@@ -1,0 +1,198 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+         "http://www.w3.org/TR/html4/strict.dtd"><html><head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"><title>tictactoe.c</title><link href="../../scripts/prism.css" rel="stylesheet" />    <style type="text/css">
+    body {
+      margin: 0;
+      padding:55px 0 0 0;
+    }
+    div#header {
+      position:absolute;
+      top: 0;
+      left: 0;
+      width:100%;
+      height:50px;
+      border-bottom: 5px solid red;
+      text-align: center;
+      background-color: #d0d0d0;
+      z-index: 1000;
+    }
+    @media screen{
+      body>div#header{
+        position:fixed;
+      }
+    }
+    * html body{
+      overflow:hidden;
+    }
+    * html div#content {
+      height: 100%;
+      overflow: auto;
+    }
+    .warning {
+      margin: 3px auto;
+      background-color: black;
+      color: yellow;
+      font-weight: bold;
+      max-width: 600px;
+      font-family: sans-serif;
+      text-align: center;
+    }
+    /*
+    .codeblock {
+      margin:10px auto 10px;
+      min-width:500px;
+      max-width:800px;
+    }
+    .codeblock td.de1 {
+      border:1px solid black;
+    }
+    .codeblock td.ln {
+      border:1px solid white;
+    }
+    pre {
+      margin:10px auto 10px;
+      max-width:800px;
+    }
+    .plainpre {
+      border: 1px solid black;
+      padding:2px;
+    }
+    */
+    </style>
+  </head><body><div id="header"><p><a href="files.php%3Ff=tictactoe.c&amp;downloadcode=yes">Click here</a> to download <code>tictactoe.c</code>.</p></div><div id="content"><pre class="line-numbers"><code class="language-C">/************************************************
+This program is a simple tic-tac-toe game.
+*************************************************/
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+/************************************************
+ ** PROTOTYPES
+ ************************************************/
+char** createboard();
+void print(char** Board);
+int isdraw(char** Board);
+char winningmove(char** Board, int i, int j);
+
+/************************************************
+ ** MAIN FUNCTION
+ ************************************************/
+int main() {
+  char** Board = createboard();
+  char winner = '\0';
+  char row;
+  char col;
+  char turn = 'X';
+
+  while(!winner &amp;&amp; !isdraw(Board)) {
+    print(Board);
+
+    // Read Move
+    printf(&quot;Player %c, make your move: &quot;, turn);
+    fflush(stdout);
+    scanf(&quot; %c %c&quot;, &amp;row, &amp;col);
+
+    // Make move if square is free
+    int rowind = row - 'A';
+    int colind = col - '1';
+    if (Board[rowind][colind] == ' ') {
+      Board[rowind][colind] = turn;
+      if (turn == 'X') {
+	turn = 'O';
+      } else {
+	turn = 'X';
+      }
+      winner = winningmove(Board, rowind, colind);
+    } else {
+      printf(&quot;Square occupied; try again.\n&quot;);
+    }
+  }
+
+  // Game over - print board &amp; declare finish
+  print(Board);
+  if (winner == 'X' || winner == 'O') {
+    printf(&quot;Congratulations %c!\n&quot;, winner);
+  } else {
+    printf(&quot;Game ends in a draw.\n&quot;);
+  }
+
+  return 0;
+}
+
+/************************************************
+ ** FUNCTION DEFINITIONS
+ ************************************************/
+// Creates the board with all squares init to ' '
+char** createboard() {
+  char** B = calloc(3, sizeof(char*));
+  for(int i = 0; i &lt; 3; ++i) {
+    B[i] = calloc(3, sizeof(char));
+  }
+
+  for(int j=0; j &lt; 3; ++j) {
+    for(int k=0; k &lt; 3; ++k) {
+      B[j][k] = ' ';
+    }
+  }
+
+  return B;
+}
+
+// Prints the board
+void print(char** Board) {
+  printf(&quot; |1|2|3|\n&quot;);
+  for(int i = 0; i &lt; 3; ++i) {
+    printf(&quot;%c|&quot;, 'A' + i);
+    for(int j = 0; j &lt; 3; ++j) {
+      printf(&quot;%c|&quot;, Board[i][j]);
+    }
+    printf(&quot;\n&quot;);
+  }
+}
+
+// Returns true if the game is a draw
+int isdraw(char** Board) {
+  for(int i = 0; i &lt; 3; ++i) {
+    for(int j = 0; j &lt; 3; ++j) {
+      if (Board[i][j] == ' ') {
+        // empty square, so game ain't over yet
+        return 0;
+      }
+    }
+  }
+  // no empty squares, so it's a draw
+  return 1;
+}
+
+// Returns 'X' if (i,j) was a winning move for X
+// Returns 'Y' if (i,j) was a winning move for Y
+// Retruns ASCII value 0 otherwise
+char winningmove(char** Board, int i, int j) {
+  if (Board[i][j] == Board[i][(j+1)%3]
+   &amp;&amp; Board[i][j] == Board[i][(j+2)%3])
+  {
+    // got a column
+    return Board[i][j];
+  }
+  else if (Board[i][j] == Board[(i+1)%3][j]
+          &amp;&amp; Board[i][j] == Board[(i+2)%3][j])
+  {
+    // got a row
+    return Board[i][j];
+  }
+  else if (i == j &amp;&amp; Board[i][j] == Board[(i+1)%3][(j+1)%3]
+                  &amp;&amp; Board[i][j] == Board[(i+2)%3][(j+2)%3])
+  {
+    // got the forward diagonal
+    return Board[i][j];
+  }
+  else if (i+j == 2 &amp;&amp; Board[i][j] == Board[(i+2)%3][(j+1)%3]
+                    &amp;&amp; Board[i][j] == Board[(i+1)%3][(j+2)%3])
+  {
+    // got the reverse diagonal
+    return Board[i][j];
+  }
+  else {
+    // got nothing
+    return 0;
+  }
+}</code></pre></div><script src="../../scripts/prism.js"></script></body></html>

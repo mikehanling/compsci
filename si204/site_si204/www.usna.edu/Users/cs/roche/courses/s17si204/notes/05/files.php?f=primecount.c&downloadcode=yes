@@ -1,0 +1,58 @@
+/*************************************************
+How common are primes?
+
+Write a program that reads a number n from the
+user and returns the percentage of the first n
+integers that are prime (we'll say 1 is *not*
+prime).  Write and use a predicate isprime(k)
+in your program.  Remember, a number k is prime
+if 1 and k are the only numbers that evenly
+divide k.
+*************************************************/
+#include <stdio.h>
+
+int isprime(int p);
+
+int main() {
+  // Get value n
+  int n;
+  printf("Enter n: ");
+  fflush(stdout);
+  scanf(" %d", &n);
+
+  // Count number of primes
+  int count = 0;
+  for(int k = 1; k <= n; k++) {
+    if (isprime(k)) {
+      count++;
+    }
+  }
+
+  // Compute and print out percentage
+  double p = count/(double)n * 100.0;
+  printf("%g%% of the first %i integers are prime\n",
+         count/(double)n * 100.0,
+         n);
+
+  return 0;
+}
+
+/***********************************
+ ** isprime(k)
+ ***********************************/
+int isprime(int p) {
+  // the smallest prime is 2
+  if (p < 2) {
+    return 0;
+  }
+
+  // search for divisors in [2,p-1]
+  for(int div = 2; div < p; div++) {
+    if (p % div == 0) {
+      return 0;
+    }
+  }
+
+  // no divisors were found, p's prime!
+  return 1;
+}

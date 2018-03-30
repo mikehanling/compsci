@@ -1,0 +1,43 @@
+/*************************************************
+Distance between points
+
+Write a program that readsin two points (x1,y1)
+and (x2,y2) and prints out the distance between
+the two points.  Write and use a function
+distance(x1,y1,x2,y2) to help you do this.
+
+*************************************************/
+#include <stdio.h>
+#include <math.h>
+
+double distance(double x1, double y1, double x2, double y2);
+
+int main() {
+  // Get coordinates
+  double x1;
+  double y1;
+  printf("Enter point 1: ");
+  fflush(stdout);
+  scanf(" ( %lg , %lg )", &x1, &y1);
+
+  double x2;
+  double y2;
+  printf("Enter point 2: ");
+  fflush(stdout);
+  scanf(" ( %lg , %lg )", &x2, &y2);
+
+  // Write distance
+  printf("The distance between points is %g\n",
+         distance(x1,y1,x2,y2));
+
+  return 0;
+}
+
+/***********************************
+ ** distance between two points
+ ***********************************/
+double distance(double x1, double y1, double x2, double y2) {
+  double X = x1 - x2;
+  double Y = y1 - y2;
+  return sqrt(X*X + Y*Y);
+}

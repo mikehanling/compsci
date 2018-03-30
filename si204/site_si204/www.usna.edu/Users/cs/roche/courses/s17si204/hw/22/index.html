@@ -1,0 +1,153 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Homework 22: Functions with arrays</title><meta name="viewport" content="width=device-width, initial-scale=1.0"><link href="../../scripts/prism.css" rel="stylesheet" /><link rel="stylesheet" type="text/css" href="../../style.css"><script type="text/javascript" src="../../../../mathjax/MathJax.js%3Fconfig=TeX-AMS_HTML"></script><style>
+@media only screen and (min-width: 600px) {
+  #main>header {background-image: url("../../scripts/header.png");}
+}
+</style></head><body><div id="main"><header><nav class="topnav"><div>
+            <a href="../../index.php.html">SI 204</a>
+            </div><div>
+            <a href="../../calendar.php.html">Calendar</a>
+            </div><div>
+            <a href="../../notes/index.html">Notes</a>
+            </div><div id="navparent">
+            <a href="../index.html">HWs</a>
+            </div><div>
+            <a href="../../lab/index.html">Labs</a>
+            </div><div>
+            <a href="../../proj/index.html">Projects</a>
+            </div><div>
+            <a href="../../exams/index.html">Exams</a>
+            </div><div>
+            <a href="../../admin/index.html">Resources</a>
+            </div><div>
+            <a href="https://www.usna.edu/Users/cs/roche/">Roche</a>
+            </div><div>
+            <a href="https://www.usna.edu/Users/cs/albing/">Albing</a>
+            </div></nav></header><div id="mainbox"><div class="printonly"><h1 class="printtitle">SI 204 Spring 2017 / HWs</h1><hr></div><article id="mainart"><header><h1>Homework 22: Functions with arrays</h1></header><div class="printonly">
+  <div class="blanks">
+  <p>
+  Name: _____________________________________________   Alpha: ___________________
+  </p>
+  <p>
+  Describe help received: ________________________________________________________
+  </p>
+  </div>
+</div>
+  <div class="noprint">
+  <a href="javascript:window.print();">Print this page</a>
+</div>
+  <ul>
+    <li><strong>Due before class on Friday, March 10</strong>
+    </li><li>This homework contains code to be submitted electronically.
+      Put your code in a folder called <code>hw22</code> and submit
+      using the <code>204sub</code> command.</li><li>This is a <em>written homework</em> - be sure to turn in a hard-copy
+      of your completed assignment before the deadline. Use the <code>codeprint</code> command to print out your code
+        and turn that in as well.</li></ul><h1>Assignment</h1><ol class="ass"><li>
+  Circle one to indicate how you did for the reading assignment from
+  <a href="../20/index.html">Homework 20</a> <em>before class on Monday</em>:
+  <p>How carefully did you complete the reading? (Circle one)</p>
+<div class="blanks">
+<div class="option">Not at all</div>
+<div class="option">Skimmed it</div>
+<div class="option">Read some</div>
+<div class="option">Read all</div>
+</div>
+  </li>
+<li>
+  Circle one to indicate how you did for the reading assignment from
+  <a href="../21/index.html">Homework 21</a> <em>before class on Wednesday</em>:
+  <p>How carefully did you complete the reading? (Circle one)</p>
+<div class="blanks">
+<div class="option">Not at all</div>
+<div class="option">Skimmed it</div>
+<div class="option">Read some</div>
+<div class="option">Read all</div>
+</div>
+  </li>
+
+<li>Given the following definitions:
+  <pre><code class="language-c">double y = 2.25;
+int n = 2;
+char s[10] = &quot;hard&quot;;
+int A[3] = {6, 9, 8};
+double* X = calloc(3, sizeof(double));
+X[0] = 5.1; X[1] = 5.4; X[2] = 5.7;
+
+double sqr(double z) { return z*z; }
+
+int derp(int* kptr) {
+  if (*kptr &lt; 5) {
+    return 1;
+  } else {
+    return 99;
+  }
+}</code></pre>  fill in the following table with the type and value of each expression.
+  Write ERROR for both if the expression would be a compiler or run-time error.
+  <table class="RM blanks">
+    <tr><td>expression</td><td style="width:1.5in;">type (or ERROR)</td>
+        <td style="width:1.5in;">value (or ERROR)</td></tr>
+    <tr><td><code>X[0]</code></td><td></td><td></td></tr>
+    <tr><td><code>A[1] - y</code></td><td></td><td></td></tr>
+    <tr><td><code>A[0] - X[n]</code></td><td></td><td></td></tr>
+    <tr><td><code>++A[2]</code></td><td></td><td></td></tr>
+    <tr><td><code>A[1] + s[1]</code></td><td></td><td></td></tr>
+    <tr><td><code>sqr(A[0])</code></td><td></td><td></td></tr>
+    <tr><td><code>sqr(X[0])</code></td><td></td><td></td></tr>
+    <tr><td><code>derp(&amp;n)</code></td><td></td><td></td></tr>
+    <tr><td><code>derp(A)</code></td><td></td><td></td></tr>
+    <!--
+    <tr><td><code>XXX</code></td><td></td><td></td></tr>
+    -->
+  </table>
+</li>
+<li>
+  Write a program called <code>substring.c</code> that reads in a target string
+  and a test string, and reports "Yes" or "No" depending on whether the
+  target is a <em>substring</em> of the test string.
+  <p>T is a substring of S means that T appears (in order and together!) in S
+  somewhere. For example: "low" is a substring of "allowable" (see it? "al<b>low</b>able"),
+  but not of "withhold" (see the letters are there but not in order in
+  "withhold"), nor in "landowner" (see the letters are there and in order but not
+  together in "landowner").</p>
+  <p>Example runs:</p>
+<pre><code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./substring</code>
+<code class="language-text output">Target: </code><code class="language-text input">isp</code>
+<code class="language-text output">Test: </code><code class="language-text input">mississippi</code>
+<code class="language-text output">no</code></pre><pre><code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./substring</code>
+<code class="language-text output">Target: </code><code class="language-text input">sip</code>
+<code class="language-text output">Test: </code><code class="language-text input">mississippi</code>
+<code class="language-text output">yes</code></pre><pre><code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./substring</code>
+<code class="language-text output">Target: </code><code class="language-text input">issi</code>
+<code class="language-text output">Test: </code><code class="language-text input">mississippi</code>
+<code class="language-text output">yes</code></pre><pre><code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./substring</code>
+<code class="language-text output">Target: </code><code class="language-text input">sss</code>
+<code class="language-text output">Test: </code><code class="language-text input">mississippi</code>
+<code class="language-text output">no</code></pre></li>
+<li>
+  Write a program called <code>pairs</code> that reads and integer N, and
+  then 2 rows of N points each, and then prints out the points in (x,y) pairs,
+  like this:
+<pre><code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./pairs</code>
+<code class="language-text output">N: </code><code class="language-text input">6</code>
+<code class="language-text output">x values: </code><code class="language-text input">1    1.5  2    3.1  6    8.3</code>
+<code class="language-text output">y values: </code><code class="language-text input">5.5  5.2  5.1  5.2  5.7  6.6</code>
+<code class="language-text output">(1,5.5) (1.5,5.2) (2,5.1) (3.1,5.2) (6,5.7) (8.3,6.6)</code></pre><pre><code class="language-text prompt">roche@ubuntu$ </code><code class="language-bash">./pairs</code>
+<code class="language-text output">N: </code><code class="language-text input">3</code>
+<code class="language-text output">x values: </code><code class="language-text input">1 2 3</code>
+<code class="language-text output">y values: </code><code class="language-text input">4 5 6</code>
+<code class="language-text output">(1,4) (2,5) (3,6)</code></pre></li>
+</ol></article></div></div><nav class="stickynav"><div><div class="dropdown"><a href="../../index.php.html" class="ddown-btn">SI 204</a><div class="ddown-content"><a href="../../calendar.php.html">Calendar</a><a href="../../notes/index.html">Notes</a><a href="../index.html">HWs</a><a href="../../lab/index.html">Labs</a><a href="../../proj/index.html">Projects</a><a href="../../exams/index.html">Exams</a><a href="../../admin/index.html">Resources</a><a href="https://www.usna.edu/Users/cs/roche/">Roche</a><a href="https://www.usna.edu/Users/cs/albing/">Albing</a></div></div><a href="index.html#top" class="linkin pagetop">Homework 22: Functions with arrays</a></nav><footer><div id="foottext">    <p class="disclaimer">Material contained above is made available
+    for the purpose of peer review and discussion and does not
+    necessarily reflect the views of the Department of the Navy or the
+    Department of Defense.
+    Some links above are to sites that are not
+    located at the United States Naval Academy. The USNA is not
+    responsible for the content found on these sites. In addition, the
+    content of these sites does not reflect the opinions, standards,
+    policy or endorsement of the Naval Academy or the United States
+    Government.</p>
+  Page maintained by Daniel S. Roche (<a href="mailto:roche [AT] usna [DOT] edu" id="emaillink1">roche [AT] usna [DOT] edu</a><script type='text/javascript'><!--
+        var b="he@usna.edu";
+        var a="roc";
+        document.getElementById("emaillink1").href='mailto:'+a+b;
+        document.getElementById("emaillink1").innerHTML=a+b;
+        // --></script>). Last updated 06 March 2017 23:25.</div></footer><script src="../../scripts/prism.js"></script><script type="text/javascript"></script></body></html>

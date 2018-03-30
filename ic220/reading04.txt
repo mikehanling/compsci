@@ -1,0 +1,49 @@
+Mike Hanling
+R04: 2.12
+
+
+Key Points:
+  4 Steps of Transforming C file into Running Program:
+    Compiler
+      C -> ASSEMBLY
+    Assembler
+      Assembly -> Machine Code (OBJECT FILE)
+        Object file header
+        text segment
+        static data segment
+        relocation information
+        symbol table -- for labels in branches
+        debugging information
+    Linker
+      object file (+object file) -> EXECUTABLE
+      -place code and data module symbolically in memory
+      -determine the addresses of data and instruction labels
+      -patch both the internal and external references
+      used so that standard routines are not always recompiled
+      standard libraries are already an object file
+      stitch the new program and library (where needed) together
+    Loader
+      -reads the executable file header to determine size of the text
+          and data segments
+      -creates an address space large enough for the text and data
+      -copies the instructions and data from the exec into memory
+      -copies the parameters to the main program onto the stack
+      -initializes the machine registers and sets the stack pointer to
+          the first free location
+      -jumps to a start-up routine that copies the parameters into the
+          argument registers and calls the main routine of the program
+      -EXIT system call given once main routine returns
+
+    Dynamicall Linked Libraries allow for new versions of libraries to
+    be used on old code because it does not hard code routines & does
+    not load routine unless it is actually executed in new code
+
+    Java uses a VM to do this process
+      Java bytecode ISA is used
+      Java program -> compiler -> class files -> JVM
+      Java also compilers some while the code is running
+        Java Just In Time Compiler
+        feed it directly to the running process
+
+What Confuses Me:
+

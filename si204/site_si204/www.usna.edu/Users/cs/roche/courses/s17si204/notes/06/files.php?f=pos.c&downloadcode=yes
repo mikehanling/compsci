@@ -1,0 +1,60 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int* positive(int* psizeptr, int* array, int size);
+
+int main() {
+  // read size n
+  int n;
+  do {
+    printf("Enter size: ");
+    fflush(stdout);
+  } while(scanf(" %i", &n) != 1 || n <= 0);
+
+  // allocate array and read in contents
+  int* data = calloc(n, sizeof(int));
+  printf("Enter %i integers, space separated.\n", n);
+  for (int i=0; i<n; ++i) {
+    scanf(" %i", &data[i]);
+  }
+
+  // CALL YOUR FUNCTION(S) HERE
+  int psize;
+  int* pos = positive(&psize, data, n);
+  // AND PRINT OUT THE RESULTS
+  for (int i = 0; i < psize; ++i) {
+    printf("%i", pos[i]);
+    if (i < psize-1) printf(", ");
+  }
+  printf("\n");
+
+  // clean-up time
+  free(data);
+  free(pos);
+  return 0;
+}
+
+int* positive(int* psizeptr, int* array, int size) {
+  *psizeptr = 0;
+
+  // first count the number of positive values
+  for (int i=0; i < size; ++i) {
+    if (array[i] > 0) {
+      ++(*psizeptr);
+    }
+  }
+
+  // allocate the new array
+  int* result = calloc(*psizeptr, sizeof(int));
+  int j = 0;
+
+  // copy positive nums to the new array
+  for (int i=0; i < size; ++i) {
+    if (array[i] > 0) {
+      result[j] = array[i];
+      ++j;
+    }
+  }
+
+  return result;
+}

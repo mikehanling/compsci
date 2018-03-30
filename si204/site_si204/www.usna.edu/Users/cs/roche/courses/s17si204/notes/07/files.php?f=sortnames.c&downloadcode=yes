@@ -1,0 +1,90 @@
+/**************************************
+This program simply reads 10 names from
+the file names.txt and prints them out
+in alphabetical order by last name, with
+ties broken by first name.
+**************************************/
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
+/**************************************
+ ** PROTOTYPES
+ **************************************/
+void selectionSort(char*** data, int size);
+int before(char** a, char** b);
+int indexOfMax(char*** data, int size);
+
+/**************************************
+ ** MAIN FUNCTION
+ **************************************/
+int main() {
+  // Open file names.txt containing 10 names
+  FILE* fin = fopen("names.txt", "r");
+
+  // Create and populate 2D array of 10 names
+  // names[i][0] is first name
+  // names[i][1] is last name
+  int size = 10;
+  char*** names = calloc(size, sizeof(char**));
+  for (int i=0; i < size; ++i) {
+    names[i] = calloc(2, sizeof(char*));
+    names[i][0] = calloc(128, sizeof(char));
+    names[i][1] = calloc(128, sizeof(char));
+  }
+  for (int i=0; i < size; ++i) {
+    fscanf(fin, " %s %s", names[i][0], names[i][1]);
+  }
+
+  // Sort!
+  selectionSort(names, size);
+
+  // Print in sorted order
+  for (int i=0; i < size; ++i) {
+    printf("%s %s\n", names[i][0], names[i][1]);
+  }
+
+  // clean up
+  fclose(fin);
+  for (int i=0; i < size; ++i) {
+    free(names[i][0]);
+    free(names[i][1]);
+    free(names[i]);
+  }
+  free(names);
+
+  return 0;
+}
+
+/**************************************
+ ** FUNCTION DEFINITIONS
+ **************************************/
+
+int before(char** a, char** b) {
+  int lastcmp = strcmp(a[1], b[1]);
+  if (lastcmp == 0) {
+    /* compare first names if last names are equal */
+    return strcmp(a[0], b[0]) < 0;
+  } else {
+    return lastcmp < 0;
+  }
+}
+
+int indexOfMax(char*** data, int size) {
+  int imax = 0, i;
+  for(i = 1; i < size; ++i) {
+    if (before(data[imax], data[i])) {
+      imax = i;
+    }
+  }
+  return imax;
+}
+
+void selectionSort(char*** data, int size) {
+  for(int length = size; length > 1; --length) {
+    int imax = indexOfMax(data, length);
+    char** temp = data[length-1];
+    data[length-1] = data[imax];
+    data[imax] = temp;
+  }
+}

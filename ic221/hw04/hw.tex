@@ -1,0 +1,299 @@
+
+\documentclass{article}[9pt]
+
+\usepackage{listings}
+\usepackage{fullpage}
+\usepackage{textcomp}
+\usepackage{mdframed}
+
+\lstset{ %
+  basicstyle=\ttfamily\small,
+  commentstyle=\ttfamily\small\emph,
+  upquote=true,
+  framerule=1.25pt,
+  breaklines=true,
+  showstringspaces=false,
+  escapeinside={(*@}{@*)},
+  belowskip=2em,
+  aboveskip=1em,
+}
+
+
+\newenvironment{answerfont}{\fontfamily{qhv}\selectfont}{\par}
+\newenvironment{myanswer}{\begin{mdframed}\begin{answerfont}}{\end{answerfont}\end{mdframed}}
+
+
+\title{HW 4}
+
+\author{Mike Hanling}
+
+\date{8 FEB 2017}
+
+\begin{document}
+
+\maketitle
+
+\section*{Instructions}
+\begin{itemize}
+
+\item You must turn in a sheet of paper that is neatly typed or written answering the questions below. (You are strongly encouraged to type your homework.)
+
+\item This homework is graded out of 110 points. Point values are associated to each question.
+
+\end{itemize}
+\section*{Questions}
+
+
+
+
+\begin{enumerate}
+\item (10 points) Complete the program below such that the program produces the expected output.
+
+\begin{lstlisting}[language=c]
+struct pair{
+  int left;
+  int right;
+};
+
+int main(int argc, char * argv[]){
+  struct pair p;
+  struct pair *q;
+
+  q = &p;
+
+  p.left=20;
+  p.right=10;
+
+  //printing the pair using p and q?
+
+  printf("p: (%d,%d)\n", /* What goes here? */ );
+
+  printf("q: (%d,%d)\n", /* What goes here? */);
+\end{lstlisting}
+
+\begin{myanswer}
+\texttt{p: p.left, p.right}\\
+\texttt{q: q->left, q->right}
+\end{myanswer}
+
+\item (10 points) Convert the following string deceleration into a similar array deceleration.
+
+\begin{lstlisting}[language=c]
+char s1[] = "Beat Army!";
+
+char s2[] = { /* what goes here? */ };
+\end{lstlisting}
+
+\begin{myanswer}
+ 'B', 'e', 'a', 't', ' ', 'A', 'r', 'm', 'y'
+\end{myanswer}
+
+\item (10 points) What is the output of running the following code snippet below?
+
+\begin{lstlisting}[language=c]
+char s[] = "Beat Army\0Crash Airforce\0";
+
+printf("1: %s\n",s);
+printf("2: %s\n",s+17);
+\end{lstlisting}
+
+\begin{myanswer}
+1: Beat Army\\
+2: irforce
+\end{myanswer}
+
+\item (10 points) Complete the program below to copy \texttt{s1} to \texttt{s2}.
+
+\begin{lstlisting}[language=c]
+int main(){
+  char s1[] = "I love IC221!";
+  char s2[/*?*/];
+
+  for( /* ????  */){
+    /* ????? */
+  }
+
+}
+\end{lstlisting}
+
+\begin{myanswer}
+\begin{lstlisting}[language=c]
+char s2[(int)sizeof(s1)];
+
+for (int i = 0; i < (int)sizeof(s1); i++) {
+  s2[i] = s1[i];
+}
+\end{lstlisting}
+\end{myanswer}
+
+\item (10 points) Look up the following string library functions using the man
+page for \texttt{string.h} and provide a short description of each:
+
+\begin{enumerate}
+\item \texttt{strcpy()}
+\begin{myanswer}
+Copies the second argument into the first argument.
+\end{myanswer}
+
+\item \texttt{strncpy()}
+\begin{myanswer}
+Copies n characters of the second argument into the first argument.
+\end{myanswer}
+
+\item \texttt{strcat()}
+\begin{myanswer}
+Concatenates the two arguments together.
+\end{myanswer}
+
+\item \texttt{strfry()}
+\begin{myanswer}
+Turns the input into an anagram of itself.
+\end{myanswer}
+
+\item \texttt{strchr()}
+\begin{myanswer}
+Returns a pointer to the first occurance of the second argument in the
+string.  NULL if not not found.
+\end{myanswer}
+
+\end{enumerate}
+
+\item (10 points) Consider the following program, what is its output? Provide a
+short memory diagram to explain.
+
+\begin{lstlisting}[language=c]
+int main(){
+  int darray[][4] = {{1, 9, 8, 4},
+                     {1, 8, 9, 4},
+                     {2, 0, 1, 7},
+                     {3, 4, 5, 8}};
+
+  int * p = &(darray[1]);
+
+  printf("%d\n", p[2]);
+}
+\end{lstlisting}
+
+\begin{myanswer}
+Output: 9
+\begin{verbatim}
+{   { 1, 9, 8, 4 },   { 1, 8, 9, 4 },   { 2, 0, 1, 7 },   { 3, 4, 5, 8 }   }
+    ^                 ^       ^
+    |                 |       |
+    .---.             |       |
+        |             |       |
+darray--.             |       |
+                      |       |
+p == &(darray[1])-----.       |
+                              |
+p[2] == &(darray[1]) + 2------.
+
+\end{verbatim}
+\end{myanswer}
+
+
+\item (10 points) Explain why the following type declaration for an array of strings is actually a double array? 
+
+\begin{lstlisting}[language=c]
+char * string[];
+\end{lstlisting}
+
+\begin{myanswer}
+A string in C is already an array of chars.  So, it ends up being a
+char** because it is an array of an array of chars.
+\end{myanswer}
+
+\item (10 points) Complete the following memory diagram for the \texttt{argv[]} array for
+the following command execution:
+
+\begin{verbatim}
+$ ./cmd go navy
+\end{verbatim}
+
+\begin{verbatim}
+          .---.
+argv -->  | .-+--> "./cmd"
+          |---|
+          | . |
+            .
+            .
+            .
+\end{verbatim}
+
+\begin{myanswer}
+\begin{verbatim}
+          .---.
+argv -->  | .-+--> "./cmd"
+          |---|
+          | .-+--> "go"
+          |---|
+          | .-+--> "navy"
+          |---|
+            . 
+            . 
+\end{verbatim}
+\end{myanswer}
+
+
+\item (10 points) Explain why the following for loop iterates over the \texttt{argv}
+array. (Yes, you should run this program if it helps your
+understand!)
+
+\begin{lstlisting}[language=c]
+int main(int argc, char * argv[]){
+  char ** curarg;
+  int i=0;
+
+  for( curarg=argv; *curarg ; curarg++){
+    printf("argv[%d] = %s\n", i++, *curarg);
+  }
+
+}
+\end{lstlisting}
+
+\begin{myanswer}
+A char ** is essentially an array of strings, so the loop goes until the
+pointer points to NULL for the arguments passed in (stored in a new
+copy).  It then prints with the \%s so that printf knows to prints until
+the char ** curarg is at a " ".
+\end{myanswer}
+
+\item (10 points) Complete the program below that checks if each of the
+command line arguments is a number using \texttt{sscanf()}:
+
+\begin{lstlisting}[language=c]
+int main( int argc, char *argv[]){
+char ** curarg;
+int i=0;
+
+
+ for( curarg=argv; *curarg ; curarg++){
+
+   //use sscanf() to perform a number/integer check
+
+   if(/*check passes*/)
+     printf("argv[%d] = %s (is a number!)\n", i++, *curarg);
+   else
+     printf("argv[%d] = %s (is *NOT* a number!)\n", i++, *curarg);
+ }
+
+
+}
+\end{lstlisting}
+
+\begin{myanswer}
+\begin{lstlisting}[language=c]
+int trash, res;
+res = sscanf(*curarg, "\%d", &trash);
+
+if (res == 1)
+\end{lstlisting}
+\end{myanswer}
+
+
+\end{enumerate}
+\end{document}
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:

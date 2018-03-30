@@ -1,0 +1,33 @@
+/***************************************************
+Sum of numbers
+
+Write a program that reads in positive integers from
+the user, each separated by a space, and the whole
+terminated by a negative number (e.g. 3 22 10 -2),
+and returns the sum of the numbers entered (not
+including the terminated negative number!).
+***************************************************/
+#include "si204.h"
+
+int main() {
+  // initialization
+  fputs("Enter numbers separated by spaces to add up.\n", stdout);
+  fputs("Use a negative number to indicate you're finished.\n", stdout);
+
+  int sum = 0;
+  int k;
+
+  k = readnum(stdin);
+  // Loop while the user enters more data
+  while (k >= 0) {
+    sum = sum + k;
+    k = readnum(stdin);
+  }
+
+  // write out result
+  fputs("The sum is ", stdout);
+  writenum(sum, stdout);
+  fputs("\n", stdout);
+
+  return 0;
+}

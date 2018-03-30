@@ -1,0 +1,23 @@
+/***************************************************
+Print a line of n *'s
+
+Write a program that reads in a number n from the
+user and prints out a line of n *'s.
+***************************************************/
+#include "si204.h"
+
+int main() {
+  // Read n
+  fputs("Enter integer n: ", stdout);
+  int n = readnum(stdin);
+
+  // Write *'s
+  for(int i=0; i < n; i++) {
+    fputs("*", stdout);
+  }
+
+  // Finish with new line
+  fputs("\n", stdout);
+
+  return 0;
+}

@@ -1,0 +1,461 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Unit 8: Compound data</title><meta name="viewport" content="width=device-width, initial-scale=1.0"><link href="../../scripts/prism.css" rel="stylesheet" /><link rel="stylesheet" type="text/css" href="../../style.css"><script type="text/javascript" src="../../../../mathjax/MathJax.js%3Fconfig=TeX-AMS_HTML"></script><script type="text/javascript" src="../../scripts/jquery-3.1.1.min.js"></script><style>
+@media only screen and (min-width: 600px) {
+  #main>header {background-image: url("../../scripts/header.png");}
+}
+</style><link rel="stylesheet" type="text/css" href="../../notes.css">  <meta name="generator" content="pandoc">
+  <style type="text/css">code{white-space: pre;}</style>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head><body><div id="main"><header><nav class="topnav"><div>
+            <a href="../../index.php.html">SI 204</a>
+            </div><div>
+            <a href="../../calendar.php.html">Calendar</a>
+            </div><div id="navparent">
+            <a href="../index.html">Notes</a>
+            </div><div>
+            <a href="../../hw/index.html">HWs</a>
+            </div><div>
+            <a href="../../lab/index.html">Labs</a>
+            </div><div>
+            <a href="../../proj/index.html">Projects</a>
+            </div><div>
+            <a href="../../exams/index.html">Exams</a>
+            </div><div>
+            <a href="../../admin/index.html">Resources</a>
+            </div><div>
+            <a href="https://www.usna.edu/Users/cs/roche/">Roche</a>
+            </div><div>
+            <a href="https://www.usna.edu/Users/cs/albing/">Albing</a>
+            </div></nav></header><div id="mainbox"><div class="printonly"><h1 class="printtitle">SI 204 Spring 2017 / Notes</h1><hr></div><article id="mainart"><header><h1>Unit 8: Compound data</h1></header><div id="TOC"><ul><li><a class="linkin" href="index.html#struct-intro"><span class="toc-section-number">1</span> Struct intro</a>
+<ul><li><a class="linkin" href="index.html#first-example-point-struct"><span class="toc-section-number">1.1</span> First example: point struct</a></li></ul></li>
+<li><a class="linkin" href="index.html#creating-new-types"><span class="toc-section-number">2</span> Creating new types</a>
+<ul><li><a class="linkin" href="index.html#typedef"><span class="toc-section-number">2.1</span> Typedef</a></li><li><a class="linkin" href="index.html#regular-struct-usage"><span class="toc-section-number">2.2</span> Regular struct usage</a></li><li><a class="linkin" href="index.html#odd-ways-of-using-structs"><span class="toc-section-number">2.3</span> Odd ways of using structs</a></li><li><a class="linkin" href="index.html#typedef-struct"><span class="toc-section-number">2.4</span> Typedef struct</a></li></ul></li>
+<li><a class="linkin" href="index.html#using-structs"><span class="toc-section-number">3</span> Using structs</a>
+<ul><li><a class="linkin" href="index.html#initialization"><span class="toc-section-number">3.1</span> Initialization</a></li><li><a class="linkin" href="index.html#struct-assignment"><span class="toc-section-number">3.2</span> Struct assignment</a></li><li><a class="linkin" href="index.html#functions-that-take-or-return-structs"><span class="toc-section-number">3.3</span> Functions that take or return structs</a></li><li><a class="linkin" href="index.html#what-we-can-t-do"><span class="toc-section-number">3.4</span> What we can’t do</a></li></ul></li>
+<li><a class="linkin" href="index.html#structs-with-pointers-and-arrays"><span class="toc-section-number">4</span> Structs with pointers and arrays</a>
+<ul><li><a class="linkin" href="index.html#arrays-of-structs"><span class="toc-section-number">4.1</span> Arrays of structs</a></li><li><a class="linkin" href="index.html#pointers-to-structs"><span class="toc-section-number">4.2</span> Pointers to structs</a></li><li><a class="linkin" href="index.html#structs-that-contain-arrays"><span class="toc-section-number">4.3</span> Structs that contain arrays</a></li><li><a class="linkin" href="index.html#what-assignment-and-pass-by-value-mean-with-structs"><span class="toc-section-number">4.4</span> What assignment and pass-by-value mean with structs</a></li></ul></li>
+<li><a class="linkin" href="index.html#sorting-structs"><span class="toc-section-number">5</span> Sorting structs</a>
+<ul><li><a class="linkin" href="index.html#sort-based-on-4th-hw"><span class="toc-section-number">5.1</span> Sort based on 4th HW</a></li><li><a class="linkin" href="index.html#letting-the-user-choose-which-grade-to-sort-on-breaks-our-sort-scheme-"><span class="toc-section-number">5.2</span> Letting the user choose which grade to sort on breaks our sort scheme!</a></li></ul></li>
+<li><a class="linkin" href="index.html#composition-of-structs"><span class="toc-section-number">6</span> Composition of structs</a></li>
+<li><a class="linkin" href="index.html#problems"><span class="toc-section-number">7</span> Problems</a></li></ul></div><div class="panbody"><!-- from l30 -->
+<h1 id="struct-intro"><a class ="linkin" href="index.html#top"><span class="header-section-number">1</span> Struct intro</a></h1><p>This lesson begins a big new topic for us — user defined types, or <em>structs</em> as they are called in C. This is something that you have, I hope, already felt the need for. Let’s consider a few example problems:</p>
+<ul>
+<li>Suppose I want a function <code>midpoint</code> that takes two points and returns their midpoint.</li>
+<li>Suppose I want to read in a list of 20 Midshipmen names and alpha codes, and print out the Midshipmen names ordered by class year.</li>
+<li>Suppose I want to store a bunch of student names along with their grades on 10 homework assingments.</li>
+</ul>
+<p>Each of these are things we can do (think about how), but only with difficulty. The problem is that in each case we are working with “physical” objects that do not have a corresponding built-in type in C. It would be natural to write a midpoint function if there were a type called <code>point</code> that encapsulated both the x and y coordinates — it’s prototype would be <code>point midpoint(point a, point b);</code>. It would be natural to sort 20 Midshipmen ordered by alpha codes (which would order by class year) if there were a type <code>mid</code> that encapsulated both alpha code and name — I’d have an array <code>mid *A = new mid[20]</code>. Finally, it’d be natural to store student names along with homework info if there was a type <code>student</code> — I’d just store it in an array of <code>student</code> objects. Clearly, all of these problems scream out for the ability of the user to wrap up one or more existing types into one package and call it a new type. In C, <em>struct</em> is the mechanism that allows you to do this.</p>
+<h2 id="first-example-point-struct"><a class="linkin" href="index.html#top"><span class="header-section-number">1.1</span> First example: point struct</a></h1><p>Let’s take the example of our midpoint function. We decided that the existence of a type <code>point</code> would make such a function simple and natural. We need to wrap up a <code>double</code> for the <em>x</em>-coordinate and a <code>double</code> for the <em>y</em>-coordinate into a single object of a new type - <code>point</code>. Here’s how that’s accomplished in C:</p>
+<pre><code class="language-C">struct point {   // Declares a new type called &quot;struct point&quot;
+  double x;      // The first &quot;field&quot; of a point is a double named x
+  double y;      // The second &quot;field&quot; of a point is a double named y
+};               // Don&#39;t forget the ;</code></pre>
+<p>This <em>struct definition</em>, like function definitions, appears outside of <code>main</code> or of any other function definitions, and it must appear before you try to use an object of type <code>struct point</code>. From the point of this definition onwards you can use <code>struct point</code> as a new type. If you want to access the <code>double x</code> within a point object named <code>P</code>, you write <code>P.x</code> — note that <code>P.x</code> is an object of type double, so anything you can do with a double you can do with <code>P.x</code>! Moreover it is an <em>l-value</em>, it can be assigned to, passed by reference, etc. The objects packaged together in a new <code>struct</code> are called <em>data members</em>. We’ll start off simple by creating an object of type <code>point</code>, reading values into the object, and printing it out:</p>
+<pre><code class="language-C">int main() {
+  // Creates an object pnt of type point
+  struct point P;
+
+  // Reads &amp; stores coordinate values
+  printf(&quot;Enter x-coord: &quot;);
+  fflush(stdout);
+  scanf(&quot; %lg&quot;, &amp;P.x);
+
+  printf(&quot;Enter y-coord: &quot;);
+  fflush(stdout);
+  scanf(&quot; %lg&quot;, &amp;P.y);
+
+  // Writes out point P
+  printf(&quot;Point is (%g, %g)\n&quot;, P.x, P.y);
+
+  return 0;
+}</code></pre>
+<p>Think of a struct as something very similar to an array, but where each element in the struct has its own name (instead of an array index) and <em>may also have its own type</em>. That second part is really important and is really where structs get their “power”, as we will see. So even though the <code>struct point</code> could possibly be replaced by a size-two array of <code>doubles</code>, this won’t be true when we look at more complicated struct definitions. And besides that, it’s much clearer what a program is doing when we have a variable of type <code>struct point</code> rather than a variable of type, say <code>double*</code>.</p>
+<h1 id="creating-new-types"><a class ="linkin" href="index.html#top"><span class="header-section-number">2</span> Creating new types</a></h1><h2 id="typedef"><a class="linkin" href="index.html#top"><span class="header-section-number">2.1</span> Typedef</a></h1><p>In fact, we’ve already seen a way to make a new type name in C before <code>struct</code>, with the <code>typedef</code> keyword. As you know, the <code>cstring</code> type we used with <code>si204.h</code> for the first half of the semester was actually defined with:</p>
+<pre><code class="language-C">typedef char cstring[128];</code></pre>
+<p>That meant that the type <code>cstring</code> could be used to create (or pass to/return from functions) an array of chars of length 128.</p>
+<p>More generally, <code>typedef</code> is a way of getting a “type alias”, where we use one name to refer to some type. The exact syntax is that you start with the keyword <code>typedef</code>, and then you do what looks like a normal variable declaration, except that <em>what would be the name of the variable is the name of your type alias</em>. Here are some more examples:</p>
+<pre><code class="language-C">typedef int card;      // type card is the same as type int
+typedef double* vec;   // type vec is a pointer to a double (or an array of doubles)
+typedef card deck[52]; // type deck is an array of 52 cards (which are ints!)</code></pre>
+<p>One thing to realize about <code>typedef</code> is that it’s really just for our convenience as programmers; it doesn’t really allow us to do anything new. However (as in the <code>card</code> and <code>deck</code> examples above), besides convenience typedefs can also be useful as a way of making our programs more clear and more flexible.</p>
+<p>For example, given the definitions above, if I wanted to make it so cards were represented by a string instead of an int, I might just be able to change the typedef for card to something like</p>
+<pre><code class="language-C">typedef char card[5]; // a card is a string of length at most 4</code></pre>
+<p>without having to change every single other definition thoughout my program.</p>
+<h2 id="regular-struct-usage"><a class="linkin" href="index.html#top"><span class="header-section-number">2.2</span> Regular struct usage</a></h1><p>Usually in a C program, any <code>struct</code>s you use are declared at the beginning (or in header files), and given names, and then you use <code>struct yourstructname</code> as a type within the program’s functions and <code>main</code>.</p>
+<p>For example, here’s a program that creates a <code>struct</code> for kids with a name and age, and then in the <code>main</code> reads in two kids and says which one is older:</p>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+
+struct kid {
+  char name[128];
+  int age;
+};
+
+int main() {
+  struct kid a;
+  struct kid b;
+
+  // read names and ages
+  printf(&quot;Enter name and age of both kids:\n&quot;);
+  scanf(&quot; %s %i&quot;, a.name, &amp;a.age);
+  scanf(&quot; %s %i&quot;, b.name, &amp;b.age);
+
+  // determine who's older
+  if (a.age &gt; b.age) {
+    printf(&quot;%s is older.\n&quot;, a.name);
+  } else if (b.age &gt; a.age) {
+    printf(&quot;%s is older.\n&quot;, b.name);
+  } else {
+    printf(&quot;%s and %s are the same age.\n&quot;, a.name, b.name);
+  }
+
+  return 0;
+}</code></pre><p>Notice that we have to end the struct declaration with a semicolon <code>;</code> after the closing curly brace — this is easy to forget! Also notice that an expression such as <code>&amp;a.age</code> that you see actually does what you expect, which is to get the address of the <code>age</code> field within the kid struct <code>a</code>, because the dot operator has the <a href="http://en.cppreference.com/w/c/language/operator_precedence">highest precedence in C</a>.</p>
+<h2 id="odd-ways-of-using-structs"><a class="linkin" href="index.html#top"><span class="header-section-number">2.3</span> Odd ways of using structs</a></h1><p>Now let’s break down that <code>struct</code> definition to get a better understanding of what’s going on. All the code in this section is just for understanding the syntax of <code>struct</code>s in C — I don’t recommend you program like this!</p>
+<p>A <code>struct</code> statement in <code>C</code> is actually a type. This type has to contain:</p>
+<ol type="1">
+<li>The keyword <code>struct</code></li>
+<li>(optionally) A name like <code>point</code></li>
+<li>Opening curly brace <code>{</code></li>
+<li>Any number of variable <em>declarations</em> (not definitions, just declarations!)</li>
+<li>Closing curly brace <code>}</code></li>
+</ol>
+<p>Since the name is optional, you must be thinking “what’s the point in declaring a struct with no name?”. Well, just like any other type, you can use this directly in a variable declaration, like:</p>
+<pre><code class="language-C">&lt;struct_type&gt; &lt;variable_name&gt;;</code></pre>
+<p>For example, in the previous program we could have not declared anything before <code>main</code> and just changed the first line of <code>main</code> to specify the struct type <em>and</em> declare two variables <code>a</code> and <code>b</code> with that type, like:</p>
+<pre><code class="language-C">int main() {
+  struct kid {
+    char name[128];
+    int age;
+  } a, b;
+  /* ...the rest of main... */
+}</code></pre>
+<p>And now you can see why the name is optional. In situations like this where you’re just making up a new <code>struct</code> type and declaring a few variables with that type, and you’ll never use it again, you can leave off the name <code>kid</code> and nothing is harmed.</p>
+<p>In fact, when you use just the struct name in a declaration like we did in the previous part:</p>
+<pre><code class="language-C">int main() {
+  struct kid a;
+  struct kid b;
+  /* ...the rest of main... */
+}</code></pre>
+<p>Writing <code>struct kid</code> in this situation is like saying “look up the previous definition of <code>struct kid</code> and use that again right here”.</p>
+<p>Again, I don’t recommend programming this way, but you will see other C code that works like this, so it’s useful to understand what’s going on. Plus, it explains why you have to have that pesky semicolon at the end of a “normal” <code>struct</code> declaration — that’s telling the compiler that you just declared a struct but you don’t want to declare any variables yet.</p>
+<h2 id="typedef-struct"><a class="linkin" href="index.html#top"><span class="header-section-number">2.4</span> Typedef struct</a></h1><p>Some people don’t like having to type <code>struct mystructname</code> whenever they want to declare variables (or function parameters) with that type, and would rather that <code>mystructname</code> by itself just stand for that new type.</p>
+<p>Lo and behold, you can achieve that effect in C with very clever (and very common!) use of <code>typedef</code> and <code>struct</code> together:</p>
+<pre><code class="language-C">typedef struct {
+  char name[128];
+  int age;
+} kid;</code></pre>
+<p>This looks strange at first — and indeed, it is strange — but it’s just following the normal <code>typedef &lt;type&gt; &lt;name&gt;;</code> syntax, where the <code>&lt;type&gt;</code> is itself a nameless struct! If you have the definition above, then in your program you could declare variables like:</p>
+<pre><code class="language-C">kid a;
+kid b;</code></pre>
+<p>without having to re-use the <code>struct</code> keyword every time. This is very common to see in C programs. For example, if you look up the definition of <code>FILE</code> in <code>/usr/include/stdio.h</code>, you’ll find that it’s just a typedef for a struct:</p>
+<pre><code class="language-C">typedef struct _IO_FILE FILE;</code></pre>
+<p>You can find the actual definition of that mysterious struct in <code>/usr/include/libio.h</code> if you dare to look! The point is, structs are really useful, and with a <code>typedef</code> you can be using a struct (like <code>FILE</code>) and not even realize it.</p>
+<h1 id="using-structs"><a class ="linkin" href="index.html#top"><span class="header-section-number">3</span> Using structs</a></h1><p>Now that we know what a <code>struct</code> definition looks like, what can we do with it?</p>
+<h2 id="initialization"><a class="linkin" href="index.html#top"><span class="header-section-number">3.1</span> Initialization</a></h1><p>Let’s say we have the same <code>kid</code> struct as before:</p>
+<pre><code class="language-C">struct kid {
+  char name[128];
+  int age;
+};</code></pre>
+<p>If we want to declare and define a <code>kid</code> called <code>theOne</code> with name <code>&quot;Neo&quot;</code> and age <code>35</code>, we could do it like this:</p>
+<pre><code class="language-C">struct kid theOne;
+strcpy(theOne.name, &quot;Neo&quot;);
+theOne.age = 35;</code></pre>
+<p>(Notice that we had to use <code>strcpy</code> from <code>&lt;string.h&gt;</code> since you can’t copy arrays (strings) using <code>=</code>.)</p>
+<p>Just like with arrays, we can also use the curly-brace syntax to declare <em>and</em> initialize a struct all at once, for convenience:</p>
+<pre><code class="language-C">struct kid theOne = {&quot;Neo&quot;, 35};</code></pre>
+<p>In this case, the order of the values in the curly braces has to match the order in the <code>struct</code> definition.</p>
+<h2 id="struct-assignment"><a class="linkin" href="index.html#top"><span class="header-section-number">3.2</span> Struct assignment</a></h1><p>To copy from one struct to another of the same type, you can of course copy each field one at a time, for example:</p>
+<pre><code class="language-C">struct kid a;
+struct kid b;
+// copy b to a
+strcpy(a.name, b.name);
+a.age = b.age;</code></pre>
+<p>As a nice convenience, the built-in <code>=</code> assignment operator also works on structs (of the same type!), and does exactly that — it makes a copy of each field from one to another, for example:</p>
+<pre><code class="language-C">struct kid a;
+struct kid b;
+// copy b to a
+a = b;</code></pre>
+<p>Simple as that!</p>
+<h2 id="functions-that-take-or-return-structs"><a class="linkin" href="index.html#top"><span class="header-section-number">3.3</span> Functions that take or return structs</a></h1><p>As you probably guessed, you can write functions with structs too. Going back to our original motivation of getting the midpoint between two points defined with</p>
+<pre><code class="language-C">struct point {
+  double x;
+  double y;
+};</code></pre>
+<p>this function will compute and return the midpoint between the two points:</p>
+<pre><code class="language-C">struct point midpoint(struct point p1, struct point p2) {
+  struct point mid;
+  mid.x = (p1.x + p2.x) / 2;
+  mid.y = (p1.y + p2.y) / 2;
+  return mid;
+}</code></pre>
+<p>It’s important to recognize that structure arguments and return values are <em>copied</em> using the copy operation we just learned about. This means that, for example, if the <code>midpoint</code> function above made any chances to <code>p1.x</code>, those changes would not go back to the part of the program that called <code>midpoint</code>, because the function would just be changing a <em>copy</em> of the struct, not the original one.</p>
+<p><strong>This is the most important difference to remember between how structs and arrays work</strong>. In most ways you can think of a struct as an array that contains a combination of different types and that uses names and the <code>.</code> dot operator instead of indexes and the <code>[]</code> operator. But this is the key difference: structs are <em>copied</em> when you call a function, and arrays are not (just the <em>pointer</em> to the array is copied).</p>
+<h2 id="what-we-can-t-do"><a class="linkin" href="index.html#top"><span class="header-section-number">3.4</span> What we can’t do</a></h1><p>It’s useful to also be clear about two things that are <em>not</em> possible with structs we define:</p>
+<ul>
+<li>Applying any built-in arithmetic operators like <code>+</code>, <code>-</code>, <code>*</code>, <code>/</code>, <code>&amp;&amp;</code>, <code>||</code>, etc.</li>
+<li>Reading or writing entire structs using <code>scanf</code> and <code>printf</code>.</li>
+</ul>
+<p>Since we’re making up these structs, there’s no way the compiler could know how to do these things for any kind of struct. What would it even mean, for example, to divide one <code>struct kid</code> by another one?</p>
+<p>This is is also the reason why, when defining our own structs, it’s usually a good idea to also define some helper functions to (at least) read and write them, to make it easier to work with those structs in our programs. In fact, this is a good example of a place to use <em>bottom-up programming</em>: first define the struct you need, then write some useful functions that use that struct, and then you’ll have a much easier time of writing your main program.</p>
+<!-- from l32 -->
+<h1 id="structs-with-pointers-and-arrays"><a class ="linkin" href="index.html#top"><span class="header-section-number">4</span> Structs with pointers and arrays</a></h1><p>Now that we understand the basics of using <code>struct</code>s to store “heterogeneous data”, let’s see how they mix with what we’ve already learned about pointers and arrays. We’re talking about structs that <em>contain</em> pointers and arrays, as well as pointers and arrays <em>of</em> structs.</p>
+<h2 id="arrays-of-structs"><a class="linkin" href="index.html#top"><span class="header-section-number">4.1</span> Arrays of structs</a></h1><p>Making an array of structs is just like making an array of any other type. Going back to our example of 2D points:</p>
+<pre><code class="language-C">struct point {
+  double x;
+  double y;
+};</code></pre>
+<p>let’s say we want to make an array <code>arr</code> of 50 points. You could declare that array on the stack like this:</p>
+<pre><code class="language-C">struct point arr[50];</code></pre>
+<p>or on the heap like this:</p>
+<pre><code class="language-C">struct point* arr = calloc(50, sizeof(struct point));</code></pre>
+<p>The same benefits and drawbacks of heap vs stack allocation that we learned about with arrays apply here just as well.</p>
+<p>Now if we want to access, say, the y coordinate of the point at index 13, we have to first go into index 13 of the array with the <code>[]</code> operator, and then pull out the <code>y</code> field with the dot operator, like so:</p>
+<pre><code class="language-C">arr[13].y</code></pre>
+<p>That expression is an <code>int</code>, and anything you can do with an <code>int</code> variable, you can also do with <code>arr[13].y</code>.</p>
+<p>(And don’t forget to <code>free(arr);</code> if you allocated using <code>calloc</code>!)</p>
+<h2 id="pointers-to-structs"><a class="linkin" href="index.html#top"><span class="header-section-number">4.2</span> Pointers to structs</a></h1><p>We just saw one usage of a pointer to a struct in the heap-based allocation example above. As with any other type, a pointer to a struct could be just a pointer to a single object, or to the first object in an array.</p>
+<p>For example, here is the prototype for a function that takes a pointer to a single point, and changes the coordinates of that point to it’s rotated 90 degrees counter-clockwise around the origin <span class="math inline">\((0,0)\)</span>.</p>
+<pre><code class="language-C">void rotate(struct point* pt);</code></pre>
+<p>All this function needs to do is modify the <code>x</code> and <code>y</code> fields of the struct so that the new y-coordinate is the old x-coordinate, and the new x-coordinate is the old y-coordinate times <span class="math inline">\(-1\)</span>.</p>
+<p>Accessing these fields inside the function gets a little tricky because the <a href="http://en.cppreference.com/w/c/language/operator_precedence">dot operator has higher precedence than the dereference operator</a>. What that means is that if we were to write</p>
+<pre><code class="language-C">*pt.x</code></pre>
+<p>in the <code>rotate</code> function, it wouldn’t work! That would try to <em>first</em> get the <code>x</code> field of variable <code>pt</code>, but that’s an error since <code>pt</code> is not a struct (it’s a <em>pointer to</em> a struct). Instead, we would have to write</p>
+<pre><code class="language-C">(*pt).x</code></pre>
+<p>with parentheses to force the operator order. Because writing those parentheses is so annoying, and passing around pointers to structs is so common in C programming, there’s a special operator <code>-&gt;</code> (looks like an arrow) to do just that. It extracts a field from a struct <em>after</em> dereferencing a pointer to that struct.</p>
+<p>Armed with our fancy new operator, we can write the <code>rotate</code> function as follows:</p>
+<pre><code class="language-C">void rotate(struct point* pt) {
+  double oldy = pt-&gt;y;
+  pt-&gt;y = pt-&gt;x;  // new y coord is the old x coord
+  pt-&gt;x = - oldy; // new x coord is -1 times old y coord
+}</code></pre>
+<h2 id="structs-that-contain-arrays"><a class="linkin" href="index.html#top"><span class="header-section-number">4.3</span> Structs that contain arrays</a></h1><p>Suppose we have a file <a href="namedgrades.txt" class="uri">namedgrades.txt</a>, which contains student grade information. The file looks like this:</p>
+<pre><code class="language-.text">11 students
+10 homeworks
+Adams   58  96  65  72  93  67  59  74  95  56
+Brown   96  67  56  74  94  100 98  68  95  65
+ .
+ .
+ .</code></pre>
+<p>telling us initially how many students we have, how many homework scores for each student, and then listing all the student names followed by their homework scores. Now, I’d like to simply read in this data, store it, and then answer user queries concerning the data. For an easy start, we’ll just assume that the query will simply be a student name and we’re supposed to give the homework average for that student.</p>
+<p>Now, assuming there are <code>numstu</code> students and <code>numhw</code> homeworks, the natural way for us to think of this is to say “I’d like to have an array of <em>numstu</em> objects of type <code>student</code>.” We know how to construct a struct <code>student</code>, so that’ll be no problem, but what data members would we need to store this student data? We’d need a <code>char</code> array to store the name, and we’d need … well, we’d need an array of <em>numhw</em> <code>int</code>s to store the homework grades. Since we don’t know in advance how big to make this array, we’ll have to use heap allocation for the grades and store it as a pointer of type <code>int*</code>:</p>
+<pre><code class="language-C">struct student {
+  int* hw;
+  char name[128];
+};</code></pre>
+<p>Packaged up this way, an object of type <code>struct student</code> representing the student “Brown” from above would look like this:</p>
+<figure>
+<img src="stu.gif" />
+</figure>
+<p>Now, the question is, if variable <code>stu</code> is the <code>student</code> object from the picture, what expression would give me the value of the homework assignment with index 2? Well, <code>stu.hw</code> is the name of the pointer to the array of grades, so I just need to subscript it with a 2: <code>stu.hw[2]</code>! I might be tempted at this point to look back at my original problem and say that I’ll create my storage for all this student/grade data with:</p>
+<pre><code class="language-C">struct student* class = calloc(numstu, sizeof(struct student));</code></pre>
+<p>It’s true that <code>stu</code> is now an array containing <code>numstu</code> object of type <code>student</code>, but remember that each <code>student</code> object has data member <code>hw</code>, which is just an uninitialized pointer at this juncture. We need to go back and allocate homework-grade arrays for each <code>student</code> object in the array. So creating our storage really looks like this:</p>
+<pre><code class="language-C">struct student* class = calloc(numstu, sizeof(struct student));
+for(int i = 0; i &lt; numstu; ++i) {
+  stu[i].hw = calloc(numhw, sizeof(int));
+}</code></pre>
+<p>At this point, writing the program is not very new for us: <a href="files.php%3Ff=stgrades.c.html">Here’s my solution</a>. All I did was use the top-down design that we’ve seen so many times. I simply wrote the main function the way I wished I could, and created the structs and functions that made writing main that way possible.</p>
+<h2 id="what-assignment-and-pass-by-value-mean-with-structs"><a class="linkin" href="index.html#top"><span class="header-section-number">4.4</span> What assignment and pass-by-value mean with structs</a></h1><p>Recall that doing an assignment of one struct to another does <em>member-wise assignment</em> in C, meaning that each field is copied with a separate assignment statement.</p>
+<p>You have to think carefully about the consequences of this. Let’s say we have two <code>struct student</code>s called <code>A</code> and <code>B</code>. After doing <code>A = B</code>, the pointers <code>A.hw</code> and <code>B.hw</code> have the same value … that means they both point to the same array! This may not be what you expect. Because of this, for example, the line</p>
+<pre><code class="language-C">A.hw[5] = 100;</code></pre>
+<p>results in both <code>A</code> and <code>B</code> having 100 for the index 5 value of their <code>hw</code> field.</p>
+<p>The same holds true for pass-by-value with structs: you get member-wise copy. So, when you have structs with data members that are pointers, the pointers get copied but the actual array pointed to stays the same. The same is <em>not</em> true when you have stack-based arrays declared inside the struct — those actually get copied when you copy the struct.</p>
+<p>So the main rule to remember here — and to be careful and conscious of when programming — is that copying a struct with pointers does <em>not</em> mean that whatever is pointed to also get copied.</p>
+<h1 id="sorting-structs"><a class ="linkin" href="index.html#top"><span class="header-section-number">5</span> Sorting structs</a></h1><p>Looking at some examples where we want to sort an array of structs will be a good review of the last few units, and also shows the power and limitations of our “generic” sorting routine using the <code>before</code> function.</p>
+<h2 id="sort-based-on-4th-hw"><a class="linkin" href="index.html#top"><span class="header-section-number">5.1</span> Sort based on 4th HW</a></h1><p>Let’s build on the previous examples with student grades and try to print out the grades in sorted order, rather than answering lookup queries. In particular, let’s sort them by their grades on homework assignment #4, so that the student with lowest grade on assignment #4 comes first, and the student with highest grade on assignment #4 comes last. We’ll have our array <code>stu</code> of objects of type student, and we’ll use the same old selection sort routine we’ve always been using.</p>
+<p>Now, at some point in selection sort, we’ll swap two elements of <code>stu</code> and I want to take a brief moment to look at what that means. The following picture shows how swapping the elements at index <code>i</code> and <code>j</code> affects things. Hopefully you see, once again, that we’re not moving the actual arrays of grades at all, we’re simply moving the <em>pointers</em> to those arrays.</p>
+<figure>
+<img src="stuarray.gif" />
+</figure>
+<p>Now, if we’re going to sort this array of <code>student</code> objects, it’s just like sorting anything else!</p>
+<pre><code class="language-C">void sort(struct student* data, int size) {
+  for(int length = size; length &gt; 1; --length) {
+    // Find imax, the index of the largest
+    int imax = 0;
+    for(int i = 1; i &lt; length; ++i) {
+      if (before(data[imax], data[i])) {
+        imax = i;
+      }
+    }
+    // Swap data[imax] &amp; the last element
+    struct student temp = data[imax];
+    data[imax] = data[length - 1];
+    data[length - 1] = temp;
+  }
+}</code></pre>
+<p>So, the only thing that remains is to produce a <code>before</code> function that will take two <code>student</code> objects and decide whether the first needs to come before the second. Remember we want our <code>student</code> objects in order from lowest to highest score on homework #4. So, for <code>before(a,b)</code>, I need to determine whether the homework #4 score for <code>a</code> is less than the homework #4 score for <code>b</code>.</p>
+<pre><code class="language-C">int before(struct student a, struct student b) {
+  return a.hw[4] &lt; b.hw[4];
+}</code></pre>
+<p>With this, it’s easy to write a program that prints out students and their HW#4 scores ordered from lowest to highest HW#4 score. Here’s <a href="files.php%3Ff=stsort.c.html">a complete program</a>.</p>
+<h2 id="letting-the-user-choose-which-grade-to-sort-on-breaks-our-sort-scheme-"><a class="linkin" href="index.html#top"><span class="header-section-number">5.2</span> Letting the user choose which grade to sort on breaks our sort scheme!</a></h1><p>Now, a better version of the above program would allow the user to choose which homework assignment we sorted on. So, if <code>x</code> is the assignment number, we’d have to modify <code>before</code> to be:</p>
+<pre><code class="language-C">int before(struct student a, struct student b) {
+  return a.hw[x] &lt; b.hw[x];
+}</code></pre>
+<p>However, there’s a problem! Where does the <code>before</code> function get <code>x</code> from? The only way it can get <code>x</code> is if we pass it in as a parameter. So the function must look like:</p>
+<pre><code class="language-C">int before(struct student a, struct student b, int x) {
+  return a.hw[x] &lt; b.hw[x];
+}</code></pre>
+<p>Now, this fixes <code>before</code>, but it necessitates a change in <code>sort</code>, which is the function that calls <code>before</code>:</p>
+<pre><code class="language-C">void sort(struct student* data, int size, int x) {
+  for(int length = size; length &gt; 1; --length) {
+    // Find imax, the index of the largest
+    int imax = 0;
+    for(int i = 1; i &lt; length; ++i) {
+      if (before(data[imax], data[i], x)) {
+        imax = i;
+      }
+    }
+    // Swap data[imax] &amp; the last element
+    struct student temp = data[imax];
+    data[imax] = data[length - 1];
+    data[length - 1] = temp;
+  }
+}</code></pre>
+<p>Notice that <code>sort</code> doesn’t really do anything with this index <code>x</code> on its own, but it passes that parameter along to the <code>before</code> function.</p>
+<p>So really our generic sorting setup is flexible enough to handle sorting based on any homework number, but in this case we have to add an extra parameter to the <code>sort</code> and <code>before</code> functions to pass along that extra information.</p>
+<h1 id="composition-of-structs"><a class ="linkin" href="index.html#top"><span class="header-section-number">6</span> Composition of structs</a></h1><p>Imagine a scenario in which we are performing experiments with cockroaches. We’ll suppose we get data readings for another roaches that give us a time in <code>hh:mm:ss</code> format, and a position in (x,y) coordinates. For example, <a href="trial.txt" class="uri">trial.txt</a>. We want the user to be able to enter a time in <code>hh:mm:ss</code> format and we’ll tell him where the roach is (i.e. en route between which two points).</p>
+<p>We’ve dealt with points before, and we will again, so let’s go ahead and give the basic struct definition &amp; function prototypes for points:</p>
+<pre><code class="language-C">//--- POINT ---------------------------------//
+struct point {
+  double x;
+  double y;
+};
+void read_point(struct point* pt, FILE* fin);
+void write_point(struct point pt, FILE* fout);</code></pre>
+<p>Now, while we may not have dealt with times in hh:mm:ss for a while, it is not unlikely we’ll have to deal with such things again. Therefore, it is natural to give a struct definition and some prototypes for an hhmmss struct:</p>
+<pre><code class="language-C">//--- TIME IN HH:MM:SS ----------------------//
+struct hhmmss {
+  int hrs;
+  int mins;
+  int secs;
+};
+void read_hhmmss(struct hhmmss* time, FILE* fin);
+int before(struct hhmmss time1, struct hhmmss time2);</code></pre>
+<p>Being a little adventurous, I’m living on the edge and defining the <code>before</code> function for <code>hhmmss</code> objects. Might come in useful if I have to figure out what happened first! Now, a data reading consists of a time and a position, so it might be nice to have a <code>datum</code> struct that records a single data reading. It’d look something like this</p>
+<pre><code class="language-C">struct datum {
+  struct point position;
+  struct hhmmss time;
+};</code></pre>
+<p>… and I’d probably want a function <code>void read_datum(struct datum* dat, FILE* fin);</code> to read in such objects. With all of this (and with all these functions defined!) writing my main function is not too difficult:</p>
+<pre><code class="language-C">// Read and store data readings
+struct datum* path = calloc(num, sizeof(struct datum));
+for(int i=0; i &lt; num; ++i) {
+  read_datum(&amp;path[i], fin);
+}
+
+// Get the query time from the user
+struct hhmmss time;
+printf(&quot;Enter a time: &quot;);
+fflush(stdout);
+read_hhmmss(&amp;time, stdin);
+
+// Find the first sighting at or after given time
+int k = 0;
+while (k &lt; N &amp;&amp; before(A[k].time, time)) {
+  ++k;
+}</code></pre>
+<p>Then it would just remain to write out the information to the user. Take a look at <a href="files.php%3Ff=roaches.c.html">this complete program</a>. There are several important things to look at here:</p>
+<ol type="1">
+<li>I used <em>bottom up</em> design to solve this problem. I started off with the pieces (structs and functions) that I knew I could define easily, and that I knew would come in handy here and probably in other programs as well. Then I started to put these pieces together to create a program.</li>
+<li>My <code>datum</code> struct contains as data members two other structs I defined — <code>point</code> and <code>hhmmss</code>. This is called <em>composition</em> of data types.</li>
+<li>Notice how we have to be careful all the function names are distinct when we start throwing a bunch of functions and structs into a larger program. That’s why we have to have <code>read_point</code>,<code>read_hhmmss</code>, and <code>read_datum</code> functions.</li>
+<li>Notice how I used short-circuit evaluation of boolean expressions in my while-loop. The program may well have crashed without the short-circuit feature!</li>
+</ol>
+<!-- from l33 -->
+<div style="display:none">
+<h1 id="problems"><a class ="linkin" href="index.html#top"><span class="header-section-number">7</span> Problems</a></h1><!-- l30 -->
+<ol type="1">
+<li><p>Write a program that reads in three points describing the vertices of a triangle and computes the <em>midpoint triangle</em> they define, i.e. the triangle whose vertices are the three midpoints of the previous triangle. A typical run of your program should look like:</p>
+<pre><code class="language-C">Enter triangle vertices: (0,0) (0,1) (1,0)
+Midpoint triangle verts: (0,0.5)(0.5,0.5)(0.5,0)</code></pre>
+<p>Notice how <a href="https://www.usna.edu/Users/cs/roche/courses/s17si204/notes/08/TE1.html">my solution</a> defines functions for writing and reading points!</p></li>
+<li>We can plot the two triangles from the previous problem using gnuplot (or our gnuplotMOD from Lab 04). <a href="gptri.png">This screenshot</a> gives you an example of gnuplot’s output. Modify your program to produce a text file that we can plot this way. Notice how <a href="https://www.usna.edu/Users/cs/roche/courses/s17si204/notes/08/TE2.html">my solution</a> makes use of overloaded functions … I probably should have given my new <code>writepoint</code> function a different name though.</li>
+<li>We could do the same thing we just did for any polygon. Write a program that reads in <code>n</code> vertices defining an <code>n</code>-gon, and produces a text file that we can use with gnuplot to plot the <code>n</code>-gon and its “midpoint <code>n</code>-gon”.</li>
+<li><p>How about something completely different: organizing data on our congressional representatives. <a href="https://www.usna.edu/Users/cs/roche/courses/s17si204/notes/08/legislators-current.tsv">This tab-separated values (tsv) file</a> contains a bunch of information about all 538 members of the current House and Senate (<a href="https://www.govtrack.us/data/congress-legislators/">source</a>). Some of the code to read in this data is in <a href="https://www.usna.edu/Users/cs/roche/courses/s17si204/notes/08/congress.cpp.html">this C program</a>, but it’s right now limited to just sorting by first name. Use a <code>struct</code> to write a program that prints out the 10 youngest congresspeople, first and last names. <a href="https://www.usna.edu/Users/cs/roche/courses/s17si204/notes/08/congress-sol.cpp.html">Here is my solution</a>.</p></li>
+</ol>
+<!-- l31 -->
+<ol type="1">
+<li>Be the bank! Write a program that manages account information for a simple bank. You have the file <a href="https://www.usna.edu/Users/cs/roche/courses/s17si204/notes/08/BankAccts.txt" class="uri">BankAccts.txt</a>, which lists all your bank account information at the beginning of the year. You also have the file <a href="https://www.usna.edu/Users/cs/roche/courses/s17si204/notes/08/Transactions.txt" class="uri">Transactions.txt</a>, which lists all the deposit transactions for the year, each transaction consisting of a line giving the date, the account number, and the $’s deposited. Your program should print out an end of the year report that lists all the accounts with their account numbers, owner name, and end of year balance in exactly the same format as used in the input file Here’s <a href="https://www.usna.edu/Users/cs/roche/courses/s17si204/notes/08/TE1.cpp.html">my solution</a>.</li>
+<li><p>Turtles revisted! Recall that in an early lab we wrote programs in which we drew lines with turtles using notation like this:</p>
+<pre><code class="language-C">FF+FF+FF</code></pre>
+<p>which means that the turtle goes forward two steps, then turns clockwise by some fixed angle (specific to this turtle), then goes forward two more steps, and so on. Now let’s up the ante and allow … multiple turtles! The input will look like this:</p>
+<pre><code class="language-C">N = 3
+Joe 30
+Sue 45
+Tom 15
+Joe FF+FF-;
+Sue F+;
+Joe FF+;
+Tom F-F-F-F;
+Sue F-;
+print
+Sue F+F+;
+Tom F-F-F-;
+Sue F-F-;
+print
+quit</code></pre>
+<p>… each time you encounter “print” you print out the name and current x,y-coordinate of each of the turtles. When the turtles are initialized, the number next to the name is their “turn angle”. You should assume that they start off at coordinate 0,0 and heading 0-degrees (counter-clockwise from the x-axis). For all turtles, the forward step will be one unit.</p></li>
+<li><p>In HTML, colors are specified by a “number”. for example, yellow is specified by the “number” <code>#FFFF00</code>. And you can color words using this. For example, if I want to Write “Hello”, in HTML (i.e. Hello with a yellow H on the front), I use the following HTML:</p>
+<pre><code class="language-C">&lt;font color=&quot;#FFFF00&quot;&gt;H&lt;/font&gt;ello</code></pre>
+<p>The file <a href="https://www.usna.edu/Users/cs/roche/courses/s17si204/notes/08/colors.txt" class="uri">colors.txt</a> contains a list of number/names. Write a program that reads in this file, allows the user to enter colors and words, and finally produces an HTML file that writes those words in those colors. Example:</p>
+<pre><code class="language-C">Enter color and word, or quit: Blue  Somewhere
+Enter color and word, or quit: Green over
+Enter color and word, or quit: Aquamarine the
+Enter color and word, or quit: Gold rainbow
+Enter color and word, or quit: quit</code></pre>
+<p>With this, your program should create an html file like <a href="https://www.usna.edu/Users/cs/roche/courses/s17si204/notes/08/test.html">this</a>.</p></li>
+<li><p>Write a program that reads in points from the file <a href="https://www.usna.edu/Users/cs/roche/courses/s17si204/notes/08/points.txt" class="uri">points.txt</a> and writes out the lower left and upper right coordinates of the smallest rectangle containing all the points from the file. Here’s <a href="https://www.usna.edu/Users/cs/roche/courses/s17si204/notes/08/TE3.cpp.html">My Solution</a>.</p></li>
+</ol>
+<hr />
+<ol type="1">
+<li>Look at <a href="https://www.usna.edu/Users/cs/roche/courses/s17si204/notes/l31/Ex4.cpp.html">this program</a> from last lecture. The program uses a <code>point</code> struct and a struct <code>hhmmss</code>. Break the program up into separate <code>point</code> and <code>hhmmss</code> modules, and of course a main file. We have the following pieces:
+<ul>
+<li>The “point” module (from above): <a href="https://www.usna.edu/Users/cs/roche/courses/s17si204/notes/08/point.h.html">point.h</a> and <a href="https://www.usna.edu/Users/cs/roche/courses/s17si204/notes/08/point.cpp.html">point.cpp</a>.</li>
+<li>The “hhmmss” module: <a href="https://www.usna.edu/Users/cs/roche/courses/s17si204/notes/08/hhmmss.h.html">hhmmss.h</a> and <a href="https://www.usna.edu/Users/cs/roche/courses/s17si204/notes/08/hhmmss.cpp.html">hhmmss.cpp</a>.</li>
+<li>The “main program”: <a href="https://www.usna.edu/Users/cs/roche/courses/s17si204/notes/08/main2.cpp.html">main.cpp</a>.</li>
+</ul>
+Of course, you split off a third module for the struct <code>datum</code>, but it seems less likely to be reused, so there’s a less compelling reason for doing it.</li>
+<li><p>Write a program that reads a date in mm/dd/yyyy format and prints it out in “dd monthname yyyy” format. It might be helpful to know that a static array can be initialized with a list of values in { }’s. For example, an array of the first 10 prime numbers can be constructed like this:</p>
+<pre><code class="language-C">int prime[10] = {2,3,5,7,11,13,17,19,23,29};</code></pre>
+<p><strong>Note:</strong> this is purely about static arrays, it doesn’t concern structs at all. Here’s <a href="https://www.usna.edu/Users/cs/roche/courses/s17si204/notes/08/TE1.cpp.html">my solution</a>.</p></li>
+<li>Build on the solution to the last problem, so that the data file does not need to be given in time-sorted order.</li>
+<li><p>Build on the solution to the last problem so that it gives the average velocity of the roach on the leg containing the time entered by the user.</p></li>
+</ol>
+</div>
+  </div></article></div></div><nav class="stickynav"><div><div class="dropdown"><a href="../../index.php.html" class="ddown-btn">SI 204</a><div class="ddown-content"><a href="../../calendar.php.html">Calendar</a><a href="../index.html">Notes</a><a href="../../hw/index.html">HWs</a><a href="../../lab/index.html">Labs</a><a href="../../proj/index.html">Projects</a><a href="../../exams/index.html">Exams</a><a href="../../admin/index.html">Resources</a><a href="https://www.usna.edu/Users/cs/roche/">Roche</a><a href="https://www.usna.edu/Users/cs/albing/">Albing</a></div></div><div class="dropdown"><a href="index.html#top" class="linkin pagetop">Unit 8: Compound data</a><div class="ddown-content ddtoc"><ul><li><a class="linkin" href="index.html#struct-intro"><span class="toc-section-number">1</span> Struct intro</a>
+<ul><li><a class="linkin" href="index.html#first-example-point-struct"><span class="toc-section-number">1.1</span> First example: point struct</a></li></ul></li>
+<li><a class="linkin" href="index.html#creating-new-types"><span class="toc-section-number">2</span> Creating new types</a>
+<ul><li><a class="linkin" href="index.html#typedef"><span class="toc-section-number">2.1</span> Typedef</a></li><li><a class="linkin" href="index.html#regular-struct-usage"><span class="toc-section-number">2.2</span> Regular struct usage</a></li><li><a class="linkin" href="index.html#odd-ways-of-using-structs"><span class="toc-section-number">2.3</span> Odd ways of using structs</a></li><li><a class="linkin" href="index.html#typedef-struct"><span class="toc-section-number">2.4</span> Typedef struct</a></li></ul></li>
+<li><a class="linkin" href="index.html#using-structs"><span class="toc-section-number">3</span> Using structs</a>
+<ul><li><a class="linkin" href="index.html#initialization"><span class="toc-section-number">3.1</span> Initialization</a></li><li><a class="linkin" href="index.html#struct-assignment"><span class="toc-section-number">3.2</span> Struct assignment</a></li><li><a class="linkin" href="index.html#functions-that-take-or-return-structs"><span class="toc-section-number">3.3</span> Functions that take or return structs</a></li><li><a class="linkin" href="index.html#what-we-can-t-do"><span class="toc-section-number">3.4</span> What we can’t do</a></li></ul></li>
+<li><a class="linkin" href="index.html#structs-with-pointers-and-arrays"><span class="toc-section-number">4</span> Structs with pointers and arrays</a>
+<ul><li><a class="linkin" href="index.html#arrays-of-structs"><span class="toc-section-number">4.1</span> Arrays of structs</a></li><li><a class="linkin" href="index.html#pointers-to-structs"><span class="toc-section-number">4.2</span> Pointers to structs</a></li><li><a class="linkin" href="index.html#structs-that-contain-arrays"><span class="toc-section-number">4.3</span> Structs that contain arrays</a></li><li><a class="linkin" href="index.html#what-assignment-and-pass-by-value-mean-with-structs"><span class="toc-section-number">4.4</span> What assignment and pass-by-value mean with structs</a></li></ul></li>
+<li><a class="linkin" href="index.html#sorting-structs"><span class="toc-section-number">5</span> Sorting structs</a>
+<ul><li><a class="linkin" href="index.html#sort-based-on-4th-hw"><span class="toc-section-number">5.1</span> Sort based on 4th HW</a></li><li><a class="linkin" href="index.html#letting-the-user-choose-which-grade-to-sort-on-breaks-our-sort-scheme-"><span class="toc-section-number">5.2</span> Letting the user choose which grade to sort on breaks our sort scheme!</a></li></ul></li>
+<li><a class="linkin" href="index.html#composition-of-structs"><span class="toc-section-number">6</span> Composition of structs</a></li>
+<li><a class="linkin" href="index.html#problems"><span class="toc-section-number">7</span> Problems</a></ul></div></div></nav><footer><div id="foottext">    <p class="disclaimer">Material contained above is made available
+    for the purpose of peer review and discussion and does not
+    necessarily reflect the views of the Department of the Navy or the
+    Department of Defense.
+    Some links above are to sites that are not
+    located at the United States Naval Academy. The USNA is not
+    responsible for the content found on these sites. In addition, the
+    content of these sites does not reflect the opinions, standards,
+    policy or endorsement of the Naval Academy or the United States
+    Government.</p>
+  Page maintained by Daniel S. Roche (<a href="mailto:roche [AT] usna [DOT] edu" id="emaillink1">roche [AT] usna [DOT] edu</a><script type='text/javascript'><!--
+        var b="he@usna.edu";
+        var a="roc";
+        document.getElementById("emaillink1").href='mailto:'+a+b;
+        document.getElementById("emaillink1").innerHTML=a+b;
+        // --></script>). Last updated 27 March 2017 10:58.</div></footer><script src="../../scripts/prism.js"></script><script type="text/javascript">var the_body = $('html, body');
+var sticky_height = $('.stickynav').height();
+$('.linkin').click(function(){
+  var href = $(this).attr('href');
+  var offset;
+  if (href == '#top') offset = 0;
+  else offset = $(href).offset().top - sticky_height;
+  the_body.animate({ scrollTop: offset }, 500);
+  return false;
+});</script></body></html>

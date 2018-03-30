@@ -1,0 +1,73 @@
+----------------------------------------------------------------------------
+Name:  XXXXXX
+Alpha: XXXXXX
+
+Collaborator(s):
+
+Resources Used:
+
+Hours: XX
+----------------------------------------------------------------------------
+  Replace the X's above with your name and alpha, and also list any collaborator
+  or other resources you used. Please also indicate the number of hours
+  (including hours in the lab period) you spent on this assignment.
+
+  After completing the assignment, please answer these questions to provide
+  feedback.
+
+  * What did you learn from this assignment?
+
+
+  * What part of the assignment was easier then you expected?
+
+
+  * What part of the assignment was harder then you expected?
+
+
+  * What would you suggest for improving this assignment?
+
+
+  * Any additional information you'd like to share regarding this assignment?
+
+
+----------------------------------------------------------------------------
+
+  Below, fill out this worksheet with the appropriate answers/comments to the
+  following questions/prompts.
+
+-------------------------------------------------------------------------
+
+Part 1: Task 1: Memory Leaks (15 points)
+
+    
+    1. Run valgrind on the memleak program, how many bytes does it
+       say have been definitely lost?
+
+    2. What line does valgrind indicate the memory leak has occurred?
+
+    3. Describe the memory leak below.
+
+    4. Try and fix the memory leak and verify your fix with
+       valgrind. Describe how you fixed the memory leak below. 
+
+
+Part 1: Task 2: Memory Violations (15 points)
+
+  1. Describe the output and execution of the program. Does it seem to be consistent?
+
+  2. Run the program under valgrind, identify the line of code that is
+     causing the memory violation and its input. What line of code?
+
+
+  3. Debug the memory violation and describe the programming bug below. 
+
+
+  4. Fix the memory violation and verify your fix with valgrind. What was the fix?
+
+
+Part 2: simplefs (70 points)
+
+    (Provide a general description and any comments about your code below)
+
+
+Part 2: Extra Credit (+5 points)
