@@ -4,6 +4,7 @@
 
 #include <readline/readline.h>
 #include <readline/history.h>
+#include <libgen.h>
 
 #include <unistd.h>
 #include <sys/wait.h>
@@ -14,27 +15,8 @@
 
 #define MAX_ARGS 128
 
-int timeval_subtract (struct timeval *result, struct timeval *x, struct timeval *y) {
-  /* Perform the carry for the later subtraction by updating y. */
-  if (x->tv_usec < y->tv_usec) {
-    int nsec = (y->tv_usec - x->tv_usec) / 1000000 + 1;
-    y->tv_usec -= 1000000 * nsec;
-    y->tv_sec += nsec;
-  }
-  if (x->tv_usec - y->tv_usec > 1000000) {
-    int nsec = (x->tv_usec - y->tv_usec) / 1000000;
-    y->tv_usec += 1000000 * nsec;
-    y->tv_sec -= nsec;
-  }
-     
-  /* Compute the time remaining to wait.
-     tv_usec is certainly positive. */
-  result->tv_sec = x->tv_sec - y->tv_sec;
-  result->tv_usec = x->tv_usec - y->tv_usec;
-     
-  /* Return 1 if result is negative. */
-  return x->tv_sec < y->tv_sec;
-}
+void ignore(int signum) {}
+
 
 
 int main(int argc, char * argv[]){
@@ -42,34 +24,48 @@ int main(int argc, char * argv[]){
 
   char * line;    //DO NOT EDIT, for readline
   char prompt[256];    //DO NOT EDIT, for readline
+  char * tok;   //NOTE: This is useful for tokenizatoin
+  char * cmd;
 
-
-
-  pid_t c_pid; //NOTE: to store child pid
-  int status, i; //NOTE: For wait status and iteration
-  
+  char * commands[64];       //NOTE: can only handle up to 63 pipes
   char * cmd_argv[MAX_ARGS]; //NOTE: use this store your argv array, 
                              //      don't go beyond MAX_ARGS
-
-  char * tok;   //NOTE: This is useful for tokenizatoin
-
-  struct timeval start, end, diff; //for timing
-
-  start.tv_sec = 0;
-  start.tv_usec = 0;
-  diff = end = start; //initialize times to zero
+                             
+  pid_t cpid; //NOTE: to store child pid
+  pid_t cpgid = 0;
+  pid_t bg_pgid = -1;
+  int status, i, index = 0; //NOTE: For wait status and iteration
   
+  int cur_pipe[2];
+  int last_pipe[2] = {-1, -1};
+  int stdin_cp = dup(0);
+  int stdout_cp =dup(1);
+
+  //register what to do for SIGTTOU
+  signal(SIGTTOU, ignore);
+
   //for readline setup, don't edit!
   rl_bind_key('\t', rl_abort);
 
   while(1){
     
+    tcsetpgrp(0, getpid());
+    printf("1\n");
     //prompt
-    snprintf(prompt, 256, "mini-sh (%ld.%04ld) #> ", diff.tv_sec, diff.tv_usec/1000);
+    char cwd[128];
 
+    getcwd(cwd,128); //get the current working directory
+
+    sprintf(prompt,              //store result of formating in string prompt
+            "nvysh (%d): %s $ ", //the format string 
+            bg_pgid,             //the process group id of the background process
+            basename(cwd));      //the basename of the current working directory
+
+    printf("2\n");
     //readline allocates a new line every time it reads
     line = readline(prompt); 
     
+    printf("3\n");
     //read EOF, break the loop
     if (line == NULL){
       printf("\n");
@@ -82,56 +78,163 @@ int main(int argc, char * argv[]){
       continue;
     }
 
-    //Tokenize the line to construct a argv array
-    i = 0;
-    tok = strtok(line, " ");
-    cmd_argv[i] = strdup(tok);
+    //check for fg
+    if (strcmp(line, "fg") == 0) {
+      kill(-bg_pgid, SIGCONT);
+      tcsetpgrp(0, bg_pgid);
+      bg_pgid = -1;
+      continue;
+    }
+    printf("After fg check\n");
 
-    while ( (tok = strtok(NULL, " ")) != NULL) {
+    //split the command based on | into cmds
+    i = 0;
+    cmd = strtok(line, "|");
+    commands[i] = strdup(cmd);
+    while ( (cmd = strtok(NULL, "|")) != NULL) {
       i++;
       if (i < MAX_ARGS)
+        commands[i] = strdup(cmd);
+    }
+    free(line);
+    commands[i+1] = NULL;
+
+    printf("After split, before do\n");
+
+    //for each cmd...
+    do {
+
+      //open pipe
+      if (pipe(cur_pipe) < 0) {
+        perror("pipe");
+        _exit(1);
+      }
+
+      //fork
+      cpid = fork();
+
+      //child
+      if (cpid == 0) {
+
+        //  ID WORK
+
+        //set cpgid to the pid of the first child
+        if (cpgid == 0)
+          cpgid = getpid();
+
+        //set pgid to the first child's pid=pgid
+        setpgid(0, cpgid);
+
+
+        //  TOKEN WORK
+
+        //Tokenize the cmd to construct a argv array
+        i = 0;
+        tok = strtok(commands[index], " ");
         cmd_argv[i] = strdup(tok);
-    }
-    cmd_argv[i+1] = NULL;   //NULL terminate the array
 
-    //Fork-Exec-Wait the command, and compute the time of execution
-    //      store the time of execution in diff so that it will be 
-    //      available in the next prompt.
+        while ( (tok = strtok(NULL, " ")) != NULL) {
+          i++;
+          if (i < MAX_ARGS)
+            cmd_argv[i] = strdup(tok);
+        }
+        free(tok);
+        cmd_argv[i+1] = NULL;   //NULL terminate the array
+        
+        //get for fg
+        if (strcmp(cmd_argv[0], "fg") == 0 && cmd_argv[1] == NULL) {
+          kill(bg_pgid, SIGCONT);
+          bg_pgid = -1;
+          wait(&status);
+          continue;
+        }
 
-    //fork
-    c_pid = fork();
 
-    //child
-    if (c_pid == 0) {
-      //run extra command
-      execvp(cmd_argv[0], cmd_argv);
+        //  PIPE WORK
 
-      //if it throws error, handle it
-      perror("./mini-sh");
-      return 2;
+        //if first, close read end of pipe and map stdout to pipe
+        if (last_pipe[0] == -1) {
+          close(cur_pipe[0]);
 
-    }else if (c_pid > 0) {
-    //parent
+          //as long as this is not a one command job...
+          if (commands[index + 1] != NULL) {
+            close(1);
+            dup2(cur_pipe[1], 1);
+          }
+
+        //if last, map stdin to pipe and close write end of pipe
+        }else if (commands[index+1] == NULL) {
+          close(last_pipe[1]);
+          close(cur_pipe[1]);
+          close(0);
+          dup2(last_pipe[0], 0);
+        
+        //if any other, map stdin and stdout to pipe
+        }else{
+          close(last_pipe[1]);
+          close(0);
+          dup2(last_pipe[0], 0);
+          close(cur_pipe[0]);
+          close(1);
+          dup2(cur_pipe[1], 1);
+        }
+        
+
+        //  EXEC WORK
+
+        //run cmd
+        execvp(cmd_argv[0], cmd_argv);
+
+        //if it throws error, handle it
+        perror("./nvysh");
+        return 2;
+
+
+      }else if (cpid > 0) {
+      //parent
+        
+        //eliminate race condition
+        if (cpgid == 0)
+          cpgid = cpid;
+        setpgid(cpid, cpgid);
+        
+        //wait and change pipes over
+        last_pipe[0] = cur_pipe[0];
+        last_pipe[1] = cur_pipe[1];
+        close(last_pipe[1]);
+
+      }else {
+      //fork error
+        perror("fork");
+        return 1;
+      }
       
-      //time before
-      gettimeofday(&start, NULL);
+    }while( commands[++index] != NULL );
 
-      //wait till child finishes command
-      wait(&status);
+    //set the fg process for terminal control
+    tcsetpgrp(0, cpgid);
 
-      //time after
-      gettimeofday(&end, NULL);
-
-      //get difference in time
-      timeval_subtract(&diff, &end, &start);
-
-    }else {
-    //fork error
-      perror("fork");
-      return 1;
+    //wait for all children in a process group
+    while(waitpid(-cpgid, &status, WUNTRACED) > 0) {
+      if (WIFSTOPPED(status) && bg_pgid == -1) {
+        tcsetpgrp(0, getpid());
+        kill(-cpgid, SIGSTOP);
+        kill(getpid(), SIGCONT);
+        bg_pgid = cpgid;
+        break;
+      }
     }
-      
-    free(line); //free the current line, otherwise memleak
+
+    printf("After the waitpid\n");
+    //reset variables for next prompt
+    cpgid = 0;
+    dup2(stdin_cp, 0);
+    dup2(stdout_cp, 1);
+    index = 0;
+
+    //reset nvysh as the fg process for terminal control
+    //tcsetpgrp(0, getpid());
+    printf("Last command\n");
   }
 
   return 0;

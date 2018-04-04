@@ -147,7 +147,7 @@ int main(int argc, char * argv[]){
 
   struct sigaction action;
   action.sa_sigaction = read_child;
-  action.sa_flags = SA_RESTART | SA_SIGINFO;
+  action.sa_flags = SA_SIGINFO;
   sigaction(SIGUSR1, &action, NULL);
 
   char c;

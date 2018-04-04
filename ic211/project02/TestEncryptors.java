@@ -1,12 +1,30 @@
 import java.util.*;
 
+/**
+ * This class is used to test that the Encryptors are operating as intended
+ * To add a new type of Encryptor, add a similar "add" statement at MARK
+ * @author Hanling, Mike - 202430
+ * @author IC211
+ */
 public class TestEncryptors {
-  public static void main(String[] args) throws Throwable {
+  
+  /**
+   * This main creates an ArrayList of all types of Encryptors, then asks the
+   * user for which type to test, along with a pasword and a message; the
+   * message is encrypted and printed back to the screen for testing
+   * capabilities
+   * @param args Not utilized in this class
+   * @throws Exception If the given algorithm is not supported, then this
+   * Exception is thrown
+   */
+  public static void main(String[] args) throws Exception {
     // Create ArrayList of all supported encryptors
     ArrayList<Encryptor> E = new ArrayList<Encryptor>();
     E.add(new Clear());
     E.add(new Caesar());
     E.add(new Vigenere());
+    // MARK
+    
 
     // Get alg,psw,msg from user
     System.out.print("algorithm: ");

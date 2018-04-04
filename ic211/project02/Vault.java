@@ -1,8 +1,28 @@
 import java.util.*;
 import java.io.*;
-
+/**
+ * This class is the main driver for Project 2 from IC211 (2018)
+ * <a href="http://faculty.cs.usna.edu/IC211/calendar.php?type=project&event=2">This</a>
+ * is the lab webpage.
+ * Vault is the interface between a user and a database of account holders with
+ * data stored for each.
+ *
+ * @author Hanling, Mike - 202430
+ */
 public class Vault {
-  
+
+  /**
+   * Vault is intended to be used for its main
+   * The given filename will be opened and read in to be used throughout
+   * An option of -au will allowed for an user to be added to the vault file
+   * In normal mode, the user will be asked for a username and password
+   * Both must match an entry from the vault file in order to be granteed access
+   * Three commands (labels, get, and quit) are recognized
+   * "labels" returns labels for each datum of current user
+   * "get" followed by a label will retrieve the text of the datum
+   * "quit" terminates the session
+   * @param args Either filename or -au filename for adding an user
+   */
   public static void main(String[] args) {
     // check for correct usage
     if (args.length < 1) {
@@ -20,38 +40,28 @@ public class Vault {
     try {
       sc = new Scanner(new FileReader((addUser ? args[1] : args[0])));
     }catch (IOException e) {
-      System.out.println("Error! File '" + (addUser ? args[1] : args[0]) + "' could not be opened.");
+      System.out.println("Error! File '" + (addUser ? args[1] : args[0]) + 
+                         "' could not be opened.");
       System.exit(2);
     }
     
     // read each line of the file, storing each user in users
     ArrayList<User> users = new ArrayList<User>();
-    String flagName = null;
-    String flagHash = null;
     while (sc.hasNextLine()) {
       String[] line = sc.nextLine().split(" ");
       
-      boolean legit = true;
-      if ( line.length == 4 ) {
-        if (line[0].equals("user")) {
-          try {
-            users.add(new User(line[1], line[2], line[3]));
-          }catch (UnsupportedHashException e) {
-            flagName = line[1];
-            flagHash = line[2];
-          }
-        }else if (line[0].equals("data")) {
-          for (int i = 0; i < users.size(); i++) {
-            if (users.get(i).getName().equals(line[1])) {
-              users.get(i).addDatum(line[2], line[3]);
-            }
-          }
-        }else {
-          System.out.println("Error! File '" + (addUser ? args[1] : args[0]) + "' improperly formatted.");
-          System.exit(3);
+      if (line.length == 4 && line[0].equals("user")) {
+        users.add(new User(line[1], line[2], line[3]));
+
+      }else if (line.length == 4 && line[0].equals("data")) {
+        for (int i = 0; i < users.size(); i++) {
+          if (users.get(i).getName().equals(line[1]))
+            users.get(i).addDatum(line[2], line[3]);
         }
+
       }else {
-        System.out.println("Error! File '" + (addUser ? args[1] : args[0]) + "' improperly formatted.");
+        System.out.println("Error! File '" + (addUser ? args[1] : args[0]) + 
+                           "' improperly formatted.");
         System.exit(3);
       }
 
@@ -69,7 +79,7 @@ public class Vault {
     if (addUser) {
       PrintWriter pw = null;
       try {
-        pw = new PrintWriter(new File((addUser ? args[1] : args[0])));
+        pw = new PrintWriter(new File(args[1]));
       } catch (FileNotFoundException fnfe) {
         fnfe.printStackTrace();
         System.exit(6);
@@ -80,7 +90,6 @@ public class Vault {
 
       // perform checks and hash password
       for (char c : password) {
-      //for (int i = 0; i < new String(password).length(); i++) {
         if ((int)c < 42 || (int)c > 122) {
           System.out.println("Error! Invalid symbol '" + c + "' in password.");
           System.exit(7);
@@ -100,7 +109,6 @@ public class Vault {
       }
       passhash = hasher.hash(password);
       for (User u : users) {
-      //for (int i = 0; i < users.size(); i++) {
         if (u.getName().equals(name)) {
           System.out.print("Error! Username '" + name + "' already in use.");
           System.exit(9);
@@ -109,7 +117,6 @@ public class Vault {
       
       users.add(new User(name, hashAlg, passhash));
       for (User u : users) {
-      //for (int i = 0; i < users.size(); i++) {
         pw.println(String.join(" ", "user", u.getName(), u.getHashAlg(), u.getHash()));
       }
 
@@ -121,19 +128,19 @@ public class Vault {
     boolean access = false;
     User curr = null;
     for (User u : users) {
-    //for (int i = 0; i < users.size(); i++) {
       if (u.getName().equals(name)) {
-        if (u.validate(password)) {
-          if (flagHash != null && flagName.equals(name)) {
-            System.out.println("Error! Hash algorithm '" + flagHash + 
-                               "' not supported.");
-            System.exit(4);
+        try {
+          if (u.validate(password)) {
+            System.out.println("Access granted!");
+            access = true;
+            curr = u;
           }
-          System.out.println("Access granted!");
-          access = true;
-          curr = u;
+          break;
+        }catch (UnsupportedHashException e) {
+          System.out.println("Error! Hash algorithm '" + u.getHashAlg() + 
+                             "' not supported.");
+          System.exit(4);
         }
-        break;
       }
     }
     if (!access) {
@@ -148,32 +155,38 @@ public class Vault {
     ArrayList<Datum> data = curr.getData();
     while (!(cmd = sc.next()).equals("quit")) {
       switch(cmd) {
-        case "labels":    for (Datum d : data) {
-                            d.getEnc().init(password);
-                            try {
-                              String plain = d.getEnc().decrypt(d.getCipher());
-                              System.out.println(plain.split("_")[0]);
-                            }catch (Exception e) {
-                              System.out.println("Error! Corrupted entry '" + d.getCipher() + "' in vault file.");
-                            }
+        case "labels":  for (Datum d : data) {
+                          d.getEnc().init(password);
+                          try {
+                            String plain = d.getEnc().decrypt(d.getCipher());
+                            if (!plain.contains("_")) throw new Exception();
+                            System.out.println(plain.split("_")[0]);
+                          }catch (Exception e) {
+                            System.out.println("Error! Corrupted entry '" +
+                                                d.getCipher() + 
+                                                "' in vault file.");
                           }
-                          break;
+                        }
+                        break;
 
-        case "get":       cmd = sc.next();
-                          for (Datum d : data) {
-                            d.getEnc().init(password);
-                            try {
-                              String plain = d.getEnc().decrypt(d.getCipher());
-                              if (plain.split("_", 2)[0].equals(cmd))
-                                System.out.println(plain.split("_", 2)[1]);
-                            }catch (Exception e) {
-                              System.out.println("Error! Corrupted entry '" + d.getCipher() + "' in vault file.");
-                            }
+        case "get":     cmd = sc.next();
+                        for (Datum d : data) {
+                          d.getEnc().init(password);
+                          try {
+                            String plain = d.getEnc().decrypt(d.getCipher());
+                            if (!plain.contains("_")) throw new Exception();
+                            if (plain.split("_", 2)[0].equals(cmd))
+                              System.out.println(plain.split("_", 2)[1]);
+                          }catch (Exception e) {
+                            System.out.println("Error! Corrupted entry '" + 
+                                                d.getCipher() + 
+                                                "' in vault file.");
                           }
-                          break;                  
+                        }
+                        break;                  
 
-        default:          System.out.println("Unknown command '" + cmd + "'.");
-                          break;
+        default:        System.out.println("Unknown command '" + cmd + "'.");
+                        break;
       }
       System.out.print("> ");
 
