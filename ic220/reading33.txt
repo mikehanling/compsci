@@ -1,0 +1,63 @@
+Mike Hanling
+R33: 5.7 , 5.8 , 5.15 , 5.16
+
+Key Points:
+  Virtual Memory : A technique that uses main memory as a "cache" for
+  secondary storage
+
+  Physical address : an address in main memory
+
+  Protection : A set of mechanisms for ensuring that multiple processes
+  sharing the processor, memory, or I/O devices cannot interfere,
+  intentionally or unintentionally, with one another by reading or
+  writing each other's data. These mechanism,s also isolate the
+  operating system from a user process
+
+  Page fault : an event that occurs when an accessed page is not present
+  in main memory
+
+  Virtual address : an address that corresponds to a location in virtual
+  space and is translated by address mapping to a physical address when
+  a memory is accessed.
+
+  Address translation : also called address mapping, the process by
+  which a virtual address is mapped to an address used to access memory
+
+  Segmentation : a variable-size address mapping scheme in which an
+  address consists of two parts: a segment number, which is mapped to a
+  physical address, and a segment offset
+
+  Page table : the table containing the virtual to physical address
+  translation in a virtual memory system. The table, which is stored in
+  memory, is typically, indexed by the virtual page number; each entry
+  in the table contains the physical page number for that virtual page
+  id the page is currently in memory
+
+  Swap space : the space on the disk reserved for the full virtual
+  memory space of a process
+
+  Reference bit : or use but, a field that is set whenever a page is
+  accessed and that is used to implement LRU or other replacement
+  schemes
+
+  Translation-lookaside buffer (TLB) : a cache that keeps track of
+  recently used address mappings to try to avoid an access to the
+  page table.
+
+  Virtually addressed cache : a cache that is accessed with a virtual
+  address rather than a physical address
+
+  Aliasing : a situation in which two addresses access the same object;
+  it can occur in virtual memory when there are two virtual addresses
+  for the same physical page
+
+  System call : a special instruction that transfer control from user
+  mode to a dedicated location in supervisor code space, invoking the
+  exception mechanism in the process
+
+  Prefetching : a technique in which data blocks needed in the future
+  and brought into the cache early by the use of special instructions
+  that specify the address of the block
+
+
+What Confuses Me:

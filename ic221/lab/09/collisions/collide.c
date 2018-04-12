@@ -94,16 +94,13 @@ void cleanup(){
 void read_child(int signum, siginfo_t * info, void * context) {
   for (int i = 0; i < NUM_WORKERS; i++) {
     if (info->si_pid == workers[i]) {
-      char* c[1];
-      read(pipes[i][0], c, 1);
-      write(1, c, 1);
+      char c[MSG_LEN];
+      read(pipes[i][0], &c, MSG_LEN);
+      c[MSG_LEN] = '\n';
+      write(1, &c, MSG_LEN+1);
     }
   }
-
-  
 }
-
-  
 
 int main(int argc, char * argv[]){
   //int stdin_copy = dup(0);
@@ -147,52 +144,57 @@ int main(int argc, char * argv[]){
 
   struct sigaction action;
   action.sa_sigaction = read_child;
-  action.sa_flags = SA_SIGINFO;
+  action.sa_flags = SA_SIGINFO | SA_RESTART;
   sigaction(SIGUSR1, &action, NULL);
 
-  char c;
-  pid_t ppid = getpid();
-  int index = 0;
+  char c = (char)ASCII_START;
+  pid_t cpid;
+  int status;
   for(int i = 0; i < NUM_WORKERS; i++) {
     if (pipe(pipes[i]) < 0) {
       perror("pipe");
       return 1;
     }
 
-    write(pipes[i][1], argv[1], strlen(argv[1]));
-    c = ASCII_START + index;
-    index++;
-    write(pipes[i][1], &c, 1);
+    cpid = fork();
+    if (cpid == 0) {
+      for (int j = 0; j < i; j++) {
+        close(pipes[j][0]);
+        close(pipes[j][1]);
+      }
 
-    workers[i] = fork();
-
-    if (workers[i] == 0)
+      workers[i] = getpid();
       do_work(pipes[i]);
+      _exit(1);
 
-  }
-  
-  if (ppid == getpid()) {
-    int status;
-    pid_t cpid;
-    while ((cpid = waitpid(0, &status, WUNTRACED)) != 1) {
-
-      int currchild = 0;
-      for (int i = 0; i < NUM_WORKERS; i++) {
-        if (getpid() == workers[i]) break;
-      }
-      
-      if (WIFSTOPPED(status)) {
-        if ((ASCII_START + index) <= ASCII_END) {
-          c = ASCII_START + index;
-          index++;
-          write(pipes[currchild][1], &c, 1);
-          kill(SIGCONT, cpid);
-        }else
-          kill(cpid, 9);
-      }
+    }else if (cpid > 0) {
+      workers[i] = cpid;
+      write(pipes[i][1], argv[1], HASH_LEN);
+      write(pipes[i][1], &c, 1);
+      c++;
     }
   }
+
+  while ((cpid = waitpid(0, &status, WUNTRACED)) > 0) {
+    int childi = 0;
+    for (int i = 0; i < NUM_WORKERS; i++) {
+      if (workers[i] == cpid) {
+        childi = i;
+        break;
+      }
+    }
     
+    if (WIFSTOPPED(status) && c < ASCII_END) {
+      write(pipes[childi][1], &c, 1);
+      c++;
+      kill(cpid, SIGCONT);
+    }else {
+      close(pipes[childi][0]);
+      close(pipes[childi][1]);
+      kill(cpid, 9);
+    }
+  }
+  
 
   return 0;
 }

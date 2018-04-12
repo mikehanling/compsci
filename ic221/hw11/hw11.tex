@@ -1,0 +1,237 @@
+\documentclass{article}[9pt]
+\usepackage{listings}
+\usepackage{fullpage}
+\usepackage{textcomp}
+\usepackage{mdframed}
+\lstset{ %
+basicstyle=\ttfamily\scriptsize,
+commentstyle=\ttfamily\scriptsize\emph,
+upquote=true,
+framerule=1.25pt,
+breaklines=true,
+showstringspaces=false,
+escapeinside={(*@}{@*)},
+belowskip=2em,
+aboveskip=1em,
+}\newenvironment{answerfont}{\fontfamily{qhv}\selectfont}{\par}
+
+\newenvironment{myanswer}{\begin{mdframed}\begin{answerfont}}{\end{answerfont}\end{mdframed}}
+\title{HW 11}
+\author{Mike Hanling}
+\date{16APR18}
+\begin{document}\maketitle
+\section*{Questions}
+\label{sec:orgfce6862}
+\begin{enumerate}
+
+
+\item (5 points) What are the two parts of a packet? Which stores the address and
+what stores the data?
+\begin{myanswer}
+The Header stores the address and the Payload stores the data.
+\end{myanswer}
+
+\item (5 points) What does it mean for the Internet to be "packet switched"?
+\begin{myanswer}
+It means that at junctions (routers and devices) the devices know
+exactly where to send the packet solely on the Header, no need to look
+at the Payload. There are no pre-determined routes, but hops are
+determined on the go.
+\end{myanswer}
+
+\item (5 points) What are the different layers of the protocol stack and what
+purpose do they serve in delivering a packet?
+\begin{myanswer}
+The Application Layer is the start and end of a packet's life (get
+requests and requests for data by the user).\\
+The Transport Layer is for ports, to make sure the right process on the
+computer gets the right information.\\
+The Internet Layer is where packets hop across junctions to get from one
+destination to another through networks.\\
+The Link Layer allows for packets to be shared across networks. Ex:
+Ethernet and Wifi.\\
+The Physical Layer is for transmitting the 0's and 2's across the
+medium, the actual information in the packets.
+\end{myanswer}
+
+\item (5 points) An Internet address (version 4) is stored in how many bytes?
+\begin{myanswer}
+4
+\end{myanswer}
+
+\item (5 points) A domain name, unlike an IP address, is more human usable, what
+protocol enables domain names to be resolved into IP addresses?
+\begin{myanswer}
+DNS
+\end{myanswer}
+
+\item (15 points) Using the host command line tool, resolve the following domain
+names to an IPv4 address(es). Indicate those that also have IPv6
+addresses, and also, rerun host a few times, indicate which hosts
+IP addressed changed on subsequent runs.
+
+\begin{enumerate}
+\item www.cis.upenn.edu
+\begin{myanswer}
+IP : 158.130.69.163\\
+IPv6 : 2607:f470:8:64:5ea5::d
+\end{myanswer}
+
+\item www.cs.swarthmore.edu
+\begin{myanswer}
+IP : 130.58.68.137
+\end{myanswer}
+
+\item www.usna.edu
+\begin{myanswer}
+IP : 10.4.36.20
+\end{myanswer}
+
+\item facebook.com
+\begin{myanswer}
+IP : 31.13.69.228\\
+IPv6 : 2a03:2880:f103:83:face:b00c:0:25de
+\end{myanswer}
+
+\item microsoft.com
+\begin{myanswer}
+IP : 191.239.213.197:104.40.211.35:104.43.195.251:23.100.122.175:23.96.52.53
+\end{myanswer}
+
+\end{enumerate}
+\item (10 points) What is the purpose of the port address? How many bytes and what
+C type would naturally store a port address?
+\begin{myanswer}
+To make sure that the right process on the computer gets the right
+packets. It is an unsigned short (2 bytes) and is stored in sockaddr\_in as 
+sin\_port.
+\end{myanswer}
+
+\item (10 points) TCP provides reliable data transmission, but at what cost? Why
+might you want to use UDP over TCP?
+\begin{myanswer}
+TCP has acknowledgements and extra sending of data to make it more
+reliable.  This can slow down the time it takes the send the same amount
+of data (send to moving on).
+\end{myanswer}
+
+\item (20 points) For each of the descriptions below of a network type, indicate
+the type that best matches that description. Options include:
+struct in\_addr, in\_addr\_t, s\_addr, 
+struct sockaddr
+,
+
+struct sockaddr
+\_in, sin\_family, sin\_port, sin\_addr,
+
+struct addrinfo
+, ai\_family, ai\_addr.
+
+
+\begin{enumerate}
+\item Specifies the address type, e.g., AF\_INET, for the
+addrinfo structure.
+\begin{myanswer}
+\texttt{int ai\_family}
+\end{myanswer}
+
+\item Specifies the addres type, e.g., AF\_INET, for the
+sockaddr\_in structure.
+\begin{myanswer}
+\texttt{short sin\_family}
+\end{myanswer}
+
+\item A type defined as a uint32
+\begin{myanswer}
+\texttt{uint32\_t in\_addr\_t}
+\end{myanswer}
+
+\item A generic address structure for sockets
+\begin{myanswer}
+\texttt{struct sockaddr}
+\end{myanswer}
+
+\item A structure to store an IPv4 Internet address
+\begin{myanswer}
+\texttt{struct in\_addr}
+\end{myanswer}
+
+\item An unsigned short storing the port for a sockaddr\_in
+\begin{myanswer}
+\texttt{short sin\_port}
+\end{myanswer}
+
+\item Structure used to hint at IP addresses for resolving as well
+as storing results.
+\begin{myanswer}
+\texttt{struct addrinfo}
+\end{myanswer}
+
+\item Member of the sockaddr\_in that stores the address
+\begin{myanswer}
+\texttt{struct in\_addr sin\_addr}
+\end{myanswer}
+
+\item The sole member of the in\_addr structure
+\begin{myanswer}
+\texttt{in\_addr\_t s\_addr}
+\end{myanswer}
+
+\item A generic socket address returned in a addrinfo
+\begin{myanswer}
+\texttt{struct sockaddr ai\_addr}
+\end{myanswer}
+
+\item A specific address structure for sockets to store IP, port pairs
+\begin{myanswer}
+\texttt{struct sockaddr\_in}
+\end{myanswer}
+
+\end{enumerate}
+\item (5 points) The following functions are opposites, inet\_ntoa() and
+inet\_aton(), what are their purposes? Provide a small
+example.
+\begin{myanswer}
+These functions switch between a readable IP address (w/ dots) and how
+it actually stored (as four unsigned bytes). In order to store a dotted
+IP, you use inet\_aton(dotted) to convert it.  And then to get it back
+in the dotted form, you use inet\_ntoa(structure stored).
+\end{myanswer}
+
+\item (5 points) When assign a port to a socket address, which of these two
+conversion should you use and why? htnos() vs. nths().
+\begin{myanswer}
+htons() because it will convert the short that is the port number to the
+\texttt{sin\_port} that is stored in the \texttt{saddr\_in}.
+\end{myanswer}
+
+\item 
+(10 points) Consider setting the address 10.4.32.41 on port 22. Complete
+the code below to do that.
+
+
+
+\begin{lstlisting}
+struct sockaddr\_in
+\end{lstlisting}
+ saddr;
+
+//TODO: what assignments come next?
+
+
+\begin{myanswer}
+\begin{lstlisting}
+struct sockaddr\_in saddr;
+saddr.sin\_family = AF\_INET;
+inet\_aton("10.4.32.41", &(saddr.sin\_addr));
+saddr.sin\_port = htons(22);
+
+\end{lstlisting}
+\end{myanswer}
+
+\end{enumerate}
+\end{document}
+
+%%% mode: latex
+% TeX-master: t
+%%% End:
